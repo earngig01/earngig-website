@@ -179,6 +179,72 @@
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
+  <script>
+  const registerForm = document.querySelector("form");
+
+  registerForm.addEventListener("submit", async function(event) {
+
+    event.preventDefault();
+
+    const fullname =
+      document.getElementById("fullname").value.trim();
+
+    const email =
+      document.getElementById("email").value.trim();
+
+    const phone =
+      document.getElementById("phone").value.trim();
+
+    const referral =
+      document.getElementById("referral").value.trim();
+
+    const password =
+      document.getElementById("password").value;
+
+    const confirmPassword =
+      document.getElementById("confirm-password").value;
+
+
+    if (password !== confirmPassword) {
+
+      alert("Passwords do not match.");
+
+      return;
+    }
+
+
+    const { data, error } =
+      await supabaseClient.auth.signUp({
+        email: email,
+        password: password,
+        options: {
+          data: {
+            full_name: fullname,
+            phone: phone,
+            referral_code: referral || null
+          }
+        }
+      });
+
+
+    if (error) {
+
+      console.error("Registration error:", error);
+
+      alert(error.message);
+
+      return;
+    }
+
+
+    alert(
+      "Account created! Please check your email and click the verification link before logging in."
+    );
+
+    window.location.href = "login.html";
+
+  });
+  </script>
   
 </body>
 </html>
