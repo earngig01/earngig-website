@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Withdraw | EarnGig</title>
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<header>
+  <div class="container nav">
+
+    <a class="logo" href="index.html">
+      <span class="logo-mark">E</span>
+      Earn<span>Gig</span>
+    </a>
+
+    <a class="btn outline" href="wallet.html">
+      ← Wallet
+    </a>
+
+  </div>
+</header>
+
+
+<main class="dashboard-page">
+
+  <div class="container">
+
+    <div class="dashboard-heading">
+
+      <div>
+
+        <span class="eyebrow">
+          WALLET
+        </span>
+
+        <h1>Request Withdrawal</h1>
+
+        <p>
+          Withdraw your available EarnGig balance to your
+          registered bank account.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <section class="withdraw-card">
+
+      <div class="withdraw-balance">
+
+        <small>Available balance</small>
+
+        <strong>₦0.00</strong>
+
+        <span>
+          Minimum withdrawal: ₦15,000
+        </span>
+
+      </div>
+
+
+      <form>
+
+
+        <label for="amount">
+          Withdrawal amount
+        </label>
+
+        <div class="money-input">
+
+          <span>₦</span>
+
+          <input
+            type="number"
+            id="amount"
+            min="15000"
+            placeholder="Minimum ₦15,000"
+            required
+          >
+
+        </div>
+
+
+        <label for="bank">
+          Bank
+        </label>
+
+        <select id="bank" required>
+
+          <option value="">
+            Select your bank
+          </option>
+
+          <option>
+            Access Bank
+          </option>
+
+          <option>
+            First Bank
+          </option>
+
+          <option>
+            GTBank
+          </option>
+
+          <option>
+            UBA
+          </option>
+
+          <option>
+            Zenith Bank
+          </option>
+
+          <option>
+            Other
+          </option>
+
+        </select>
+
+
+        <label for="account-name">
+          Account name
+        </label>
+
+        <input
+          type="text"
+          id="account-name"
+          placeholder="Account holder's name"
+          required
+        >
+
+
+        <label for="account-number">
+          Account number
+        </label>
+
+        <input
+          type="text"
+          id="account-number"
+          inputmode="numeric"
+          maxlength="10"
+          placeholder="10-digit account number"
+          required
+        >
+
+
+        <div class="withdraw-warning">
+
+          <strong>
+            Before submitting
+          </strong>
+
+          <p>
+            Make sure your bank details are correct.
+            Withdrawal requests may be reviewed before
+            payment is processed.
+          </p>
+
+        </div>
+
+
+        <div class="form-actions">
+
+          <a
+            href="wallet.html"
+            class="btn outline big"
+          >
+            Cancel
+          </a>
+
+          <button
+            type="submit"
+            class="btn primary big"
+          >
+            Submit Withdrawal
+          </button>
+
+        </div>
+
+
+      </form>
+
+    </section>
+
+  </div>
+
+</main>
+
+
+<footer>
+
+  <div class="container copy">
+    © 2026 EarnGig. All rights reserved.
+  </div>
+
+</footer>
+
+</body>
+</html>
