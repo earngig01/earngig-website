@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Novel Assessment | EarnGig Admin</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<header>
+  <div class="container nav">
+
+    <a class="logo" href="index.html">
+      <span class="logo-mark">E</span>
+      Earn<span>Gig</span>
+    </a>
+
+    <span class="admin-badge">ADMIN</span>
+
+  </div>
+</header>
+
+
+<main class="dashboard-page">
+
+  <div class="container">
+
+    <div class="dashboard-heading">
+
+      <div>
+        <span class="eyebrow">NOVEL ASSESSMENT</span>
+        <h1>Review Submission</h1>
+
+        <p>
+          Assess the writer's submission and determine the approved
+          earning rate and listing fee.
+        </p>
+      </div>
+
+      <a class="btn outline" href="admin-dashboard.html">
+        Admin Dashboard
+      </a>
+
+    </div>
+
+
+    <div class="review-grid">
+
+
+      <!-- NOVEL INFORMATION -->
+
+      <section class="review-card">
+
+        <div class="review-card-header">
+          <div>
+            <span class="eyebrow">SUBMISSION</span>
+            <h2>The Hidden Promise</h2>
+          </div>
+
+          <span class="status-badge pending">
+            Pending Review
+          </span>
+        </div>
+
+
+        <div class="novel-details">
+
+          <div>
+            <small>Writer</small>
+            <strong>Jane Doe</strong>
+          </div>
+
+          <div>
+            <small>Genre</small>
+            <strong>Romance</strong>
+          </div>
+
+          <div>
+            <small>Pages</small>
+            <strong>22</strong>
+          </div>
+
+          <div>
+            <small>Requested readers</small>
+            <strong>100</strong>
+          </div>
+
+        </div>
+
+
+        <div class="manuscript-box">
+
+          <span>MANUSCRIPT</span>
+
+          <h3>The Hidden Promise</h3>
+
+          <p>
+            Submitted manuscript is ready for quality assessment.
+          </p>
+
+          <button class="btn light">
+            View Manuscript
+          </button>
+
+        </div>
+
+
+        <div class="assessment-box">
+
+          <span>WRITER DESCRIPTION</span>
+
+          <p>
+            A young woman discovers that the promise she made
+            years ago could change her entire future.
+          </p>
+
+        </div>
+
+      </section>
+
+
+      <!-- ADMIN DECISION -->
+
+      <section class="review-card">
+
+        <div class="review-card-header">
+
+          <div>
+            <span class="eyebrow">ADMIN DECISION</span>
+            <h2>Assessment & Pricing</h2>
+          </div>
+
+        </div>
+
+
+        <form>
+
+
+          <label for="quality">
+            Quality assessment
+          </label>
+
+          <select id="quality">
+
+            <option value="">
+              Select assessment
+            </option>
+
+            <option>
+              Excellent
+            </option>
+
+            <option>
+              Good
+            </option>
+
+            <option>
+              Average
+            </option>
+
+            <option>
+              Needs Revision
+            </option>
+
+          </select>
+
+
+          <label for="pages-approved">
+            Approved page count
+          </label>
+
+          <input
+            type="number"
+            id="pages-approved"
+            value="22"
+            min="5"
+            max="25"
+          >
+
+
+          <label for="reader-rate">
+            Writer earning per verified reader
+          </label>
+
+          <div class="money-input">
+            <span>₦</span>
+
+            <input
+              type="number"
+              id="reader-rate"
+              placeholder="Example: 200"
+              min="0"
+            >
+          </div>
+
+
+          <small class="form-help">
+            This is the amount the writer earns for each
+            verified reader. It is determined by EarnGig
+            after assessment.
+          </small>
+
+
+          <label for="listing-fee">
+            Writer listing fee
+          </label>
+
+          <div class="money-input">
+            <span>₦</span>
+
+            <input
+              type="number"
+              id="listing-fee"
+              placeholder="Enter approved fee"
+              min="0"
+            >
+          </div>
+
+
+          <label for="reader-count">
+            Approved reader count
+          </label>
+
+          <select id="reader-count">
+
+            <option value="25">
+              Bronze — 25 readers
+            </option>
+
+            <option value="50">
+              Silver — 50 readers
+            </option>
+
+            <option value="100">
+              Gold — 100 readers
+            </option>
+
+          </select>
+
+
+          <label for="notes">
+            Assessment notes
+          </label>
+
+          <textarea
+            id="notes"
+            rows="5"
+            placeholder="Write notes for the writer..."
+          ></textarea>
+
+
+          <div class="decision-actions">
+
+            <button
+              type="button"
+              class="btn danger"
+            >
+              Reject
+            </button>
+
+            <button
+              type="button"
+              class="btn warning"
+            >
+              Request Revision
+            </button>
+
+            <button
+              type="button"
+              class="btn primary"
+            >
+              Approve & Set Pricing
+            </button>
+
+          </div>
+
+
+        </form>
+
+      </section>
+
+    </div>
+
+
+    <!-- FINANCIAL PREVIEW -->
+
+    <section class="review-card financial-preview">
+
+      <span class="eyebrow">EARNING PREVIEW</span>
+
+      <h2>Potential writer earnings</h2>
+
+      <div class="preview-grid">
+
+        <div>
+          <small>Approved rate</small>
+          <strong>₦200</strong>
+          <span>per verified reader</span>
+        </div>
+
+        <div>
+          <small>Reader target</small>
+          <strong>100</strong>
+          <span>verified readers</span>
+        </div>
+
+        <div>
+          <small>Maximum writer earnings</small>
+          <strong>₦20,000</strong>
+          <span>if all reads are verified</span>
+        </div>
+
+      </div>
+
+    </section>
+
+  </div>
+
+</main>
+
+
+<footer>
+
+  <div class="container copy">
+    © 2026 EarnGig Administration.
+  </div>
+
+</footer>
+
+</body>
+</html>
