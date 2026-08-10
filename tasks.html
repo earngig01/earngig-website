@@ -281,9 +281,8 @@
       return;
     }
 
-    alert("Task started successfully!");
-
-    console.log("Task attempt created:", attempt);
+    window.location.href =
+  "submit-task.html?task=" + encodeURIComponent(task.id);
   }
 
   loadTasks();
