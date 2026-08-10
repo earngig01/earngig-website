@@ -276,9 +276,14 @@
         .single();
 
     if (attemptError) {
-      console.error("Task attempt error:", attemptError);
-      alert("Unable to start this task right now.");
-      return;
+  console.error("Task attempt error:", attemptError);
+
+  alert(
+    "Task error: " +
+    (attemptError.message || "Unknown error")
+  );
+
+  return;
     }
 
     window.location.href =
