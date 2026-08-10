@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Create Listing | EarnGig</title>
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<header>
+  <div class="container nav">
+
+    <a class="logo" href="index.html">
+      <span class="logo-mark">E</span>
+      Earn<span>Gig</span>
+    </a>
+
+    <a class="btn outline" href="seller-dashboard.html">
+      Seller Dashboard
+    </a>
+
+  </div>
+</header>
+
+
+<main class="dashboard-page">
+
+  <div class="container">
+
+    <div class="dashboard-heading">
+
+      <div>
+        <span class="eyebrow">SELLER CENTER</span>
+
+        <h1>Create a listing</h1>
+
+        <p>
+          Add your product or service to the EarnGig Marketplace.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <form class="novel-form">
+
+      <section class="form-section">
+
+        <div class="form-section-title">
+
+          <span>01</span>
+
+          <div>
+            <h2>Listing information</h2>
+
+            <p>
+              Tell buyers what you're offering.
+            </p>
+          </div>
+
+        </div>
+
+
+        <label for="listing-title">
+          Listing title
+        </label>
+
+        <input
+          type="text"
+          id="listing-title"
+          placeholder="Enter your product or service title"
+          required
+        >
+
+
+        <label for="category">
+          Category
+        </label>
+
+        <select id="category" required>
+
+          <option value="">
+            Select a category
+          </option>
+
+          <option>Digital Products</option>
+          <option>Writing Services</option>
+          <option>Design Services</option>
+          <option>Education</option>
+          <option>Business Services</option>
+
+        </select>
+
+
+        <label for="description">
+          Description
+        </label>
+
+        <textarea
+          id="description"
+          rows="6"
+          placeholder="Describe what buyers will receive..."
+          required
+        ></textarea>
+
+      </section>
+
+
+      <section class="form-section">
+
+        <div class="form-section-title">
+
+          <span>02</span>
+
+          <div>
+            <h2>Pricing</h2>
+
+            <p>
+              Set the price buyers will see.
+            </p>
+          </div>
+
+        </div>
+
+
+        <label for="price">
+          Price
+        </label>
+
+        <div class="money-input">
+
+          <span>₦</span>
+
+          <input
+            type="number"
+            id="price"
+            min="0"
+            placeholder="Enter price"
+            required
+          >
+
+        </div>
+
+      </section>
+
+
+      <section class="form-section">
+
+        <div class="form-section-title">
+
+          <span>03</span>
+
+          <div>
+            <h2>Product or service delivery</h2>
+
+            <p>
+              Tell us how the buyer receives the offer.
+            </p>
+          </div>
+
+        </div>
+
+
+        <label for="delivery">
+          Delivery type
+        </label>
+
+        <select id="delivery" required>
+
+          <option value="">
+            Select delivery type
+          </option>
+
+          <option>
+            Digital Download
+          </option>
+
+          <option>
+            Service / Direct Contact
+          </option>
+
+          <option>
+            External Delivery
+          </option>
+
+        </select>
+
+
+        <label for="listing-file">
+          Product file
+        </label>
+
+        <input
+          type="file"
+          id="listing-file"
+          accept=".pdf,.zip,.doc,.docx"
+        >
+
+        <small class="form-help">
+          Required for digital products where applicable.
+        </small>
+
+      </section>
+
+
+      <section class="assessment-notice">
+
+        <strong>Before your listing goes live</strong>
+
+        <p>
+          EarnGig may review listings before publication.
+          Listings must comply with the platform's marketplace
+          rules and applicable laws.
+        </p>
+
+      </section>
+
+
+      <label class="submission-agreement">
+
+        <input type="checkbox" required>
+
+        I confirm that I have the rights to sell this
+        product or service and agree to EarnGig's
+        Marketplace rules.
+
+      </label>
+
+
+      <div class="form-actions">
+
+        <a
+          href="seller-dashboard.html"
+          class="btn outline big"
+        >
+          Cancel
+        </a>
+
+        <button
+          type="submit"
+          class="btn primary big"
+        >
+          Submit Listing
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</main>
+
+
+<footer>
+
+  <div class="container copy">
+    © 2026 EarnGig. All rights reserved.
+  </div>
+
+</footer>
+
+</body>
+</html>
