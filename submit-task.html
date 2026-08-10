@@ -77,12 +77,12 @@
           </label>
 
           <input
-            type="text"
-            id="task-id"
-            name="task-id"
-            placeholder="Enter your task ID"
-            required
-          >
+  type="text"
+  id="task-id"
+  name="task-id"
+  placeholder="Enter your task ID"
+  required
+>
 
         </div>
 
@@ -176,6 +176,12 @@
 <script src="supabase.js"></script>
 
 <script>
+  const params = new URLSearchParams(window.location.search);
+const taskFromUrl = params.get("task");
+
+if (taskFromUrl) {
+  document.getElementById("task-id").value = taskFromUrl;
+}
   const form = document.getElementById("task-submission-form");
   const message = document.getElementById("submission-message");
 
