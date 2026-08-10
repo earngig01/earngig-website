@@ -160,6 +160,25 @@
   </div>
 
 </footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
 
+<script>
+  async function loadTasks() {
+    const { data, error } = await supabaseClient
+      .from("tasks")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      console.error("Error loading tasks:", error);
+      return;
+    }
+
+    console.log("Tasks loaded:", data);
+  }
+
+  loadTasks();
+</script>
 </body>
 </html>
