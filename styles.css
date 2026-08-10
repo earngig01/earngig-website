@@ -1869,3 +1869,281 @@ footer {
     margin-top: 12px;
   }
 }
+/* READING PAGE */
+
+.reading-page {
+  min-height: calc(100vh - 76px);
+  background: #f5fbfe;
+  padding: 45px 0 80px;
+}
+
+.reading-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 25px;
+  margin-bottom: 22px;
+}
+
+.reading-header h1 {
+  color: #09243a;
+  font-size: 34px;
+  margin: 7px 0;
+}
+
+.reading-header p {
+  color: #78909d;
+  font-size: 12px;
+}
+
+.reading-reward {
+  background: white;
+  border: 1px solid #dceaf2;
+  border-radius: 15px;
+  padding: 16px 20px;
+  text-align: right;
+}
+
+.reading-reward small,
+.reading-reward strong,
+.reading-reward span {
+  display: block;
+}
+
+.reading-reward small {
+  color: #78909d;
+  font-size: 9px;
+}
+
+.reading-reward strong {
+  color: #159bd6;
+  font-size: 24px;
+  margin: 3px 0;
+}
+
+.reading-reward span {
+  color: #78909d;
+  font-size: 9px;
+}
+
+.reading-progress-card {
+  background: #09243a;
+  color: white;
+  border-radius: 18px;
+  padding: 22px;
+  margin-bottom: 20px;
+}
+
+.progress-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.progress-heading small {
+  display: block;
+  color: #9eb9c7;
+  font-size: 9px;
+}
+
+.progress-heading strong {
+  display: block;
+  margin-top: 5px;
+}
+
+.progress-heading > span {
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.progress-bar {
+  height: 7px;
+  background: rgba(255,255,255,.15);
+  border-radius: 20px;
+  overflow: hidden;
+  margin: 15px 0 10px;
+}
+
+.progress-fill {
+  width: 0%;
+  height: 100%;
+  background: #159bd6;
+}
+
+.reading-progress-card p {
+  color: #a9c4d1;
+  font-size: 10px;
+}
+
+.reading-card {
+  background: white;
+  border: 1px solid #dceaf2;
+  border-radius: 20px;
+  padding: 35px;
+}
+
+.chapter-heading {
+  text-align: center;
+  border-bottom: 1px solid #e5eef3;
+  padding-bottom: 25px;
+  margin-bottom: 30px;
+}
+
+.chapter-heading span {
+  color: #159bd6;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+
+.chapter-heading h2 {
+  color: #09243a;
+  margin-top: 7px;
+}
+
+.novel-content {
+  max-width: 720px;
+  margin: auto;
+}
+
+.novel-content p {
+  color: #425b6b;
+  font-size: 15px;
+  line-height: 2;
+  margin-bottom: 22px;
+}
+
+.reading-navigation {
+  max-width: 720px;
+  margin: 35px auto 0;
+  padding-top: 22px;
+  border-top: 1px solid #e5eef3;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.reading-navigation > span {
+  color: #78909d;
+  font-size: 11px;
+}
+
+.verification-notice {
+  background: #e9f8ff;
+  border: 1px solid #ccecf8;
+  border-radius: 17px;
+  padding: 22px;
+  margin-top: 20px;
+}
+
+.verification-notice strong {
+  color: #09243a;
+}
+
+.verification-notice ul {
+  color: #607887;
+  font-size: 12px;
+  line-height: 1.9;
+  margin-top: 8px;
+}
+
+.quiz-card {
+  background: white;
+  border: 1px solid #dceaf2;
+  border-radius: 20px;
+  padding: 30px;
+  margin-top: 20px;
+}
+
+.quiz-header {
+  margin-bottom: 25px;
+}
+
+.quiz-header h2 {
+  color: #09243a;
+  margin: 6px 0;
+}
+
+.quiz-header p {
+  color: #78909d;
+  font-size: 12px;
+}
+
+.quiz-question {
+  border-top: 1px solid #e5eef3;
+  padding: 20px 0;
+}
+
+.quiz-question > strong {
+  display: block;
+  color: #173449;
+  font-size: 13px;
+  margin-bottom: 13px;
+}
+
+.quiz-question label {
+  display: block;
+  color: #607887;
+  font-size: 12px;
+  margin: 10px 0;
+}
+
+.quiz-question input {
+  margin-right: 7px;
+}
+
+.verification-status {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background: #f1fbf5;
+  border: 1px solid #d2efdd;
+  border-radius: 17px;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.verification-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #d9f4e2;
+  color: #25844a;
+  display: grid;
+  place-items: center;
+  font-weight: 900;
+}
+
+.verification-status strong {
+  color: #245e3b;
+}
+
+.verification-status p {
+  color: #64806f;
+  font-size: 11px;
+  margin-top: 3px;
+}
+
+@media (max-width: 650px) {
+
+  .reading-header {
+    display: block;
+  }
+
+  .reading-reward {
+    text-align: left;
+    margin-top: 15px;
+  }
+
+  .reading-card {
+    padding: 22px;
+  }
+
+  .novel-content p {
+    font-size: 14px;
+  }
+
+  .reading-navigation .btn {
+    padding: 10px 12px;
+  }
+  }
