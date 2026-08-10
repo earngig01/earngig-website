@@ -269,12 +269,97 @@ https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2
             ).toLocaleString()}
           </strong>
 
+          <div style="margin-top: 20px;">
+
+            <button
+              class="btn primary"
+              onclick="approveSubmission('${submission.id}')"
+            >
+              Approve
+            </button>
+
+            <button
+              class="btn outline"
+              onclick="rejectSubmission('${submission.id}')"
+            >
+              Reject
+            </button>
+
+          </div>
+
         </div>
 
       </article>
 
     `).join("");
   }
+
+
+  async function approveSubmission(submissionId) {
+
+    const confirmed = confirm(
+      "Approve this task and make it eligible for its reward?"
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    const { error } = await supabaseClient
+      .from("task_attempts")
+      .update({
+        status: "approved",
+        reward_status: "pending"
+      })
+      .eq("id", submissionId);
+
+    if (error) {
+
+      console.error("Approval error:", error);
+
+      alert("Unable to approve this submission.");
+
+      return;
+    }
+
+    alert("Task approved successfully.");
+
+    loadTaskSubmissions();
+  }
+
+
+  async function rejectSubmission(submissionId) {
+
+    const confirmed = confirm(
+      "Reject this task submission?"
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    const { error } = await supabaseClient
+      .from("task_attempts")
+      .update({
+        status: "rejected",
+        reward_status: "not_eligible"
+      })
+      .eq("id", submissionId);
+
+    if (error) {
+
+      console.error("Rejection error:", error);
+
+      alert("Unable to reject this submission.");
+
+      return;
+    }
+
+    alert("Task submission rejected.");
+
+    loadTaskSubmissions();
+  }
+
 
   loadTaskSubmissions();
 </script>
