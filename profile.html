@@ -42,38 +42,443 @@
 
   <div class="container">
 
-    <div class="dashboard-heading">
 
-      <div>
-        <span class="eyebrow">MY ACCOUNT</span>
+    <!-- PROFILE HEADER -->
 
-        <h1>My Profile</h1>
+    <section class="profile-hero">
 
-        <p>
-          View your EarnGig account information.
-        </p>
+      <div class="profile-avatar" id="profile-avatar">
+        E
       </div>
 
-    </div>
+      <div>
 
+        <span class="eyebrow">
+          MY ACCOUNT
+        </span>
+
+        <h1 id="profile-name">
+          Loading...
+        </h1>
+
+        <p id="profile-status">
+          Checking account status...
+        </p>
+
+      </div>
+
+    </section>
+
+
+    <!-- PERSONAL INFORMATION -->
 
     <section class="dashboard-section">
 
       <div class="section-title">
+
         <div>
-          <span class="eyebrow">ACCOUNT DETAILS</span>
-          <h2>Personal information</h2>
+
+          <span class="eyebrow">
+            PERSONAL INFORMATION
+          </span>
+
+          <h2>Account details</h2>
+
         </div>
+
+        <button
+          id="edit-profile-button"
+          class="btn outline"
+          type="button"
+        >
+          Edit Profile
+        </button>
+
       </div>
 
 
-      <div id="profile-details">
+      <div class="dashboard-stats">
 
-        <div class="empty-state">
-          <p>Loading your profile...</p>
+        <div class="dashboard-stat">
+
+          <small>Full Name</small>
+
+          <strong id="full-name">
+            Loading...
+          </strong>
+
+        </div>
+
+
+        <div class="dashboard-stat">
+
+          <small>Email Address</small>
+
+          <strong
+            id="email-address"
+            style="font-size: 15px;"
+          >
+            Loading...
+          </strong>
+
+        </div>
+
+
+        <div class="dashboard-stat">
+
+          <small>Phone Number</small>
+
+          <strong id="phone-number">
+            Loading...
+          </strong>
+
+        </div>
+
+
+        <div class="dashboard-stat">
+
+          <small>Account Status</small>
+
+          <strong id="account-status">
+            Loading...
+          </strong>
+
         </div>
 
       </div>
+
+    </section>
+
+
+    <!-- EARNGIG ACCOUNT -->
+
+    <section class="dashboard-section">
+
+      <div class="section-title">
+
+        <div>
+
+          <span class="eyebrow">
+            EARNGIG ACCOUNT
+          </span>
+
+          <h2>Membership information</h2>
+
+        </div>
+
+      </div>
+
+
+      <div class="dashboard-stats">
+
+        <div class="dashboard-stat">
+
+          <small>Member ID</small>
+
+          <strong
+            id="member-id"
+            style="font-size: 13px;"
+          >
+            Loading...
+          </strong>
+
+        </div>
+
+
+        <div class="dashboard-stat">
+
+          <small>Referral Code</small>
+
+          <strong id="referral-code">
+            Loading...
+          </strong>
+
+        </div>
+
+
+        <div class="dashboard-stat">
+
+          <small>Date Joined</small>
+
+          <strong id="date-joined">
+            Loading...
+          </strong>
+
+        </div>
+
+
+        <div class="dashboard-stat">
+
+          <small>Email Verification</small>
+
+          <strong id="email-verification">
+            Loading...
+          </strong>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- WALLET -->
+
+    <section class="dashboard-section">
+
+      <div class="section-title">
+
+        <div>
+
+          <span class="eyebrow">
+            WALLET
+          </span>
+
+          <h2>Your earnings</h2>
+
+        </div>
+
+        <a
+          class="btn primary"
+          href="withdraw.html"
+        >
+          Withdraw
+        </a>
+
+      </div>
+
+
+      <div class="member-wallet">
+
+        <div>
+
+          <small>
+            Available Balance
+          </small>
+
+          <strong id="wallet-balance">
+            ₦0.00
+          </strong>
+
+          <p>
+            Your available EarnGig balance.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="dashboard-stats">
+
+        <div class="dashboard-stat">
+
+          <small>Total Earned</small>
+
+          <strong id="total-earned">
+            ₦0
+          </strong>
+
+        </div>
+
+
+        <div class="dashboard-stat">
+
+          <small>Referral Earnings</small>
+
+          <strong id="referral-earnings">
+            ₦0
+          </strong>
+
+        </div>
+
+
+        <div class="dashboard-stat">
+
+          <small>Completed Tasks</small>
+
+          <strong id="completed-tasks">
+            0
+          </strong>
+
+        </div>
+
+
+        <div class="dashboard-stat">
+
+          <small>Total Withdrawn</small>
+
+          <strong id="total-withdrawn">
+            ₦0
+          </strong>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ACCOUNT SETTINGS -->
+
+    <section class="dashboard-section">
+
+      <div class="section-title">
+
+        <div>
+
+          <span class="eyebrow">
+            ACCOUNT SETTINGS
+          </span>
+
+          <h2>Manage your account</h2>
+
+        </div>
+
+      </div>
+
+
+      <div class="member-earning-grid">
+
+        <a
+          href="#"
+          id="change-password-link"
+          class="member-earning-card"
+        >
+
+          <div class="member-card-icon blue">
+            🔒
+          </div>
+
+          <h3>
+            Change Password
+          </h3>
+
+          <p>
+            Update your account password and keep your
+            account secure.
+          </p>
+
+          <strong>
+            Change password →
+          </strong>
+
+        </a>
+
+
+        <a
+          href="#"
+          class="member-earning-card"
+        >
+
+          <div class="member-card-icon purple">
+            ✉
+          </div>
+
+          <h3>
+            Email Verification
+          </h3>
+
+          <p id="verification-message">
+            Checking your email verification status.
+          </p>
+
+          <strong id="verification-action">
+            Checking →
+          </strong>
+
+        </a>
+
+
+        <a
+          href="dashboard.html"
+          class="member-earning-card"
+        >
+
+          <div class="member-card-icon green">
+            ←
+          </div>
+
+          <h3>
+            Back to Dashboard
+          </h3>
+
+          <p>
+            Return to your EarnGig member dashboard.
+          </p>
+
+          <strong>
+            Dashboard →
+          </strong>
+
+        </a>
+
+      </div>
+
+    </section>
+
+
+    <!-- EDIT PROFILE -->
+
+    <section
+      id="edit-profile-section"
+      class="dashboard-section"
+      style="display:none;"
+    >
+
+      <div class="section-title">
+
+        <div>
+
+          <span class="eyebrow">
+            EDIT PROFILE
+          </span>
+
+          <h2>Update your information</h2>
+
+        </div>
+
+      </div>
+
+
+      <form id="edit-profile-form">
+
+        <label for="edit-fullname">
+          Full Name
+        </label>
+
+        <input
+          type="text"
+          id="edit-fullname"
+          required
+        >
+
+
+        <label for="edit-phone">
+          Phone Number
+        </label>
+
+        <input
+          type="tel"
+          id="edit-phone"
+          required
+        >
+
+
+        <button
+          type="submit"
+          class="btn primary"
+        >
+          Save Changes
+        </button>
+
+      </form>
+
+
+      <div
+        id="profile-message"
+        style="margin-top:20px;"
+      ></div>
 
     </section>
 
@@ -94,7 +499,12 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
 
+
 <script>
+
+  let currentUser = null;
+  let currentProfile = null;
+
 
   async function loadProfile() {
 
@@ -109,7 +519,11 @@
       window.location.href = "login.html";
 
       return;
+
     }
+
+
+    currentUser = user;
 
 
     const { data: profile, error } =
@@ -122,84 +536,239 @@
 
     if (error) {
 
-      console.error("Profile error:", error);
+      console.error(
+        "Profile loading error:",
+        error
+      );
 
-      document.getElementById("profile-details").innerHTML = `
-        <div class="empty-state">
-          <h3>Unable to load profile</h3>
-          <p>
-            We couldn't load your account information.
-          </p>
-        </div>
-      `;
+      document.getElementById("profile-name").textContent =
+        user.user_metadata?.full_name || "Member";
+
+      document.getElementById("profile-status").textContent =
+        "Profile information unavailable.";
 
       return;
+
     }
 
 
-    document.getElementById("profile-details").innerHTML = `
-
-      <div class="member-wallet">
-
-        <div>
-          <small>Full Name</small>
-          <strong>
-            ${profile.full_name || "Not provided"}
-          </strong>
-        </div>
-
-      </div>
+    currentProfile = profile;
 
 
-      <div class="dashboard-stats">
-
-        <div class="dashboard-stat">
-
-          <small>Email</small>
-
-          <strong style="font-size: 15px;">
-            ${user.email || "Not available"}
-          </strong>
-
-        </div>
+    const fullName =
+      profile.full_name ||
+      user.user_metadata?.full_name ||
+      "Member";
 
 
-        <div class="dashboard-stat">
-
-          <small>Phone</small>
-
-          <strong>
-            ${profile.phone || "Not provided"}
-          </strong>
-
-        </div>
-
-
-        <div class="dashboard-stat">
-
-          <small>Referral Code</small>
-
-          <strong>
-            ${profile.referral_code || "None"}
-          </strong>
-
-        </div>
+    const initials =
+      fullName
+        .split(" ")
+        .filter(Boolean)
+        .map(name => name.charAt(0))
+        .slice(0, 2)
+        .join("")
+        .toUpperCase();
 
 
-        <div class="dashboard-stat">
+    document.getElementById("profile-avatar").textContent =
+      initials || "E";
 
-          <small>Account Status</small>
 
-          <strong>
-            ${user.email_confirmed_at ? "Verified" : "Unverified"}
-          </strong>
+    document.getElementById("profile-name").textContent =
+      fullName;
 
-        </div>
 
-      </div>
+    document.getElementById("full-name").textContent =
+      fullName;
 
-    `;
+
+    document.getElementById("email-address").textContent =
+      user.email || "Not available";
+
+
+    document.getElementById("phone-number").textContent =
+      profile.phone || "Not provided";
+
+
+    document.getElementById("member-id").textContent =
+      user.id;
+
+
+    document.getElementById("referral-code").textContent =
+      profile.referral_code || "None";
+
+
+    document.getElementById("date-joined").textContent =
+      new Date(user.created_at).toLocaleDateString();
+
+
+    const verified =
+      Boolean(user.email_confirmed_at);
+
+
+    document.getElementById("account-status").textContent =
+      verified ? "Verified" : "Unverified";
+
+
+    document.getElementById("email-verification").textContent =
+      verified ? "Verified" : "Not verified";
+
+
+    document.getElementById("profile-status").textContent =
+      verified
+        ? "Verified EarnGig account"
+        : "Please verify your email address";
+
+
+    document.getElementById("verification-message").textContent =
+      verified
+        ? "Your email address has been verified."
+        : "Your email address still needs to be verified.";
+
+
+    document.getElementById("verification-action").textContent =
+      verified
+        ? "Email verified ✓"
+        : "Verification required →";
+
+
+    document.getElementById("edit-fullname").value =
+      profile.full_name || "";
+
+
+    document.getElementById("edit-phone").value =
+      profile.phone || "";
+
   }
+
+
+  document
+    .getElementById("edit-profile-button")
+    .addEventListener("click", function() {
+
+      const section =
+        document.getElementById(
+          "edit-profile-section"
+        );
+
+      section.style.display = "block";
+
+      section.scrollIntoView({
+        behavior: "smooth"
+      });
+
+    });
+
+
+  document
+    .getElementById("edit-profile-form")
+    .addEventListener("submit", async function(event) {
+
+      event.preventDefault();
+
+
+      if (!currentUser) {
+        return;
+      }
+
+
+      const fullName =
+        document
+          .getElementById("edit-fullname")
+          .value
+          .trim();
+
+
+      const phone =
+        document
+          .getElementById("edit-phone")
+          .value
+          .trim();
+
+
+      const { error } =
+        await supabaseClient
+          .from("profiles")
+          .update({
+            full_name: fullName,
+            phone: phone
+          })
+          .eq("id", currentUser.id);
+
+
+      if (error) {
+
+        console.error(
+          "Profile update error:",
+          error
+        );
+
+        document.getElementById(
+          "profile-message"
+        ).textContent =
+          "Unable to update your profile.";
+
+        return;
+
+      }
+
+
+      document.getElementById(
+        "profile-message"
+      ).textContent =
+        "Profile updated successfully.";
+
+
+      await loadProfile();
+
+    });
+
+
+  document
+    .getElementById("change-password-link")
+    .addEventListener("click", async function(event) {
+
+      event.preventDefault();
+
+
+      if (!currentUser?.email) {
+        return;
+      }
+
+
+      const { error } =
+        await supabaseClient.auth.resetPasswordForEmail(
+          currentUser.email,
+          {
+            redirectTo:
+              window.location.origin +
+              window.location.pathname
+          }
+        );
+
+
+      if (error) {
+
+        console.error(
+          "Password reset error:",
+          error
+        );
+
+        alert(
+          "Unable to send the password reset email."
+        );
+
+        return;
+
+      }
+
+
+      alert(
+        "A password reset email has been sent to your email address."
+      );
+
+    });
 
 
   document
@@ -209,16 +778,25 @@
       const { error } =
         await supabaseClient.auth.signOut();
 
+
       if (error) {
 
-        console.error("Logout error:", error);
+        console.error(
+          "Logout error:",
+          error
+        );
 
-        alert("Unable to log out right now.");
+        alert(
+          "Unable to log out right now."
+        );
 
         return;
+
       }
 
-      window.location.href = "login.html";
+
+      window.location.href =
+        "login.html";
 
     });
 
