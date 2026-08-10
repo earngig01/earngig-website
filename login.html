@@ -121,6 +121,39 @@
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
+<script>
+  const loginForm = document.querySelector("form");
+
+  loginForm.addEventListener("submit", async function(event) {
+
+    event.preventDefault();
+
+    const email =
+      document.getElementById("email").value.trim();
+
+    const password =
+      document.getElementById("password").value;
+
+    const { data, error } =
+      await supabaseClient.auth.signInWithPassword({
+        email: email,
+        password: password
+      });
+
+    if (error) {
+
+      alert(error.message);
+
+      console.error("Login error:", error);
+
+      return;
+    }
+
+    alert("Login successful!");
+
+    window.location.href = "dashboard.html";
+  });
+</script>
   
 </body>
 </html>
