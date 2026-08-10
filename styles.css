@@ -2366,3 +2366,101 @@ footer {
     grid-template-columns: 1fr;
   }
 }
+/* CREATOR PROMOTIONS */
+
+.promotion-platforms {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 13px;
+}
+
+.promotion-platform {
+  cursor: pointer;
+}
+
+.promotion-platform input {
+  position: absolute;
+  opacity: 0;
+}
+
+.promotion-platform > span {
+  display: block;
+  padding: 20px;
+  border: 1px solid #dceaf2;
+  border-radius: 15px;
+  background: white;
+}
+
+.promotion-platform input:checked + span {
+  border-color: #159bd6;
+  background: #effaff;
+  box-shadow: 0 0 0 2px rgba(21,155,214,.1);
+}
+
+.promotion-platform strong,
+.promotion-platform small {
+  display: block;
+}
+
+.promotion-platform strong {
+  color: #09243a;
+  margin-bottom: 5px;
+}
+
+.promotion-platform small {
+  color: #78909d;
+  font-size: 10px;
+}
+
+.promotion-price-box {
+  background: #09243a;
+  color: white;
+  border-radius: 20px;
+  padding: 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 25px;
+  margin-bottom: 20px;
+}
+
+.promotion-price-box p {
+  color: #abc3cf;
+  font-size: 11px;
+  max-width: 600px;
+  margin-top: 7px;
+}
+
+.promotion-price {
+  min-width: 180px;
+  text-align: right;
+}
+
+.promotion-price small {
+  display: block;
+  color: #a9c4d1;
+  font-size: 9px;
+}
+
+.promotion-price strong {
+  display: block;
+  font-size: 30px;
+  margin-top: 4px;
+}
+
+@media (max-width: 700px) {
+
+  .promotion-platforms {
+    grid-template-columns: 1fr;
+  }
+
+  .promotion-price-box {
+    display: block;
+  }
+
+  .promotion-price {
+    text-align: left;
+    margin-top: 20px;
+  }
+
+}
