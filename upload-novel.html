@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Upload Novel | EarnGig</title>
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<header>
+  <div class="container nav">
+
+    <a class="logo" href="index.html">
+      <span class="logo-mark">E</span>
+      Earn<span>Gig</span>
+    </a>
+
+    <a class="btn outline" href="writer-dashboard.html">
+      Writer Dashboard
+    </a>
+
+  </div>
+</header>
+
+
+<main class="dashboard-page">
+
+  <div class="container">
+
+    <div class="dashboard-heading">
+
+      <div>
+        <span class="eyebrow">WRITER CENTER</span>
+
+        <h1>Submit a Novel</h1>
+
+        <p>
+          Submit your novel for EarnGig's quality assessment.
+          Your reader rate and applicable listing fee will be
+          determined after review.
+        </p>
+      </div>
+
+    </div>
+
+
+    <form class="novel-form">
+
+
+      <section class="form-section">
+
+        <div class="form-section-title">
+          <span>01</span>
+
+          <div>
+            <h2>Novel information</h2>
+            <p>Tell us about the novel you're submitting.</p>
+          </div>
+        </div>
+
+
+        <label for="title">Novel title</label>
+
+        <input
+          type="text"
+          id="title"
+          name="title"
+          placeholder="Enter your novel title"
+          required
+        >
+
+
+        <label for="genre">Genre</label>
+
+        <select id="genre" name="genre" required>
+
+          <option value="">Select a genre</option>
+          <option>Romance</option>
+          <option>Drama</option>
+          <option>Thriller</option>
+          <option>Mystery</option>
+          <option>Fantasy</option>
+          <option>Adventure</option>
+          <option>Comedy</option>
+          <option>Educational</option>
+          <option>Other</option>
+
+        </select>
+
+
+        <label for="description">Novel description</label>
+
+        <textarea
+          id="description"
+          name="description"
+          rows="5"
+          placeholder="Give a brief description of your novel"
+          required
+        ></textarea>
+
+
+        <label for="pages">Number of pages</label>
+
+        <input
+          type="number"
+          id="pages"
+          name="pages"
+          min="5"
+          max="25"
+          placeholder="5 - 25 pages"
+          required
+        >
+
+        <small class="form-help">
+          EarnGig currently accepts novels between 5 and 25 pages
+          for this program.
+        </small>
+
+      </section>
+
+
+      <section class="form-section">
+
+        <div class="form-section-title">
+          <span>02</span>
+
+          <div>
+            <h2>Manuscript</h2>
+            <p>Upload the novel you want EarnGig to assess.</p>
+          </div>
+        </div>
+
+
+        <label for="manuscript">
+          Manuscript file
+        </label>
+
+        <input
+          type="file"
+          id="manuscript"
+          name="manuscript"
+          accept=".pdf,.doc,.docx"
+          required
+        >
+
+        <small class="form-help">
+          Accepted formats: PDF, DOC or DOCX.
+        </small>
+
+      </section>
+
+
+      <section class="form-section">
+
+        <div class="form-section-title">
+          <span>03</span>
+
+          <div>
+            <h2>Reader package</h2>
+            <p>
+              Choose how many verified readers you want your
+              novel to be made available to.
+            </p>
+          </div>
+        </div>
+
+
+        <div class="reader-packages">
+
+
+          <label class="package-card">
+
+            <input
+              type="radio"
+              name="reader_count"
+              value="25"
+              required
+            >
+
+            <span class="package-content">
+
+              <strong>Bronze</strong>
+
+              <b>25 Readers</b>
+
+              <small>
+                Your novel can receive up to 25 verified reads.
+              </small>
+
+            </span>
+
+          </label>
+
+
+          <label class="package-card">
+
+            <input
+              type="radio"
+              name="reader_count"
+              value="50"
+            >
+
+            <span class="package-content">
+
+              <strong>Silver</strong>
+
+              <b>50 Readers</b>
+
+              <small>
+                Your novel can receive up to 50 verified reads.
+              </small>
+
+            </span>
+
+          </label>
+
+
+          <label class="package-card">
+
+            <input
+              type="radio"
+              name="reader_count"
+              value="100"
+            >
+
+            <span class="package-content">
+
+              <strong>Gold</strong>
+
+              <b>100 Readers</b>
+
+              <small>
+                Your novel can receive up to 100 verified reads.
+              </small>
+
+            </span>
+
+          </label>
+
+
+        </div>
+
+      </section>
+
+
+      <section class="assessment-notice">
+
+        <strong>What happens after submission?</strong>
+
+        <p>
+          Your novel will first be reviewed by EarnGig.
+          We will assess its quality, determine the appropriate
+          writer earning rate per verified reader and determine
+          the applicable listing fee.
+        </p>
+
+        <p>
+          <b>You will not be charged automatically when you submit.</b>
+          You will receive the assessment result and approved
+          pricing before making any required payment.
+        </p>
+
+      </section>
+
+
+      <label class="submission-agreement">
+
+        <input
+          type="checkbox"
+          required
+        >
+
+        I confirm that I have the rights to submit this novel
+        and agree to EarnGig's content and submission rules.
+
+      </label>
+
+
+      <div class="form-actions">
+
+        <a
+          href="writer-dashboard.html"
+          class="btn outline big"
+        >
+          Cancel
+        </a>
+
+        <button
+          type="submit"
+          class="btn primary big"
+        >
+          Submit for Assessment
+        </button>
+
+      </div>
+
+
+    </form>
+
+  </div>
+
+</main>
+
+
+<footer>
+
+  <div class="container copy">
+    © 2026 EarnGig. All rights reserved.
+  </div>
+
+</footer>
+
+</body>
+</html>
