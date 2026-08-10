@@ -67,72 +67,39 @@
 
       </div>
 
+<form id="submission-form">
 
-      <form id="task-submission-form">
+  <label for="proof-file">
+    Screenshot Proof
+  </label>
 
-        <div class="form-group">
+  <p style="color:#78909d;font-size:14px;margin-top:4px;">
+    Upload a clear screenshot showing that you completed the task.
+  </p>
 
-          <label for="task-id">
-            Task ID
-          </label>
+  <input
+    type="file"
+    id="proof-file"
+    name="proof-file"
+    accept="image/png,image/jpeg,image/webp"
+    required
+  >
 
-          <input
-  type="text"
-  id="task-id"
-  name="task-id"
-  placeholder="Enter your task ID"
-  required
->
+  <p
+    id="file-name"
+    style="font-size:14px;color:#78909d;margin-top:8px;"
+  ></p>
 
-        </div>
+  <button
+    type="submit"
+    class="btn primary auth-button"
+  >
+    Submit Proof
+  </button>
 
+</form>
 
-        <div class="form-group">
-
-          <label for="proof-text">
-            Proof / Explanation
-          </label>
-
-          <textarea
-            id="proof-text"
-            name="proof-text"
-            rows="6"
-            placeholder="Explain how you completed the task or provide the required proof."
-          ></textarea>
-
-        </div>
-
-
-        <div class="form-group">
-
-          <label for="proof-url">
-            Proof Link
-          </label>
-
-          <input
-            type="url"
-            id="proof-url"
-            name="proof-url"
-            placeholder="https://..."
-          >
-
-          <small>
-            If the task requires a link or screenshot hosted
-            online, paste the link here.
-          </small>
-
-        </div>
-
-
-        <button
-          type="submit"
-          class="btn primary"
-        >
-          Submit for Review
-        </button>
-
-      </form>
-
+<div id="submission-message"></div>
 
       <div
         id="submission-message"
