@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Submit Task | EarnGig</title>
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<header>
+  <div class="container nav">
+
+    <a class="logo" href="index.html">
+      <span class="logo-mark">E</span>
+      Earn<span>Gig</span>
+    </a>
+
+    <a class="btn outline" href="tasks.html">
+      ← Back to Tasks
+    </a>
+
+  </div>
+</header>
+
+
+<main class="dashboard-page">
+
+  <div class="container">
+
+    <div class="dashboard-heading">
+
+      <div>
+
+        <span class="eyebrow">TASK COMPLETION</span>
+
+        <h1>Submit Task</h1>
+
+        <p>
+          Submit your proof after completing the task.
+          Your submission will be reviewed before your
+          reward is credited.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <section class="dashboard-section">
+
+      <div class="section-title">
+
+        <div>
+
+          <span class="eyebrow">
+            SUBMISSION
+          </span>
+
+          <h2>Task proof</h2>
+
+        </div>
+
+      </div>
+
+
+      <form id="task-submission-form">
+
+        <div class="form-group">
+
+          <label for="task-id">
+            Task ID
+          </label>
+
+          <input
+            type="text"
+            id="task-id"
+            name="task-id"
+            placeholder="Enter your task ID"
+            required
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="proof-text">
+            Proof / Explanation
+          </label>
+
+          <textarea
+            id="proof-text"
+            name="proof-text"
+            rows="6"
+            placeholder="Explain how you completed the task or provide the required proof."
+          ></textarea>
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="proof-url">
+            Proof Link
+          </label>
+
+          <input
+            type="url"
+            id="proof-url"
+            name="proof-url"
+            placeholder="https://..."
+          >
+
+          <small>
+            If the task requires a link or screenshot hosted
+            online, paste the link here.
+          </small>
+
+        </div>
+
+
+        <button
+          type="submit"
+          class="btn primary"
+        >
+          Submit for Review
+        </button>
+
+      </form>
+
+
+      <div
+        id="submission-message"
+        style="margin-top: 20px;"
+      ></div>
+
+    </section>
+
+
+    <section class="assessment-notice">
+
+      <strong>
+        Before submitting
+      </strong>
+
+      <p>
+        Make sure you have completed the task exactly as
+        instructed.
+      </p>
+
+      <p>
+        Your reward will remain pending until the submission
+        has been reviewed and approved.
+      </p>
+
+    </section>
+
+  </div>
+
+</main>
+
+
+<footer>
+
+  <div class="container copy">
+    © 2026 EarnGig. All rights reserved.
+  </div>
+
+</footer>
+
+</body>
+</html>
