@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Dashboard | EarnGig</title>
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<header>
+  <div class="container nav">
+
+    <a class="logo" href="index.html">
+      <span class="logo-mark">E</span>
+      Earn<span>Gig</span>
+    </a>
+
+    <nav>
+      <a href="#earn">Earn</a>
+      <a href="#read">Read & Earn</a>
+      <a href="#referrals">Referrals</a>
+      <a href="#marketplace">Marketplace</a>
+    </nav>
+
+    <a class="btn outline" href="index.html">
+      Log Out
+    </a>
+
+  </div>
+</header>
+
+
+<main class="dashboard-page">
+
+  <div class="container">
+
+    <!-- WELCOME -->
+
+    <div class="dashboard-heading">
+
+      <div>
+        <span class="eyebrow">MEMBER DASHBOARD</span>
+
+        <h1>Welcome back!</h1>
+
+        <p>
+          Explore available activities and keep track of your
+          EarnGig earnings.
+        </p>
+      </div>
+
+      <a class="btn primary" href="#earn">
+        Start Earning
+      </a>
+
+    </div>
+
+
+    <!-- WALLET -->
+
+    <section class="member-wallet">
+
+      <div>
+        <small>Available Balance</small>
+
+        <strong>₦0.00</strong>
+
+        <p>
+          Minimum withdrawal: ₦15,000
+        </p>
+      </div>
+
+      <div class="wallet-actions">
+
+        <a class="btn primary" href="withdraw.html">
+          Withdraw
+        </a>
+
+        <a class="btn light" href="#transactions">
+          Transactions
+        </a>
+
+      </div>
+
+    </section>
+
+
+    <!-- STATS -->
+
+    <div class="dashboard-stats">
+
+      <div class="dashboard-stat">
+        <small>Today's Earnings</small>
+        <strong>₦0</strong>
+      </div>
+
+      <div class="dashboard-stat">
+        <small>Total Earned</small>
+        <strong>₦0</strong>
+      </div>
+
+      <div class="dashboard-stat">
+        <small>Referral Earnings</small>
+        <strong>₦0</strong>
+      </div>
+
+      <div class="dashboard-stat">
+        <small>Completed Activities</small>
+        <strong>0</strong>
+      </div>
+
+    </div>
+
+
+    <!-- EARNING OPTIONS -->
+
+    <section id="earn" class="dashboard-section">
+
+      <div class="section-title">
+
+        <div>
+          <span class="eyebrow">EARN</span>
+
+          <h2>Choose how you want to earn</h2>
+        </div>
+
+      </div>
+
+
+      <div class="member-earning-grid">
+
+
+        <a href="tasks.html" class="member-earning-card">
+
+          <div class="member-card-icon blue">✓</div>
+
+          <h3>Tasks</h3>
+
+          <p>
+            Complete available tasks and earn the reward
+            assigned to each approved task.
+          </p>
+
+          <strong>View tasks →</strong>
+
+        </a>
+
+
+        <a href="read-and-earn.html" class="member-earning-card">
+
+          <div class="member-card-icon purple">▤</div>
+
+          <h3>Read & Earn</h3>
+
+          <p>
+            Read eligible novels, complete the required quiz
+            and earn after verification.
+          </p>
+
+          <strong>Start reading →</strong>
+
+        </a>
+
+
+        <a href="#referrals" class="member-earning-card">
+
+          <div class="member-card-icon green">↗</div>
+
+          <h3>Referrals</h3>
+
+          <p>
+            Invite eligible members and receive approved
+            referral rewards.
+          </p>
+
+          <strong>View referrals →</strong>
+
+        </a>
+
+
+        <a href="writer-dashboard.html" class="member-earning-card">
+
+          <div class="member-card-icon orange">✎</div>
+
+          <h3>Become a Writer</h3>
+
+          <p>
+            Submit novels for assessment and earn from
+            verified readers.
+          </p>
+
+          <strong>Writer dashboard →</strong>
+
+        </a>
+
+
+        <a href="#marketplace" class="member-earning-card">
+
+          <div class="member-card-icon pink">▣</div>
+
+          <h3>Marketplace</h3>
+
+          <p>
+            Discover products and services from participating
+            sellers.
+          </p>
+
+          <strong>Visit marketplace →</strong>
+
+        </a>
+
+
+        <a href="#" class="member-earning-card">
+
+          <div class="member-card-icon cyan">★</div>
+
+          <h3>Premium</h3>
+
+          <p>
+            Manage your Premium membership and view available
+            Premium activities.
+          </p>
+
+          <strong>View Premium →</strong>
+
+        </a>
+
+
+      </div>
+
+    </section>
+
+
+    <!-- READ & EARN -->
+
+    <section id="read" class="dashboard-section">
+
+      <div class="section-title">
+
+        <div>
+          <span class="eyebrow">READ & EARN</span>
+
+          <h2>Available novels</h2>
+        </div>
+
+        <a href="read-and-earn.html" class="text-link">
+          View all →
+        </a>
+
+      </div>
+
+
+      <div class="novel-preview">
+
+        <div class="novel-preview-icon">
+          📖
+        </div>
+
+        <div>
+          <h3>Discover approved novels</h3>
+
+          <p>
+            Complete the required reading and quiz
+            to qualify for a verified reading reward.
+          </p>
+        </div>
+
+        <a href="read-and-earn.html" class="btn primary">
+          Browse Novels
+        </a>
+
+      </div>
+
+    </section>
+
+
+    <!-- REFERRALS -->
+
+    <section id="referrals" class="dashboard-section">
+
+      <div class="section-title">
+
+        <div>
+          <span class="eyebrow">REFERRALS</span>
+
+          <h2>Your referral program</h2>
+        </div>
+
+      </div>
+
+
+      <div class="referral-box">
+
+        <div>
+          <small>Your referral code</small>
+
+          <strong>EARN-XXXX</strong>
+
+          <p>
+            Share your code with eligible new members.
+          </p>
+        </div>
+
+        <button class="btn primary">
+          Copy Code
+        </button>
+
+      </div>
+
+
+      <div class="earning-box">
+
+        <div>
+          <small>Successful referrals</small>
+          <strong>0</strong>
+        </div>
+
+        <div>
+          <small>Referral earnings</small>
+          <strong>₦0</strong>
+        </div>
+
+        <div>
+          <small>Active referrals</small>
+          <strong>0</strong>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- MARKETPLACE -->
+
+    <section id="marketplace" class="dashboard-section">
+
+      <div class="section-title">
+
+        <div>
+          <span class="eyebrow">MARKETPLACE</span>
+
+          <h2>Discover what's available</h2>
+        </div>
+
+        <a href="marketplace.html" class="text-link">
+          Open marketplace →
+        </a>
+
+      </div>
+
+
+      <div class="marketplace-preview">
+
+        <div>
+          <span>SHOP</span>
+          <h3>Products & Services</h3>
+          <p>
+            Browse participating sellers and discover
+            available offers.
+          </p>
+        </div>
+
+        <a href="marketplace.html" class="btn primary">
+          Browse
+        </a>
+
+      </div>
+
+    </section>
+
+
+    <!-- TRANSACTIONS -->
+
+    <section id="transactions" class="dashboard-section">
+
+      <div class="section-title">
+
+        <div>
+          <span class="eyebrow">WALLET</span>
+
+          <h2>Recent transactions</h2>
+        </div>
+
+      </div>
+
+
+      <div class="empty-state">
+
+        <div class="empty-icon">₦</div>
+
+        <h3>No transactions yet</h3>
+
+        <p>
+          Your approved earnings, payments and withdrawals
+          will appear here.
+        </p>
+
+      </div>
+
+    </section>
+
+  </div>
+
+</main>
+
+
+<footer>
+
+  <div class="container copy">
+    © 2026 EarnGig. All rights reserved.
+  </div>
+
+</footer>
+
+</body>
+</html>
