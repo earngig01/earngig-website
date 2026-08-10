@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Creator Promotions | EarnGig</title>
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<header>
+  <div class="container nav">
+
+    <a class="logo" href="index.html">
+      <span class="logo-mark">E</span>
+      Earn<span>Gig</span>
+    </a>
+
+    <a class="btn outline" href="dashboard.html">
+      Dashboard
+    </a>
+
+  </div>
+</header>
+
+
+<main class="dashboard-page">
+
+  <div class="container">
+
+    <div class="dashboard-heading">
+
+      <div>
+
+        <span class="eyebrow">CREATOR PROMOTIONS</span>
+
+        <h1>Promote your content</h1>
+
+        <p>
+          Choose a platform, select the type of promotion you need,
+          and submit your campaign for EarnGig's review.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <!-- PROMOTION FORM -->
+
+    <form class="novel-form">
+
+      <section class="form-section">
+
+        <div class="form-section-title">
+
+          <span>01</span>
+
+          <div>
+
+            <h2>Choose your platform</h2>
+
+            <p>
+              Where do you want to promote your content?
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="promotion-platforms">
+
+          <label class="promotion-platform">
+
+            <input
+              type="radio"
+              name="platform"
+              value="tiktok"
+              required
+            >
+
+            <span>
+              <strong>TikTok</strong>
+              <small>Videos & creator profiles</small>
+            </span>
+
+          </label>
+
+
+          <label class="promotion-platform">
+
+            <input
+              type="radio"
+              name="platform"
+              value="instagram"
+            >
+
+            <span>
+              <strong>Instagram</strong>
+              <small>Posts, reels & profiles</small>
+            </span>
+
+          </label>
+
+
+          <label class="promotion-platform">
+
+            <input
+              type="radio"
+              name="platform"
+              value="youtube"
+            >
+
+            <span>
+              <strong>YouTube</strong>
+              <small>Videos & channels</small>
+            </span>
+
+          </label>
+
+        </div>
+
+      </section>
+
+
+      <section class="form-section">
+
+        <div class="form-section-title">
+
+          <span>02</span>
+
+          <div>
+
+            <h2>Choose promotion type</h2>
+
+            <p>
+              Select the action you want members to perform.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <label for="promotion-type">
+          Promotion type
+        </label>
+
+        <select
+          id="promotion-type"
+          required
+        >
+
+          <option value="">
+            Select promotion type
+          </option>
+
+          <option>
+            Video Views
+          </option>
+
+          <option>
+            Likes
+          </option>
+
+          <option>
+            Followers
+          </option>
+
+          <option>
+            Subscribers
+          </option>
+
+        </select>
+
+
+        <label for="target-quantity">
+          Target quantity
+        </label>
+
+        <select
+          id="target-quantity"
+          required
+        >
+
+          <option value="">
+            Select quantity
+          </option>
+
+          <option>
+            25
+          </option>
+
+          <option>
+            50
+          </option>
+
+          <option>
+            100
+          </option>
+
+          <option>
+            250
+          </option>
+
+          <option>
+            500
+          </option>
+
+          <option>
+            1,000
+          </option>
+
+        </select>
+
+      </section>
+
+
+      <section class="form-section">
+
+        <div class="form-section-title">
+
+          <span>03</span>
+
+          <div>
+
+            <h2>Your content</h2>
+
+            <p>
+              Tell us what members should interact with.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <label for="target-url">
+          Content / profile URL
+        </label>
+
+        <input
+          type="url"
+          id="target-url"
+          placeholder="https://..."
+          required
+        >
+
+
+        <label for="promotion-title">
+          Promotion title
+        </label>
+
+        <input
+          type="text"
+          id="promotion-title"
+          placeholder="Example: Promote my new music video"
+          required
+        >
+
+
+        <label for="promotion-description">
+          Description
+        </label>
+
+        <textarea
+          id="promotion-description"
+          rows="5"
+          placeholder="Tell EarnGig what you're promoting..."
+        ></textarea>
+
+      </section>
+
+
+      <!-- PRICE PREVIEW -->
+
+      <section class="promotion-price-box">
+
+        <div>
+
+          <span class="eyebrow">
+            CAMPAIGN ESTIMATE
+          </span>
+
+          <h2>Price will be calculated</h2>
+
+          <p>
+            Your final price and member reward will be determined
+            according to the promotion type and approved campaign
+            settings.
+          </p>
+
+        </div>
+
+
+        <div class="promotion-price">
+
+          <small>Estimated campaign price</small>
+
+          <strong>₦—</strong>
+
+        </div>
+
+      </section>
+
+
+      <section class="assessment-notice">
+
+        <strong>
+          Your campaign will be reviewed before it starts.
+        </strong>
+
+        <p>
+          You will see the approved campaign price before payment.
+          Once payment is confirmed, EarnGig can make the campaign
+          available to eligible members.
+        </p>
+
+      </section>
+
+
+      <label class="submission-agreement">
+
+        <input type="checkbox" required>
+
+        I confirm that the content and account I am promoting
+        belong to me or that I have permission to promote them.
+
+      </label>
+
+
+      <div class="form-actions">
+
+        <a
+          href="dashboard.html"
+          class="btn outline big"
+        >
+          Cancel
+        </a>
+
+        <button
+          type="submit"
+          class="btn primary big"
+        >
+          Submit Promotion
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</main>
+
+
+<footer>
+
+  <div class="container copy">
+    © 2026 EarnGig. All rights reserved.
+  </div>
+
+</footer>
+
+</body>
+</html>
