@@ -240,56 +240,57 @@
 
   async function startTask(taskId) {
 
-    const {
-      data: { user },
-      error: userError
-    } = await supabaseClient.auth.getUser();
+  const {
+    data: { user },
+    error: userError
+  } = await supabaseClient.auth.getUser();
 
-    if (userError || !user) {
-      alert("Please log in before starting a task.");
-      return;
-    }
+  if (userError || !user) {
+    alert("Please log in before starting a task.");
+    return;
+  }
 
-    const { data: task, error: taskError } = await supabaseClient
+  const { data: task, error: taskError } =
+    await supabaseClient
       .from("tasks")
       .select("id, reward_amount, status")
       .eq("id", taskId)
       .eq("status", "approved")
       .single();
 
-    if (taskError || !task) {
-      alert("This task is no longer available.");
-      return;
-    }
-
-    const { data: attempt, error: attemptError } =
-      await supabaseClient
-        .from("task_attempts")
-        .insert({
-          task_id: task.id,
-          user_id: user.id,
-          reward_amount: task.reward_amount,
-          status: "started",
-          reward_status: "pending"
-        })
-        .select()
-        .single();
-
-    if (attemptError) {
-  console.error("Task attempt error:", attemptError);
-
-  alert(
-    "Task error: " +
-    (attemptError.message || "Unknown error")
-  );
-
-  return;
-    }
-
-    window.location.href =
-  "submit-task.html?task=" + encodeURIComponent(task.id);
+  if (taskError || !task) {
+    console.error("Task loading error:", taskError);
+    alert("This task is no longer available.");
+    return;
   }
 
+  const { error: attemptError } =
+    await supabaseClient
+      .from("task_attempts")
+      .insert({
+        task_id: task.id,
+        user_id: user.id,
+        reward_amount: task.reward_amount,
+        status: "started",
+        reward_status: "pending"
+      });
+
+  if (attemptError) {
+    console.error("Task attempt error:", attemptError);
+
+    alert(
+      "Unable to start task: " +
+      attemptError.message
+    );
+
+    return;
+  }
+
+  window.location.href =
+    "submit-task.html?task=" +
+    encodeURIComponent(task.id);
+      }
+  
   loadTasks();
 </script>
   
