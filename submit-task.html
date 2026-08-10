@@ -172,6 +172,107 @@
   </div>
 
 </footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
 
+<script>
+  const form = document.getElementById("task-submission-form");
+  const message = document.getElementById("submission-message");
+
+  form.addEventListener("submit", async function(event) {
+
+    event.preventDefault();
+
+    message.innerHTML = "Submitting...";
+
+    const {
+      data: { user },
+      error: userError
+    } = await supabaseClient.auth.getUser();
+
+    if (userError || !user) {
+
+      message.innerHTML =
+        "Please log in before submitting a task.";
+
+      return;
+    }
+
+    const taskId =
+      document.getElementById("task-id").value.trim();
+
+    const proofText =
+      document.getElementById("proof-text").value.trim();
+
+    const proofUrl =
+      document.getElementById("proof-url").value.trim();
+
+
+    if (!taskId) {
+
+      message.innerHTML =
+        "Please enter the Task ID.";
+
+      return;
+    }
+
+
+    const { data: task, error: taskError } =
+      await supabaseClient
+        .from("tasks")
+        .select("id, reward_amount, status")
+        .eq("id", taskId)
+        .eq("status", "approved")
+        .single();
+
+
+    if (taskError || !task) {
+
+      message.innerHTML =
+        "That task could not be found.";
+
+      return;
+    }
+
+
+    const { data: attempt, error: attemptError } =
+      await supabaseClient
+        .from("task_attempts")
+        .update({
+          status: "completed",
+          proof_text: proofText || null,
+          proof_url: proofUrl || null,
+          completed_at: new Date().toISOString()
+        })
+        .eq("task_id", task.id)
+        .eq("user_id", user.id)
+        .eq("status", "started")
+        .select()
+        .single();
+
+
+    if (attemptError || !attempt) {
+
+      console.error(attemptError);
+
+      message.innerHTML =
+        "We could not submit your task. Make sure you have started this task first.";
+
+      return;
+    }
+
+
+    message.innerHTML = `
+      <strong>Submitted successfully!</strong>
+      <p>
+        Your task is now waiting for review.
+        Your reward will be credited after approval.
+      </p>
+    `;
+
+    form.reset();
+
+  });
+        </script>
 </body>
 </html>
