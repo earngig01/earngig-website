@@ -104,25 +104,20 @@
 
       </div>
 
+<div class="task-grid" id="task-list">
 
-      <div class="task-grid">
+  <div class="empty-state">
+    <div class="empty-icon">✓</div>
 
-        <div class="empty-state">
+    <h3>Loading tasks...</h3>
 
-          <div class="empty-icon">
-            ✓
-          </div>
+    <p>
+      Please wait while available tasks are loaded.
+    </p>
+  </div>
 
-          <h3>No tasks available</h3>
-
-          <p>
-            New approved tasks will appear here when they
-            become available.
-          </p>
-
-        </div>
-
-      </div>
+</div>
+      
 
     </section>
 
@@ -165,6 +160,95 @@
 
 <script>
   async function loadTasks() {
+
+    const taskList = document.getElementById("task-list");
+
+    const { data, error } = await supabaseClient
+      .from("tasks")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (error) {
+
+      console.error("Error loading tasks:", error);
+
+      taskList.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-icon">!</div>
+          <h3>Unable to load tasks</h3>
+          <p>
+            We couldn't load the available tasks right now.
+            Please try again later.
+          </p>
+        </div>
+      `;
+
+      return;
+    }
+
+    if (!data || data.length === 0) {
+
+      taskList.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-icon">✓</div>
+          <h3>No tasks available</h3>
+          <p>
+            New approved tasks will appear here when they
+            become available.
+          </p>
+        </div>
+      `;
+
+      return;
+    }
+
+    taskList.innerHTML = data.map(task => `
+
+      <article class="task-card">
+
+        <div class="task-card-content">
+
+          <span class="eyebrow">
+            ${task.category || "TASK"}
+          </span>
+
+          <h3>
+            ${task.title || "Available Task"}
+          </h3>
+
+          <p>
+            ${task.description || "Complete this task to earn a reward."}
+          </p>
+
+          <strong class="task-reward">
+            ₦${Number(task.reward_amount || 0).toLocaleString()}
+          </strong>
+
+        </div>
+
+        <button
+          class="btn primary"
+          onclick="startTask('${task.id}')"
+        >
+          Start Task
+        </button>
+
+      </article>
+
+    `).join("");
+  }
+
+  function startTask(taskId) {
+
+    alert(
+      "Task selected. The task completion system will be connected next."
+    );
+
+    console.log("Selected task:", taskId);
+  }
+
+  loadTasks();
+</script>
     const { data, error } = await supabaseClient
       .from("tasks")
       .select("*")
