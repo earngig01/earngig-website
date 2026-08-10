@@ -784,3 +784,413 @@ footer {
   }
 
 }
+/* WRITER DASHBOARD */
+
+.dashboard-page {
+  min-height: calc(100vh - 76px);
+  background: #f5fbfe;
+  padding: 55px 0 80px;
+}
+
+.dashboard-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 25px;
+  margin-bottom: 35px;
+}
+
+.dashboard-heading h1 {
+  color: #09243a;
+  font-size: 38px;
+  margin: 8px 0;
+}
+
+.dashboard-heading p {
+  color: #708694;
+  max-width: 650px;
+}
+
+.dashboard-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 35px;
+}
+
+.dashboard-stat {
+  background: white;
+  border: 1px solid #dceaf2;
+  border-radius: 17px;
+  padding: 22px;
+}
+
+.dashboard-stat small {
+  display: block;
+  color: #78909d;
+  font-size: 11px;
+  margin-bottom: 8px;
+}
+
+.dashboard-stat strong {
+  color: #09243a;
+  font-size: 27px;
+}
+
+.dashboard-section {
+  background: white;
+  border: 1px solid #dceaf2;
+  border-radius: 20px;
+  padding: 28px;
+  margin-bottom: 25px;
+}
+
+.section-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 25px;
+}
+
+.section-title h2 {
+  color: #09243a;
+  font-size: 22px;
+  margin-top: 5px;
+}
+
+.text-link {
+  color: #159bd6;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 45px 20px;
+  border: 1px dashed #cfe2ec;
+  border-radius: 16px;
+}
+
+.empty-icon {
+  width: 55px;
+  height: 55px;
+  margin: 0 auto 15px;
+  border-radius: 16px;
+  background: #e4f7ff;
+  color: #159bd6;
+  display: grid;
+  place-items: center;
+  font-size: 22px;
+}
+
+.empty-state h3 {
+  color: #09243a;
+  margin-bottom: 7px;
+}
+
+.empty-state p {
+  color: #708694;
+  font-size: 13px;
+  max-width: 480px;
+  margin: 0 auto 20px;
+}
+
+.earning-box {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+.earning-box > div {
+  padding: 20px;
+  border-radius: 14px;
+  background: #f5fbfe;
+}
+
+.earning-box small,
+.earning-box strong {
+  display: block;
+}
+
+.earning-box small {
+  color: #78909d;
+  font-size: 11px;
+}
+
+.earning-box strong {
+  color: #09243a;
+  font-size: 22px;
+  margin-top: 6px;
+}
+
+.writer-steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+}
+
+.writer-steps > div {
+  padding: 20px;
+  border: 1px solid #dceaf2;
+  border-radius: 15px;
+}
+
+.writer-steps b {
+  color: #159bd6;
+  font-size: 12px;
+}
+
+.writer-steps h3 {
+  color: #09243a;
+  margin: 10px 0 5px;
+}
+
+.writer-steps p {
+  color: #708694;
+  font-size: 12px;
+}
+
+
+/* NOVEL SUBMISSION FORM */
+
+.novel-form {
+  max-width: 850px;
+}
+
+.form-section {
+  background: white;
+  border: 1px solid #dceaf2;
+  border-radius: 20px;
+  padding: 30px;
+  margin-bottom: 20px;
+}
+
+.form-section-title {
+  display: flex;
+  gap: 15px;
+  align-items: flex-start;
+  margin-bottom: 28px;
+}
+
+.form-section-title > span {
+  width: 35px;
+  height: 35px;
+  border-radius: 10px;
+  background: #e4f7ff;
+  color: #078fc8;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 12px;
+}
+
+.form-section-title h2 {
+  color: #09243a;
+  font-size: 20px;
+}
+
+.form-section-title p {
+  color: #78909d;
+  font-size: 12px;
+  margin-top: 3px;
+}
+
+.novel-form > section label:not(.package-card):not(.submission-agreement) {
+  display: block;
+  color: #173449;
+  font-size: 13px;
+  font-weight: 700;
+  margin: 18px 0 7px;
+}
+
+.novel-form input[type="text"],
+.novel-form input[type="number"],
+.novel-form input[type="file"],
+.novel-form select,
+.novel-form textarea {
+  width: 100%;
+  padding: 13px;
+  border: 1px solid #cfe2ec;
+  border-radius: 11px;
+  background: white;
+  color: #173449;
+  font-family: inherit;
+  font-size: 13px;
+  outline: none;
+}
+
+.novel-form textarea {
+  resize: vertical;
+}
+
+.novel-form input:focus,
+.novel-form select:focus,
+.novel-form textarea:focus {
+  border-color: #159bd6;
+  box-shadow: 0 0 0 3px rgba(21,155,214,0.1);
+}
+
+.form-help {
+  display: block;
+  color: #78909d;
+  font-size: 11px;
+  margin-top: 6px;
+}
+
+.reader-packages {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 13px;
+}
+
+.package-card {
+  display: block;
+  cursor: pointer;
+}
+
+.package-card input {
+  position: absolute;
+  opacity: 0;
+}
+
+.package-content {
+  display: block;
+  padding: 20px;
+  border: 1px solid #dceaf2;
+  border-radius: 15px;
+  background: white;
+  transition: 0.2s;
+}
+
+.package-card input:checked + .package-content {
+  border-color: #159bd6;
+  background: #effaff;
+  box-shadow: 0 0 0 2px rgba(21,155,214,0.12);
+}
+
+.package-content strong,
+.package-content b,
+.package-content small {
+  display: block;
+}
+
+.package-content strong {
+  color: #159bd6;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.package-content b {
+  color: #09243a;
+  font-size: 20px;
+  margin: 6px 0;
+}
+
+.package-content small {
+  color: #708694;
+  font-size: 11px;
+}
+
+.assessment-notice {
+  background: #e9f8ff;
+  border: 1px solid #ccecf8;
+  border-radius: 17px;
+  padding: 23px;
+  margin-bottom: 20px;
+}
+
+.assessment-notice strong {
+  color: #09243a;
+}
+
+.assessment-notice p {
+  color: #5f7786;
+  font-size: 12px;
+  margin-top: 8px;
+}
+
+.submission-agreement {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  color: #607887;
+  font-size: 12px;
+  margin-bottom: 20px;
+}
+
+.submission-agreement input {
+  margin-top: 3px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+
+/* RESPONSIVE DASHBOARD */
+
+@media (max-width: 900px) {
+
+  .dashboard-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .writer-steps {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .reader-packages {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 620px) {
+
+  .dashboard-page {
+    padding: 35px 0 60px;
+  }
+
+  .dashboard-heading {
+    display: block;
+  }
+
+  .dashboard-heading .btn {
+    margin-top: 18px;
+  }
+
+  .dashboard-heading h1 {
+    font-size: 30px;
+  }
+
+  .dashboard-stats,
+  .earning-box,
+  .writer-steps {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-section,
+  .form-section {
+    padding: 20px;
+  }
+
+  .section-title {
+    display: block;
+  }
+
+  .section-title .text-link {
+    display: inline-block;
+    margin-top: 10px;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+  }
+
+  .form-actions .btn {
+    width: 100%;
+  }
+  }
