@@ -26,9 +26,13 @@
       <a href="#marketplace">Marketplace</a>
     </nav>
 
-    <a class="btn outline" href="index.html">
-      Log Out
-    </a>
+  <button
+  id="logout-button"
+  class="btn outline"
+  type="button"
+>
+  Log Out
+  </button>
 
   </div>
 </header>
@@ -354,6 +358,23 @@
 <script>
   console.log("EarnGig Supabase client loaded:", supabaseClient);
 </script>
+  <script>
+  document
+    .getElementById("logout-button")
+    .addEventListener("click", async function() {
+
+      const { error } =
+        await supabaseClient.auth.signOut();
+
+      if (error) {
+        console.error("Logout error:", error);
+        alert("Unable to log out right now.");
+        return;
+      }
+
+      window.location.href = "login.html";
+    });
+  </script>
     
 </body>
 </html>
