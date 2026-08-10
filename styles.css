@@ -2464,3 +2464,63 @@ footer {
   }
 
 }
+/* BRAND ADVERTISING */
+
+.ad-duration-options {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 13px;
+}
+
+.ad-duration-card {
+  cursor: pointer;
+}
+
+.ad-duration-card input {
+  position: absolute;
+  opacity: 0;
+}
+
+.ad-duration-card > span {
+  display: block;
+  padding: 20px;
+  border: 1px solid #dceaf2;
+  border-radius: 15px;
+  background: white;
+}
+
+.ad-duration-card input:checked + span {
+  border-color: #159bd6;
+  background: #effaff;
+  box-shadow: 0 0 0 2px rgba(21,155,214,.1);
+}
+
+.ad-duration-card strong,
+.ad-duration-card small,
+.ad-duration-card b {
+  display: block;
+}
+
+.ad-duration-card strong {
+  color: #09243a;
+  font-size: 20px;
+}
+
+.ad-duration-card small {
+  color: #78909d;
+  font-size: 10px;
+  margin: 5px 0 12px;
+}
+
+.ad-duration-card b {
+  color: #159bd6;
+  font-size: 10px;
+}
+
+@media (max-width: 700px) {
+
+  .ad-duration-options {
+    grid-template-columns: 1fr;
+  }
+
+}
