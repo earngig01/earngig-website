@@ -1702,3 +1702,170 @@ footer {
     margin-left: 0;
   }
 }
+/* READ & EARN */
+
+.reader-info {
+  background: #09243a;
+  color: white;
+  border-radius: 20px;
+  padding: 25px 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 25px;
+  margin-bottom: 25px;
+}
+
+.reader-info strong {
+  font-size: 16px;
+}
+
+.reader-info p {
+  color: #b5ccd7;
+  font-size: 12px;
+  margin-top: 6px;
+  max-width: 600px;
+}
+
+.reader-info-steps {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.reader-info-steps span {
+  padding: 7px 10px;
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 8px;
+  font-size: 10px;
+}
+
+.novel-filter {
+  padding: 10px 13px;
+  border: 1px solid #cfe2ec;
+  border-radius: 10px;
+  color: #173449;
+  background: white;
+}
+
+.novel-grid {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 18px;
+}
+
+.novel-card {
+  background: white;
+  border: 1px solid #dceaf2;
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.novel-cover {
+  height: 150px;
+  background: linear-gradient(135deg,#09243a,#159bd6);
+  display: grid;
+  place-items: center;
+}
+
+.novel-cover span {
+  width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  border: 2px solid rgba(255,255,255,.6);
+  border-radius: 15px;
+  color: white;
+  font-weight: 900;
+  font-size: 20px;
+}
+
+.novel-card-content {
+  padding: 20px;
+}
+
+.novel-category {
+  color: #159bd6;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+
+.novel-card h3 {
+  color: #09243a;
+  margin: 7px 0;
+}
+
+.novel-card p {
+  color: #708694;
+  font-size: 11px;
+  line-height: 1.6;
+  min-height: 52px;
+}
+
+.novel-meta {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid #edf3f6;
+  border-bottom: 1px solid #edf3f6;
+  padding: 11px 0;
+  margin: 15px 0;
+  color: #78909d;
+  font-size: 10px;
+}
+
+.novel-reward {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.novel-reward small {
+  display: block;
+  color: #78909d;
+  font-size: 9px;
+}
+
+.novel-reward strong {
+  display: block;
+  color: #09243a;
+  font-size: 18px;
+  margin-top: 3px;
+}
+
+.novel-reward .btn {
+  white-space: nowrap;
+  font-size: 11px;
+  padding: 10px 13px;
+}
+
+@media (max-width: 900px) {
+
+  .novel-grid {
+    grid-template-columns: repeat(2,1fr);
+  }
+
+  .reader-info {
+    display: block;
+  }
+
+  .reader-info-steps {
+    margin-top: 15px;
+  }
+}
+
+@media (max-width: 620px) {
+
+  .novel-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section-title {
+    display: block;
+  }
+
+  .novel-filter {
+    margin-top: 12px;
+  }
+}
