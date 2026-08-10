@@ -1519,3 +1519,186 @@ footer {
     align-items: flex-start;
   }
 }
+/* MEMBER DASHBOARD */
+
+.member-wallet {
+  background: linear-gradient(110deg,#09243a,#0f4562);
+  color: white;
+  border-radius: 22px;
+  padding: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 25px;
+  margin-bottom: 20px;
+}
+
+.member-wallet small {
+  color: #a9c4d1;
+  font-size: 11px;
+}
+
+.member-wallet strong {
+  display: block;
+  font-size: 38px;
+  margin: 5px 0;
+}
+
+.member-wallet p {
+  color: #a9c4d1;
+  font-size: 11px;
+}
+
+.wallet-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.member-earning-grid {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 15px;
+}
+
+.member-earning-card {
+  display: block;
+  border: 1px solid #dceaf2;
+  border-radius: 17px;
+  padding: 22px;
+  background: white;
+}
+
+.member-earning-card:hover {
+  border-color: #159bd6;
+}
+
+.member-card-icon {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  margin-bottom: 15px;
+  font-weight: 900;
+}
+
+.member-earning-card h3 {
+  color: #09243a;
+  margin-bottom: 7px;
+}
+
+.member-earning-card p {
+  color: #708694;
+  font-size: 12px;
+  min-height: 55px;
+}
+
+.member-earning-card strong {
+  display: block;
+  color: #159bd6;
+  font-size: 12px;
+  margin-top: 15px;
+}
+
+.novel-preview,
+.marketplace-preview,
+.referral-box {
+  background: #f5fbfe;
+  border: 1px solid #dceaf2;
+  border-radius: 15px;
+  padding: 22px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.novel-preview-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: #f0eaff;
+  display: grid;
+  place-items: center;
+  font-size: 22px;
+}
+
+.novel-preview h3,
+.marketplace-preview h3 {
+  color: #09243a;
+}
+
+.novel-preview p,
+.marketplace-preview p {
+  color: #708694;
+  font-size: 12px;
+}
+
+.novel-preview .btn,
+.marketplace-preview .btn {
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+.referral-box {
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.referral-box small,
+.referral-box strong,
+.referral-box p {
+  display: block;
+}
+
+.referral-box small {
+  color: #78909d;
+  font-size: 10px;
+}
+
+.referral-box strong {
+  color: #09243a;
+  font-size: 22px;
+  margin: 4px 0;
+}
+
+.referral-box p {
+  color: #708694;
+  font-size: 11px;
+}
+
+.marketplace-preview {
+  justify-content: space-between;
+}
+
+@media (max-width: 900px) {
+  .member-earning-grid {
+    grid-template-columns: repeat(2,1fr);
+  }
+}
+
+@media (max-width: 620px) {
+
+  .member-wallet {
+    display: block;
+  }
+
+  .wallet-actions {
+    margin-top: 20px;
+  }
+
+  .member-earning-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .novel-preview,
+  .marketplace-preview,
+  .referral-box {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .novel-preview .btn,
+  .marketplace-preview .btn {
+    margin-left: 0;
+  }
+}
