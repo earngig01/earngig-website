@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Task Review | EarnGig Admin</title>
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<header>
+  <div class="container nav">
+
+    <a class="logo" href="index.html">
+      <span class="logo-mark">E</span>
+      Earn<span>Gig</span>
+    </a>
+
+    <span class="admin-badge">ADMIN</span>
+
+    <a class="btn outline" href="admin-dashboard.html">
+      Admin Dashboard
+    </a>
+
+  </div>
+</header>
+
+
+<main class="dashboard-page">
+
+  <div class="container">
+
+    <div class="dashboard-heading">
+
+      <div>
+
+        <span class="eyebrow">ADMINISTRATION</span>
+
+        <h1>Task Review</h1>
+
+        <p>
+          Review member task submissions and approve or reject
+          completed tasks.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div class="dashboard-stats">
+
+      <div class="dashboard-stat">
+        <small>Pending Review</small>
+        <strong>0</strong>
+      </div>
+
+      <div class="dashboard-stat">
+        <small>Approved</small>
+        <strong>0</strong>
+      </div>
+
+      <div class="dashboard-stat">
+        <small>Rejected</small>
+        <strong>0</strong>
+      </div>
+
+      <div class="dashboard-stat">
+        <small>Rewards Pending</small>
+        <strong>₦0</strong>
+      </div>
+
+    </div>
+
+
+    <section class="dashboard-section">
+
+      <div class="section-title">
+
+        <div>
+
+          <span class="eyebrow">
+            SUBMISSIONS
+          </span>
+
+          <h2>Task submissions</h2>
+
+        </div>
+
+        <select class="task-filter">
+
+          <option>All submissions</option>
+          <option>Pending</option>
+          <option>Approved</option>
+          <option>Rejected</option>
+
+        </select>
+
+      </div>
+
+
+      <div id="submission-list">
+
+        <div class="empty-state">
+
+          <div class="empty-icon">
+            ✓
+          </div>
+
+          <h3>No submissions yet</h3>
+
+          <p>
+            Member task submissions will appear here when
+            they are ready for review.
+          </p>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <section class="assessment-notice">
+
+      <strong>
+        Task verification
+      </strong>
+
+      <p>
+        A reward should only be credited after the submitted
+        task has been reviewed and approved.
+      </p>
+
+      <p>
+        Rejected submissions should not receive a reward.
+      </p>
+
+    </section>
+
+  </div>
+
+</main>
+
+
+<footer>
+
+  <div class="container copy">
+    © 2026 EarnGig Administration.
+  </div>
+
+</footer>
+
+</body>
+</html>
