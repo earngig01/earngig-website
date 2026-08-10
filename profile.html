@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>My Profile | EarnGig</title>
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<header>
+  <div class="container nav">
+
+    <a class="logo" href="index.html">
+      <span class="logo-mark">E</span>
+      Earn<span>Gig</span>
+    </a>
+
+    <nav>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="tasks.html">Tasks</a>
+      <a href="withdraw.html">Withdraw</a>
+    </nav>
+
+    <button
+      id="logout-button"
+      class="btn outline"
+      type="button"
+    >
+      Log Out
+    </button>
+
+  </div>
+</header>
+
+
+<main class="dashboard-page">
+
+  <div class="container">
+
+    <div class="dashboard-heading">
+
+      <div>
+        <span class="eyebrow">MY ACCOUNT</span>
+
+        <h1>My Profile</h1>
+
+        <p>
+          View your EarnGig account information.
+        </p>
+      </div>
+
+    </div>
+
+
+    <section class="dashboard-section">
+
+      <div class="section-title">
+        <div>
+          <span class="eyebrow">ACCOUNT DETAILS</span>
+          <h2>Personal information</h2>
+        </div>
+      </div>
+
+
+      <div id="profile-details">
+
+        <div class="empty-state">
+          <p>Loading your profile...</p>
+        </div>
+
+      </div>
+
+    </section>
+
+  </div>
+
+</main>
+
+
+<footer>
+
+  <div class="container copy">
+    © 2026 EarnGig. All rights reserved.
+  </div>
+
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+
+<script>
+
+  async function loadProfile() {
+
+    const {
+      data: { user },
+      error: userError
+    } = await supabaseClient.auth.getUser();
+
+
+    if (userError || !user) {
+
+      window.location.href = "login.html";
+
+      return;
+    }
+
+
+    const { data: profile, error } =
+      await supabaseClient
+        .from("profiles")
+        .select("*")
+        .eq("id", user.id)
+        .single();
+
+
+    if (error) {
+
+      console.error("Profile error:", error);
+
+      document.getElementById("profile-details").innerHTML = `
+        <div class="empty-state">
+          <h3>Unable to load profile</h3>
+          <p>
+            We couldn't load your account information.
+          </p>
+        </div>
+      `;
+
+      return;
+    }
+
+
+    document.getElementById("profile-details").innerHTML = `
+
+      <div class="member-wallet">
+
+        <div>
+          <small>Full Name</small>
+          <strong>
+            ${profile.full_name || "Not provided"}
+          </strong>
+        </div>
+
+      </div>
+
+
+      <div class="dashboard-stats">
+
+        <div class="dashboard-stat">
+
+          <small>Email</small>
+
+          <strong style="font-size: 15px;">
+            ${user.email || "Not available"}
+          </strong>
+
+        </div>
+
+
+        <div class="dashboard-stat">
+
+          <small>Phone</small>
+
+          <strong>
+            ${profile.phone || "Not provided"}
+          </strong>
+
+        </div>
+
+
+        <div class="dashboard-stat">
+
+          <small>Referral Code</small>
+
+          <strong>
+            ${profile.referral_code || "None"}
+          </strong>
+
+        </div>
+
+
+        <div class="dashboard-stat">
+
+          <small>Account Status</small>
+
+          <strong>
+            ${user.email_confirmed_at ? "Verified" : "Unverified"}
+          </strong>
+
+        </div>
+
+      </div>
+
+    `;
+  }
+
+
+  document
+    .getElementById("logout-button")
+    .addEventListener("click", async function() {
+
+      const { error } =
+        await supabaseClient.auth.signOut();
+
+      if (error) {
+
+        console.error("Logout error:", error);
+
+        alert("Unable to log out right now.");
+
+        return;
+      }
+
+      window.location.href = "login.html";
+
+    });
+
+
+  loadProfile();
+
+</script>
+
+</body>
+</html>
