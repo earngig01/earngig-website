@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Advertise on EarnGig</title>
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<header>
+  <div class="container nav">
+
+    <a class="logo" href="index.html">
+      <span class="logo-mark">E</span>
+      Earn<span>Gig</span>
+    </a>
+
+    <a class="btn outline" href="dashboard.html">
+      Dashboard
+    </a>
+
+  </div>
+</header>
+
+
+<main class="dashboard-page">
+
+  <div class="container">
+
+    <div class="dashboard-heading">
+
+      <div>
+
+        <span class="eyebrow">EARNGIG ADVERTISING</span>
+
+        <h1>Advertise your brand</h1>
+
+        <p>
+          Put your video in front of EarnGig members during
+          your selected advertising period.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <form class="novel-form">
+
+
+      <!-- AD INFORMATION -->
+
+      <section class="form-section">
+
+        <div class="form-section-title">
+
+          <span>01</span>
+
+          <div>
+
+            <h2>Advert information</h2>
+
+            <p>
+              Tell us about the advert you want to publish.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <label for="brand-name">
+          Brand name
+        </label>
+
+        <input
+          type="text"
+          id="brand-name"
+          placeholder="Enter your business or brand name"
+          required
+        >
+
+
+        <label for="campaign-name">
+          Campaign name
+        </label>
+
+        <input
+          type="text"
+          id="campaign-name"
+          placeholder="Example: August Fashion Campaign"
+          required
+        >
+
+
+        <label for="ad-title">
+          Advert title
+        </label>
+
+        <input
+          type="text"
+          id="ad-title"
+          placeholder="Enter the title of your advert"
+          required
+        >
+
+
+        <label for="description">
+          Advert description
+        </label>
+
+        <textarea
+          id="description"
+          rows="5"
+          placeholder="Briefly describe the product, service or campaign..."
+          required
+        ></textarea>
+
+      </section>
+
+
+      <!-- VIDEO -->
+
+      <section class="form-section">
+
+        <div class="form-section-title">
+
+          <span>02</span>
+
+          <div>
+
+            <h2>Advert video</h2>
+
+            <p>
+              Upload the video you want EarnGig members to see.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <label for="video">
+          Upload video
+        </label>
+
+        <input
+          type="file"
+          id="video"
+          accept="video/*"
+          required
+        >
+
+        <small class="form-help">
+          Upload a clear video that represents your brand,
+          product or service.
+        </small>
+
+
+        <label for="thumbnail">
+          Video thumbnail
+        </label>
+
+        <input
+          type="file"
+          id="thumbnail"
+          accept="image/*"
+        >
+
+      </section>
+
+
+      <!-- DURATION -->
+
+      <section class="form-section">
+
+        <div class="form-section-title">
+
+          <span>03</span>
+
+          <div>
+
+            <h2>Advertising period</h2>
+
+            <p>
+              Choose how long your advert should remain active.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="ad-duration-options">
+
+
+          <label class="ad-duration-card">
+
+            <input
+              type="radio"
+              name="duration"
+              value="1"
+              required
+            >
+
+            <span>
+
+              <strong>1 Day</strong>
+
+              <small>
+                Short campaign
+              </small>
+
+              <b>
+                Price determined by EarnGig
+              </b>
+
+            </span>
+
+          </label>
+
+
+          <label class="ad-duration-card">
+
+            <input
+              type="radio"
+              name="duration"
+              value="7"
+            >
+
+            <span>
+
+              <strong>7 Days</strong>
+
+              <small>
+                Weekly campaign
+              </small>
+
+              <b>
+                Price determined by EarnGig
+              </b>
+
+            </span>
+
+          </label>
+
+
+          <label class="ad-duration-card">
+
+            <input
+              type="radio"
+              name="duration"
+              value="30"
+            >
+
+            <span>
+
+              <strong>30 Days</strong>
+
+              <small>
+                Extended campaign
+              </small>
+
+              <b>
+                Price determined by EarnGig
+              </b>
+
+            </span>
+
+          </label>
+
+
+        </div>
+
+      </section>
+
+
+      <!-- PLACEMENT -->
+
+      <section class="form-section">
+
+        <div class="form-section-title">
+
+          <span>04</span>
+
+          <div>
+
+            <h2>Advertising placement</h2>
+
+            <p>
+              Where should your advert appear?
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <select required>
+
+          <option value="">
+            Select placement
+          </option>
+
+          <option value="watch_and_earn">
+            Watch & Earn
+          </option>
+
+        </select>
+
+
+        <small class="form-help">
+          Additional advertising placements may become
+          available as EarnGig expands.
+        </small>
+
+      </section>
+
+
+      <!-- PAYMENT NOTICE -->
+
+      <section class="assessment-notice">
+
+        <strong>
+          How advertising payment works
+        </strong>
+
+        <p>
+          You pay a fixed advertising fee for the selected
+          advertising period. Your payment is not based on
+          the number of views your advert receives.
+        </p>
+
+        <p>
+          Your advert will be reviewed before publication.
+          Once approved, you will receive the applicable
+          advertising fee and can proceed to payment.
+        </p>
+
+      </section>
+
+
+      <label class="submission-agreement">
+
+        <input type="checkbox" required>
+
+        I confirm that I have the rights to use this advert
+        and that the information provided is accurate.
+
+      </label>
+
+
+      <div class="form-actions">
+
+        <a
+          href="dashboard.html"
+          class="btn outline big"
+        >
+          Cancel
+        </a>
+
+        <button
+          type="submit"
+          class="btn primary big"
+        >
+          Submit Advert
+        </button>
+
+      </div>
+
+
+    </form>
+
+  </div>
+
+</main>
+
+
+<footer>
+
+  <div class="container copy">
+    © 2026 EarnGig. All rights reserved.
+  </div>
+
+</footer>
+
+</body>
+</html>
