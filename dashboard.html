@@ -353,12 +353,61 @@
 
 </footer>
   
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script
+  src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
+
 <script>
-  console.log("EarnGig Supabase client loaded:", supabaseClient);
-</script>
-  <script>
+
+  async function loadUserProfile() {
+
+    const {
+      data: { user },
+      error: userError
+    } = await supabaseClient.auth.getUser();
+
+    if (userError || !user) {
+
+      window.location.href = "login.html";
+
+      return;
+    }
+
+
+    const { data: profile, error: profileError } =
+      await supabaseClient
+        .from("profiles")
+        .select("full_name")
+        .eq("id", user.id)
+        .single();
+
+
+    if (profileError) {
+
+      console.error(
+        "Unable to load profile:",
+        profileError
+      );
+
+      return;
+    }
+
+
+    const nameElement =
+      document.getElementById("user-name");
+
+
+    if (nameElement) {
+
+      nameElement.textContent =
+        profile.full_name || "Member";
+
+    }
+
+  }
+
+
   document
     .getElementById("logout-button")
     .addEventListener("click", async function() {
@@ -367,14 +416,22 @@
         await supabaseClient.auth.signOut();
 
       if (error) {
+
         console.error("Logout error:", error);
+
         alert("Unable to log out right now.");
+
         return;
       }
 
       window.location.href = "login.html";
+
     });
-  </script>
+
+
+  loadUserProfile();
+
+</script>
     
 </body>
 </html>
