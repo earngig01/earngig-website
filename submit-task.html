@@ -291,15 +291,209 @@ if (taskFromUrl) {
         .from("task_attempts")
         .update({
           status: "completed",
-          proof_text: null,
-          proof_url: uploadedFile.path,
-          completed_at: new Date().toISOString()
-        })
-        .eq("task_id", task.id)
-        .eq("user_id", user.id)
-        .eq("status", "started")
-        .select()
-        .single();
+<script>
+
+  const params =
+    new URLSearchParams(window.location.search);
+
+  const taskFromUrl =
+    params.get("task");
+
+
+  if (taskFromUrl) {
+
+    document.getElementById("task-id").value =
+      taskFromUrl;
+
+  }
+
+
+  const form =
+    document.getElementById("task-submission-form");
+
+  const message =
+    document.getElementById("submission-message");
+
+
+  form.addEventListener("submit", async function(event) {
+
+    event.preventDefault();
+
+
+    message.innerHTML =
+      "Checking your account...";
+
+
+    const {
+      data: { user },
+      error: userError
+    } = await supabaseClient.auth.getUser();
+
+
+    if (userError || !user) {
+
+      message.innerHTML =
+        "Please log in before submitting a task.";
+
+      return;
+
+    }
+
+
+    const taskId =
+      document
+        .getElementById("task-id")
+        .value
+        .trim();
+
+
+    if (!taskId) {
+
+      message.innerHTML =
+        "We could not identify this task.";
+
+      return;
+
+    }
+
+
+    const proofFile =
+      document
+        .getElementById("proof-file")
+        .files[0];
+
+
+    if (!proofFile) {
+
+      message.innerHTML =
+        "Please select a screenshot showing that you completed the task.";
+
+      return;
+
+    }
+
+
+    const allowedTypes = [
+      "image/png",
+      "image/jpeg",
+      "image/webp"
+    ];
+
+
+    if (!allowedTypes.includes(proofFile.type)) {
+
+      message.innerHTML =
+        "Please upload a PNG, JPG, JPEG, or WEBP image.";
+
+      return;
+
+    }
+
+
+    if (proofFile.size > 5 * 1024 * 1024) {
+
+      message.innerHTML =
+        "Your screenshot must be smaller than 5 MB.";
+
+      return;
+
+    }
+
+
+    const {
+      data: task,
+      error: taskError
+    } = await supabaseClient
+      .from("tasks")
+      .select("id, reward_amount, status")
+      .eq("id", taskId)
+      .eq("status", "approved")
+      .single();
+
+
+    if (taskError || !task) {
+
+      console.error(
+        "Task error:",
+        taskError
+      );
+
+      message.innerHTML =
+        "That task could not be found.";
+
+      return;
+
+    }
+
+
+    message.innerHTML =
+      "Uploading your screenshot...";
+
+
+    const fileExtension =
+      proofFile.name
+        .split(".")
+        .pop()
+        .toLowerCase();
+
+
+    const filePath =
+      `${user.id}/${task.id}-${Date.now()}.${fileExtension}`;
+
+
+    const {
+      data: uploadedFile,
+      error: uploadError
+    } = await supabaseClient.storage
+      .from("task-proofs")
+      .upload(
+        filePath,
+        proofFile,
+        {
+          cacheControl: "3600",
+          upsert: false
+        }
+      );
+
+
+    if (uploadError) {
+
+      console.error(
+        "Screenshot upload error:",
+        uploadError
+      );
+
+      message.innerHTML = `
+        <strong>Upload failed</strong>
+        <p>${uploadError.message}</p>
+      `;
+
+      return;
+
+    }
+
+
+    message.innerHTML =
+      "Screenshot uploaded. Submitting for review...";
+
+
+    const {
+      data: attempt,
+      error: attemptError
+    } = await supabaseClient
+      .from("task_attempts")
+      .update({
+        status: "completed",
+        proof_text: null,
+        proof_url: uploadedFile.path,
+        completed_at:
+          new Date().toISOString()
+      })
+      .eq("task_id", task.id)
+      .eq("user_id", user.id)
+      .eq("status", "started")
+      .select()
+      .single();
 
 
     if (attemptError || !attempt) {
@@ -309,10 +503,16 @@ if (taskFromUrl) {
         attemptError
       );
 
-      message.innerHTML =
-        "We could not submit your task. Please try again.";
+      message.innerHTML = `
+        <strong>Submission failed</strong>
+        <p>
+          Your screenshot was uploaded, but we could not
+          attach it to your task submission.
+        </p>
+      `;
 
       return;
+
     }
 
 
@@ -326,8 +526,11 @@ if (taskFromUrl) {
       </p>
     `;
 
+
     form.reset();
-        });
+
+  });
+
 </script>
   
 </body>
