@@ -208,15 +208,123 @@ if (taskFromUrl) {
     }
 
 
+        const proofFile =
+      document.getElementById("proof-file").files[0];
+
+    if (!proofFile) {
+
+      message.innerHTML =
+        "Please select a screenshot showing that you completed the task.";
+
+      return;
+    }
+
+
+    // Check file type
+    const allowedTypes = [
+      "image/png",
+      "image/jpeg",
+      "image/webp"
+    ];
+
+    if (!allowedTypes.includes(proofFile.type)) {
+
+      message.innerHTML =
+        "Please upload a PNG, JPG, JPEG, or WEBP image.";
+
+      return;
+    }
+
+
+    // Check file size (maximum 5 MB)
+    if (proofFile.size > 5 * 1024 * 1024) {
+
+      message.innerHTML =
+        "Your screenshot must be smaller than 5 MB.";
+
+      return;
+    }
+
+
+    message.innerHTML =
+      "Uploading your screenshot...";
+
+
+    // Create a unique file path
+    const fileExtension =
+      proofFile.name.split(".").pop().toLowerCase();
+
+    const filePath =
+      `${user.id}/${task.id}-${Date.now()}.${fileExtension}`;
+
+
+    // Upload screenshot to Supabase Storage
+    const { data: uploadedFile, error: uploadError } =
+      await supabaseClient.storage
+        .from("task-proofs")
+        .upload(filePath, proofFile, {
+          cacheControl: "3600",
+          upsert: false
+        });
+
+
+    if (uploadError) {
+
+      console.error("Screenshot upload error:", uploadError);
+
+      message.innerHTML =
+        "We could not upload your screenshot. Please try again.";
+
+      return;
+    }
+
+
+    message.innerHTML =
+      "Screenshot uploaded. Submitting for review...";
+
+
+    // Save the screenshot path and complete the submission
     const { data: attempt, error: attemptError } =
       await supabaseClient
         .from("task_attempts")
         .update({
           status: "completed",
-          proof_text: proofText || null,
-          proof_url: proofUrl || null,
+          proof_text: null,
+          proof_url: uploadedFile.path,
           completed_at: new Date().toISOString()
         })
+        .eq("task_id", task.id)
+        .eq("user_id", user.id)
+        .eq("status", "started")
+        .select()
+        .single();
+
+
+    if (attemptError || !attempt) {
+
+      console.error(
+        "Task submission error:",
+        attemptError
+      );
+
+      message.innerHTML =
+        "We could not submit your task. Please try again.";
+
+      return;
+    }
+
+
+    message.innerHTML = `
+      <strong>Submitted successfully!</strong>
+
+      <p>
+        Your screenshot has been submitted for review.
+        Your reward will remain pending until an admin
+        reviews and approves your submission.
+      </p>
+    `;
+
+    form.reset();
         .eq("task_id", task.id)
         .eq("user_id", user.id)
         .eq("status", "started")
