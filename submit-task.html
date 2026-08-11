@@ -327,35 +327,8 @@ if (taskFromUrl) {
     `;
 
     form.reset();
-        .eq("task_id", task.id)
-        .eq("user_id", user.id)
-        .eq("status", "started")
-        .select()
-        .single();
-
-
-    if (attemptError || !attempt) {
-
-      console.error(attemptError);
-
-      message.innerHTML =
-        "We could not submit your task. Make sure you have started this task first.";
-
-      return;
-    }
-
-
-    message.innerHTML = `
-      <strong>Submitted successfully!</strong>
-      <p>
-        Your task is now waiting for review.
-        Your reward will be credited after approval.
-      </p>
-    `;
-
-    form.reset();
-
-  });
-        </script>
+        });
+</script>
+  
 </body>
 </html>
