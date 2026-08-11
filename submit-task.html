@@ -270,12 +270,14 @@ if (taskFromUrl) {
 
     if (uploadError) {
 
-      console.error("Screenshot upload error:", uploadError);
+  console.error("Screenshot upload error:", uploadError);
 
-      message.innerHTML =
-        "We could not upload your screenshot. Please try again.";
+  message.innerHTML = `
+    <strong>Upload failed</strong>
+    <p>${uploadError.message}</p>
+  `;
 
-      return;
+  return;
     }
 
 
