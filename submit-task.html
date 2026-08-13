@@ -649,21 +649,70 @@ if (taskFromUrl) {
 
 
     const {
-      data: attempt,
-      error: attemptError
-    } = await supabaseClient
-      .from("task_attempts")
-      .update({
-        status: "completed",
-        proof_text: null,
-        proof_url: uploadedFile.path,
-        completed_at: new Date().toISOString()
-      })
-      .eq("task_id", task.id)
-      .eq("user_id", user.id)
-      .eq("status", "started")
-      .select()
-      .single();
+  data: startedAttempt,
+  error: startedAttemptError
+} = await supabaseClient
+  .from("task_attempts")
+  .select("id")
+  .eq("task_id", task.id)
+  .eq("user_id", user.id)
+  .eq("status", "started")
+  .order("created_at", { ascending: false })
+  .limit(1)
+  .single();
+
+if (startedAttemptError || !startedAttempt) {
+
+  console.error(
+    "Could not find started task attempt:",
+    startedAttemptError
+  );
+
+  message.innerHTML = `
+    <strong>Submission failed</strong>
+    <p>
+      We could not find your active task attempt.
+    </p>
+  `;
+
+  return;
+}
+
+
+const {
+  data: attempt,
+  error: attemptError
+} = await supabaseClient
+  .from("task_attempts")
+  .update({
+    status: "completed",
+    proof_text: null,
+    proof_url: uploadedFile.path,
+    completed_at: new Date().toISOString()
+  })
+  .eq("id", startedAttempt.id)
+  .select()
+  .single();
+
+
+if (attemptError || !attempt) {
+
+  console.error(
+    "Task submission error:",
+    attemptError
+  );
+
+  message.innerHTML = `
+    <strong>Submission failed</strong>
+    <p>
+      Your screenshot was uploaded, but we could not
+      attach it to your task submission.
+    </p>
+  `;
+
+  return;
+}
+  
 
 
     if (attemptError || !attempt) {
