@@ -69,6 +69,11 @@
 
 <form id="submission-form">
 
+  <input
+  type="hidden"
+  id="task-id"
+  name="task-id"
+>
   <label for="proof-file">
     Screenshot Proof
   </label>
@@ -99,7 +104,6 @@
 
 </form>
 
-<div id="submission-message"></div>
 
       <div
         id="submission-message"
@@ -139,7 +143,8 @@
   </div>
 
 </footer>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script 
+src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
 
 <script>
@@ -457,6 +462,172 @@ if (taskFromUrl) {
 
 
     if (uploadError) {
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+
+<script>
+
+  const params =
+    new URLSearchParams(window.location.search);
+
+  const taskFromUrl =
+    params.get("task");
+
+
+  const form =
+    document.getElementById("submission-form");
+
+  const message =
+    document.getElementById("submission-message");
+
+  const taskIdInput =
+    document.getElementById("task-id");
+
+  const proofFileInput =
+    document.getElementById("proof-file");
+
+
+  if (taskFromUrl) {
+
+    taskIdInput.value = taskFromUrl;
+
+  }
+
+
+  form.addEventListener("submit", async function(event) {
+
+    event.preventDefault();
+
+
+    message.innerHTML =
+      "Checking your account...";
+
+
+    const {
+      data: { user },
+      error: userError
+    } = await supabaseClient.auth.getUser();
+
+
+    if (userError || !user) {
+
+      message.innerHTML =
+        "Please log in before submitting a task.";
+
+      return;
+
+    }
+
+
+    const taskId =
+      taskIdInput.value.trim();
+
+
+    if (!taskId) {
+
+      message.innerHTML =
+        "We could not identify this task.";
+
+      return;
+
+    }
+
+
+    const proofFile =
+      proofFileInput.files[0];
+
+
+    if (!proofFile) {
+
+      message.innerHTML =
+        "Please select a screenshot showing that you completed the task.";
+
+      return;
+
+    }
+
+
+    const allowedTypes = [
+      "image/png",
+      "image/jpeg",
+      "image/webp"
+    ];
+
+
+    if (!allowedTypes.includes(proofFile.type)) {
+
+      message.innerHTML =
+        "Please upload a PNG, JPG, JPEG, or WEBP image.";
+
+      return;
+
+    }
+
+
+    if (proofFile.size > 5 * 1024 * 1024) {
+
+      message.innerHTML =
+        "Your screenshot must be smaller than 5 MB.";
+
+      return;
+
+    }
+
+
+    const {
+      data: task,
+      error: taskError
+    } = await supabaseClient
+      .from("tasks")
+      .select("id, reward_amount, status")
+      .eq("id", taskId)
+      .eq("status", "approved")
+      .single();
+
+
+    if (taskError || !task) {
+
+      console.error("Task error:", taskError);
+
+      message.innerHTML =
+        "That task could not be found.";
+
+      return;
+
+    }
+
+
+    message.innerHTML =
+      "Uploading your screenshot...";
+
+
+    const fileExtension =
+      proofFile.name
+        .split(".")
+        .pop()
+        .toLowerCase();
+
+
+    const filePath =
+      `${user.id}/${task.id}-${Date.now()}.${fileExtension}`;
+
+
+    const {
+      data: uploadedFile,
+      error: uploadError
+    } = await supabaseClient.storage
+      .from("task-proofs")
+      .upload(
+        filePath,
+        proofFile,
+        {
+          cacheControl: "3600",
+          upsert: false
+        }
+      );
+
+
+    if (uploadError) {
 
       console.error(
         "Screenshot upload error:",
@@ -486,8 +657,7 @@ if (taskFromUrl) {
         status: "completed",
         proof_text: null,
         proof_url: uploadedFile.path,
-        completed_at:
-          new Date().toISOString()
+        completed_at: new Date().toISOString()
       })
       .eq("task_id", task.id)
       .eq("user_id", user.id)
