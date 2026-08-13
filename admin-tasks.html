@@ -161,10 +161,11 @@ https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2
 <script>
   async function loadTaskSubmissions() {
 
-    const submissionList =
-      document.getElementById("submission-list");
+  const submissionList =
+    document.getElementById("submission-list");
 
-    const { data, error } = await supabaseClient
+  const { data, error } =
+    await supabaseClient
       .from("task_attempts")
       .select(`
         id,
@@ -179,51 +180,137 @@ https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2
         completed_at,
         created_at
       `)
-      .eq("status", "completed")
-      .order("completed_at", { ascending: false });
+      .in("status", [
+        "completed",
+        "approved",
+        "rejected"
+      ])
+      .order("created_at", {
+        ascending: false
+      });
 
-    if (error) {
 
-      console.error("Error loading submissions:", error);
+  if (error) {
 
-      submissionList.innerHTML = `
-        <div class="empty-state">
-          <h3>Unable to load submissions</h3>
-          <p>
-            There was a problem loading task submissions.
-          </p>
-        </div>
-      `;
+    console.error(
+      "Error loading submissions:",
+      error
+    );
 
-      return;
-    }
+    submissionList.innerHTML = `
+      <div class="empty-state">
+        <h3>Unable to load submissions</h3>
+        <p>
+          There was a problem loading task submissions.
+        </p>
+      </div>
+    `;
 
-    if (!data || data.length === 0) {
+    return;
+  }
 
-      submissionList.innerHTML = `
-        <div class="empty-state">
-          <div class="empty-icon">✓</div>
 
-          <h3>No submissions awaiting review</h3>
+  const submissions =
+    data || [];
 
-          <p>
-            Completed member tasks will appear here when
-            they are ready for review.
-          </p>
-        </div>
-      `;
 
-      return;
-    }
+  // Count submissions
+  const pendingCount =
+    submissions.filter(
+      item => item.status === "completed"
+    ).length;
 
-    submissionList.innerHTML = data.map(submission => `
+
+  const approvedCount =
+    submissions.filter(
+      item => item.status === "approved"
+    ).length;
+
+
+  const rejectedCount =
+    submissions.filter(
+      item => item.status === "rejected"
+    ).length;
+
+
+  const rewardsPending =
+    submissions
+      .filter(
+        item =>
+          item.reward_status === "pending"
+      )
+      .reduce(
+        (total, item) =>
+          total + Number(item.reward_amount || 0),
+        0
+      );
+
+
+  // Update dashboard counters
+  const pendingElement =
+    document.getElementById("pending-count");
+
+  const approvedElement =
+    document.getElementById("approved-count");
+
+  const rejectedElement =
+    document.getElementById("rejected-count");
+
+  const rewardsElement =
+    document.getElementById("rewards-pending");
+
+
+  if (pendingElement) {
+    pendingElement.textContent =
+      pendingCount;
+  }
+
+
+  if (approvedElement) {
+    approvedElement.textContent =
+      approvedCount;
+  }
+
+
+  if (rejectedElement) {
+    rejectedElement.textContent =
+      rejectedCount;
+  }
+
+
+  if (rewardsElement) {
+    rewardsElement.textContent =
+      "₦" +
+      rewardsPending.toLocaleString();
+  }
+
+
+  // Show submissions
+  if (submissions.length === 0) {
+
+    submissionList.innerHTML = `
+      <div class="empty-state">
+        <h3>No submissions yet</h3>
+        <p>
+          Task submissions will appear here
+          when members submit proof.
+        </p>
+      </div>
+    `;
+
+    return;
+  }
+
+
+  submissionList.innerHTML =
+    submissions.map(submission => `
 
       <article class="task-card">
 
         <div class="task-card-content">
 
           <span class="eyebrow">
-            AWAITING REVIEW
+            ${submission.status.toUpperCase()}
           </span>
 
           <h3>
@@ -231,69 +318,47 @@ https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2
           </h3>
 
           <p>
-            <strong>User ID:</strong>
-            ${submission.user_id}
-          </p>
-
-          <p>
-            <strong>Task ID:</strong>
-            ${submission.task_id}
-          </p>
-
-          <p>
-            <strong>Proof:</strong>
-            ${submission.proof_text || "No written proof provided."}
-          </p>
-
-          ${
-            submission.proof_url
-              ? `
-                <p>
-                  <strong>Proof Link:</strong>
-                  <a
-                    href="${submission.proof_url}"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    View proof
-                  </a>
-                </p>
-              `
-              : ""
-          }
-
-          <strong>
             Reward:
             ₦${Number(
               submission.reward_amount || 0
             ).toLocaleString()}
-          </strong>
+          </p>
 
-          <div style="margin-top: 20px;">
-
-            <button
-              class="btn primary"
-              onclick="approveSubmission('${submission.id}')"
-            >
-              Approve
-            </button>
-
-            <button
-              class="btn outline"
-              onclick="rejectSubmission('${submission.id}')"
-            >
-              Reject
-            </button>
-
-          </div>
+          <p>
+            Status:
+            ${submission.status}
+          </p>
 
         </div>
+
+        ${
+          submission.status === "completed"
+            ? `
+              <div>
+
+                <button
+                  class="btn primary"
+                  onclick="approveSubmission('${submission.id}')"
+                >
+                  Approve
+                </button>
+
+                <button
+                  class="btn outline"
+                  onclick="rejectSubmission('${submission.id}')"
+                >
+                  Reject
+                </button>
+
+              </div>
+            `
+            : ""
+        }
 
       </article>
 
     `).join("");
   }
-
 
   async function approveSubmission(submissionId) {
 
