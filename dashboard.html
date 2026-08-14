@@ -534,9 +534,9 @@ async function loadDashboard() {
             created.getDate() ===
               today.getDate();
 
-          const credited =
-            attempt.reward_status !== "pending" &&
-            attempt.status !== "rejected";
+const credited =
+  attempt.reward_status === "credited" &&
+  attempt.status === "approved";
 
           return sameDay && credited;
 
