@@ -182,23 +182,23 @@ async function getCurrentUser() {
  * This looks for a stat card by the text of its label,
  * so it does not depend on a particular element ID.
  */
+
 function updateStat(label, value) {
 
-  const elements =
-    Array.from(
-      document.querySelectorAll("small")
-    );
+  const elements = Array.from(
+    document.querySelectorAll("small")
+  );
 
-  const labelElement =
-    elements.find(function (element) {
+  const labelElement = elements.find(function (element) {
 
-      return element.textContent
-        .trim()
-        .toLowerCase() === label.toLowerCase();
+    return element.textContent
+      .trim()
+      .toLowerCase() === label.toLowerCase();
 
-    });
+  });
 
   if (!labelElement) {
+    console.warn("Statistic label not found:", label);
     return;
   }
 
@@ -208,17 +208,28 @@ function updateStat(label, value) {
     ) || labelElement.parentElement;
 
   if (!card) {
+    console.warn("Statistic card not found:", label);
     return;
   }
 
+  /*
+   * Find the element containing the statistic number.
+   * The Tasks page may use strong, h2, h3, div, or p.
+   */
   const valueElement =
-    card.querySelector("strong");
+    card.querySelector("strong") ||
+    card.querySelector("h2") ||
+    card.querySelector("h3") ||
+    card.querySelector(".stat-value") ||
+    card.querySelector(".value");
 
-  if (valueElement) {
-    valueElement.textContent = value;
+  if (!valueElement) {
+    console.warn("Statistic value element not found:", label);
+    return;
   }
-}
 
+  valueElement.textContent = value;
+}
 
 /*
  * Load the Tasks page for the currently logged-in user.
