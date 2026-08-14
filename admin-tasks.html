@@ -362,35 +362,60 @@ https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2
 
   async function approveSubmission(submissionId) {
 
-    const confirmed = confirm(
-      "Approve this task and make it eligible for its reward?"
+  const confirmed = confirm(
+    "Approve this task and credit its reward?"
+  );
+
+  if (!confirmed) {
+    return;
+  }
+
+  // First approve the submission.
+  const { error: approveError } = await supabaseClient
+    .from("task_attempts")
+    .update({
+      status: "approved",
+      reward_status: "pending"
+    })
+    .eq("id", submissionId);
+
+  if (approveError) {
+
+    console.error("Approval error:", approveError);
+
+    alert("Unable to approve this submission.");
+
+    return;
+  }
+
+  // Now credit the reward safely.
+  const { data: rewardResult, error: rewardError } =
+    await supabaseClient.rpc(
+      "credit_task_reward",
+      {
+        p_submission_id: submissionId
+      }
     );
 
-    if (!confirmed) {
-      return;
-    }
+  if (rewardError) {
 
-    const { error } = await supabaseClient
-      .from("task_attempts")
-      .update({
-        status: "approved",
-        reward_status: "pending"
-      })
-      .eq("id", submissionId);
+    console.error("Reward error:", rewardError);
 
-    if (error) {
-
-      console.error("Approval error:", error);
-
-      alert("Unable to approve this submission.");
-
-      return;
-    }
-
-    alert("Task approved successfully.");
+    alert(
+      "The task was approved, but the reward could not be credited."
+    );
 
     loadTaskSubmissions();
+
+    return;
   }
+
+  console.log("Reward result:", rewardResult);
+
+  alert("Task approved and reward credited successfully.");
+
+  loadTaskSubmissions();
+    }
 
 
   async function rejectSubmission(submissionId) {
