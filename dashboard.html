@@ -72,18 +72,18 @@
 
     <!-- WALLET -->
 
-    <section class="member-wallet">
+<section class="member-wallet">
 
-      <div>
-        <small>Available Balance</small>
+  <div>
+    <small>Available Balance</small>
 
-        <strong>₦0.00</strong>
+    <strong id="wallet-balance">₦0.00</strong>
 
-        <p>
-          Minimum withdrawal: ₦15,000
-        </p>
-      </div>
-
+    <p>
+      Minimum withdrawal: ₦15,000
+    </p>
+  </div>
+    
       <div class="wallet-actions">
 
         <a class="btn primary" href="withdraw.html">
@@ -101,29 +101,29 @@
 
     <!-- STATS -->
 
-    <div class="dashboard-stats">
+<div class="dashboard-stats">
 
-      <div class="dashboard-stat">
-        <small>Today's Earnings</small>
-        <strong>₦0</strong>
-      </div>
+  <div class="dashboard-stat">
+    <small>Today's Earnings</small>
+    <strong id="today-earnings">₦0</strong>
+  </div>
 
-      <div class="dashboard-stat">
-        <small>Total Earned</small>
-        <strong>₦0</strong>
-      </div>
+  <div class="dashboard-stat">
+    <small>Total Earned</small>
+    <strong id="total-earned">₦0</strong>
+  </div>
 
-      <div class="dashboard-stat">
-        <small>Referral Earnings</small>
-        <strong>₦0</strong>
-      </div>
+  <div class="dashboard-stat">
+    <small>Referral Earnings</small>
+    <strong id="referral-earnings">₦0</strong>
+  </div>
 
-      <div class="dashboard-stat">
-        <small>Completed Activities</small>
-        <strong>0</strong>
-      </div>
+  <div class="dashboard-stat">
+    <small>Completed Activities</small>
+    <strong id="completed-activities">0</strong>
+  </div>
 
-    </div>
+</div>
 
 
     <!-- EARNING OPTIONS -->
@@ -366,76 +366,247 @@
 
 <script>
 
-  async function loadUserProfile() {
+async function loadDashboard() {
 
+  try {
+
+    /*
+     * Get the currently logged-in user
+     */
     const {
       data: { user },
       error: userError
     } = await supabaseClient.auth.getUser();
 
     if (userError || !user) {
-
       window.location.href = "login.html";
-
       return;
     }
 
 
-    const { data: profile, error: profileError } =
-      await supabaseClient
-        .from("profiles")
-        .select("full_name")
-        .eq("id", user.id)
-        .single();
-
+    /*
+     * Load profile
+     */
+    const {
+      data: profile,
+      error: profileError
+    } = await supabaseClient
+      .from("profiles")
+      .select("full_name")
+      .eq("id", user.id)
+      .single();
 
     if (profileError) {
+      console.error("Unable to load profile:", profileError);
+    }
+
+    const nameElement =
+      document.getElementById("user-name");
+
+    if (nameElement) {
+      nameElement.textContent =
+        profile?.full_name || "Member";
+    }
+
+
+    /*
+     * Load this user's wallet
+     *
+     * Your database has:
+     * user_id
+     * balance
+     * total_earned
+     * referral_earned
+     */
+    const {
+      data: wallet,
+      error: walletError
+    } = await supabaseClient
+      .from("wallets")
+      .select(
+        "balance, total_earned, referral_earned"
+      )
+      .eq("user_id", user.id)
+      .maybeSingle();
+
+
+    if (walletError) {
 
       console.error(
-        "Unable to load profile:",
-        profileError
+        "Unable to load wallet:",
+        walletError
+      );
+
+    } else if (wallet) {
+
+      document.getElementById(
+        "wallet-balance"
+      ).textContent =
+        `₦${Number(wallet.balance || 0).toLocaleString(
+          "en-NG",
+          {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+          }
+        )}`;
+
+      document.getElementById(
+        "total-earned"
+      ).textContent =
+        `₦${Number(wallet.total_earned || 0).toLocaleString(
+          "en-NG"
+        )}`;
+
+      document.getElementById(
+        "referral-earnings"
+      ).textContent =
+        `₦${Number(wallet.referral_earned || 0).toLocaleString(
+          "en-NG"
+        )}`;
+
+    }
+
+
+    /*
+     * Load this user's task attempts.
+     */
+    const {
+      data: attempts,
+      error: attemptsError
+    } = await supabaseClient
+      .from("task_attempts")
+      .select(
+        "status, reward_amount, reward_status, created_at"
+      )
+      .eq("user_id", user.id);
+
+
+    if (attemptsError) {
+
+      console.error(
+        "Unable to load task attempts:",
+        attemptsError
       );
 
       return;
     }
 
 
-    const nameElement =
-      document.getElementById("user-name");
+    /*
+     * Count completed/approved activities.
+     *
+     * An approved reward has been successfully reviewed.
+     */
+    const completedCount =
+      (attempts || []).filter(function (attempt) {
+
+        return (
+          attempt.status === "completed" ||
+          attempt.status === "approved"
+        );
+
+      }).length;
 
 
-    if (nameElement) {
+    document.getElementById(
+      "completed-activities"
+    ).textContent = completedCount;
 
-      nameElement.textContent =
-        profile.full_name || "Member";
 
-    }
+    /*
+     * Calculate today's credited earnings from
+     * approved/credited task attempts.
+     */
+    const today = new Date();
+
+    const todayEarnings =
+      (attempts || [])
+        .filter(function (attempt) {
+
+          const created =
+            new Date(attempt.created_at);
+
+          const sameDay =
+            created.getFullYear() ===
+              today.getFullYear() &&
+            created.getMonth() ===
+              today.getMonth() &&
+            created.getDate() ===
+              today.getDate();
+
+          const credited =
+            attempt.reward_status !== "pending" &&
+            attempt.status !== "rejected";
+
+          return sameDay && credited;
+
+        })
+        .reduce(function (total, attempt) {
+
+          return total +
+            Number(attempt.reward_amount || 0);
+
+        }, 0);
+
+
+    document.getElementById(
+      "today-earnings"
+    ).textContent =
+      `₦${todayEarnings.toLocaleString(
+        "en-NG"
+      )}`;
+
+
+  } catch (error) {
+
+    console.error(
+      "Dashboard loading error:",
+      error
+    );
 
   }
 
+}
 
-  document
-    .getElementById("logout-button")
-    .addEventListener("click", async function() {
 
-      const { error } =
-        await supabaseClient.auth.signOut();
+/*
+ * Logout
+ */
+document
+  .getElementById("logout-button")
+  .addEventListener(
+    "click",
+    async function () {
+
+      const {
+        error
+      } = await supabaseClient.auth.signOut();
 
       if (error) {
 
-        console.error("Logout error:", error);
+        console.error(
+          "Logout error:",
+          error
+        );
 
-        alert("Unable to log out right now.");
+        alert(
+          "Unable to log out right now."
+        );
 
         return;
       }
 
-      window.location.href = "login.html";
+      window.location.href =
+        "login.html";
 
-    });
+    }
+  );
 
 
-  loadUserProfile();
+/*
+ * Load the dashboard.
+ */
+loadDashboard();
 
 </script>
     
