@@ -533,7 +533,43 @@ async function startTask(taskId) {
     return;
   }
 
+  /*
+   * Prevent duplicate attempts for the same task.
+   */
+  const {
+    data: existingAttempts,
+    error: existingAttemptError
+  } = await supabaseClient
+    .from("task_attempts")
+    .select("id")
+    .eq("user_id", user.id)
+    .eq("task_id", taskId)
+    .neq("status", "rejected")
+    .limit(1);
 
+  if (existingAttemptError) {
+    console.error(
+      "Error checking existing task attempt:",
+      existingAttemptError
+    );
+
+    alert(
+      "Unable to verify this task right now. Please try again."
+    );
+
+    return;
+  }
+
+  if (
+    existingAttempts &&
+    existingAttempts.length > 0
+  ) {
+    alert(
+      "You have already attempted this task."
+    );
+
+    return;
+  }
   /*
    * Check whether this user has already attempted
    * this task.
@@ -661,7 +697,32 @@ async function startTask(taskId) {
 }
 
 
+/*    alert(
+      "Unable to start task: " +
+      attemptError.message
+    );
+
+    return;
+  }
+
+
+  /*
+   * Continue to the submission page.
+   */
+  window.location.href =
+    "submit-task.html?task=" +
+    encodeURIComponent(task.id);
+}
+
+
 /*
+ * Load the page.
+ */
+loadTasks();
+
+    </script>
+  
+</body>
  * Load the page.
  */
 loadTasks();
