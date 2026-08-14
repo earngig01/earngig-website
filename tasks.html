@@ -228,12 +228,32 @@ async function loadTasks() {
   const taskList =
     document.getElementById("task-list");
 
-  const user =
-    await getCurrentUser();
+const {
+  data: { user },
+  error: userError
+} = await supabaseClient.auth.getUser();
 
-  if (!user) {
-    return;
+if (userError || !user) {
+  console.error(
+    "Unable to get current user:",
+    userError
+  );
+
+  if (taskList) {
+    taskList.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">!</div>
+        <h3>Please log in again</h3>
+        <p>
+          We couldn't identify your account.
+          Please log in again and try again.
+        </p>
+      </div>
+    `;
   }
+
+  return;
+}
 
 
   /*
