@@ -332,8 +332,11 @@ https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2
         </div>
 
         ${
-          submission.status === "completed"
-            ? `
+          submission.status === "completed" ||
+(
+  submission.status === "approved" &&
+  submission.reward_status === "pending"
+)
               <div>
 
                 <button
