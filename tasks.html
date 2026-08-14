@@ -159,18 +159,173 @@
 <script src="supabase.js"></script>
 
 <script>
-  async function loadTasks() {
 
-    const taskList = document.getElementById("task-list");
+async function getCurrentUser() {
 
-    const { data, error } = await supabaseClient
-      .from("tasks")
-      .select("*")
-      .order("created_at", { ascending: false });
+  const {
+    data: { user },
+    error
+  } = await supabaseClient.auth.getUser();
 
-    if (error) {
+  if (error || !user) {
+    window.location.href = "login.html";
+    return null;
+  }
 
-      console.error("Error loading tasks:", error);
+  return user;
+}
+
+
+/*
+ * Update a statistic on the Tasks page.
+ *
+ * This looks for a stat card by the text of its label,
+ * so it does not depend on a particular element ID.
+ */
+function updateStat(label, value) {
+
+  const elements =
+    Array.from(
+      document.querySelectorAll("small")
+    );
+
+  const labelElement =
+    elements.find(function (element) {
+
+      return element.textContent
+        .trim()
+        .toLowerCase() === label.toLowerCase();
+
+    });
+
+  if (!labelElement) {
+    return;
+  }
+
+  const card =
+    labelElement.closest(
+      ".dashboard-stat, .stat-card, .task-stat, .dashboard-card"
+    ) || labelElement.parentElement;
+
+  if (!card) {
+    return;
+  }
+
+  const valueElement =
+    card.querySelector("strong");
+
+  if (valueElement) {
+    valueElement.textContent = value;
+  }
+}
+
+
+/*
+ * Load the Tasks page for the currently logged-in user.
+ */
+async function loadTasks() {
+
+  const taskList =
+    document.getElementById("task-list");
+
+  const user =
+    await getCurrentUser();
+
+  if (!user) {
+    return;
+  }
+
+
+  /*
+   * Load this user's task attempts.
+   */
+  const {
+    data: attempts,
+    error: attemptsError
+  } = await supabaseClient
+    .from("task_attempts")
+    .select(
+      "id, task_id, status, reward_amount, reward_status, created_at"
+    )
+    .eq("user_id", user.id);
+
+
+  if (attemptsError) {
+
+    console.error(
+      "Error loading task attempts:",
+      attemptsError
+    );
+
+    if (taskList) {
+
+      taskList.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-icon">!</div>
+          <h3>Unable to load your tasks</h3>
+          <p>
+            We couldn't load your task history right now.
+            Please try again later.
+          </p>
+        </div>
+      `;
+
+    }
+
+    return;
+  }
+
+
+  const userAttempts =
+    attempts || [];
+
+
+  /*
+   * A task is considered already used if this user
+   * has an attempt for it that has not been rejected.
+   *
+   * This prevents the same task from appearing again
+   * after it has already been started, completed or approved.
+   */
+  const attemptedTaskIds =
+    new Set(
+      userAttempts
+        .filter(function (attempt) {
+
+          return attempt.status !== "rejected";
+
+        })
+        .map(function (attempt) {
+
+          return attempt.task_id;
+
+        })
+    );
+
+
+  /*
+   * Load only approved tasks.
+   */
+  const {
+    data: tasks,
+    error: tasksError
+  } = await supabaseClient
+    .from("tasks")
+    .select("*")
+    .eq("status", "approved")
+    .order("created_at", {
+      ascending: false
+    });
+
+
+  if (tasksError) {
+
+    console.error(
+      "Error loading tasks:",
+      tasksError
+    );
+
+    if (taskList) {
 
       taskList.innerHTML = `
         <div class="empty-state">
@@ -183,88 +338,293 @@
         </div>
       `;
 
-      return;
     }
 
-    if (!data || data.length === 0) {
-
-      taskList.innerHTML = `
-        <div class="empty-state">
-          <div class="empty-icon">✓</div>
-          <h3>No tasks available</h3>
-          <p>
-            New approved tasks will appear here when they
-            become available.
-          </p>
-        </div>
-      `;
-
-      return;
-    }
-
-    taskList.innerHTML = data.map(task => `
-
-      <article class="task-card">
-
-        <div class="task-card-content">
-
-          <span class="eyebrow">
-            ${task.category || "TASK"}
-          </span>
-
-          <h3>
-            ${task.title || "Available Task"}
-          </h3>
-
-          <p>
-            ${task.description || "Complete this task to earn a reward."}
-          </p>
-
-          <strong class="task-reward">
-            ₦${Number(task.reward_amount || 0).toLocaleString()}
-          </strong>
-
-        </div>
-
-        <button
-          class="btn primary"
-          onclick="startTask('${task.id}')"
-        >
-          Start Task
-        </button>
-
-      </article>
-
-    `).join("");
-  }
-
-  async function startTask(taskId) {
-
-  const {
-    data: { user },
-    error: userError
-  } = await supabaseClient.auth.getUser();
-
-  if (userError || !user) {
-    alert("Please log in before starting a task.");
     return;
   }
 
-  const { data: task, error: taskError } =
+
+  /*
+   * Only show approved tasks that this user has
+   * not already attempted.
+   */
+  const availableTasks =
+    (tasks || []).filter(function (task) {
+
+      return !attemptedTaskIds.has(task.id);
+
+    });
+
+
+  /*
+   * COMPLETED
+   *
+   * Keep the same interpretation used by the member
+   * Dashboard: completed OR approved.
+   */
+  const completedCount =
+    userAttempts.filter(function (attempt) {
+
+      return (
+        attempt.status === "completed" ||
+        attempt.status === "approved"
+      );
+
+    }).length;
+
+
+  /*
+   * PENDING
+   *
+   * Started/completed/approved attempts whose reward
+   * is still pending.
+   */
+  const pendingCount =
+    userAttempts.filter(function (attempt) {
+
+      return (
+        attempt.reward_status === "pending" &&
+        attempt.status !== "rejected"
+      );
+
+    }).length;
+
+
+  /*
+   * Load the wallet so Task Earnings reflects actual
+   * credited earnings rather than unprocessed attempts.
+   */
+  const {
+    data: wallet,
+    error: walletError
+  } = await supabaseClient
+    .from("wallets")
+    .select(
+      "balance, total_earned, referral_earned"
+    )
+    .eq("user_id", user.id)
+    .maybeSingle();
+
+
+  if (walletError) {
+
+    console.error(
+      "Error loading wallet:",
+      walletError
+    );
+
+  }
+
+
+  const totalEarned =
+    wallet
+      ? Number(wallet.total_earned || 0)
+      : 0;
+
+
+  /*
+   * Update the statistics if those cards exist.
+   */
+  updateStat(
+    "Available Tasks",
+    availableTasks.length
+  );
+
+  updateStat(
+    "Completed",
+    completedCount
+  );
+
+  updateStat(
+    "Pending",
+    pendingCount
+  );
+
+  updateStat(
+    "Task Earnings",
+    `₦${totalEarned.toLocaleString("en-NG")}`
+  );
+
+
+  /*
+   * Render available tasks.
+   */
+  if (!taskList) {
+    return;
+  }
+
+
+  if (availableTasks.length === 0) {
+
+    taskList.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">✓</div>
+
+        <h3>No new tasks available</h3>
+
+        <p>
+          You have no new approved tasks available right now.
+          Tasks you have already started, completed or approved
+          are not shown again.
+        </p>
+      </div>
+    `;
+
+    return;
+  }
+
+
+  taskList.innerHTML =
+    availableTasks.map(function (task) {
+
+      return `
+
+        <article class="task-card">
+
+          <div class="task-card-content">
+
+            <span class="eyebrow">
+              ${task.category || "TASK"}
+            </span>
+
+            <h3>
+              ${task.title || "Available Task"}
+            </h3>
+
+            <p>
+              ${
+                task.description ||
+                "Complete this task to earn the reward assigned to it."
+              }
+            </p>
+
+            <strong class="task-reward">
+              ₦${Number(
+                task.reward_amount || 0
+              ).toLocaleString("en-NG")}
+            </strong>
+
+          </div>
+
+          <button
+            class="btn primary"
+            onclick="startTask('${task.id}')"
+          >
+            Start Task
+          </button>
+
+        </article>
+
+      `;
+
+    }).join("");
+}
+
+
+/*
+ * Start a task.
+ */
+async function startTask(taskId) {
+
+  const user =
+    await getCurrentUser();
+
+  if (!user) {
+    return;
+  }
+
+
+  /*
+   * Check whether this user has already attempted
+   * this task.
+   */
+  const {
+    data: existingAttempts,
+    error: existingError
+  } = await supabaseClient
+    .from("task_attempts")
+    .select("id, status, reward_status")
+    .eq("task_id", taskId)
+    .eq("user_id", user.id);
+
+
+  if (existingError) {
+
+    console.error(
+      "Existing attempt check error:",
+      existingError
+    );
+
+    alert(
+      "Unable to check this task right now."
+    );
+
+    return;
+  }
+
+
+  const hasActiveAttempt =
+    (existingAttempts || []).some(
+      function (attempt) {
+
+        return attempt.status !== "rejected";
+
+      }
+    );
+
+
+  if (hasActiveAttempt) {
+
+    alert(
+      "You have already started or submitted this task."
+    );
+
+    await loadTasks();
+
+    return;
+  }
+
+
+  /*
+   * Load the approved task.
+   */
+  const {
+    data: task,
+    error: taskError
+  } =
     await supabaseClient
       .from("tasks")
-      .select("id, reward_amount, status")
+      .select(
+        "id, reward_amount, status"
+      )
       .eq("id", taskId)
       .eq("status", "approved")
       .single();
 
+
   if (taskError || !task) {
-    console.error("Task loading error:", taskError);
-    alert("This task is no longer available.");
+
+    console.error(
+      "Task loading error:",
+      taskError
+    );
+
+    alert(
+      "This task is no longer available."
+    );
+
+    await loadTasks();
+
     return;
   }
 
-  const { error: attemptError } =
+
+  /*
+   * Create exactly one task attempt.
+   */
+  const {
+    error: attemptError
+  } =
     await supabaseClient
       .from("task_attempts")
       .insert({
@@ -275,8 +635,13 @@
         reward_status: "pending"
       });
 
+
   if (attemptError) {
-    console.error("Task attempt error:", attemptError);
+
+    console.error(
+      "Task attempt error:",
+      attemptError
+    );
 
     alert(
       "Unable to start task: " +
@@ -286,13 +651,22 @@
     return;
   }
 
+
+  /*
+   * Continue to the submission page.
+   */
   window.location.href =
     "submit-task.html?task=" +
     encodeURIComponent(task.id);
-      }
-  
-  loadTasks();
-</script>
+}
+
+
+/*
+ * Load the page.
+ */
+loadTasks();
+
+    </script>
   
 </body>
 </html>
