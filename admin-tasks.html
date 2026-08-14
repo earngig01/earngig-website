@@ -378,8 +378,7 @@ https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2
   const { error: approveError } = await supabaseClient
     .from("task_attempts")
     .update({
-      status: "approved",
-      reward_status: "pending"
+      status: "approved"
     })
     .eq("id", submissionId);
 
