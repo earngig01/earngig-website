@@ -206,7 +206,240 @@
     © 2026 EarnGig. All rights reserved.
   </div>
 
-</footer>
+  </footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+
+<script>
+
+  const withdrawalForm = document.querySelector("form");
+
+  withdrawalForm.addEventListener("submit", async function (event) {
+
+    event.preventDefault();
+
+    const amountInput =
+      document.getElementById("amount");
+
+    const bankInput =
+      document.getElementById("bank");
+
+    const accountNameInput =
+      document.getElementById("account-name");
+
+    const accountNumberInput =
+      document.getElementById("account-number");
+
+
+    const amount =
+      Number(amountInput.value);
+
+    const bankName =
+      bankInput.value.trim();
+
+    const accountName =
+      accountNameInput.value.trim();
+
+    const accountNumber =
+      accountNumberInput.value.trim();
+
+
+    // Validate amount
+    if (!Number.isFinite(amount) || amount < 15000) {
+
+      alert("Minimum withdrawal amount is ₦15,000.");
+
+      return;
+    }
+
+
+    // Validate bank
+    if (!bankName) {
+
+      alert("Please select your bank.");
+
+      return;
+    }
+
+
+    // Validate account name
+    if (!accountName) {
+
+      alert("Please enter the account name.");
+
+      return;
+    }
+
+
+    // Validate account number
+    if (!/^\d{10}$/.test(accountNumber)) {
+
+      alert("Please enter a valid 10-digit account number.");
+
+      return;
+    }
+
+
+    // Get logged-in member
+    const {
+      data: { user },
+      error: userError
+    } = await supabaseClient.auth.getUser();
+
+
+    if (userError || !user) {
+
+      console.error(
+        "User error:",
+        userError
+      );
+
+      alert(
+        "Your session could not be verified. Please log in again."
+      );
+
+      return;
+    }
+
+
+    // Get wallet balance
+    const {
+      data: wallet,
+      error: walletError
+    } = await supabaseClient
+      .from("wallets")
+      .select(`
+        balance
+      `)
+      .eq("user_id", user.id)
+      .single();
+
+
+    if (walletError) {
+
+      console.error(
+        "Wallet error:",
+        walletError
+      );
+
+      alert(
+        "Unable to load your wallet balance."
+      );
+
+      return;
+    }
+
+
+    const balance =
+      Number(wallet.balance || 0);
+
+
+    // Check available balance
+    if (amount > balance) {
+
+      alert(
+        "You do not have enough available balance for this withdrawal."
+      );
+
+      return;
+    }
+
+
+    // Current withdrawal fee
+    const fee = 0;
+
+    const netAmount =
+      amount - fee;
+
+
+    const confirmed = confirm(
+      "Submit this withdrawal request for ₦" +
+      amount.toLocaleString() +
+      "?"
+    );
+
+
+    if (!confirmed) {
+      return;
+    }
+
+
+    // Disable submit while processing
+    const submitButton =
+      withdrawalForm.querySelector(
+        'button[type="submit"]'
+      );
+
+    if (submitButton) {
+
+      submitButton.disabled = true;
+
+      submitButton.textContent =
+        "Submitting...";
+    }
+
+
+    // Create withdrawal request
+    const {
+      data: withdrawal,
+      error: withdrawalError
+    } = await supabaseClient
+      .from("withdrawals")
+      .insert({
+        user_id: user.id,
+        amount: amount,
+        fee: fee,
+        net_amount: netAmount,
+        bank_name: bankName,
+        account_number: accountNumber,
+        account_name: accountName
+      })
+      .select()
+      .single();
+
+
+    if (withdrawalError) {
+
+      console.error(
+        "Withdrawal error:",
+        withdrawalError
+      );
+
+      alert(
+        "Unable to submit your withdrawal request."
+      );
+
+      if (submitButton) {
+
+        submitButton.disabled = false;
+
+        submitButton.textContent =
+          "Submit Withdrawal";
+      }
+
+      return;
+    }
+
+
+    console.log(
+      "Withdrawal created:",
+      withdrawal
+    );
+
+
+    alert(
+      "Withdrawal request submitted successfully."
+    );
+
+
+    // Return to wallet
+    window.location.href =
+      "wallet.html";
+
+  });
+
+</script>
 
 </body>
 </html>
