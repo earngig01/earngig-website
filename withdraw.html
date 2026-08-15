@@ -433,23 +433,54 @@ loadWalletBalance();
     }
 
 
-    // Create withdrawal request
-    const {
-      data: withdrawal,
-      error: withdrawalError
-    } = await supabaseClient
-      .from("withdrawals")
-      .insert({
-        user_id: user.id,
-        amount: amount,
-        fee: fee,
-        net_amount: netAmount,
-        bank_name: bankName,
-        account_number: accountNumber,
-        account_name: accountName
-      })
-      .select()
-      .single();
+   // Create withdrawal and deduct balance atomically
+const {
+  data: withdrawal,
+  error: withdrawalError
+} = await supabaseClient.rpc(
+  "create_withdrawal",
+  {
+    p_amount: amount,
+    p_bank_name: bankName,
+    p_account_number: accountNumber,
+    p_account_name: accountName,
+    p_fee: fee
+  }
+);
+
+if (withdrawalError) {
+
+  console.error(
+    "Withdrawal error:",
+    withdrawalError
+  );
+
+  alert(
+    "Unable to submit your withdrawal request."
+  );
+
+  if (submitButton) {
+
+    submitButton.disabled = false;
+
+    submitButton.textContent =
+      "Submit Withdrawal";
+  }
+
+  return;
+}
+
+console.log(
+  "Withdrawal created:",
+  withdrawal
+);
+
+alert(
+  "Withdrawal request submitted successfully."
+);
+
+window.location.href =
+  "wallet.html"; 
 
 
     if (withdrawalError) {
