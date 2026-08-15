@@ -58,7 +58,8 @@
 
         <small>Available balance</small>
 
-        <strong>₦0.00</strong>
+        <strong id="available-balance">₦0.00</strong>
+        
 
         <span>
           Minimum withdrawal: ₦15,000
@@ -215,6 +216,58 @@
 
   const withdrawalForm = document.querySelector("form");
 
+  const balanceElement =
+  document.getElementById("available-balance");
+
+async function loadWalletBalance() {
+
+  const {
+    data: { user },
+    error: userError
+  } = await supabaseClient.auth.getUser();
+
+  if (userError || !user) {
+    window.location.href = "login.html";
+    return;
+  }
+
+  const {
+    data: wallet,
+    error: walletError
+  } = await supabaseClient
+    .from("wallets")
+    .select("balance")
+    .eq("user_id", user.id)
+    .maybeSingle();
+
+  if (walletError) {
+
+    console.error(
+      "Unable to load wallet:",
+      walletError
+    );
+
+    return;
+  }
+
+  const balance =
+    Number(wallet?.balance || 0);
+
+  if (balanceElement) {
+
+    balanceElement.textContent =
+      `₦${balance.toLocaleString(
+        "en-NG",
+        {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        }
+      )}`;
+
+  }
+}
+
+loadWalletBalance();
   withdrawalForm.addEventListener("submit", async function (event) {
 
     event.preventDefault();
