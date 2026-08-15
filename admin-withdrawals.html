@@ -168,22 +168,88 @@
 
 <script>
 
+async function updateWithdrawalStatus(id, status) {
+
+  const action =
+    status === "approved"
+      ? "approve"
+      : "reject";
+
+  const confirmed = confirm(
+    `Are you sure you want to ${action} this withdrawal?`
+  );
+
+  if (!confirmed) {
+    return;
+  }
+
+
+  const {
+    error
+  } = await supabaseClient
+    .from("withdrawals")
+    .update({
+      status: status
+    })
+    .eq("id", id);
+
+
+  if (error) {
+
+    console.error(
+      "Unable to update withdrawal:",
+      error
+    );
+
+    alert(
+      "Unable to update withdrawal: " +
+      error.message
+    );
+
+    return;
+  }
+
+
+  alert(
+    `Withdrawal successfully ${status}.`
+  );
+
+
+  loadWithdrawals();
+
+}
+
+
+
 async function loadWithdrawals() {
 
   const stats =
-    document.querySelectorAll(".dashboard-stat strong");
+    document.querySelectorAll(
+      ".dashboard-stat strong"
+    );
 
   const section =
-    document.querySelector(".dashboard-section");
+    document.querySelector(
+      ".dashboard-section"
+    );
 
-  const { data: { user }, error: userError } =
+
+  const {
+    data: { user },
+    error: userError
+  } =
     await supabaseClient.auth.getUser();
+
 
   if (userError || !user) {
 
-    console.error("User error:", userError);
+    console.error(
+      "User error:",
+      userError
+    );
 
-    window.location.href = "login.html";
+    window.location.href =
+      "login.html";
 
     return;
   }
@@ -192,23 +258,24 @@ async function loadWithdrawals() {
   const {
     data: withdrawals,
     error
-  } = await supabaseClient
-    .from("withdrawals")
-    .select(`
-      id,
-      user_id,
-      amount,
-      fee,
-      net_amount,
-      bank_name,
-      account_number,
-      account_name,
-      status,
-      requested_at
-    `)
-    .order("requested_at", {
-      ascending: false
-    });
+  } =
+    await supabaseClient
+      .from("withdrawals")
+      .select(`
+        id,
+        user_id,
+        amount,
+        fee,
+        net_amount,
+        bank_name,
+        account_number,
+        account_name,
+        status,
+        requested_at
+      `)
+      .order("requested_at", {
+        ascending: false
+      });
 
 
   if (error) {
@@ -228,7 +295,8 @@ async function loadWithdrawals() {
 
   const pending =
     requests.filter(
-      item => item.status === "pending"
+      item =>
+        item.status === "pending"
     );
 
 
@@ -242,14 +310,16 @@ async function loadWithdrawals() {
 
   const rejected =
     requests.filter(
-      item => item.status === "rejected"
+      item =>
+        item.status === "rejected"
     );
 
 
   const pendingAmount =
     pending.reduce(
       (total, item) =>
-        total + Number(item.amount || 0),
+        total +
+        Number(item.amount || 0),
       0
     );
 
@@ -257,7 +327,8 @@ async function loadWithdrawals() {
   const processedAmount =
     approved.reduce(
       (total, item) =>
-        total + Number(item.amount || 0),
+        total +
+        Number(item.amount || 0),
       0
     );
 
@@ -265,58 +336,115 @@ async function loadWithdrawals() {
   // Update summary
 
   if (stats[0]) {
+
     stats[0].textContent =
       pending.length;
+
   }
+
 
   if (stats[1]) {
+
     stats[1].textContent =
       "₦" +
-      pendingAmount.toLocaleString("en-NG");
+      pendingAmount.toLocaleString(
+        "en-NG"
+      );
+
   }
+
 
   if (stats[2]) {
+
     stats[2].textContent =
       "₦" +
-      processedAmount.toLocaleString("en-NG");
+      processedAmount.toLocaleString(
+        "en-NG"
+      );
+
   }
+
 
   if (stats[3]) {
+
     stats[3].textContent =
       rejected.length;
+
   }
 
 
-  // Find the current empty state
-
   const emptyState =
-    section.querySelector(".empty-state");
+    section.querySelector(
+      ".empty-state"
+    );
 
 
   if (requests.length === 0) {
+
+    if (emptyState) {
+
+      emptyState.style.display =
+        "block";
+
+    }
 
     return;
   }
 
 
-  // Display withdrawal requests
-
   if (emptyState) {
 
-    emptyState.outerHTML = `
+    emptyState.remove();
 
-      <div id="withdrawal-list">
+  }
 
-        ${requests.map(withdrawal => `
+
+  let withdrawalList =
+    section.querySelector(
+      "#withdrawal-list"
+    );
+
+
+  if (!withdrawalList) {
+
+    withdrawalList =
+      document.createElement(
+        "div"
+      );
+
+    withdrawalList.id =
+      "withdrawal-list";
+
+    section.appendChild(
+      withdrawalList
+    );
+
+  }
+
+
+  withdrawalList.innerHTML =
+    requests.map(
+      withdrawal => {
+
+        const status =
+          String(
+            withdrawal.status ||
+            "pending"
+          ).toLowerCase();
+
+
+        const isPending =
+          status === "pending";
+
+
+        return `
 
           <article class="task-card">
 
             <div class="task-card-content">
 
               <span class="eyebrow">
-                ${String(
-                  withdrawal.status || "pending"
-                ).toUpperCase()}
+                ${status.toUpperCase()}
               </span>
 
               <h3>
@@ -356,23 +484,59 @@ async function loadWithdrawals() {
 
               <p>
                 <strong>Requested:</strong>
-                ${withdrawal.requested_at
-                  ? new Date(
-                      withdrawal.requested_at
-                    ).toLocaleString("en-NG")
-                  : "—"}
+                ${
+                  withdrawal.requested_at
+                    ? new Date(
+                        withdrawal.requested_at
+                      ).toLocaleString("en-NG")
+                    : "—"
+                }
               </p>
+
+
+              ${
+                isPending
+                  ? `
+
+                    <div class="admin-withdrawal-actions">
+
+                      <button
+                        type="button"
+                        class="btn"
+                        onclick="updateWithdrawalStatus(
+                          '${withdrawal.id}',
+                          'approved'
+                        )"
+                      >
+                        Approve
+                      </button>
+
+
+                      <button
+                        type="button"
+                        class="btn outline"
+                        onclick="updateWithdrawalStatus(
+                          '${withdrawal.id}',
+                          'rejected'
+                        )"
+                      >
+                        Reject
+                      </button>
+
+                    </div>
+
+                  `
+                  : ""
+              }
 
             </div>
 
           </article>
 
-        `).join("")}
+        `;
 
-      </div>
-
-    `;
-  }
+      }
+    ).join("");
 
 }
 
