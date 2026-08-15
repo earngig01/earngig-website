@@ -155,7 +155,6 @@
 
 </main>
 
-
 <footer>
 
   <div class="container copy">
@@ -164,5 +163,224 @@
 
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+
+<script>
+
+async function loadWithdrawals() {
+
+  const stats =
+    document.querySelectorAll(".dashboard-stat strong");
+
+  const section =
+    document.querySelector(".dashboard-section");
+
+  const { data: { user }, error: userError } =
+    await supabaseClient.auth.getUser();
+
+  if (userError || !user) {
+
+    console.error("User error:", userError);
+
+    window.location.href = "login.html";
+
+    return;
+  }
+
+
+  const {
+    data: withdrawals,
+    error
+  } = await supabaseClient
+    .from("withdrawals")
+    .select(`
+      id,
+      user_id,
+      amount,
+      fee,
+      net_amount,
+      bank_name,
+      account_number,
+      account_name,
+      status,
+      requested_at
+    `)
+    .order("requested_at", {
+      ascending: false
+    });
+
+
+  if (error) {
+
+    console.error(
+      "Unable to load withdrawals:",
+      error
+    );
+
+    return;
+  }
+
+
+  const requests =
+    withdrawals || [];
+
+
+  const pending =
+    requests.filter(
+      item => item.status === "pending"
+    );
+
+
+  const approved =
+    requests.filter(
+      item =>
+        item.status === "approved" ||
+        item.status === "processed"
+    );
+
+
+  const rejected =
+    requests.filter(
+      item => item.status === "rejected"
+    );
+
+
+  const pendingAmount =
+    pending.reduce(
+      (total, item) =>
+        total + Number(item.amount || 0),
+      0
+    );
+
+
+  const processedAmount =
+    approved.reduce(
+      (total, item) =>
+        total + Number(item.amount || 0),
+      0
+    );
+
+
+  // Update summary
+
+  if (stats[0]) {
+    stats[0].textContent =
+      pending.length;
+  }
+
+  if (stats[1]) {
+    stats[1].textContent =
+      "₦" +
+      pendingAmount.toLocaleString("en-NG");
+  }
+
+  if (stats[2]) {
+    stats[2].textContent =
+      "₦" +
+      processedAmount.toLocaleString("en-NG");
+  }
+
+  if (stats[3]) {
+    stats[3].textContent =
+      rejected.length;
+  }
+
+
+  // Find the current empty state
+
+  const emptyState =
+    section.querySelector(".empty-state");
+
+
+  if (requests.length === 0) {
+
+    return;
+  }
+
+
+  // Display withdrawal requests
+
+  if (emptyState) {
+
+    emptyState.outerHTML = `
+
+      <div id="withdrawal-list">
+
+        ${requests.map(withdrawal => `
+
+          <article class="task-card">
+
+            <div class="task-card-content">
+
+              <span class="eyebrow">
+                ${String(
+                  withdrawal.status || "pending"
+                ).toUpperCase()}
+              </span>
+
+              <h3>
+                ₦${Number(
+                  withdrawal.amount || 0
+                ).toLocaleString("en-NG")}
+              </h3>
+
+              <p>
+                <strong>Bank:</strong>
+                ${withdrawal.bank_name || "—"}
+              </p>
+
+              <p>
+                <strong>Account Name:</strong>
+                ${withdrawal.account_name || "—"}
+              </p>
+
+              <p>
+                <strong>Account Number:</strong>
+                ${withdrawal.account_number || "—"}
+              </p>
+
+              <p>
+                <strong>Fee:</strong>
+                ₦${Number(
+                  withdrawal.fee || 0
+                ).toLocaleString("en-NG")}
+              </p>
+
+              <p>
+                <strong>Net Amount:</strong>
+                ₦${Number(
+                  withdrawal.net_amount || 0
+                ).toLocaleString("en-NG")}
+              </p>
+
+              <p>
+                <strong>Requested:</strong>
+                ${withdrawal.requested_at
+                  ? new Date(
+                      withdrawal.requested_at
+                    ).toLocaleString("en-NG")
+                  : "—"}
+              </p>
+
+            </div>
+
+          </article>
+
+        `).join("")}
+
+      </div>
+
+    `;
+  }
+
+}
+
+
+loadWithdrawals();
+
+</script>
+
 </body>
 </html>
+  
