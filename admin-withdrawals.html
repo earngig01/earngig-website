@@ -234,10 +234,20 @@ async function loadWithdrawals() {
 
 
   const {
-    data: { user },
-    error: userError
-  } =
-    await supabaseClient.auth.getUser();
+  data: { user },
+  error: userError
+} = await supabaseClient.auth.getUser();
+
+console.log("ADMIN SESSION:", user);
+
+if (user) {
+  alert(
+    "Browser user ID:\n" +
+    user.id +
+    "\n\nEmail:\n" +
+    user.email
+  );
+}
 
 
   if (userError || !user) {
