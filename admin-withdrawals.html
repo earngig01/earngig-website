@@ -184,14 +184,13 @@ async function updateWithdrawalStatus(id, status) {
   }
 
 
-  const {
-    error
-  } = await supabaseClient
-    .from("withdrawals")
-    .update({
-      status: status
-    })
-    .eq("id", id);
+  const { data, error } = await supabaseClient.rpc(
+  "admin_set_withdrawal_status",
+  {
+    p_withdrawal_id: id,
+    p_status: status
+  }
+);
 
 
   if (error) {
