@@ -241,36 +241,40 @@
         <div>
           <small>Your referral code</small>
 
-          <strong>EARN-XXXX</strong>
+        <strong id="dashboard-referral-code">Loading...</strong>
 
           <p>
             Share your code with eligible new members.
           </p>
         </div>
 
-        <button class="btn primary">
-          Copy Code
-        </button>
+        
 
       </div>
-
+<button
+  id="copy-referral-button"
+  class="btn primary"
+  type="button"
+>
+  Copy Code
+</button>
 
       <div class="earning-box">
 
-        <div>
-          <small>Successful referrals</small>
-          <strong>0</strong>
-        </div>
+      <div>
+  <small>Successful referrals</small>
+  <strong id="successful-referrals">0</strong>
+</div>
 
-        <div>
-          <small>Referral earnings</small>
-          <strong>₦0</strong>
-        </div>
+<div>
+  <small>Referral earnings</small>
+  <strong id="dashboard-referral-earnings">₦0</strong>
+</div>
 
-        <div>
-          <small>Active referrals</small>
-          <strong>0</strong>
-        </div>
+<div>
+  <small>Active referrals</small>
+  <strong id="active-referrals">0</strong>
+</div>  
 
       </div>
 
@@ -463,7 +467,76 @@ async function loadDashboard() {
         `₦${Number(wallet.referral_earned || 0).toLocaleString(
           "en-NG"
         )}`;
+/*
+ * Load referral information
+ */
 
+const {
+  data: referralProfile,
+  error: referralProfileError
+} = await supabaseClient
+  .from("profiles")
+  .select("referral_code")
+  .eq("id", user.id)
+  .single();
+
+if (referralProfileError) {
+
+  console.error(
+    "Unable to load referral code:",
+    referralProfileError
+  );
+
+} else {
+
+  document.getElementById(
+    "dashboard-referral-code"
+  ).textContent =
+    referralProfile?.referral_code || "Not available";
+
+}
+
+
+/*
+ * Load referrals made by this user.
+ */
+
+const {
+  data: referrals,
+  error: referralsError
+} = await supabaseClient
+  .from("referrals")
+  .select("referred_user_id, status")
+  .eq("referrer_id", user.id);
+
+if (referralsError) {
+
+  console.error(
+    "Unable to load referrals:",
+    referralsError
+  );
+
+} else {
+
+  const referralList =
+    referrals || [];
+
+  document.getElementById(
+    "successful-referrals"
+  ).textContent =
+    referralList.length;
+
+  const activeReferrals =
+    referralList.filter(function(referral) {
+      return referral.status === "active";
+    }).length;
+
+  document.getElementById(
+    "active-referrals"
+  ).textContent =
+    activeReferrals;
+
+}
     }
 
 
@@ -607,7 +680,47 @@ document
  * Load the dashboard.
  */
 loadDashboard();
+document
+  .getElementById("copy-referral-button")
+  .addEventListener("click", async function () {
 
+    const code =
+      document
+        .getElementById("dashboard-referral-code")
+        .textContent
+        .trim();
+
+    if (!code || code === "Loading..." || code === "Not available") {
+      alert("Your referral code is not available yet.");
+      return;
+    }
+
+    const referralLink =
+      window.location.origin +
+      "/earngig-website/register.html?ref=" +
+      encodeURIComponent(code);
+
+    try {
+
+      await navigator.clipboard.writeText(
+        referralLink
+      );
+
+      alert(
+        "Referral link copied!\n\n" +
+        referralLink
+      );
+
+    } catch (error) {
+
+      prompt(
+        "Copy your referral link:",
+        referralLink
+      );
+
+    }
+
+  });
 </script>
     
 </body>
