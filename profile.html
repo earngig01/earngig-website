@@ -669,7 +669,87 @@ document.getElementById("email-verification").textContent =
 
     document.getElementById("edit-phone").value =
       profile.phone || "";
-    
+   // Load profile statistics
+
+try {
+
+  const { data: wallet, error: walletError } =
+    await supabaseClient
+      .from("wallets")
+      .select("balance, total_earned, referral_earned")
+      .eq("user_id", currentUser.id)
+      .maybeSingle();
+
+  if (walletError) {
+    console.error("Wallet statistics error:", walletError);
+  }
+
+  if (wallet) {
+
+    document.getElementById("wallet-balance").textContent =
+      `₦${Number(wallet.balance || 0).toLocaleString("en-NG", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      })}`;
+
+    document.getElementById("total-earned").textContent =
+      `₦${Number(wallet.total_earned || 0).toLocaleString("en-NG")}`;
+
+    document.getElementById("referral-earnings").textContent =
+      `₦${Number(wallet.referral_earned || 0).toLocaleString("en-NG")}`;
+  }
+
+
+  const { count: completedTasks, error: tasksError } =
+    await supabaseClient
+      .from("task_attempts")
+      .select("id", {
+        count: "exact",
+        head: true
+      })
+      .eq("user_id", currentUser.id)
+      .eq("status", "approved")
+      .eq("reward_status", "credited");
+
+  if (tasksError) {
+    console.error("Completed tasks error:", tasksError);
+  } else {
+    document.getElementById("completed-tasks").textContent =
+      completedTasks || 0;
+  }
+
+
+  const { data: withdrawals, error: withdrawalsError } =
+    await supabaseClient
+      .from("withdrawals")
+      .select("amount, status")
+      .eq("user_id", currentUser.id);
+
+  if (withdrawalsError) {
+    console.error("Withdrawals statistics error:", withdrawalsError);
+  } else {
+
+    const totalWithdrawn =
+      (withdrawals || [])
+        .filter(item => item.status === "approved")
+        .reduce(
+          (sum, item) =>
+            sum + Number(item.amount || 0),
+          0
+        );
+
+    document.getElementById("total-withdrawn").textContent =
+      `₦${totalWithdrawn.toLocaleString("en-NG")}`;
+  }
+
+} catch (statisticsError) {
+
+  console.error(
+    "Profile statistics error:",
+    statisticsError
+  );
+
+                 } 
   }
 document
   .getElementById("share-referral-button")
@@ -709,91 +789,6 @@ document
     }
 
   });
-  
-// Load profile statistics separately.
-// A statistics query failing must NOT prevent the profile from loading.
-
-try {
-
-  // Wallet
-  const { data: wallet, error: walletError } =
-    await supabaseClient
-      .from("wallets")
-      .select("balance, total_earned, referral_earned")
-      .eq("user_id", currentUser.id)
-      .maybeSingle();
-
-  if (walletError) {
-    console.error("Wallet statistics error:", walletError);
-  }
-
-  if (wallet) {
-    document.getElementById("wallet-balance").textContent =
-      `₦${Number(wallet.balance || 0).toLocaleString("en-NG", {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      })}`;
-
-    document.getElementById("total-earned").textContent =
-      `₦${Number(wallet.total_earned || 0).toLocaleString("en-NG")}`;
-
-    document.getElementById("referral-earnings").textContent =
-      `₦${Number(wallet.referral_earned || 0).toLocaleString("en-NG")}`;
-  }
-
-
-  // Completed tasks
-  const { count: completedTasks, error: tasksError } =
-    await supabaseClient
-      .from("task_attempts")
-      .select("id", {
-        count: "exact",
-        head: true
-      })
-      .eq("user_id", currentUser.id)
-      .eq("status", "approved")
-      .eq("reward_status", "credited");
-
-  if (tasksError) {
-    console.error("Completed tasks error:", tasksError);
-  } else {
-    document.getElementById("completed-tasks").textContent =
-      completedTasks || 0;
-  }
-
-
-  // Withdrawals
-  const { data: withdrawals, error: withdrawalsError } =
-    await supabaseClient
-      .from("withdrawals")
-      .select("amount, status")
-      .eq("user_id", currentUser.id);
-
-  if (withdrawalsError) {
-    console.error("Withdrawals statistics error:", withdrawalsError);
-  } else {
-
-    const totalWithdrawn =
-      (withdrawals || [])
-        .filter(item => item.status === "approved")
-        .reduce(
-          (sum, item) => sum + Number(item.amount || 0),
-          0
-        );
-
-    document.getElementById("total-withdrawn").textContent =
-      `₦${totalWithdrawn.toLocaleString("en-NG")}`;
-  }
-
-} catch (statisticsError) {
-
-  console.error(
-    "Profile statistics error:",
-    statisticsError
-  );
-
-}
-
 
 
   document
