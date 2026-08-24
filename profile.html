@@ -554,6 +554,73 @@
 
     currentProfile = profile;
 
+ // Load wallet statistics
+const { data: wallet, error: walletError } =
+  await supabaseClient
+    .from("wallets")
+    .select("balance, total_earned, referral_earned")
+    .eq("user_id", user.id)
+    .single();
+
+if (walletError) {
+  console.error("Wallet loading error:", walletError);
+}
+
+
+// Count completed/credited tasks
+const { count: completedTasks, error: tasksError } =
+  await supabaseClient
+    .from("task_attempts")
+    .select("id", { count: "exact", head: true })
+    .eq("user_id", user.id)
+    .eq("status", "approved")
+    .eq("reward_status", "credited");
+
+if (tasksError) {
+  console.error("Completed tasks loading error:", tasksError);
+}
+
+
+// Load withdrawals and calculate approved total only
+const { data: withdrawals, error: withdrawalsError } =
+  await supabaseClient
+    .from("withdrawals")
+    .select("amount, status")
+    .eq("user_id", user.id);
+
+if (withdrawalsError) {
+  console.error("Withdrawals loading error:", withdrawalsError);
+}
+
+const totalWithdrawn =
+  (withdrawals || [])
+    .filter(withdrawal => withdrawal.status === "approved")
+    .reduce(
+      (total, withdrawal) =>
+        total + Number(withdrawal.amount || 0),
+      0
+    );
+
+
+// Update wallet/statistics display
+document.getElementById("wallet-balance").textContent =
+  `₦${Number(wallet?.balance || 0).toLocaleString("en-NG", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  })}`;
+
+document.getElementById("total-earned").textContent =
+  `₦${Number(wallet?.total_earned || 0).toLocaleString("en-NG")}`;
+
+document.getElementById("referral-earnings").textContent =
+  `₦${Number(wallet?.referral_earned || 0).toLocaleString("en-NG")}`;
+
+document.getElementById("completed-tasks").textContent =
+  completedTasks || 0;
+
+document.getElementById("total-withdrawn").textContent =
+  `₦${totalWithdrawn.toLocaleString("en-NG")}`;   
+    
 const { data: wallet, error: walletError } =
   await supabaseClient
     .from("wallets")
