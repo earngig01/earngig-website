@@ -223,17 +223,20 @@ if (referralFromUrl) {
 
 
     const { data, error } =
-      await supabaseClient.auth.signUp({
-        email: email,
-        password: password,
-        options: {
-          data: {
-            full_name: fullname,
-            phone: phone,
-            referral_code: referral || null
-          }
-        }
-      });
+  await supabaseClient.auth.signUp({
+    email: email,
+    password: password,
+    options: {
+      emailRedirectTo:
+        "https://earngig01.github.io/earngig-website/login.html",
+
+      data: {
+        full_name: fullname,
+        phone: phone,
+        referral_code: referral || null
+      }
+    }
+  });
 
 
     if (error) {
