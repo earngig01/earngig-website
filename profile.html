@@ -185,16 +185,28 @@
         </div>
 
 
-        <div class="dashboard-stat">
+      <div class="dashboard-stat">
 
-          <small>Referral Code</small>
+  <small>Referral Code</small>
 
-          <strong id="referral-code">
-            Loading...
-          </strong>
+  <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
 
-        </div>
+    <strong id="referral-code">
+      Loading...
+    </strong>
 
+    <button
+      id="share-referral-button"
+      class="btn outline"
+      type="button"
+      style="padding:8px 12px;"
+    >
+      🔗 Share
+    </button>
+
+  </div>
+
+</div>
 
         <div class="dashboard-stat">
 
@@ -657,6 +669,47 @@ document.getElementById("email-verification").textContent =
 
     document.getElementById("edit-phone").value =
       profile.phone || "";
+    
+  }
+document
+  .getElementById("share-referral-button")
+  .addEventListener("click", async function () {
+
+    if (!currentProfile?.referral_code) {
+      alert("Your referral code is not available yet.");
+      return;
+    }
+
+    const referralLink =
+      window.location.origin +
+      "/earngig-website/signup.html?ref=" +
+      encodeURIComponent(currentProfile.referral_code);
+
+    try {
+
+      await navigator.clipboard.writeText(referralLink);
+
+      alert(
+        "Referral link copied!\n\n" +
+        referralLink
+      );
+
+    } catch (error) {
+
+      console.error(
+        "Referral link copy error:",
+        error
+      );
+
+      prompt(
+        "Copy your referral link:",
+        referralLink
+      );
+
+    }
+
+  });
+  
 // Load profile statistics separately.
 // A statistics query failing must NOT prevent the profile from loading.
 
@@ -740,7 +793,7 @@ try {
   );
 
 }
-  }
+
 
 
   document
