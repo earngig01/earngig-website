@@ -554,7 +554,25 @@
 
     currentProfile = profile;
 
+const { data: wallet, error: walletError } =
+  await supabaseClient
+    .from("wallets")
+    .select("balance")
+    .eq("user_id", user.id)
+    .single();
 
+if (walletError) {
+  console.error("Wallet loading error:", walletError);
+  document.getElementById("wallet-balance").textContent = "₦0.00";
+} else {
+  const balance = Number(wallet?.balance || 0);
+
+  document.getElementById("wallet-balance").textContent =
+    "₦" + balance.toLocaleString("en-NG", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+}
     const fullName =
       profile.full_name ||
       user.user_metadata?.full_name ||
@@ -604,15 +622,14 @@
 
 
     const verified =
-      Boolean(user.email_confirmed_at);
+  Boolean(user.email_confirmed_at);
 
+document.getElementById("account-status").textContent =
+  profile.account_status || "Unknown";
 
-    document.getElementById("account-status").textContent =
-      verified ? "Verified" : "Unverified";
+document.getElementById("email-verification").textContent =
+  verified ? "Verified" : "Not verified";
 
-
-    document.getElementById("email-verification").textContent =
-      verified ? "Verified" : "Not verified";
 
 
     document.getElementById("profile-status").textContent =
