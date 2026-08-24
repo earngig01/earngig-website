@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Premium Membership | EarnGig</title>
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<header>
+  <div class="container nav">
+
+    <a class="logo" href="index.html">
+      <span class="logo-mark">E</span>
+      Earn<span>Gig</span>
+    </a>
+
+    <nav>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="tasks.html">Tasks</a>
+      <a href="read-and-earn.html">Read & Earn</a>
+    </nav>
+
+    <a class="btn outline" href="profile.html">
+      My Profile
+    </a>
+
+  </div>
+</header>
+
+
+<main class="dashboard-page">
+
+  <div class="container">
+
+    <div class="dashboard-heading">
+
+      <div>
+        <span class="eyebrow">PREMIUM MEMBERSHIP</span>
+
+        <h1>Upgrade your EarnGig membership</h1>
+
+        <p>
+          Access Premium activities and additional earning
+          opportunities available to eligible members.
+        </p>
+      </div>
+
+    </div>
+
+
+    <section class="dashboard-section">
+
+      <div class="member-earning-grid">
+
+        <div class="member-earning-card">
+
+          <div class="member-card-icon blue">★</div>
+
+          <h3>Premium Membership</h3>
+
+          <p>
+            Premium membership gives eligible members access
+            to Premium activities on EarnGig.
+          </p>
+
+          <strong>Membership fee: ₦9,000</strong>
+
+        </div>
+
+
+        <div class="member-earning-card">
+
+          <div class="member-card-icon blue">✓</div>
+
+          <h3>Your membership status</h3>
+
+          <p id="membership-status">
+            Checking membership status...
+          </p>
+
+          <p id="membership-period"></p>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <section class="dashboard-section">
+
+      <div class="novel-preview">
+
+        <div>
+          <span class="eyebrow">PAYMENT</span>
+
+          <h3>Become a Premium member</h3>
+
+          <p>
+            Payment must be successfully confirmed before
+            your membership is activated.
+          </p>
+        </div>
+
+        <button
+          id="payment-button"
+          class="btn primary"
+          type="button"
+        >
+          Proceed to Payment
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <section class="dashboard-section">
+
+      <div class="empty-state">
+
+        <div class="empty-icon">₦</div>
+
+        <h3>Payment confirmation</h3>
+
+        <p>
+          Your membership will only become active after the
+          payment provider confirms a successful payment.
+        </p>
+
+      </div>
+
+    </section>
+
+  </div>
+
+</main>
+
+
+<footer>
+
+  <div class="container copy">
+    © 2026 EarnGig. All rights reserved.
+  </div>
+
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+
+<script>
+
+async function loadMembership() {
+
+  const {
+    data: { user },
+    error: userError
+  } = await supabaseClient.auth.getUser();
+
+  if (userError || !user) {
+    window.location.href = "login.html";
+    return;
+  }
+
+
+  const {
+    data: membership,
+    error: membershipError
+  } = await supabaseClient
+    .from("memberships")
+    .select(
+      "status, started_at, current_period_start, current_period_end"
+    )
+    .eq("user_id", user.id)
+    .maybeSingle();
+
+
+  const statusElement =
+    document.getElementById("membership-status");
+
+  const periodElement =
+    document.getElementById("membership-period");
+
+
+  if (membershipError) {
+
+    console.error(
+      "Unable to load membership:",
+      membershipError
+    );
+
+    statusElement.textContent =
+      "Membership status unavailable.";
+
+    return;
+  }
+
+
+  if (!membership) {
+
+    statusElement.textContent =
+      "No active membership.";
+
+    periodElement.textContent =
+      "Complete a confirmed payment to activate Premium.";
+
+    return;
+  }
+
+
+  statusElement.textContent =
+    "Status: " + (membership.status || "unknown");
+
+
+  if (membership.current_period_end) {
+
+    const endDate =
+      new Date(
+        membership.current_period_end
+      );
+
+    periodElement.textContent =
+      "Current period ends: " +
+      endDate.toLocaleDateString("en-NG");
+
+  }
+
+}
+
+
+/*
+ * IMPORTANT:
+ * This button does NOT mark the user as paid.
+ *
+ * A real payment provider will be connected here later.
+ */
+document
+  .getElementById("payment-button")
+  .addEventListener("click", function () {
+
+    alert(
+      "Payment processing is not connected yet. No payment has been recorded."
+    );
+
+  });
+
+
+loadMembership();
+
+</script>
+
+</body>
+</html>
