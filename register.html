@@ -181,6 +181,15 @@
 <script src="supabase.js"></script>
   <script>
   const registerForm = document.querySelector("form");
+    
+  const referralInput = document.getElementById("referral");
+
+const urlParams = new URLSearchParams(window.location.search);
+const referralFromUrl = urlParams.get("ref");
+
+if (referralFromUrl) {
+  referralInput.value = referralFromUrl.toUpperCase();
+}
 
   registerForm.addEventListener("submit", async function(event) {
 
