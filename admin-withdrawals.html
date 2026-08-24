@@ -563,21 +563,6 @@ if (user) {
 
 }
 
-async function testAdminCheck() {
-  const { data, error } = await supabaseClient.rpc("is_admin");
-
-  console.log("IS_ADMIN RESULT:", data);
-  console.log("IS_ADMIN ERROR:", error);
-
-  alert(
-    "is_admin(): " +
-    data +
-    "\n\nError: " +
-    (error ? error.message : "none")
-  );
-}
-
-testAdminCheck();
 loadWithdrawals();
 
 </script>
