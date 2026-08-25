@@ -5177,3 +5177,387 @@ body:has(.admin-badge) .dashboard-page .container {
   box-shadow:
     0 12px 30px rgba(88, 69, 255, 0.42);
 }
+/* =========================================================
+   EARNGIG GLOBAL USER DASHBOARD THEME
+   ========================================================= */
+
+.dashboard-page {
+  min-height: calc(100vh - 76px);
+
+  background:
+    radial-gradient(
+      circle at 10% 10%,
+      rgba(119, 72, 255, 0.18),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 90% 20%,
+      rgba(35, 112, 255, 0.14),
+      transparent 30%
+    ),
+    linear-gradient(
+      135deg,
+      #070d2b,
+      #10184a 55%,
+      #080d2b
+    ) !important;
+
+  padding: 55px 0 80px;
+}
+
+
+/* HEADER */
+
+header {
+  background:
+    linear-gradient(
+      135deg,
+      #080d2b,
+      #10184a
+    ) !important;
+
+  border-bottom:
+    1px solid rgba(111, 91, 255, 0.30) !important;
+
+  box-shadow:
+    0 5px 30px rgba(0, 0, 0, 0.30);
+}
+
+
+/* LOGO */
+
+.logo {
+  color: #ffffff !important;
+}
+
+.logo span {
+  color: #4d7cff !important;
+}
+
+.logo-mark {
+  width: 44px !important;
+  height: 44px !important;
+
+  border-radius: 13px !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7657ff,
+      #376cff
+    ) !important;
+
+  color: #ffffff !important;
+
+  box-shadow:
+    0 0 20px rgba(103, 75, 255, 0.55),
+    0 0 40px rgba(55, 108, 255, 0.20);
+}
+
+
+/* DASHBOARD HEADING */
+
+.dashboard-heading h1 {
+  color: #ffffff !important;
+}
+
+.dashboard-heading p {
+  color: #aeb9dc !important;
+}
+
+
+/* STAT CARDS */
+
+.dashboard-stat {
+  background:
+    linear-gradient(
+      145deg,
+      #1b285c,
+      #111a45
+    ) !important;
+
+  border:
+    1px solid rgba(105, 109, 195, 0.35) !important;
+
+  border-radius: 18px !important;
+
+  box-shadow:
+    0 12px 32px rgba(0, 0, 0, 0.25) !important;
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.dashboard-stat:hover {
+  transform: translateY(-4px);
+
+  border-color:
+    rgba(145, 113, 255, 0.70) !important;
+
+  box-shadow:
+    0 18px 42px rgba(82, 65, 190, 0.28) !important;
+}
+
+.dashboard-stat small {
+  color: #aeb9dc !important;
+}
+
+.dashboard-stat strong {
+  color: #ffffff !important;
+}
+
+
+/* MAIN SECTIONS */
+
+.dashboard-section {
+  background:
+    linear-gradient(
+      145deg,
+      #151f50,
+      #0f173d
+    ) !important;
+
+  border:
+    1px solid rgba(105, 109, 195, 0.32) !important;
+
+  border-radius: 20px !important;
+
+  box-shadow:
+    0 15px 40px rgba(0, 0, 0, 0.25) !important;
+}
+
+.section-title h2 {
+  color: #ffffff !important;
+}
+
+
+/* EARNING CARDS */
+
+.member-earning-card {
+  background:
+    linear-gradient(
+      145deg,
+      #1b285c,
+      #111a45
+    ) !important;
+
+  border:
+    1px solid rgba(105, 109, 195, 0.35) !important;
+
+  color: #ffffff !important;
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.22);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.member-earning-card:hover {
+  transform: translateY(-5px);
+
+  border-color:
+    rgba(139, 108, 255, 0.70) !important;
+
+  box-shadow:
+    0 18px 40px rgba(82, 65, 190, 0.30);
+}
+
+.member-earning-card h3 {
+  color: #ffffff !important;
+}
+
+.member-earning-card p {
+  color: #aeb9dc !important;
+}
+
+.member-earning-card strong {
+  color: #65a8ff !important;
+}
+
+
+/* WALLET */
+
+.member-wallet {
+  background:
+    linear-gradient(
+      135deg,
+      #1d2860,
+      #101842
+    ) !important;
+
+  border:
+    1px solid rgba(110, 105, 205, 0.38) !important;
+
+  color: #ffffff !important;
+
+  box-shadow:
+    0 18px 45px rgba(0, 0, 0, 0.28);
+}
+
+.member-wallet small {
+  color: #aeb9dc !important;
+}
+
+.member-wallet strong {
+  color: #ffffff !important;
+}
+
+.member-wallet p {
+  color: #98a6ce !important;
+}
+
+
+/* EARNING BOX */
+
+.earning-box > div {
+  background:
+    linear-gradient(
+      145deg,
+      #1a2557,
+      #111a45
+    ) !important;
+
+  border:
+    1px solid rgba(105, 109, 195, 0.28);
+}
+
+.earning-box small {
+  color: #aeb9dc !important;
+}
+
+.earning-box strong {
+  color: #ffffff !important;
+}
+
+
+/* REFERRAL / MARKETPLACE PREVIEWS */
+
+.referral-box,
+.marketplace-preview,
+.novel-preview {
+  background:
+    linear-gradient(
+      145deg,
+      #1a2557,
+      #111a45
+    ) !important;
+
+  border:
+    1px solid rgba(105, 109, 195, 0.30) !important;
+
+  color: #ffffff !important;
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.20);
+}
+
+.referral-box h3,
+.marketplace-preview h3,
+.novel-preview h3 {
+  color: #ffffff !important;
+}
+
+.referral-box p,
+.marketplace-preview p,
+.novel-preview p {
+  color: #aeb9dc !important;
+}
+
+
+/* EMPTY TRANSACTION AREA */
+
+.empty-state {
+  background:
+    linear-gradient(
+      145deg,
+      #182458,
+      #101942
+    ) !important;
+
+  border:
+    1px dashed rgba(126, 112, 220, 0.45) !important;
+}
+
+.empty-state h3 {
+  color: #ffffff !important;
+}
+
+.empty-state p {
+  color: #aeb9dc !important;
+}
+
+
+/* GOLD = MONEY */
+
+#today-earnings,
+#total-earned,
+#referral-earnings,
+#wallet-balance,
+#dashboard-referral-earnings {
+  color: #ffd45a !important;
+}
+
+
+/* PRIMARY BUTTON */
+
+.primary {
+  background:
+    linear-gradient(
+      135deg,
+      #4d5cff,
+      #7b3ff2
+    ) !important;
+
+  color: #ffffff !important;
+
+  border: none !important;
+
+  box-shadow:
+    0 8px 25px rgba(88, 69, 255, 0.32);
+}
+
+.primary:hover {
+  box-shadow:
+    0 13px 32px rgba(88, 69, 255, 0.48);
+}
+
+
+/* OUTLINE BUTTON */
+
+.outline {
+  background:
+    rgba(20, 29, 70, 0.85) !important;
+
+  border-color:
+    rgba(116, 112, 205, 0.45) !important;
+
+  color: #dfe5ff !important;
+}
+
+
+/* EYEBROWS */
+
+.eyebrow {
+  color: #a17cff !important;
+}
+
+
+/* =========================================================
+   NOVEL READING CONTENT REMAINS WHITE
+   ========================================================= */
+
+.reading-area,
+.reader-content,
+.reader-page,
+.novel-reader,
+.chapter-content,
+.manuscript-content,
+.story-content {
+  background: #ffffff !important;
+  color: #243746 !important;
+}
