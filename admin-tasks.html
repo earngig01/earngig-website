@@ -91,7 +91,9 @@
         <div>
 
           <span class="eyebrow">
-            <section
+            <!-- CREATE TASK -->
+
+<section
   id="create-task-section"
   class="dashboard-section"
   style="display:none;"
@@ -174,11 +176,58 @@
     </small>
 
 
+    <label for="task-max-participants">
+      Maximum Participants
+    </label>
+
+    <select
+      id="task-max-participants"
+      required
+    >
+
+      <option value="">
+        Select participant limit
+      </option>
+
+      <option value="10">
+        10 participants
+      </option>
+
+      <option value="20">
+        20 participants
+      </option>
+
+      <option value="50">
+        50 participants
+      </option>
+
+      <option value="100">
+        100 participants
+      </option>
+
+      <option value="500">
+        500 participants
+      </option>
+
+      <option value="unlimited">
+        Unlimited
+      </option>
+
+    </select>
+
+    <small>
+      Choose how many members can participate in this task.
+    </small>
+
+
     <label for="task-status">
       Status
     </label>
 
-    <select id="task-status" required>
+    <select
+      id="task-status"
+      required
+    >
 
       <option value="draft">
         Draft
@@ -222,46 +271,58 @@
     style="margin-top:20px;"
   ></div>
 
-            </section>
-            SUBMISSIONS
-          </span>
+</section>
 
-          <h2>Task submissions</h2>
 
-        </div>
+<!-- TASK SUBMISSIONS -->
 
-        <select class="task-filter">
+<section class="dashboard-section">
 
-          <option>All submissions</option>
-          <option>Pending</option>
-          <option>Approved</option>
-          <option>Rejected</option>
+  <div class="section-title">
 
-        </select>
+    <div>
 
+      <span class="eyebrow">
+        SUBMISSIONS
+      </span>
+
+      <h2>Task submissions</h2>
+
+    </div>
+
+    <select class="task-filter">
+
+      <option>All submissions</option>
+      <option>Pending</option>
+      <option>Approved</option>
+      <option>Rejected</option>
+
+    </select>
+
+  </div>
+
+
+  <div id="submission-list">
+
+    <div class="empty-state">
+
+      <div class="empty-icon">
+        ✓
       </div>
 
+      <h3>No submissions yet</h3>
 
-      <div id="submission-list">
+      <p>
+        Member task submissions will appear here when
+        they are ready for review.
+      </p>
 
-        <div class="empty-state">
+    </div>
 
-          <div class="empty-icon">
-            ✓
-          </div>
+  </div>
 
-          <h3>No submissions yet</h3>
+</section>
 
-          <p>
-            Member task submissions will appear here when
-            they are ready for review.
-          </p>
-
-        </div>
-
-      </div>
-
-    </section>
 
 
     <section class="assessment-notice">
@@ -663,6 +724,15 @@ cancelCreateTask.addEventListener("click", function () {
         .value
         .trim();
 
+   const maxParticipantsValue =
+  document
+    .getElementById("task-max-participants")
+    .value;
+
+const maxParticipants =
+  maxParticipantsValue === "unlimited"
+    ? null
+    : Number(maxParticipantsValue); 
 
     const status =
       document
@@ -710,14 +780,15 @@ cancelCreateTask.addEventListener("click", function () {
     } = await supabaseClient
       .from("tasks")
       .insert({
-        title: title,
-        description: description,
-        category: category,
-        reward_amount: rewardAmount,
-        task_link: taskLink || null,
-        status: status,
-        created_by: user.id
-      });
+  title: title,
+  description: description,
+  category: category,
+  reward_amount: rewardAmount,
+  task_link: taskLink || null,
+  max_participants: maxParticipants,
+  status: status,
+  created_by: user.id
+});
 
 
     if (error) {
