@@ -6330,3 +6330,459 @@ body:has(.admin-badge) footer .copy {
   }
 
 }
+/* =========================================================
+   EARNGIG ADMIN DASHBOARD — FINAL GLOW THEME
+   ========================================================= */
+
+body:has(.admin-management-grid) {
+  background:
+    radial-gradient(circle at 8% 12%, rgba(126, 87, 255, 0.28), transparent 28%),
+    radial-gradient(circle at 92% 18%, rgba(45, 120, 255, 0.22), transparent 30%),
+    radial-gradient(circle at 50% 90%, rgba(218, 72, 190, 0.14), transparent 32%),
+    linear-gradient(135deg, #070b25 0%, #10164a 48%, #090d2e 100%);
+  color: #eef1ff;
+}
+
+/* ADMIN HEADER */
+
+body:has(.admin-management-grid) header {
+  background: rgba(7, 11, 37, 0.94);
+  border-bottom: 1px solid rgba(137, 111, 255, 0.28);
+  box-shadow:
+    0 8px 35px rgba(0, 0, 0, 0.35),
+    0 0 30px rgba(93, 70, 255, 0.08);
+}
+
+body:has(.admin-management-grid) .logo {
+  color: #ffffff;
+}
+
+body:has(.admin-management-grid) .logo span {
+  color: #8c7cff;
+}
+
+body:has(.admin-management-grid) .logo-mark {
+  width: 44px;
+  height: 44px;
+  background: linear-gradient(135deg, #8b6cff, #367dff);
+  box-shadow:
+    0 0 18px rgba(125, 91, 255, 0.65),
+    0 0 40px rgba(55, 125, 255, 0.25);
+}
+
+/* ADMIN BADGE */
+
+body:has(.admin-management-grid) .admin-badge {
+  background: linear-gradient(135deg, #7255ff, #386fff);
+  color: #ffffff;
+  border: 1px solid rgba(177, 158, 255, 0.35);
+  box-shadow: 0 0 20px rgba(108, 80, 255, 0.25);
+}
+
+/* ADMIN PAGE */
+
+body:has(.admin-management-grid) .dashboard-page {
+  min-height: calc(100vh - 76px);
+  padding: 60px 0 90px;
+
+  background:
+    radial-gradient(circle at 12% 10%, rgba(123, 81, 255, 0.20), transparent 30%),
+    radial-gradient(circle at 88% 35%, rgba(38, 111, 255, 0.16), transparent 32%),
+    linear-gradient(135deg, #080d2f, #101747 52%, #090d2e);
+}
+
+/* PAGE TITLE */
+
+body:has(.admin-management-grid) .dashboard-heading h1 {
+  color: #ffffff;
+  font-size: 42px;
+}
+
+body:has(.admin-management-grid) .dashboard-heading p {
+  color: #aeb9dd;
+}
+
+body:has(.admin-management-grid) .eyebrow {
+  color: #a18cff;
+}
+
+/* BUTTON */
+
+body:has(.admin-management-grid) .btn.primary {
+  background: linear-gradient(135deg, #6558ff, #8a42e8);
+  color: #ffffff;
+  border: 1px solid rgba(179, 157, 255, 0.35);
+  box-shadow: 0 8px 25px rgba(101, 78, 255, 0.28);
+}
+
+body:has(.admin-management-grid) .btn.primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(101, 78, 255, 0.42);
+}
+
+body:has(.admin-management-grid) .btn.outline {
+  color: #e9ecff;
+  background: rgba(22, 30, 76, 0.75);
+  border-color: rgba(132, 127, 220, 0.38);
+}
+
+/* TOP STAT CARDS */
+
+body:has(.admin-management-grid) .dashboard-stat {
+  position: relative;
+  overflow: hidden;
+
+  background: linear-gradient(
+    145deg,
+    rgba(30, 40, 94, 0.96),
+    rgba(16, 24, 65, 0.98)
+  );
+
+  border: 1px solid rgba(116, 111, 206, 0.32);
+  border-radius: 18px;
+
+  box-shadow:
+    0 15px 40px rgba(0, 0, 0, 0.28),
+    inset 0 1px rgba(255, 255, 255, 0.04);
+
+  transition: 0.25s ease;
+}
+
+body:has(.admin-management-grid) .dashboard-stat::after {
+  content: "";
+  position: absolute;
+  width: 110px;
+  height: 110px;
+  right: -45px;
+  top: -45px;
+  border-radius: 50%;
+  background: rgba(122, 93, 255, 0.18);
+  filter: blur(25px);
+}
+
+body:has(.admin-management-grid) .dashboard-stat:hover {
+  transform: translateY(-4px);
+  border-color: rgba(146, 119, 255, 0.65);
+  box-shadow:
+    0 18px 45px rgba(0, 0, 0, 0.34),
+    0 0 28px rgba(104, 79, 255, 0.14);
+}
+
+body:has(.admin-management-grid) .dashboard-stat small {
+  color: #aeb9dc;
+}
+
+body:has(.admin-management-grid) .dashboard-stat strong {
+  color: #ffffff;
+}
+
+/* SECTION PANELS */
+
+body:has(.admin-management-grid) .dashboard-section {
+  background: linear-gradient(
+    145deg,
+    rgba(22, 31, 78, 0.96),
+    rgba(13, 20, 57, 0.98)
+  );
+
+  border: 1px solid rgba(113, 108, 196, 0.30);
+  border-radius: 22px;
+
+  box-shadow:
+    0 18px 50px rgba(0, 0, 0, 0.27),
+    inset 0 1px rgba(255, 255, 255, 0.025);
+}
+
+/* SECTION TITLES */
+
+body:has(.admin-management-grid) .section-title h2 {
+  color: #ffffff;
+}
+
+body:has(.admin-management-grid) .text-link {
+  color: #9b8aff;
+}
+
+/* MANAGEMENT GRID */
+
+body:has(.admin-management-grid) .admin-management-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+/* MANAGEMENT CARDS */
+
+body:has(.admin-management-grid) .admin-management-card {
+  position: relative;
+  overflow: hidden;
+
+  display: block;
+
+  padding: 25px;
+
+  min-height: 220px;
+
+  border-radius: 19px;
+
+  color: #ffffff;
+
+  border: 1px solid rgba(255, 255, 255, 0.09);
+
+  box-shadow:
+    0 14px 35px rgba(0, 0, 0, 0.24);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+
+/* Individual card colors */
+
+body:has(.admin-management-grid)
+.admin-management-card:nth-child(1) {
+  background:
+    linear-gradient(145deg, #37276e, #211a4e);
+}
+
+body:has(.admin-management-grid)
+.admin-management-card:nth-child(2) {
+  background:
+    linear-gradient(145deg, #173f72, #14284e);
+}
+
+body:has(.admin-management-grid)
+.admin-management-card:nth-child(3) {
+  background:
+    linear-gradient(145deg, #125d63, #103b50);
+}
+
+body:has(.admin-management-grid)
+.admin-management-card:nth-child(4) {
+  background:
+    linear-gradient(145deg, #704126, #43251e);
+}
+
+body:has(.admin-management-grid)
+.admin-management-card:nth-child(5) {
+  background:
+    linear-gradient(145deg, #705021, #443017);
+}
+
+body:has(.admin-management-grid)
+.admin-management-card:nth-child(6) {
+  background:
+    linear-gradient(145deg, #632b5d, #3d2045);
+}
+
+/* Glow */
+
+body:has(.admin-management-grid)
+.admin-management-card::after {
+  content: "";
+  position: absolute;
+
+  width: 140px;
+  height: 140px;
+
+  right: -45px;
+  bottom: -55px;
+
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.10);
+
+  filter: blur(30px);
+
+  pointer-events: none;
+}
+
+body:has(.admin-management-grid)
+.admin-management-card:hover {
+  transform: translateY(-6px);
+
+  border-color: rgba(255, 255, 255, 0.25);
+
+  box-shadow:
+    0 20px 45px rgba(0, 0, 0, 0.35),
+    0 0 30px rgba(112, 86, 255, 0.16);
+}
+
+/* ICON */
+
+body:has(.admin-management-grid) .admin-card-icon {
+  display: grid;
+  place-items: center;
+
+  width: 48px;
+  height: 48px;
+
+  margin-bottom: 18px;
+
+  border-radius: 14px;
+
+  background: rgba(255, 255, 255, 0.13);
+
+  border: 1px solid rgba(255, 255, 255, 0.14);
+
+  font-size: 21px;
+
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.18);
+}
+
+body:has(.admin-management-grid)
+.admin-management-card h3 {
+  color: #ffffff;
+  font-size: 19px;
+  margin-bottom: 8px;
+}
+
+body:has(.admin-management-grid)
+.admin-management-card p {
+  color: #d1d7f1;
+  font-size: 12px;
+  line-height: 1.7;
+  min-height: 62px;
+  margin-bottom: 15px;
+}
+
+body:has(.admin-management-grid)
+.admin-management-card strong {
+  color: #ffffff;
+  font-size: 12px;
+}
+
+/* ADMIN ALERTS */
+
+body:has(.admin-management-grid) .admin-alert {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+
+  padding: 18px 20px;
+  margin-bottom: 12px;
+
+  border-radius: 14px;
+
+  background: rgba(27, 37, 88, 0.82);
+
+  border: 1px solid rgba(117, 112, 202, 0.25);
+}
+
+body:has(.admin-management-grid) .admin-alert:last-child {
+  margin-bottom: 0;
+}
+
+body:has(.admin-management-grid) .admin-alert strong {
+  color: #ffffff;
+}
+
+body:has(.admin-management-grid) .admin-alert p {
+  color: #aeb9dc;
+  font-size: 12px;
+  margin-top: 3px;
+}
+
+body:has(.admin-management-grid) .admin-alert a {
+  color: #a38dff;
+  font-weight: 700;
+  font-size: 12px;
+}
+
+/* FINANCE BOXES */
+
+body:has(.admin-management-grid) .earning-box > div {
+  background: linear-gradient(
+    145deg,
+    #1b275b,
+    #121b46
+  );
+
+  border: 1px solid rgba(113, 108, 196, 0.25);
+
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.18);
+}
+
+body:has(.admin-management-grid) .earning-box small {
+  color: #aeb9dc;
+}
+
+body:has(.admin-management-grid) .earning-box strong {
+  color: #ffffff;
+}
+
+/* EMPTY ACTIVITY */
+
+body:has(.admin-management-grid) .empty-state {
+  background: linear-gradient(
+    145deg,
+    #182458,
+    #10183f
+  );
+
+  border: 1px dashed rgba(139, 119, 226, 0.45);
+
+  color: #ffffff;
+}
+
+body:has(.admin-management-grid) .empty-state h3 {
+  color: #ffffff;
+}
+
+body:has(.admin-management-grid) .empty-state p {
+  color: #aeb9dc;
+}
+
+body:has(.admin-management-grid) .empty-icon {
+  background: linear-gradient(
+    135deg,
+    #6258ff,
+    #8844e8
+  );
+
+  color: #ffffff;
+
+  box-shadow:
+    0 0 25px rgba(103, 82, 255, 0.35);
+}
+
+/* ADMIN FOOTER */
+
+body:has(.admin-management-grid) footer {
+  background: #05091e;
+  color: #9da8cf;
+  border-top: 1px solid rgba(111, 105, 190, 0.20);
+}
+
+/* MOBILE */
+
+@media (max-width: 900px) {
+
+  body:has(.admin-management-grid)
+  .admin-management-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+}
+
+@media (max-width: 620px) {
+
+  body:has(.admin-management-grid)
+  .admin-management-grid {
+    grid-template-columns: 1fr;
+  }
+
+  body:has(.admin-management-grid)
+  .dashboard-heading h1 {
+    font-size: 31px;
+  }
+
+  body:has(.admin-management-grid)
+  .admin-management-card {
+    min-height: auto;
+  }
+
+}
