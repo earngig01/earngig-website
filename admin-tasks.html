@@ -991,11 +991,24 @@ async function loadCreatedTasks() {
             </p>
 
 
-            <strong class="task-reward">
-              ₦${Number(
-                task.reward_amount || 0
-              ).toLocaleString("en-NG")}
-            </strong>
+            <strong
+  class="task-reward"
+  style="
+    display:inline-flex;
+    align-items:center;
+    width:max-content;
+    padding:10px 16px;
+    border-radius:10px;
+    background:#f6c945;
+    color:#172554 !important;
+    font-size:22px;
+    font-weight:800;
+  "
+>
+  ₦${Number(
+    task.reward_amount || 0
+  ).toLocaleString("en-NG")}
+</strong>
 
 
             <p>
@@ -1066,21 +1079,82 @@ async function loadCreatedTasks() {
             }
 
 
-            ${
-              task.task_link
-                ? `
-                  <a
-                    class="btn outline"
-                    href="${task.task_link}"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style="margin-top:15px;"
-                  >
-                    Open Task Link
-                  </a>
-                `
-                : ""
-            }
+            <div
+  style="
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:18px;
+  "
+>
+
+  <div
+  style="
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-top:15px;
+  "
+>
+
+  ${
+    task.task_link
+      ? `
+        <a
+          class="btn outline"
+          href="${task.task_link}"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Open Task Link
+        </a>
+      `
+      : ""
+  }
+
+  <button
+    type="button"
+    class="btn primary"
+    onclick="manageTask('${task.id}')"
+  >
+    Manage
+  </button>
+
+  <button
+    type="button"
+    class="btn danger"
+    onclick="deleteTask('${task.id}')"
+  >
+    Delete
+  </button>
+
+</div>
+
+  <button
+    type="button"
+    class="btn primary"
+    onclick="manageTask('${task.id}')"
+  >
+    Manage
+  </button>
+
+  <button
+    type="button"
+    class="btn outline"
+    onclick="editTask('${task.id}')"
+  >
+    Edit
+  </button>
+
+  <button
+    type="button"
+    class="btn danger"
+    onclick="deleteTask('${task.id}')"
+  >
+    Delete
+  </button>
+
+</div>
 
           </div>
 
@@ -1090,9 +1164,171 @@ async function loadCreatedTasks() {
 
     }).join("");
                         }
+  async function deleteTask(taskId) {
+
+  const confirmed = confirm(
+    "Are you sure you want to permanently delete this task?"
+  );
+
+  if (!confirmed) {
+    return;
+  }
+
+  const { error } = await supabaseClient
+    .from("tasks")
+    .delete()
+    .eq("id", taskId);
+
+  if (error) {
+
+    console.error("Delete task error:", error);
+
+    alert(
+      "Unable to delete this task: " +
+      error.message
+    );
+
+    return;
+  }
+
+  alert("Task deleted successfully.");
+
   loadCreatedTasks();
+  }
+  function manageTask(taskId) {
+
+  const taskCard =
+    document.querySelector(
+      `[onclick="manageTask('${taskId}')"]`
+    )?.closest(".task-card");
+
+  if (!taskCard) {
+    return;
+  }
+
+  alert(
+    "Task management selected.\n\n" +
+    "You can edit or delete this task using the controls below."
+  );
+  }
+
+  async function deleteTask(taskId) {
+
+  const confirmed = confirm(
+    "Are you sure you want to permanently delete this task?"
+  );
+
+  if (!confirmed) {
+    return;
+  }
+
+  const { error } = await supabaseClient
+    .from("tasks")
+    .delete()
+    .eq("id", taskId);
+
+  if (error) {
+    console.error("Delete task error:", error);
+
+    alert(
+      "Unable to delete this task: " +
+      error.message
+    );
+
+    return;
+  }
+
+  alert("Task deleted successfully.");
+
+  await loadCreatedTasks();
+}
+
+
+function manageTask(taskId) {
+
+  const action = confirm(
+    "Task Management\n\n" +
+    "Press OK to edit this task.\n" +
+    "Press Cancel to close."
+  );
+
+  if (action) {
+    editTask(taskId);
+  }
+}
+
+
+async function editTask(taskId) {
+
+  const { data: task, error } = await supabaseClient
+    .from("tasks")
+    .select(`
+      id,
+      title,
+      description,
+      category,
+      reward_amount,
+      task_link,
+      max_participants,
+      status
+    `)
+    .eq("id", taskId)
+    .single();
+
+  if (error || !task) {
+
+    console.error("Load task for editing error:", error);
+
+    alert("Unable to load this task.");
+
+    return;
+  }
+
+  document.getElementById("task-title").value =
+    task.title || "";
+
+  document.getElementById("task-description").value =
+    task.description || "";
+
+  document.getElementById("task-category").value =
+    task.category || "";
+
+  document.getElementById("task-reward").value =
+    task.reward_amount || 0;
+
+  document.getElementById("task-link").value =
+    task.task_link || "";
+
+  document.getElementById("task-status").value =
+    task.status || "active";
+
+  const participantSelect =
+    document.getElementById("task-max-participants");
+
+  if (task.max_participants === null) {
+    participantSelect.value = "unlimited";
+  } else {
+    participantSelect.value =
+      String(task.max_participants);
+  }
+
+  createTaskSection.style.display = "block";
+
+  createTaskSection.scrollIntoView({
+    behavior: "smooth"
+  });
+
+  alert(
+    "Task loaded into the form.\n\n" +
+    "Change the details and use the update button."
+  );
+}
+
+
+loadCreatedTasks();
 loadTaskSubmissions();
-  const createTaskButton =
+
+const createTaskButton =
   document.getElementById("create-task-button");
 
 const createTaskSection =
