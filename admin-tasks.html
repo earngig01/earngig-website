@@ -41,7 +41,14 @@
         <span class="eyebrow">ADMINISTRATION</span>
 
         <h1>Task Review</h1>
-
+<button
+  id="create-task-button"
+  class="btn primary"
+  type="button"
+  style="margin-top:20px;"
+>
+  + Create Task
+</button>
         <p>
           Review member task submissions and approve or reject
           completed tasks.
@@ -84,6 +91,138 @@
         <div>
 
           <span class="eyebrow">
+            <section
+  id="create-task-section"
+  class="dashboard-section"
+  style="display:none;"
+>
+
+  <div class="section-title">
+
+    <div>
+      <span class="eyebrow">CREATE TASK</span>
+      <h2>Create a new task</h2>
+    </div>
+
+  </div>
+
+
+  <form id="create-task-form">
+
+    <label for="task-title">
+      Task Title
+    </label>
+
+    <input
+      type="text"
+      id="task-title"
+      placeholder="e.g. Follow our Instagram account"
+      required
+    >
+
+
+    <label for="task-description">
+      Description
+    </label>
+
+    <textarea
+      id="task-description"
+      rows="4"
+      placeholder="Describe what the member needs to do."
+      required
+    ></textarea>
+
+
+    <label for="task-category">
+      Category
+    </label>
+
+    <input
+      type="text"
+      id="task-category"
+      placeholder="e.g. Social Media"
+      required
+    >
+
+
+    <label for="task-reward">
+      Reward Amount (₦)
+    </label>
+
+    <input
+      type="number"
+      id="task-reward"
+      min="0"
+      step="1"
+      placeholder="100"
+      required
+    >
+
+
+    <label for="task-link">
+      Task Link
+    </label>
+
+    <input
+      type="url"
+      id="task-link"
+      placeholder="https://..."
+    >
+
+    <small>
+      The link members should open to complete the task.
+    </small>
+
+
+    <label for="task-status">
+      Status
+    </label>
+
+    <select id="task-status" required>
+
+      <option value="draft">
+        Draft
+      </option>
+
+      <option value="active">
+        Active
+      </option>
+
+      <option value="paused">
+        Paused
+      </option>
+
+    </select>
+
+
+    <div style="margin-top:20px;">
+
+      <button
+        type="submit"
+        class="btn primary"
+      >
+        Create Task
+      </button>
+
+      <button
+        type="button"
+        id="cancel-create-task"
+        class="btn outline"
+      >
+        Cancel
+      </button>
+
+    </div>
+
+  </form>
+
+
+  <div
+    id="create-task-message"
+    style="margin-top:20px;"
+  ></div>
+
+            </section>
             SUBMISSIONS
           </span>
 
@@ -455,6 +594,173 @@ https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2
 
 
   loadTaskSubmissions();
+  const createTaskButton =
+  document.getElementById("create-task-button");
+
+const createTaskSection =
+  document.getElementById("create-task-section");
+
+const cancelCreateTask =
+  document.getElementById("cancel-create-task");
+
+
+createTaskButton.addEventListener("click", function () {
+
+  createTaskSection.style.display = "block";
+
+  createTaskSection.scrollIntoView({
+    behavior: "smooth"
+  });
+
+});
+
+
+cancelCreateTask.addEventListener("click", function () {
+
+  createTaskSection.style.display = "none";
+
+});
+
+  document
+  .getElementById("create-task-form")
+  .addEventListener("submit", async function(event) {
+
+    event.preventDefault();
+
+
+    const title =
+      document
+        .getElementById("task-title")
+        .value
+        .trim();
+
+
+    const description =
+      document
+        .getElementById("task-description")
+        .value
+        .trim();
+
+
+    const category =
+      document
+        .getElementById("task-category")
+        .value
+        .trim();
+
+
+    const rewardAmount =
+      Number(
+        document
+          .getElementById("task-reward")
+          .value
+      );
+
+
+    const taskLink =
+      document
+        .getElementById("task-link")
+        .value
+        .trim();
+
+
+    const status =
+      document
+        .getElementById("task-status")
+        .value;
+
+
+    if (!title || !description || !category) {
+
+      alert("Please complete the required fields.");
+
+      return;
+
+    }
+
+
+    if (!Number.isFinite(rewardAmount) || rewardAmount < 0) {
+
+      alert("Enter a valid reward amount.");
+
+      return;
+
+    }
+
+
+    const {
+      data: { user },
+      error: userError
+    } = await supabaseClient.auth.getUser();
+
+
+    if (userError || !user) {
+
+      alert("Your admin session has expired.");
+
+      window.location.href = "login.html";
+
+      return;
+
+    }
+
+
+    const {
+      error
+    } = await supabaseClient
+      .from("tasks")
+      .insert({
+        title: title,
+        description: description,
+        category: category,
+        reward_amount: rewardAmount,
+        task_link: taskLink || null,
+        status: status,
+        created_by: user.id
+      });
+
+
+    if (error) {
+
+      console.error(
+        "Create task error:",
+        error
+      );
+
+      document.getElementById(
+        "create-task-message"
+      ).textContent =
+        "Unable to create the task: " +
+        error.message;
+
+      return;
+
+    }
+
+
+    document.getElementById(
+      "create-task-message"
+    ).textContent =
+      "Task created successfully.";
+
+
+    document
+      .getElementById("create-task-form")
+      .reset();
+
+
+    setTimeout(function () {
+
+      createTaskSection.style.display =
+        "none";
+
+      document.getElementById(
+        "create-task-message"
+      ).textContent = "";
+
+    }, 1500);
+
+  });
 </script>
   
 </body>
