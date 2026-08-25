@@ -8210,3 +8210,6 @@ body:has(.member-earning-grid)
     margin-top: 15px;
   }
 }
+body {
+  background: red !important;
+}
