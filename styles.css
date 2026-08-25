@@ -3913,4 +3913,525 @@ body:has(.auth-page) footer .copy {
   }
 
 }
+/* =========================================================
+   EARNGIG ADMIN COMMAND CENTER
+   Admin dashboard only
+   ========================================================= */
+
+/* ADMIN PAGE BACKGROUND */
+
+body:has(.admin-management-grid) {
+  background:
+    radial-gradient(
+      circle at 15% 10%,
+      rgba(116, 68, 255, 0.16),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 85% 20%,
+      rgba(0, 140, 255, 0.10),
+      transparent 28%
+    ),
+    linear-gradient(
+      135deg,
+      #070d2b,
+      #0b1238 55%,
+      #080d2b
+    );
+
+  color: #dce5ff;
+}
+
+
+/* ADMIN HEADER */
+
+body:has(.admin-management-grid) header {
+  background:
+    linear-gradient(
+      135deg,
+      #080d2b,
+      #10174a
+    );
+
+  border-bottom: 1px solid rgba(120, 93, 255, 0.25);
+
+  box-shadow:
+    0 5px 30px rgba(0, 0, 0, 0.28);
+}
+
+
+body:has(.admin-management-grid) .logo {
+  color: #ffffff;
+}
+
+
+body:has(.admin-management-grid) .logo span {
+  color: #5d8cff;
+}
+
+
+body:has(.admin-management-grid) .logo-mark {
+  background:
+    linear-gradient(
+      135deg,
+      #684cff,
+      #347cff
+    );
+
+  box-shadow:
+    0 0 25px rgba(101, 73, 255, 0.45);
+}
+
+
+/* ADMIN PAGE */
+
+body:has(.admin-management-grid) .dashboard-page {
+  background: transparent;
+}
+
+
+/* ADMIN HEADINGS */
+
+body:has(.admin-management-grid) .dashboard-heading h1 {
+  color: #ffffff;
+  font-size: 42px;
+}
+
+
+body:has(.admin-management-grid) .dashboard-heading p {
+  color: #9eabd2;
+}
+
+
+body:has(.admin-management-grid) .eyebrow {
+  color: #9d7cff;
+}
+
+
+/* ADMIN STATS */
+
+body:has(.admin-management-grid) .dashboard-stat {
+  position: relative;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(25, 34, 83, 0.96),
+      rgba(13, 21, 61, 0.96)
+    );
+
+  border: 1px solid rgba(91, 107, 190, 0.25);
+
+  color: white;
+
+  box-shadow:
+    0 12px 35px rgba(0, 0, 0, 0.20);
+
+  overflow: hidden;
+}
+
+
+body:has(.admin-management-grid) .dashboard-stat::after {
+  content: "";
+
+  position: absolute;
+
+  width: 90px;
+  height: 90px;
+
+  right: -35px;
+  top: -35px;
+
+  border-radius: 50%;
+
+  background: rgba(117, 70, 255, 0.13);
+
+  filter: blur(20px);
+}
+
+
+body:has(.admin-management-grid) .dashboard-stat small {
+  color: #9ba9d0;
+}
+
+
+body:has(.admin-management-grid) .dashboard-stat strong {
+  color: #ffffff;
+}
+
+
+/* MANAGEMENT GRID */
+
+body:has(.admin-management-grid) .admin-management-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 18px;
+}
+
+
+/* MANAGEMENT CARDS */
+
+body:has(.admin-management-grid) .admin-management-card {
+  position: relative;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(25, 34, 83, 0.98),
+      rgba(13, 21, 61, 0.98)
+    );
+
+  border: 1px solid rgba(92, 104, 190, 0.25);
+
+  border-radius: 18px;
+
+  padding: 26px;
+
+  min-height: 220px;
+
+  color: #ffffff;
+
+  box-shadow:
+    0 12px 35px rgba(0, 0, 0, 0.22);
+
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+
+  overflow: hidden;
+}
+
+
+/* CARD GLOW */
+
+body:has(.admin-management-grid) .admin-management-card::before {
+  content: "";
+
+  position: absolute;
+
+  width: 150px;
+  height: 150px;
+
+  right: -70px;
+  top: -70px;
+
+  border-radius: 50%;
+
+  background: rgba(107, 74, 255, 0.16);
+
+  filter: blur(35px);
+
+  pointer-events: none;
+}
+
+
+/* CARD HOVER */
+
+body:has(.admin-management-grid) .admin-management-card:hover {
+  transform: translateY(-5px);
+
+  border-color: rgba(128, 105, 255, 0.65);
+
+  box-shadow:
+    0 18px 45px rgba(0, 0, 0, 0.30),
+    0 0 30px rgba(100, 73, 255, 0.13);
+}
+
+
+/* CARD TITLES */
+
+body:has(.admin-management-grid) .admin-management-card h2,
+body:has(.admin-management-grid) .admin-management-card h3 {
+  color: #ffffff;
+
+  font-size: 21px;
+
+  margin-top: 14px;
+}
+
+
+/* CARD DESCRIPTION */
+
+body:has(.admin-management-grid) .admin-management-card p {
+  color: #a9b5d7;
+
+  font-size: 13px;
+
+  line-height: 1.7;
+
+  margin-top: 8px;
+}
+
+
+/* CARD LINKS */
+
+body:has(.admin-management-grid) .admin-management-card a {
+  display: inline-block;
+
+  margin-top: 20px;
+
+  font-size: 13px;
+
+  font-weight: 800;
+
+  color: #9d7cff;
+}
+
+
+body:has(.admin-management-grid) .admin-management-card a:hover {
+  color: #ffffff;
+}
+
+
+/* ICONS */
+
+body:has(.admin-management-grid) .admin-management-card .ico {
+  width: 48px;
+  height: 48px;
+
+  border-radius: 14px;
+
+  font-size: 20px;
+
+  box-shadow:
+    0 8px 25px rgba(0, 0, 0, 0.22);
+}
+
+
+/* INDIVIDUAL CARD COLORS */
+
+body:has(.admin-management-grid) .admin-management-card:nth-child(1) .ico {
+  background: linear-gradient(135deg, #6d35d9, #a855f7);
+  color: white;
+
+  box-shadow:
+    0 0 25px rgba(168, 85, 247, 0.30);
+}
+
+
+body:has(.admin-management-grid) .admin-management-card:nth-child(2) .ico {
+  background: linear-gradient(135deg, #0878d1, #22a7ff);
+  color: white;
+
+  box-shadow:
+    0 0 25px rgba(34, 167, 255, 0.30);
+}
+
+
+body:has(.admin-management-grid) .admin-management-card:nth-child(3) .ico {
+  background: linear-gradient(135deg, #c98200, #ffc400);
+  color: #201600;
+
+  box-shadow:
+    0 0 25px rgba(255, 196, 0, 0.28);
+}
+
+
+body:has(.admin-management-grid) .admin-management-card:nth-child(4) .ico {
+  background: linear-gradient(135deg, #16a34a, #4ade80);
+  color: white;
+
+  box-shadow:
+    0 0 25px rgba(74, 222, 128, 0.28);
+}
+
+
+body:has(.admin-management-grid) .admin-management-card:nth-child(5) .ico {
+  background: linear-gradient(135deg, #7c3aed, #d946ef);
+  color: white;
+
+  box-shadow:
+    0 0 25px rgba(217, 70, 239, 0.28);
+}
+
+
+body:has(.admin-management-grid) .admin-management-card:nth-child(6) .ico {
+  background: linear-gradient(135deg, #0891b2, #22d3ee);
+  color: white;
+
+  box-shadow:
+    0 0 25px rgba(34, 211, 238, 0.28);
+}
+
+
+/* ADMIN SECTION CARDS */
+
+body:has(.admin-management-grid) .dashboard-section {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(21, 30, 75, 0.96),
+      rgba(11, 18, 54, 0.96)
+    );
+
+  border: 1px solid rgba(89, 104, 190, 0.25);
+
+  box-shadow:
+    0 15px 40px rgba(0, 0, 0, 0.22);
+}
+
+
+body:has(.admin-management-grid) .section-title h2 {
+  color: #ffffff;
+}
+
+
+/* ADMIN BUTTONS */
+
+body:has(.admin-management-grid) .primary {
+  background:
+    linear-gradient(
+      135deg,
+      #4d5cff,
+      #863cff
+    );
+
+  color: white;
+
+  border: none;
+
+  box-shadow:
+    0 8px 25px rgba(91, 67, 255, 0.30);
+}
+
+
+body:has(.admin-management-grid) .primary:hover {
+  box-shadow:
+    0 12px 30px rgba(91, 67, 255, 0.45);
+
+  transform: translateY(-1px);
+}
+
+
+body:has(.admin-management-grid) .outline {
+  border-color: rgba(120, 105, 255, 0.45);
+
+  color: #d9d4ff;
+
+  background: rgba(80, 62, 170, 0.08);
+}
+
+
+/* ADMIN BADGE */
+
+body:has(.admin-management-grid) .admin-badge {
+  background:
+    linear-gradient(
+      135deg,
+      #4c2c99,
+      #743cff
+    );
+
+  color: white;
+
+  border: 1px solid rgba(178, 143, 255, 0.45);
+
+  box-shadow:
+    0 0 20px rgba(112, 72, 255, 0.25);
+}
+
+
+/* ---------------------------------------------------------
+   WHITE WORKSPACE / READING AREAS
+   These remain intentionally white for readability.
+   --------------------------------------------------------- */
+
+.review-card,
+.form-section,
+.manuscript-box,
+.novel-form,
+.reader-content,
+.reader-page,
+.reading-area,
+.novel-reader,
+.chapter-content {
+  background: #ffffff;
+  color: #173449;
+}
+
+
+/* Make manuscript text comfortable to read */
+
+.manuscript-box p,
+.reader-content p,
+.reader-page p,
+.reading-area p,
+.novel-reader p,
+.chapter-content p {
+  color: #334b5c;
+  line-height: 1.85;
+}
+
+
+/* Keep headings readable in white workspaces */
+
+.review-card h1,
+.review-card h2,
+.review-card h3,
+.form-section h1,
+.form-section h2,
+.form-section h3,
+.manuscript-box h1,
+.manuscript-box h2,
+.manuscript-box h3,
+.reader-content h1,
+.reader-content h2,
+.reader-content h3,
+.reader-page h1,
+.reader-page h2,
+.reader-page h3,
+.reading-area h1,
+.reading-area h2,
+.reading-area h3,
+.novel-reader h1,
+.novel-reader h2,
+.novel-reader h3,
+.chapter-content h1,
+.chapter-content h2,
+.chapter-content h3 {
+  color: #10243d;
+}
+
+
+/* ADMIN FOOTER */
+
+body:has(.admin-management-grid) footer {
+  background: #060b25;
+
+  border-top: 1px solid rgba(95, 105, 190, 0.20);
+
+  color: #8998c3;
+}
+
+
+/* MOBILE ADMIN */
+
+@media (max-width: 900px) {
+
+  body:has(.admin-management-grid) .admin-management-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+}
+
+
+@media (max-width: 620px) {
+
+  body:has(.admin-management-grid) .admin-management-grid {
+    grid-template-columns: 1fr;
+  }
+
+  body:has(.admin-management-grid) .dashboard-heading h1 {
+    font-size: 32px;
+  }
+
+  body:has(.admin-management-grid) .admin-management-card {
+    min-height: auto;
+  }
+
+}
 
