@@ -735,15 +735,19 @@ async function loadTransactions() {
   if (!transactions || transactions.length === 0) {
 
     transactionList.innerHTML = `
-      <div class="empty-state">
-        <div class="empty-icon">₦</div>
+      <div id="transaction-list">
 
-        <h3>No transactions yet</h3>
+  <div class="empty-state">
+    <div class="empty-icon">₦</div>
 
-        <p>
-          Your wallet transactions will appear here.
-        </p>
-      </div>
+    <h3>Loading transactions...</h3>
+
+    <p>
+      Your wallet activity will appear here.
+    </p>
+  </div>
+
+</div>
     `;
 
     return;
@@ -843,6 +847,137 @@ document
     }
 
   });
+  async function loadTransactions() {
+
+  const transactionList =
+    document.getElementById("transaction-list");
+
+  if (!transactionList) {
+    return;
+  }
+
+  const {
+    data: { user },
+    error: userError
+  } = await supabaseClient.auth.getUser();
+
+  if (userError || !user) {
+    window.location.href = "login.html";
+    return;
+  }
+
+  const {
+    data: transactions,
+    error
+  } = await supabaseClient
+    .from("transactions")
+    .select(`
+      id,
+      type,
+      amount,
+      status,
+      description,
+      reference,
+      balance_after,
+      created_at
+    `)
+    .eq("user_id", user.id)
+    .order("created_at", {
+      ascending: false
+    });
+
+  if (error) {
+
+    console.error(
+      "Unable to load transactions:",
+      error
+    );
+
+    transactionList.innerHTML = `
+      <div class="empty-state">
+        <h3>Unable to load transactions</h3>
+        <p>
+          There was a problem loading your wallet activity.
+        </p>
+      </div>
+    `;
+
+    return;
+  }
+
+  if (!transactions || transactions.length === 0) {
+
+    transactionList.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">₦</div>
+
+        <h3>No transactions yet</h3>
+
+        <p>
+          Your wallet activity will appear here.
+        </p>
+      </div>
+    `;
+
+    return;
+  }
+
+  transactionList.innerHTML =
+    transactions.map(function(transaction) {
+
+      const amount =
+        Number(transaction.amount || 0);
+
+      const isCredit =
+        amount > 0;
+
+      const amountClass =
+        isCredit
+          ? "transaction-credit"
+          : "transaction-debit";
+
+      const sign =
+        isCredit ? "+" : "";
+
+      const date =
+        new Date(
+          transaction.created_at
+        ).toLocaleString("en-NG");
+
+      return `
+        <article class="transaction-item">
+
+          <div class="transaction-info">
+
+            <strong>
+              ${transaction.description || transaction.type}
+            </strong>
+
+            <small>
+              ${date}
+            </small>
+
+            ${
+              transaction.status
+                ? `
+                  <small>
+                    Status: ${transaction.status}
+                  </small>
+                `
+                : ""
+            }
+
+          </div>
+
+          <div class="transaction-amount ${amountClass}">
+            ${sign}₦${Math.abs(amount).toLocaleString("en-NG")}
+          </div>
+
+        </article>
+      `;
+
+    }).join("");
+  }
 </script>
     
 </body>
