@@ -7373,3 +7373,324 @@ body:has(.member-earning-grid)
     gap: 18px;
   }
 }
+/* =========================================================
+   TASK PAGE - SEPARATED STAT CARDS
+   ========================================================= */
+
+.task-stats {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 24px !important;
+  width: 100%;
+  margin-bottom: 32px;
+}
+
+.task-stat {
+  width: 100%;
+  min-width: 0;
+
+  min-height: 145px;
+
+  padding: 25px !important;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  border-radius: 20px !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      #192557,
+      #111a45
+    ) !important;
+
+  border: 1px solid rgba(115, 91, 255, 0.45) !important;
+
+  box-shadow:
+    0 15px 35px rgba(0, 0, 0, 0.25),
+    0 0 25px rgba(92, 67, 255, 0.08);
+
+  position: relative;
+  overflow: hidden;
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.task-stat::before {
+  content: "";
+
+  position: absolute;
+
+  width: 130px;
+  height: 130px;
+
+  right: -50px;
+  top: -55px;
+
+  border-radius: 50%;
+
+  background: rgba(118, 87, 255, 0.18);
+
+  filter: blur(35px);
+
+  pointer-events: none;
+}
+
+.task-stat small {
+  position: relative;
+  z-index: 2;
+
+  display: block;
+
+  color: #aeb9dc !important;
+
+  font-size: 12px !important;
+
+  margin-bottom: 10px;
+}
+
+.task-stat strong {
+  position: relative;
+  z-index: 2;
+
+  display: block;
+
+  color: #ffffff !important;
+
+  font-size: 30px !important;
+
+  line-height: 1.2;
+}
+
+.task-stat:hover {
+  transform: translateY(-4px);
+
+  border-color: rgba(139, 102, 255, 0.75) !important;
+
+  box-shadow:
+    0 20px 45px rgba(0, 0, 0, 0.30),
+    0 0 30px rgba(102, 76, 255, 0.18);
+}
+
+
+/* =========================================================
+   TASK LIST
+   ========================================================= */
+
+.task-grid {
+  display: grid;
+
+  grid-template-columns: 1fr;
+
+  gap: 20px;
+
+  width: 100%;
+}
+
+.task-card {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  gap: 25px;
+
+  width: 100%;
+
+  padding: 26px;
+
+  border-radius: 20px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #192557,
+      #111a45
+    );
+
+  border: 1px solid rgba(103, 108, 194, 0.38);
+
+  box-shadow:
+    0 15px 35px rgba(0, 0, 0, 0.22);
+}
+
+.task-card-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.task-card h3 {
+  color: #ffffff;
+
+  font-size: 20px;
+
+  margin: 8px 0;
+}
+
+.task-card p {
+  color: #aeb9dc;
+
+  font-size: 13px;
+
+  margin-bottom: 12px;
+}
+
+.task-reward {
+  display: block;
+
+  color: #20d58a;
+
+  font-size: 20px;
+
+  margin-bottom: 15px;
+}
+
+
+/* =========================================================
+   TASK PAGE - AVAILABLE TASKS PANEL
+   ========================================================= */
+
+.task-stats + .dashboard-section {
+  margin-top: 5px;
+
+  padding: 30px !important;
+
+  border-radius: 22px !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      #151f50,
+      #0f173d
+    ) !important;
+
+  border: 1px solid rgba(115, 91, 255, 0.38) !important;
+
+  box-shadow:
+    0 18px 40px rgba(0, 0, 0, 0.25);
+}
+
+.task-stats + .dashboard-section .section-title {
+  margin-bottom: 25px;
+}
+
+.task-stats + .dashboard-section .section-title h2 {
+  font-size: 28px;
+  color: #ffffff;
+}
+
+
+/* TASK FILTER */
+
+.task-filter {
+  min-width: 180px;
+
+  padding: 12px 15px;
+
+  border-radius: 11px;
+
+  border: 1px solid rgba(115, 91, 255, 0.45);
+
+  background: #10183f;
+
+  color: #ffffff;
+
+  outline: none;
+}
+
+
+/* =========================================================
+   EMPTY TASK STATE
+   ========================================================= */
+
+.task-grid .empty-state {
+  min-height: 210px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  flex-direction: column;
+
+  padding: 40px 25px;
+
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #121b48,
+      #0d1436
+    );
+
+  border: 1px dashed rgba(139, 102, 255, 0.60);
+
+  text-align: center;
+}
+
+.task-grid .empty-state h3 {
+  color: #ffffff !important;
+
+  font-size: 20px;
+
+  margin-bottom: 8px;
+}
+
+.task-grid .empty-state p {
+  color: #aeb9dc !important;
+
+  max-width: 600px;
+}
+
+
+/* =========================================================
+   TASK PAGE RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1000px) {
+
+  .task-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+
+    gap: 20px !important;
+  }
+
+}
+
+@media (max-width: 620px) {
+
+  .task-stats {
+    grid-template-columns: 1fr !important;
+
+    gap: 16px !important;
+  }
+
+  .task-stat {
+    min-height: 125px;
+  }
+
+  .task-card {
+    flex-direction: column;
+
+    align-items: stretch;
+  }
+
+  .task-card .btn {
+    width: 100%;
+  }
+
+  .task-filter {
+    width: 100%;
+
+    margin-top: 15px;
+  }
+
+}
