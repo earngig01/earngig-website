@@ -8436,3 +8436,62 @@ body {
   opacity: 1 !important;
   text-shadow: none !important;
 }
+/* TRANSACTIONS */
+
+.transaction-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.transaction-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 18px 20px;
+  background: #ffffff;
+  border: 1px solid #dceaf2;
+  border-radius: 14px;
+}
+
+.transaction-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.transaction-info strong {
+  color: #09243a;
+  font-size: 14px;
+}
+
+.transaction-info small {
+  color: #78909d;
+  font-size: 11px;
+}
+
+.transaction-amount {
+  font-size: 16px;
+  white-space: nowrap;
+}
+
+.transaction-amount.credit {
+  color: #159661;
+}
+
+.transaction-amount.debit {
+  color: #c64545;
+}
+
+@media (max-width: 620px) {
+
+  .transaction-row {
+    padding: 15px;
+  }
+
+  .transaction-amount {
+    font-size: 14px;
+  }
+
+}
