@@ -5604,3 +5604,729 @@ header {
     width: 100%;
   }
 }
+/* =========================================================
+   EARNGIG ADMIN DASHBOARD — FINAL DARK GLOW THEME
+   ========================================================= */
+
+body:has(.admin-badge) {
+  background:
+    radial-gradient(circle at 15% 10%, rgba(118, 76, 255, 0.18), transparent 30%),
+    radial-gradient(circle at 85% 20%, rgba(37, 115, 255, 0.13), transparent 32%),
+    radial-gradient(circle at 50% 90%, rgba(106, 61, 255, 0.10), transparent 35%),
+    linear-gradient(135deg, #060b27, #0b1238 52%, #070c2b);
+
+  color: #e9edff;
+}
+
+
+/* ADMIN HEADER */
+
+body:has(.admin-badge) header {
+  background:
+    linear-gradient(
+      135deg,
+      rgba(6, 11, 39, 0.98),
+      rgba(14, 20, 61, 0.98)
+    );
+
+  border-bottom: 1px solid rgba(117, 93, 255, 0.28);
+
+  box-shadow:
+    0 8px 35px rgba(0, 0, 0, 0.35),
+    0 0 30px rgba(92, 67, 255, 0.08);
+}
+
+
+/* SAME EARNGIG LOGO */
+
+body:has(.admin-badge) .logo {
+  color: #ffffff;
+}
+
+body:has(.admin-badge) .logo span {
+  color: #4d7cff;
+}
+
+body:has(.admin-badge) .logo-mark {
+  width: 44px;
+  height: 44px;
+  border-radius: 13px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7657ff,
+      #376cff
+    );
+
+  color: #ffffff !important;
+
+  box-shadow:
+    0 0 18px rgba(103, 75, 255, 0.55),
+    0 0 38px rgba(55, 108, 255, 0.22);
+}
+
+
+/* ADMIN BADGE */
+
+.admin-badge {
+  margin-left: auto;
+
+  padding: 8px 14px;
+
+  border-radius: 10px;
+
+  color: #d8c9ff;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(118, 76, 255, 0.22),
+      rgba(75, 91, 255, 0.14)
+    );
+
+  border: 1px solid rgba(142, 99, 255, 0.65);
+
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+
+  box-shadow:
+    0 0 18px rgba(110, 72, 255, 0.18);
+}
+
+
+/* ADMIN PAGE */
+
+body:has(.admin-badge) .dashboard-page {
+  min-height: calc(100vh - 76px);
+
+  background:
+    radial-gradient(
+      circle at 12% 15%,
+      rgba(116, 76, 255, 0.12),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 88% 40%,
+      rgba(38, 112, 255, 0.09),
+      transparent 32%
+    ),
+    linear-gradient(
+      135deg,
+      #080e30,
+      #0d1540 55%,
+      #080d2b
+    );
+
+  padding: 55px 0 80px;
+}
+
+
+/* ADMIN HEADINGS */
+
+body:has(.admin-badge) .dashboard-heading h1 {
+  color: #ffffff;
+}
+
+body:has(.admin-badge) .dashboard-heading p {
+  color: #aeb9dc;
+}
+
+body:has(.admin-badge) .eyebrow {
+  color: #a98cff;
+}
+
+
+/* WEBSITE BUTTON */
+
+body:has(.admin-badge) .dashboard-heading .outline {
+  color: #dce2ff;
+
+  border-color: rgba(126, 96, 255, 0.55);
+
+  background:
+    rgba(16, 23, 65, 0.7);
+
+  box-shadow:
+    0 0 20px rgba(98, 70, 255, 0.10);
+}
+
+body:has(.admin-badge) .dashboard-heading .outline:hover {
+  border-color: #8967ff;
+
+  background:
+    rgba(92, 67, 255, 0.16);
+
+  box-shadow:
+    0 0 25px rgba(102, 74, 255, 0.22);
+}
+
+
+/* =========================================================
+   OVERVIEW STAT CARDS
+   ========================================================= */
+
+body:has(.admin-badge) .dashboard-stat {
+  position: relative;
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      145deg,
+      #192557,
+      #10183f
+    );
+
+  border: 1px solid rgba(102, 109, 194, 0.34);
+
+  box-shadow:
+    0 15px 35px rgba(0, 0, 0, 0.24);
+
+  color: #ffffff;
+}
+
+body:has(.admin-badge) .dashboard-stat::before {
+  content: "";
+
+  position: absolute;
+
+  width: 120px;
+  height: 120px;
+
+  right: -45px;
+  top: -55px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(125, 91, 255, 0.20),
+      transparent 70%
+    );
+
+  pointer-events: none;
+}
+
+body:has(.admin-badge) .dashboard-stat small {
+  color: #aeb9dc;
+}
+
+body:has(.admin-badge) .dashboard-stat strong {
+  color: #ffffff;
+  font-size: 28px;
+}
+
+
+/* DIFFERENT ACCENTS */
+
+body:has(.admin-badge) .dashboard-stat:nth-child(1) {
+  border-color: rgba(130, 82, 255, 0.38);
+}
+
+body:has(.admin-badge) .dashboard-stat:nth-child(2) {
+  border-color: rgba(51, 139, 255, 0.34);
+}
+
+body:has(.admin-badge) .dashboard-stat:nth-child(3) {
+  border-color: rgba(255, 190, 45, 0.34);
+}
+
+body:has(.admin-badge) .dashboard-stat:nth-child(3) strong {
+  color: #ffd34f;
+}
+
+body:has(.admin-badge) .dashboard-stat:nth-child(4) {
+  border-color: rgba(68, 211, 130, 0.32);
+}
+
+body:has(.admin-badge) .dashboard-stat:hover {
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 18px 42px rgba(84, 65, 190, 0.25),
+    0 0 25px rgba(104, 77, 255, 0.10);
+}
+
+
+/* =========================================================
+   MAIN ADMIN SECTIONS
+   ========================================================= */
+
+body:has(.admin-badge) .dashboard-section {
+  position: relative;
+
+  background:
+    linear-gradient(
+      145deg,
+      #151f50,
+      #0f173d
+    );
+
+  border: 1px solid rgba(103, 108, 194, 0.30);
+
+  border-radius: 20px;
+
+  box-shadow:
+    0 18px 45px rgba(0, 0, 0, 0.24);
+
+  color: #ffffff;
+}
+
+body:has(.admin-badge) .section-title h2 {
+  color: #ffffff;
+}
+
+
+/* =========================================================
+   ADMIN MANAGEMENT CARDS
+   ========================================================= */
+
+.admin-management-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap: 18px;
+}
+
+
+.admin-management-card {
+  position: relative;
+
+  min-height: 230px;
+
+  display: flex;
+  flex-direction: column;
+
+  padding: 25px;
+
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #1b2558,
+      #111942
+    );
+
+  border: 1px solid rgba(104, 110, 194, 0.32);
+
+  color: #ffffff;
+
+  overflow: hidden;
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+
+.admin-management-card::after {
+  content: "";
+
+  position: absolute;
+
+  width: 170px;
+  height: 170px;
+
+  right: -70px;
+  bottom: -80px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(110, 76, 255, 0.18),
+      transparent 70%
+    );
+
+  pointer-events: none;
+}
+
+
+.admin-management-card:hover {
+  transform: translateY(-5px);
+
+  border-color:
+    rgba(133, 103, 255, 0.70);
+
+  background:
+    linear-gradient(
+      145deg,
+      #222c68,
+      #131d4a
+    );
+
+  box-shadow:
+    0 18px 42px rgba(69, 51, 170, 0.30),
+    0 0 28px rgba(105, 75, 255, 0.12);
+}
+
+
+.admin-management-card h3 {
+  color: #ffffff;
+
+  font-size: 20px;
+
+  margin: 17px 0 8px;
+}
+
+
+.admin-management-card p {
+  color: #aeb9dc;
+
+  font-size: 13px;
+
+  line-height: 1.7;
+
+  margin-bottom: 20px;
+}
+
+
+.admin-management-card strong {
+  margin-top: auto;
+
+  color: #a879ff;
+
+  font-size: 13px;
+}
+
+
+/* ICON */
+
+.admin-card-icon {
+  width: 52px;
+  height: 52px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 14px;
+
+  font-size: 23px;
+
+  color: #ffffff;
+
+  background:
+    linear-gradient(
+      135deg,
+      #694cff,
+      #387bff
+    );
+
+  box-shadow:
+    0 0 22px rgba(101, 73, 255, 0.32);
+}
+
+
+/* DIFFERENT CARD ICON COLORS */
+
+.admin-management-card:nth-child(2) .admin-card-icon {
+  background:
+    linear-gradient(
+      135deg,
+      #168dff,
+      #3c62ff
+    );
+
+  box-shadow:
+    0 0 22px rgba(39, 125, 255, 0.30);
+}
+
+.admin-management-card:nth-child(3) .admin-card-icon {
+  background:
+    linear-gradient(
+      135deg,
+      #24b8ff,
+      #4265ff
+    );
+}
+
+.admin-management-card:nth-child(4) .admin-card-icon {
+  background:
+    linear-gradient(
+      135deg,
+      #ffb51e,
+      #e97822
+    );
+
+  box-shadow:
+    0 0 22px rgba(255, 174, 35, 0.25);
+}
+
+.admin-management-card:nth-child(5) .admin-card-icon {
+  background:
+    linear-gradient(
+      135deg,
+      #28c97b,
+      #159d69
+    );
+
+  box-shadow:
+    0 0 22px rgba(42, 201, 123, 0.25);
+}
+
+.admin-management-card:nth-child(6) .admin-card-icon {
+  background:
+    linear-gradient(
+      135deg,
+      #8b4dff,
+      #c048ff
+    );
+
+  box-shadow:
+    0 0 22px rgba(173, 73, 255, 0.28);
+}
+
+
+/* =========================================================
+   PENDING ACTIONS
+   ========================================================= */
+
+.admin-alerts {
+  display: grid;
+
+  gap: 13px;
+}
+
+
+.admin-alert {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding: 20px 22px;
+
+  border-radius: 15px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #182458,
+      #111a42
+    );
+
+  border: 1px solid rgba(103, 108, 194, 0.30);
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+.admin-alert:hover {
+  transform: translateX(3px);
+
+  border-color:
+    rgba(131, 101, 255, 0.60);
+
+  box-shadow:
+    0 10px 28px rgba(78, 60, 180, 0.20);
+}
+
+
+.admin-alert strong {
+  display: block;
+
+  color: #ffffff;
+
+  font-size: 15px;
+
+  margin-bottom: 4px;
+}
+
+
+.admin-alert p {
+  color: #9eabd1;
+
+  font-size: 12px;
+}
+
+
+.admin-alert > a {
+  color: #49baff;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   FINANCIAL OVERVIEW
+   ========================================================= */
+
+body:has(.admin-badge) .earning-box {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap: 15px;
+}
+
+
+body:has(.admin-badge) .earning-box > div {
+  padding: 22px;
+
+  border-radius: 15px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #1b2558,
+      #111941
+    );
+
+  border: 1px solid rgba(103, 108, 194, 0.28);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.03);
+}
+
+
+body:has(.admin-badge) .earning-box small {
+  color: #9eabd1;
+}
+
+
+body:has(.admin-badge) .earning-box strong {
+  color: #ffd34f;
+
+  font-size: 25px;
+
+  margin-top: 7px;
+}
+
+
+/* =========================================================
+   RECENT ACTIVITY
+   ========================================================= */
+
+body:has(.admin-badge) .empty-state {
+  background:
+    linear-gradient(
+      145deg,
+      #182458,
+      #10183e
+    );
+
+  border:
+    1px dashed rgba(119, 110, 210, 0.45);
+
+  color: #ffffff;
+
+  box-shadow:
+    inset 0 0 35px rgba(74, 60, 160, 0.08);
+}
+
+
+body:has(.admin-badge) .empty-state h3 {
+  color: #ffffff;
+}
+
+
+body:has(.admin-badge) .empty-state p {
+  color: #aeb9dc;
+}
+
+
+body:has(.admin-badge) .empty-icon {
+  width: 55px;
+  height: 55px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #4d5cff,
+      #7c3ff2
+    );
+
+  color: #ffffff;
+
+  box-shadow:
+    0 0 25px rgba(101, 75, 255, 0.35);
+}
+
+
+/* =========================================================
+   ADMIN FOOTER
+   ========================================================= */
+
+body:has(.admin-badge) footer {
+  background:
+    #060a24;
+
+  color: #8996c0;
+
+  border-top:
+    1px solid rgba(105, 94, 180, 0.20);
+}
+
+
+body:has(.admin-badge) footer .copy {
+  border-top-color:
+    rgba(105, 94, 180, 0.22);
+}
+
+
+/* =========================================================
+   MOBILE ADMIN
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+  .admin-management-grid {
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+
+}
+
+
+@media (max-width: 620px) {
+
+  body:has(.admin-badge) .dashboard-page {
+    padding: 35px 0 60px;
+  }
+
+  .admin-management-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-management-card {
+    min-height: 210px;
+  }
+
+  body:has(.admin-badge) .earning-box {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-alert {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .admin-alert > a {
+    margin-top: 4px;
+  }
+
+  .admin-badge {
+    font-size: 9px;
+    padding: 7px 10px;
+  }
+
+}
