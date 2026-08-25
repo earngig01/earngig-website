@@ -2524,3 +2524,438 @@ footer {
   }
 
 }
+/* =========================================================
+   EARNGIG NEW VISUAL THEME
+   Royal Blue + Mauve + Gold
+   ========================================================= */
+
+:root {
+  --eg-blue: #3155d9;
+  --eg-blue-dark: #172b72;
+  --eg-blue-deep: #101b4d;
+
+  --eg-mauve: #8b5fbf;
+  --eg-purple: #6d45b5;
+
+  --eg-gold: #e0a72f;
+  --eg-gold-light: #fff4d6;
+
+  --eg-green: #159a63;
+  --eg-orange: #e58a24;
+  --eg-red: #d94b5b;
+
+  --eg-bg: #f5f6fb;
+  --eg-card: #ffffff;
+
+  --eg-text: #18234a;
+  --eg-muted: #68728b;
+
+  --eg-border: #dfe3f0;
+
+  --eg-shadow:
+    0 12px 30px rgba(25, 38, 90, 0.08);
+}
+
+
+/* BODY */
+
+body {
+  color: var(--eg-text);
+  background: var(--eg-bg);
+}
+
+
+/* HEADER */
+
+header {
+  background: rgba(255, 255, 255, 0.96);
+  border-bottom: 1px solid var(--eg-border);
+  box-shadow: 0 3px 15px rgba(25, 38, 90, 0.05);
+}
+
+
+/* LOGO */
+
+.logo {
+  color: var(--eg-blue-deep);
+}
+
+.logo span {
+  color: var(--eg-blue);
+}
+
+.logo-mark {
+  background: linear-gradient(
+    135deg,
+    var(--eg-mauve),
+    var(--eg-blue)
+  );
+}
+
+
+/* BUTTONS */
+
+.primary {
+  background: linear-gradient(
+    135deg,
+    var(--eg-blue),
+    var(--eg-purple)
+  );
+  color: white;
+  border-color: transparent;
+  box-shadow: 0 7px 18px rgba(49, 85, 217, 0.20);
+}
+
+.primary:hover {
+  transform: translateY(-1px);
+}
+
+.outline {
+  border-color: #cbd2e5;
+  color: var(--eg-blue-dark);
+  background: white;
+}
+
+.outline:hover {
+  border-color: var(--eg-blue);
+  color: var(--eg-blue);
+}
+
+.light {
+  background: white;
+  border-color: var(--eg-border);
+  color: var(--eg-blue-dark);
+}
+
+
+/* EYEBROWS */
+
+.eyebrow {
+  color: var(--eg-blue);
+}
+
+
+/* DASHBOARD */
+
+.dashboard-page {
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(139, 95, 191, 0.08),
+      transparent 30%
+    ),
+    var(--eg-bg);
+}
+
+.dashboard-heading h1 {
+  color: var(--eg-blue-deep);
+}
+
+.dashboard-heading p {
+  color: var(--eg-muted);
+}
+
+
+/* STAT CARDS */
+
+.dashboard-stat {
+  background: var(--eg-card);
+  border: 1px solid var(--eg-border);
+  box-shadow: var(--eg-shadow);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dashboard-stat:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 16px 35px rgba(25, 38, 90, 0.12);
+}
+
+.dashboard-stat small {
+  color: var(--eg-muted);
+}
+
+.dashboard-stat strong {
+  color: var(--eg-blue-deep);
+}
+
+
+/* MAIN DASHBOARD SECTIONS */
+
+.dashboard-section {
+  background: var(--eg-card);
+  border: 1px solid var(--eg-border);
+  box-shadow: var(--eg-shadow);
+}
+
+
+/* CARDS */
+
+.cards article,
+.task-card,
+.review-card,
+.form-section {
+  background: var(--eg-card);
+  border-color: var(--eg-border);
+  box-shadow: var(--eg-shadow);
+}
+
+
+/* TASK CARDS */
+
+.task-card {
+  border-radius: 18px;
+  padding: 22px;
+  margin-bottom: 16px;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.task-card:hover {
+  transform: translateY(-3px);
+  border-color: #c4ccef;
+  box-shadow:
+    0 18px 38px rgba(25, 38, 90, 0.12);
+}
+
+
+/* TASK REWARD */
+
+.task-reward {
+  display: inline-block;
+  color: #b77900;
+  background: var(--eg-gold-light);
+  border-radius: 9px;
+  padding: 5px 10px;
+  margin-top: 10px;
+}
+
+
+/* AVAILABLE TASK STATUS */
+
+.status-active {
+  color: var(--eg-green);
+  background: #e8f8f0;
+}
+
+.status-paused {
+  color: var(--eg-orange);
+  background: #fff1df;
+}
+
+.status-rejected {
+  color: var(--eg-red);
+  background: #ffebee;
+}
+
+
+/* EMPTY STATE */
+
+.empty-state {
+  background: #fafbff;
+  border-color: #cdd4e6;
+}
+
+.empty-icon {
+  background: #e9edff;
+  color: var(--eg-blue);
+}
+
+
+/* ASSESSMENT NOTICE */
+
+.assessment-notice {
+  background:
+    linear-gradient(
+      135deg,
+      #eef1ff,
+      #f8f1ff
+    );
+  border: 1px solid #d9d5f2;
+}
+
+.assessment-notice strong {
+  color: var(--eg-blue-deep);
+}
+
+
+/* ADMIN BADGE */
+
+.admin-badge {
+  background: linear-gradient(
+    135deg,
+    var(--eg-blue-deep),
+    var(--eg-purple)
+  );
+}
+
+
+/* FORM INPUTS */
+
+input,
+textarea,
+select {
+  accent-color: var(--eg-blue);
+}
+
+.novel-form input[type="text"],
+.novel-form input[type="number"],
+.novel-form input[type="file"],
+.novel-form select,
+.novel-form textarea,
+.review-card select,
+.review-card input[type="number"],
+.review-card textarea {
+  border-color: #ccd3e5;
+  background: #fff;
+  color: var(--eg-text);
+}
+
+.novel-form input:focus,
+.novel-form select:focus,
+.novel-form textarea:focus,
+.review-card select:focus,
+.review-card input:focus,
+.review-card textarea:focus {
+  border-color: var(--eg-blue);
+  box-shadow:
+    0 0 0 3px rgba(49, 85, 217, 0.10);
+}
+
+
+/* PREMIUM */
+
+.premium {
+  background:
+    linear-gradient(
+      120deg,
+      var(--eg-blue-deep),
+      #39206d
+    );
+  box-shadow:
+    0 20px 45px rgba(23, 43, 114, 0.20);
+}
+
+.premium span {
+  color: #d5c2ff;
+}
+
+
+/* GOLD MONEY AREAS */
+
+.wallet,
+.money-card,
+.earning-box > div {
+  border-color: var(--eg-border);
+}
+
+.earning-box > div:first-child {
+  background: linear-gradient(
+    135deg,
+    #fff9e8,
+    #fff3cd
+  );
+}
+
+.earning-box > div:first-child strong {
+  color: #a66c00;
+}
+
+
+/* FOOTER */
+
+footer {
+  background:
+    linear-gradient(
+      135deg,
+      #101b4d,
+      #24153f
+    );
+}
+
+.copy {
+  border-top-color: rgba(255,255,255,0.12);
+}
+
+
+/* LINKS */
+
+.text-link,
+.cards a,
+.signup-text a,
+.login-options a {
+  color: var(--eg-blue);
+}
+
+
+/* WARNING / DANGER */
+
+.warning {
+  background: #fff4df;
+  color: #a96808;
+  border-color: #f0d39a;
+}
+
+.danger {
+  background: #ffedf0;
+  color: var(--eg-red);
+  border-color: #f3c8cf;
+}
+
+
+/* PENDING */
+
+.status-badge.pending {
+  background: #fff3df;
+  color: #a96808;
+}
+
+
+/* SUCCESS */
+
+.green {
+  background: #e6f7ef;
+  color: var(--eg-green);
+}
+
+
+/* PURPLE */
+
+.purple {
+  background: #f1eaff;
+  color: var(--eg-purple);
+}
+
+
+/* BLUE */
+
+.blue {
+  background: #e8edff;
+  color: var(--eg-blue);
+}
+
+
+/* ORANGE */
+
+.orange {
+  background: #fff0df;
+  color: var(--eg-orange);
+}
+
+
+/* PINK */
+
+.pink {
+  background: #ffeaf3;
+  color: #c34d86;
+}
+
+
+/* CYAN */
+
+.cyan {
+  background: #e3f7f8;
+  color: #078b91;
+}
