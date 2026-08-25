@@ -262,15 +262,15 @@ async function loadTasks() {
    * Load approved tasks only.
    */
   const {
-    data: tasks,
-    error: tasksError
-  } = await supabaseClient
-    .from("tasks")
-    .select("*")
-    .eq("status", "approved")
-    .order("created_at", {
-      ascending: false
-    });
+  data: tasks,
+  error: tasksError
+} = await supabaseClient
+  .from("tasks")
+  .select("*")
+  .eq("status", "active")
+  .order("created_at", {
+    ascending: false
+  });
 
 
   if (tasksError) {
@@ -481,7 +481,20 @@ async function loadTasks() {
                 task.reward_amount || 0
               ).toLocaleString("en-NG")}
             </strong>
-
+${
+  task.task_link
+    ? `
+      <a
+        class="btn outline"
+        href="${task.task_link}"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Open Task Link
+      </a>
+    `
+    : ""
+}
           </div>
 
           <button
@@ -521,11 +534,11 @@ async function startTask(taskId) {
   } = await supabaseClient
     .from("tasks")
     .select(
-      "id, reward_amount, status"
-    )
-    .eq("id", taskId)
-    .eq("status", "approved")
-    .single();
+  "id, title, description, category, reward_amount, task_link, max_participants, status"
+)
+.eq("id", taskId)
+.eq("status", "active")
+.single();
 
 
   if (taskError || !task) {
