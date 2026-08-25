@@ -273,7 +273,65 @@
 
 </section>
 
+<!-- CREATED TASKS -->
 
+<section class="dashboard-section">
+
+  <div class="section-title">
+
+    <div>
+      <span class="eyebrow">TASK MANAGEMENT</span>
+      <h2>Created Tasks</h2>
+    </div>
+
+  </div>
+
+
+  <div class="dashboard-stats">
+
+    <div class="dashboard-stat">
+      <small>Total Tasks</small>
+      <strong id="created-task-count">0</strong>
+    </div>
+
+    <div class="dashboard-stat">
+      <small>Active Tasks</small>
+      <strong id="active-task-count">0</strong>
+    </div>
+
+    <div class="dashboard-stat">
+      <small>Total Participants</small>
+      <strong id="total-task-participants">0</strong>
+    </div>
+
+    <div class="dashboard-stat">
+      <small>Available Slots</small>
+      <strong id="available-task-slots">0</strong>
+    </div>
+
+  </div>
+
+
+  <div
+    id="created-task-list"
+    class="task-grid"
+  >
+
+    <div class="empty-state">
+
+      <div class="empty-icon">✓</div>
+
+      <h3>Loading created tasks...</h3>
+
+      <p>
+        Your created tasks will appear here.
+      </p>
+
+    </div>
+
+  </div>
+
+</section>
 <!-- TASK SUBMISSIONS -->
 
 <section class="dashboard-section">
@@ -653,8 +711,387 @@ https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2
     loadTaskSubmissions();
   }
 
+async function loadCreatedTasks() {
 
-  loadTaskSubmissions();
+  const taskList =
+    document.getElementById("created-task-list");
+
+  if (!taskList) {
+    return;
+  }
+
+
+  /*
+   * Load all created tasks.
+   */
+  const {
+    data: tasks,
+    error: tasksError
+  } = await supabaseClient
+    .from("tasks")
+    .select(`
+      id,
+      title,
+      description,
+      category,
+      reward_amount,
+      task_link,
+      max_participants,
+      status,
+      created_at
+    `)
+    .order("created_at", {
+      ascending: false
+    });
+
+
+  if (tasksError) {
+
+    console.error(
+      "Error loading created tasks:",
+      tasksError
+    );
+
+    taskList.innerHTML = `
+      <div class="empty-state">
+
+        <h3>Unable to load created tasks</h3>
+
+        <p>
+          There was a problem loading your tasks.
+        </p>
+
+      </div>
+    `;
+
+    return;
+  }
+
+
+  const createdTasks =
+    tasks || [];
+
+
+  /*
+   * Load all task attempts so we can
+   * calculate participation.
+   */
+  const {
+    data: attempts,
+    error: attemptsError
+  } = await supabaseClient
+    .from("task_attempts")
+    .select(
+      "task_id, status"
+    );
+
+
+  if (attemptsError) {
+
+    console.error(
+      "Error loading task participants:",
+      attemptsError
+    );
+
+    taskList.innerHTML = `
+      <div class="empty-state">
+
+        <h3>Unable to load participation data</h3>
+
+        <p>
+          The tasks loaded, but participant numbers
+          could not be calculated.
+        </p>
+
+      </div>
+    `;
+
+    return;
+  }
+
+
+  const taskAttempts =
+    attempts || [];
+
+
+  /*
+   * Calculate overall statistics.
+   */
+  const totalTasks =
+    createdTasks.length;
+
+
+  const activeTasks =
+    createdTasks.filter(function(task) {
+
+      return task.status === "active";
+
+    }).length;
+
+
+  const totalParticipants =
+    taskAttempts.filter(function(attempt) {
+
+      return attempt.status !== "rejected";
+
+    }).length;
+
+
+  let availableSlots = 0;
+
+
+  createdTasks.forEach(function(task) {
+
+    if (task.max_participants === null) {
+      return;
+    }
+
+
+    const participantCount =
+      taskAttempts.filter(function(attempt) {
+
+        return (
+          attempt.task_id === task.id &&
+          attempt.status !== "rejected"
+        );
+
+      }).length;
+
+
+    availableSlots += Math.max(
+      Number(task.max_participants) -
+      participantCount,
+      0
+    );
+
+  });
+
+
+  /*
+   * Update summary cards.
+   */
+  document.getElementById(
+    "created-task-count"
+  ).textContent = totalTasks;
+
+
+  document.getElementById(
+    "active-task-count"
+  ).textContent = activeTasks;
+
+
+  document.getElementById(
+    "total-task-participants"
+  ).textContent = totalParticipants;
+
+
+  document.getElementById(
+    "available-task-slots"
+  ).textContent = availableSlots;
+
+
+  /*
+   * No tasks yet.
+   */
+  if (createdTasks.length === 0) {
+
+    taskList.innerHTML = `
+      <div class="empty-state">
+
+        <div class="empty-icon">
+          ✓
+        </div>
+
+        <h3>No tasks created yet</h3>
+
+        <p>
+          Tasks you create will appear here.
+        </p>
+
+      </div>
+    `;
+
+    return;
+  }
+
+
+  /*
+   * Render every created task.
+   */
+  taskList.innerHTML =
+    createdTasks.map(function(task) {
+
+
+      const participantCount =
+        taskAttempts.filter(function(attempt) {
+
+          return (
+            attempt.task_id === task.id &&
+            attempt.status !== "rejected"
+          );
+
+        }).length;
+
+
+      const unlimited =
+        task.max_participants === null;
+
+
+      const maximum =
+        unlimited
+          ? null
+          : Number(task.max_participants);
+
+
+      const remaining =
+        unlimited
+          ? null
+          : Math.max(
+              maximum - participantCount,
+              0
+            );
+
+
+      const progress =
+        unlimited || maximum === 0
+          ? 0
+          : Math.min(
+              Math.round(
+                (participantCount / maximum) * 100
+              ),
+              100
+            );
+
+
+      let statusLabel =
+        task.status || "unknown";
+
+
+      return `
+
+        <article class="task-card">
+
+          <div class="task-card-content">
+
+            <span class="eyebrow">
+              ${task.category || "TASK"}
+            </span>
+
+
+            <h3>
+              ${task.title || "Untitled Task"}
+            </h3>
+
+
+            <p>
+              ${
+                task.description ||
+                "No description provided."
+              }
+            </p>
+
+
+            <strong class="task-reward">
+              ₦${Number(
+                task.reward_amount || 0
+              ).toLocaleString("en-NG")}
+            </strong>
+
+
+            <p>
+              <strong>Status:</strong>
+              ${statusLabel}
+            </p>
+
+
+            <p>
+
+              <strong>Participants:</strong>
+
+              ${
+                unlimited
+                  ? participantCount +
+                    " / Unlimited"
+                  : participantCount +
+                    " / " +
+                    maximum
+              }
+
+            </p>
+
+
+            ${
+              unlimited
+                ? `
+                  <p>
+                    <strong>Participation:</strong>
+                    Unlimited
+                  </p>
+                `
+                : `
+                  <p>
+                    <strong>Remaining:</strong>
+                    ${remaining}
+                    ${
+                      remaining === 1
+                        ? " spot"
+                        : " spots"
+                    }
+                  </p>
+
+                  <p>
+                    <strong>Progress:</strong>
+                    ${progress}%
+                  </p>
+
+                  <div
+                    style="
+                      width:100%;
+                      height:8px;
+                      background:#e5e7eb;
+                      border-radius:999px;
+                      overflow:hidden;
+                      margin-top:8px;
+                    "
+                  >
+                    <div
+                      style="
+                        width:${progress}%;
+                        height:100%;
+                        background:#159bd3;
+                      "
+                    ></div>
+                  </div>
+                `
+            }
+
+
+            ${
+              task.task_link
+                ? `
+                  <a
+                    class="btn outline"
+                    href="${task.task_link}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style="margin-top:15px;"
+                  >
+                    Open Task Link
+                  </a>
+                `
+                : ""
+            }
+
+          </div>
+
+        </article>
+
+      `;
+
+    }).join("");
+                        }
+  loadCreatedTasks();
+loadTaskSubmissions();
   const createTaskButton =
   document.getElementById("create-task-button");
 
@@ -813,7 +1250,8 @@ const maxParticipants =
       "create-task-message"
     ).textContent =
       "Task created successfully.";
-
+    
+loadCreatedTasks();
 
     document
       .getElementById("create-task-form")
