@@ -339,18 +339,19 @@
       </div>
 
 
-      <div class="empty-state">
+<div id="transaction-list" class="transaction-list">
 
-        <div class="empty-icon">₦</div>
+  <div class="empty-state">
+    <div class="empty-icon">₦</div>
 
-        <h3>No transactions yet</h3>
+    <h3>Loading transactions...</h3>
 
-        <p>
-          Your approved earnings, payments and withdrawals
-          will appear here.
-        </p>
+    <p>
+      Your wallet transactions will appear here.
+    </p>
+  </div>
 
-      </div>
+</div>  
 
     </section>
 
@@ -683,7 +684,124 @@ document
 /*
  * Load the dashboard.
  */
+
+async function loadTransactions() {
+
+  const transactionList =
+    document.getElementById("transaction-list");
+
+  if (!transactionList) {
+    return;
+  }
+
+  const {
+    data: { user },
+    error: userError
+  } = await supabaseClient.auth.getUser();
+
+  if (userError || !user) {
+    return;
+  }
+
+  const {
+    data: transactions,
+    error
+  } = await supabaseClient
+    .from("transactions")
+    .select("*")
+    .eq("user_id", user.id)
+    .order("created_at", {
+      ascending: false
+    })
+    .limit(20);
+
+  if (error) {
+
+    console.error(
+      "Unable to load transactions:",
+      error
+    );
+
+    transactionList.innerHTML = `
+      <div class="empty-state">
+        <h3>Unable to load transactions</h3>
+        <p>Please try again later.</p>
+      </div>
+    `;
+
+    return;
+  }
+
+  if (!transactions || transactions.length === 0) {
+
+    transactionList.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">₦</div>
+
+        <h3>No transactions yet</h3>
+
+        <p>
+          Your wallet transactions will appear here.
+        </p>
+      </div>
+    `;
+
+    return;
+  }
+
+  transactionList.innerHTML =
+    transactions.map(function(transaction) {
+
+      const amount =
+        Number(transaction.amount || 0);
+
+      const isDebit =
+        transaction.type === "debit" ||
+        transaction.type === "withdrawal" ||
+        amount < 0;
+
+      const displayAmount =
+        Math.abs(amount);
+
+      const sign =
+        isDebit ? "−" : "+";
+
+      const date =
+        transaction.created_at
+          ? new Date(transaction.created_at)
+              .toLocaleDateString("en-NG")
+          : "";
+
+      return `
+        <div class="transaction-row">
+
+          <div class="transaction-info">
+
+            <strong>
+              ${transaction.description || "Wallet transaction"}
+            </strong>
+
+            <small>
+              ${transaction.status || "completed"}
+              ${date ? " • " + date : ""}
+            </small>
+
+          </div>
+
+          <strong class="transaction-amount ${
+            isDebit ? "debit" : "credit"
+          }">
+            ${sign}₦${displayAmount.toLocaleString("en-NG")}
+          </strong>
+
+        </div>
+      `;
+
+    }).join("");
+}
+  
 loadDashboard();
+  loadTransactions();
 document
   .getElementById("copy-referral-button")
   .addEventListener("click", async function () {
