@@ -8415,3 +8415,24 @@ body {
   }
 
 }
+/* FINAL USER TASK REWARD VISIBILITY FIX */
+
+.task-card .task-reward {
+  display: inline-block !important;
+
+  background: #FFD54A !important;
+  color: #111827 !important;
+
+  padding: 8px 14px !important;
+  margin-top: 12px !important;
+
+  font-size: 22px !important;
+  font-weight: 900 !important;
+
+  line-height: 1.2 !important;
+
+  border-radius: 10px !important;
+
+  opacity: 1 !important;
+  text-shadow: none !important;
+}
