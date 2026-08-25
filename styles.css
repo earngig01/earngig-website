@@ -8265,3 +8265,145 @@ body:has(.member-earning-grid)
 body {
   background: red !important;
 }
+/* =========================================================
+   FINAL EARNGIG DASHBOARD + TASK CARD LAYOUT
+   ========================================================= */
+
+/* DASHBOARD STAT CARDS */
+.dashboard-stats {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 24px !important;
+  width: 100% !important;
+  margin: 0 0 35px !important;
+}
+
+.dashboard-stat {
+  min-height: 125px !important;
+  padding: 26px !important;
+  border-radius: 20px !important;
+
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+
+  border: 1px solid rgba(126, 91, 255, 0.35) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(28, 39, 91, 0.98),
+      rgba(15, 24, 66, 0.98)
+    ) !important;
+
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.18) !important;
+}
+
+.dashboard-stat small {
+  display: block !important;
+  color: #aeb9dc !important;
+  font-size: 13px !important;
+  margin-bottom: 8px !important;
+}
+
+.dashboard-stat strong {
+  display: block !important;
+  color: #ffffff !important;
+  font-size: 28px !important;
+}
+
+/* TASK CARDS */
+.task-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 24px !important;
+  width: 100% !important;
+}
+
+.task-card {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  gap: 24px !important;
+
+  min-height: 280px !important;
+  padding: 28px !important;
+
+  border: 1px solid rgba(126, 91, 255, 0.35) !important;
+  border-radius: 20px !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(28, 39, 91, 0.98),
+      rgba(15, 24, 66, 0.98)
+    ) !important;
+
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.18) !important;
+}
+
+.task-card-content {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 10px !important;
+}
+
+.task-card h3 {
+  color: #ffffff !important;
+  font-size: 22px !important;
+  margin: 0 !important;
+}
+
+.task-card p {
+  color: #aeb9dc !important;
+  font-size: 13px !important;
+}
+
+.task-reward {
+  color: #ffffff !important;
+  font-size: 21px !important;
+  margin-top: 8px !important;
+}
+
+.task-card .btn {
+  width: 100% !important;
+}
+
+/* TABLET */
+@media (max-width: 900px) {
+
+  .dashboard-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .task-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+}
+
+/* PHONE */
+@media (max-width: 620px) {
+
+  .dashboard-stats {
+    grid-template-columns: 1fr !important;
+    gap: 18px !important;
+  }
+
+  .dashboard-stat {
+    min-height: 110px !important;
+  }
+
+  .task-grid {
+    grid-template-columns: 1fr !important;
+    gap: 18px !important;
+  }
+
+  .task-card {
+    min-height: 260px !important;
+    padding: 22px !important;
+  }
+
+}
