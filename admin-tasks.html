@@ -110,7 +110,11 @@
 
 
   <form id="create-task-form">
-
+<input
+  type="hidden"
+  id="editing-task-id"
+  value=""
+>
     <label for="task-title">
       Task Title
     </label>
@@ -246,12 +250,13 @@
 
     <div style="margin-top:20px;">
 
-      <button
-        type="submit"
-        class="btn primary"
-      >
-        Create Task
-      </button>
+    <button
+  type="submit"
+  id="create-task-submit"
+  class="btn primary"
+>
+  Create Task
+    </button>
 
       <button
         type="button"
@@ -1448,20 +1453,67 @@ const maxParticipants =
     }
 
 
-    const {
-      error
-    } = await supabaseClient
-      .from("tasks")
-      .insert({
-  title: title,
-  description: description,
-  category: category,
-  reward_amount: rewardAmount,
-  task_link: taskLink || null,
-  max_participants: maxParticipants,
-  status: status,
-  created_by: user.id
-});
+    const editingTaskId =
+  document.getElementById("editing-task-id").value.trim();
+
+let taskError;
+
+if (editingTaskId) {
+
+  // UPDATE existing task
+  const { error } = await supabaseClient
+    .from("tasks")
+    .update({
+      title: title,
+      description: description,
+      category: category,
+      reward_amount: rewardAmount,
+      task_link: taskLink || null,
+      max_participants: maxParticipants,
+      status: status
+    })
+    .eq("id", editingTaskId);
+
+  taskError = error;
+
+} else {
+
+  // CREATE new task
+  const { error } = await supabaseClient
+    .from("tasks")
+    .insert({
+      title: title,
+      description: description,
+      category: category,
+      reward_amount: rewardAmount,
+      task_link: taskLink || null,
+      max_participants: maxParticipants,
+      status: status,
+      created_by: user.id
+    });
+
+  taskError = error;
+}
+
+
+if (taskError) {
+
+  console.error(
+    editingTaskId
+      ? "Update task error:"
+      : "Create task error:",
+    taskError
+  );
+
+  document.getElementById(
+    "create-task-message"
+  ).textContent =
+    editingTaskId
+      ? "Unable to update the task: " + taskError.message
+      : "Unable to create the task: " + taskError.message;
+
+  return;
+}
 
 
     if (error) {
@@ -1486,7 +1538,85 @@ const maxParticipants =
       "create-task-message"
     ).textContent =
       "Task created successfully.";
-    
+  async function manageTask(taskId) {
+
+  const { data: task, error } =
+    await supabaseClient
+      .from("tasks")
+      .select(`
+        id,
+        title,
+        description,
+        category,
+        reward_amount,
+        task_link,
+        max_participants,
+        status
+      `)
+      .eq("id", taskId)
+      .single();
+
+
+  if (error || !task) {
+
+    console.error(
+      "Load task for editing error:",
+      error
+    );
+
+    alert("Unable to load this task for editing.");
+
+    return;
+  }
+
+
+  document.getElementById("editing-task-id").value =
+    task.id;
+
+
+  document.getElementById("task-title").value =
+    task.title || "";
+
+
+  document.getElementById("task-description").value =
+    task.description || "";
+
+
+  document.getElementById("task-category").value =
+    task.category || "";
+
+
+  document.getElementById("task-reward").value =
+    task.reward_amount || 0;
+
+
+  document.getElementById("task-link").value =
+    task.task_link || "";
+
+
+  document.getElementById("task-max-participants").value =
+    task.max_participants === null
+      ? "unlimited"
+      : String(task.max_participants);
+
+
+  document.getElementById("task-status").value =
+    task.status || "active";
+
+
+  document.getElementById("create-task-submit").textContent =
+    "Save Changes";
+
+
+  document.getElementById("create-task-section").style.display =
+    "block";
+
+
+  document.getElementById("create-task-section").scrollIntoView({
+    behavior: "smooth"
+  });
+
+  }  
 loadCreatedTasks();
 
     document
