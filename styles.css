@@ -7515,18 +7515,26 @@ body:has(.member-earning-grid)
   color: #ffffff;
   font-size: 22px;
 }
+.task-reward {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 8px 14px;
 
-.task-card p {
+  background: #FFD54A;
+  color: #111827 !important;
+
+  font-size: 22px;
+  font-weight: 800;
+
+  border-radius: 10px;
+}
   color: #aeb9dc;
   font-size: 13px;
 }
 
 .task-reward {
   color: #ffd34d;
-  font-size: 20px;
-  margin-top: 5px;
-}
-
+  font-size: 2
 .task-card .btn {
   width: 100%;
 }
