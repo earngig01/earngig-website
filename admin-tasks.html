@@ -1345,6 +1345,13 @@ const cancelCreateTask =
 
 createTaskButton.addEventListener("click", function () {
 
+  document.getElementById("create-task-form").reset();
+
+  document.getElementById("editing-task-id").value = "";
+
+  document.getElementById("create-task-submit").textContent =
+    "Create Task";
+
   createTaskSection.style.display = "block";
 
   createTaskSection.scrollIntoView({
