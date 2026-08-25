@@ -4434,4 +4434,342 @@ body:has(.admin-management-grid) footer {
   }
 
 }
+/* =========================================================
+   GLOBAL ADMIN THEME
+   Applies to all admin pages, not only Platform Management
+   ========================================================= */
 
+body:has(.admin-badge) {
+  background:
+    radial-gradient(
+      circle at 12% 10%,
+      rgba(119, 72, 255, 0.15),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 88% 15%,
+      rgba(30, 120, 255, 0.10),
+      transparent 28%
+    ),
+    linear-gradient(
+      135deg,
+      #070d2b,
+      #0b1238 55%,
+      #080d2b
+    );
+
+  color: #e8edff;
+}
+
+
+/* ADMIN HEADER */
+
+body:has(.admin-badge) header {
+  background:
+    linear-gradient(
+      135deg,
+      #080d2b,
+      #10174a
+    );
+
+  border-bottom: 1px solid rgba(111, 91, 255, 0.28);
+
+  box-shadow:
+    0 5px 30px rgba(0, 0, 0, 0.28);
+}
+
+body:has(.admin-badge) .logo {
+  color: #ffffff;
+}
+
+body:has(.admin-badge) .logo span {
+  color: #5d8cff;
+}
+
+body:has(.admin-badge) .logo-mark {
+  background:
+    linear-gradient(
+      135deg,
+      #704cff,
+      #347cff
+    );
+
+  box-shadow:
+    0 0 25px rgba(101, 73, 255, 0.45);
+}
+
+
+/* ADMIN PAGE */
+
+body:has(.admin-badge) .dashboard-page {
+  background: transparent;
+}
+
+
+/* ADMIN HEADINGS */
+
+body:has(.admin-badge) .dashboard-heading h1,
+body:has(.admin-badge) .section-title h2 {
+  color: #ffffff;
+}
+
+body:has(.admin-badge) .dashboard-heading p {
+  color: #aab6dc;
+}
+
+body:has(.admin-badge) .eyebrow {
+  color: #a17cff;
+}
+
+
+/* =========================================================
+   ALL ADMIN DASHBOARD CARDS
+   ========================================================= */
+
+body:has(.admin-badge) .dashboard-stat,
+body:has(.admin-badge) .dashboard-section {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(24, 34, 82, 0.98),
+      rgba(12, 20, 60, 0.98)
+    );
+
+  border: 1px solid rgba(91, 106, 190, 0.28);
+
+  color: #ffffff;
+
+  box-shadow:
+    0 12px 35px rgba(0, 0, 0, 0.22);
+}
+
+
+/* STAT TEXT */
+
+body:has(.admin-badge) .dashboard-stat small {
+  color: #a5b0d0;
+}
+
+body:has(.admin-badge) .dashboard-stat strong {
+  color: #ffffff;
+}
+
+
+/* SECTION HEADINGS */
+
+body:has(.admin-badge) .dashboard-section h2,
+body:has(.admin-badge) .dashboard-section h3 {
+  color: #ffffff;
+}
+
+
+/* SECTION NORMAL TEXT */
+
+body:has(.admin-badge) .dashboard-section p {
+  color: #aab6d7;
+}
+
+
+/* =========================================================
+   WHITE ITEMS INSIDE ADMIN DASHBOARD
+   CHANGE THEM TO DARK COMMAND-CENTER CARDS
+   ========================================================= */
+
+body:has(.admin-badge) .dashboard-section > a,
+body:has(.admin-badge) .dashboard-section > div > a,
+body:has(.admin-badge) .dashboard-section .pending-item,
+body:has(.admin-badge) .dashboard-section .activity-item {
+  background:
+    linear-gradient(
+      145deg,
+      #182453,
+      #111b48
+    );
+
+  border: 1px solid rgba(92, 105, 188, 0.28);
+
+  color: #ffffff;
+
+  box-shadow:
+    0 8px 25px rgba(0, 0, 0, 0.18);
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+/* HOVER */
+
+body:has(.admin-badge) .dashboard-section > a:hover,
+body:has(.admin-badge) .dashboard-section > div > a:hover,
+body:has(.admin-badge) .dashboard-section .pending-item:hover,
+body:has(.admin-badge) .dashboard-section .activity-item:hover {
+  transform: translateY(-3px);
+
+  border-color: rgba(133, 105, 255, 0.65);
+
+  box-shadow:
+    0 12px 35px rgba(81, 65, 190, 0.20);
+}
+
+
+/* =========================================================
+   FINANCIAL CARDS
+   ========================================================= */
+
+body:has(.admin-badge) .financial-preview,
+body:has(.admin-badge) .preview-grid div {
+  background:
+    linear-gradient(
+      145deg,
+      #182453,
+      #101a46
+    );
+
+  border-color: rgba(92, 105, 188, 0.25);
+}
+
+body:has(.admin-badge) .preview-grid small,
+body:has(.admin-badge) .preview-grid span {
+  color: #98a6ce;
+}
+
+body:has(.admin-badge) .preview-grid strong {
+  color: #ffffff;
+}
+
+
+/* =========================================================
+   ADMIN MANAGEMENT CARDS
+   ========================================================= */
+
+body:has(.admin-badge) .admin-management-card {
+  background:
+    linear-gradient(
+      145deg,
+      #182453,
+      #111b48
+    );
+
+  border-color: rgba(92, 105, 188, 0.28);
+}
+
+
+/* =========================================================
+   IMPORTANT:
+   ACTUAL WORKSPACES STAY WHITE
+   ========================================================= */
+
+body:has(.admin-badge) .review-card,
+body:has(.admin-badge) .form-section,
+body:has(.admin-badge) .novel-form,
+body:has(.admin-badge) .manuscript-box,
+body:has(.admin-badge) .reading-area,
+body:has(.admin-badge) .reader-content,
+body:has(.admin-badge) .reader-page,
+body:has(.admin-badge) .novel-reader,
+body:has(.admin-badge) .chapter-content {
+  background: #ffffff;
+
+  color: #173449;
+
+  border-color: #dceaf2;
+}
+
+
+/* READING TEXT */
+
+body:has(.admin-badge) .reading-area p,
+body:has(.admin-badge) .reader-content p,
+body:has(.admin-badge) .reader-page p,
+body:has(.admin-badge) .novel-reader p,
+body:has(.admin-badge) .chapter-content p,
+body:has(.admin-badge) .manuscript-box p {
+  color: #334b5c;
+
+  line-height: 1.85;
+}
+
+
+/* READING HEADINGS */
+
+body:has(.admin-badge) .reading-area h1,
+body:has(.admin-badge) .reading-area h2,
+body:has(.admin-badge) .reading-area h3,
+body:has(.admin-badge) .reader-content h1,
+body:has(.admin-badge) .reader-content h2,
+body:has(.admin-badge) .reader-content h3,
+body:has(.admin-badge) .novel-reader h1,
+body:has(.admin-badge) .novel-reader h2,
+body:has(.admin-badge) .novel-reader h3,
+body:has(.admin-badge) .chapter-content h1,
+body:has(.admin-badge) .chapter-content h2,
+body:has(.admin-badge) .chapter-content h3 {
+  color: #10243d;
+}
+
+
+/* =========================================================
+   ADMIN BADGE
+   ========================================================= */
+
+body:has(.admin-badge) .admin-badge {
+  background:
+    linear-gradient(
+      135deg,
+      #4b2b9b,
+      #743cff
+    );
+
+  color: #ffffff;
+
+  border: 1px solid rgba(182, 145, 255, 0.45);
+
+  box-shadow:
+    0 0 20px rgba(112, 72, 255, 0.25);
+}
+
+
+/* =========================================================
+   ADMIN BUTTONS
+   ========================================================= */
+
+body:has(.admin-badge) .primary {
+  background:
+    linear-gradient(
+      135deg,
+      #4d5cff,
+      #843cff
+    );
+
+  color: #ffffff;
+
+  border: none;
+
+  box-shadow:
+    0 8px 25px rgba(91, 67, 255, 0.30);
+}
+
+body:has(.admin-badge) .primary:hover {
+  box-shadow:
+    0 12px 32px rgba(91, 67, 255, 0.45);
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 620px) {
+
+  body:has(.admin-badge) .dashboard-heading h1 {
+    font-size: 32px;
+  }
+
+  body:has(.admin-badge) .dashboard-section {
+    padding: 20px;
+  }
+
+}
