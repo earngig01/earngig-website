@@ -8450,38 +8450,39 @@ body {
   justify-content: space-between;
   gap: 20px;
   padding: 18px 20px;
-  background: #ffffff;
-  border: 1px solid #dceaf2;
+  background: #172554;
+  border: 1px solid rgba(255,255,255,0.12);
   border-radius: 14px;
 }
 
 .transaction-info {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 4px;
 }
 
 .transaction-info strong {
-  color: #09243a;
+  color: #ffffff;
   font-size: 14px;
 }
 
 .transaction-info small {
-  color: #78909d;
+  color: #b8c4d9;
   font-size: 11px;
 }
 
 .transaction-amount {
-  font-size: 16px;
+  font-size: 18px;
+  font-weight: 800;
   white-space: nowrap;
 }
 
 .transaction-amount.credit {
-  color: #159661;
+  color: #22c55e;
 }
 
 .transaction-amount.debit {
-  color: #c64545;
+  color: #ef4444;
 }
 
 @media (max-width: 620px) {
