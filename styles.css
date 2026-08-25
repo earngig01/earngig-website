@@ -7146,4 +7146,230 @@ body:has(.member-earning-grid)
   background:
     linear-gradient(
       145deg,
-     
+
+      /* =========================================================
+   EARNGIG DASHBOARD + TASKS CARD SEPARATION
+   ========================================================= */
+
+/* Dashboard statistic cards */
+.dashboard-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 24px;
+  margin: 0 0 35px;
+  width: 100%;
+}
+
+/* Individual statistic cards */
+.dashboard-stat {
+  min-width: 0;
+  padding: 25px;
+  border-radius: 20px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(27, 39, 91, 0.98),
+      rgba(15, 24, 66, 0.98)
+    );
+
+  border: 1px solid rgba(115, 91, 255, 0.38);
+
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.25),
+    0 0 20px rgba(92, 67, 255, 0.08);
+
+  position: relative;
+  overflow: hidden;
+}
+
+/* Small glow inside each card */
+.dashboard-stat::before {
+  content: "";
+  position: absolute;
+  width: 120px;
+  height: 120px;
+
+  top: -60px;
+  right: -40px;
+
+  background: rgba(102, 76, 255, 0.15);
+  filter: blur(35px);
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+.dashboard-stat small,
+.dashboard-stat strong {
+  position: relative;
+  z-index: 1;
+}
+
+.dashboard-stat small {
+  display: block;
+  color: #aeb9dc;
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+
+.dashboard-stat strong {
+  display: block;
+  color: #ffffff;
+  font-size: 29px;
+  line-height: 1.2;
+}
+
+/* Hover */
+.dashboard-stat:hover {
+  transform: translateY(-4px);
+
+  border-color: rgba(137, 104, 255, 0.7);
+
+  box-shadow:
+    0 18px 40px rgba(0, 0, 0, 0.30),
+    0 0 25px rgba(102, 76, 255, 0.18);
+}
+
+
+/* =========================================================
+   USER DASHBOARD EARNING CARDS
+   ========================================================= */
+
+.member-earning-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  width: 100%;
+}
+
+.member-earning-card {
+  min-width: 0;
+  padding: 28px;
+
+  border-radius: 20px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #192557,
+      #111a45
+    );
+
+  border: 1px solid rgba(103, 108, 194, 0.38);
+
+  box-shadow:
+    0 15px 35px rgba(0, 0, 0, 0.24);
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.member-earning-card:hover {
+  transform: translateY(-4px);
+
+  border-color: rgba(133, 105, 255, 0.65);
+
+  box-shadow:
+    0 20px 45px rgba(73, 58, 180, 0.25);
+}
+
+
+/* =========================================================
+   TASK PAGE
+   ========================================================= */
+
+/* Give the task summary cards proper separation */
+.dashboard-page .dashboard-stats {
+  gap: 24px;
+}
+
+/* Task available section */
+.dashboard-page .dashboard-section {
+  margin-bottom: 28px;
+}
+
+/* Empty task area */
+.empty-state {
+  min-height: 190px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 45px 25px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #151f50,
+      #0f173d
+    );
+
+  border: 1px dashed rgba(139, 102, 255, 0.55);
+
+  border-radius: 18px;
+
+  text-align: center;
+}
+
+
+/* =========================================================
+   HOW TASKS WORK
+   ========================================================= */
+
+.assessment-notice {
+  margin-top: 25px;
+  border-radius: 20px;
+  padding: 28px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #211b55,
+      #17133f
+    );
+
+  border: 1px solid rgba(139, 102, 255, 0.38);
+
+  box-shadow:
+    0 15px 35px rgba(0, 0, 0, 0.22);
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+  .dashboard-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+
+  .member-earning-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 620px) {
+
+  .dashboard-stats {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .dashboard-stat {
+    padding: 22px;
+  }
+
+  .member-earning-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+}
