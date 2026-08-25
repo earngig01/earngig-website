@@ -1091,16 +1091,7 @@ async function loadCreatedTasks() {
     gap:10px;
     margin-top:18px;
   "
->
-
-  <div
-  style="
-    display:flex;
-    gap:10px;
-    flex-wrap:wrap;
-    margin-top:15px;
-  "
->
+  >
 
   ${
     task.task_link
@@ -1198,96 +1189,42 @@ async function loadCreatedTasks() {
 
   alert("Task deleted successfully.");
 
-  loadCreatedTasks();
-  }
-  function manageTask(taskId) {
-
-  const taskCard =
-    document.querySelector(
-      `[onclick="manageTask('${taskId}')"]`
-    )?.closest(".task-card");
-
-  if (!taskCard) {
-    return;
-  }
-
-  alert(
-    "Task management selected.\n\n" +
-    "You can edit or delete this task using the controls below."
-  );
-  }
-
-  async function deleteTask(taskId) {
-
-  const confirmed = confirm(
-    "Are you sure you want to permanently delete this task?"
-  );
-
-  if (!confirmed) {
-    return;
-  }
-
-  const { error } = await supabaseClient
-    .from("tasks")
-    .delete()
-    .eq("id", taskId);
-
-  if (error) {
-    console.error("Delete task error:", error);
-
-    alert(
-      "Unable to delete this task: " +
-      error.message
-    );
-
-    return;
-  }
-
-  alert("Task deleted successfully.");
-
   await loadCreatedTasks();
 }
 
 
-function manageTask(taskId) {
+async function manageTask(taskId) {
 
-  const action = confirm(
-    "Task Management\n\n" +
-    "Press OK to edit this task.\n" +
-    "Press Cancel to close."
-  );
-
-  if (action) {
-    editTask(taskId);
-  }
-}
-
-
-async function editTask(taskId) {
-
-  const { data: task, error } = await supabaseClient
-    .from("tasks")
-    .select(`
-      id,
-      title,
-      description,
-      category,
-      reward_amount,
-      task_link,
-      max_participants,
-      status
-    `)
-    .eq("id", taskId)
-    .single();
+  const { data: task, error } =
+    await supabaseClient
+      .from("tasks")
+      .select(`
+        id,
+        title,
+        description,
+        category,
+        reward_amount,
+        task_link,
+        max_participants,
+        status
+      `)
+      .eq("id", taskId)
+      .single();
 
   if (error || !task) {
 
-    console.error("Load task for editing error:", error);
+    console.error(
+      "Load task for editing error:",
+      error
+    );
 
-    alert("Unable to load this task.");
+    alert("Unable to load this task for editing.");
 
     return;
   }
+
+  document.getElementById("editing-task-id").value =
+    task.id;
 
   document.getElementById("task-title").value =
     task.title || "";
@@ -1304,34 +1241,34 @@ async function editTask(taskId) {
   document.getElementById("task-link").value =
     task.task_link || "";
 
+  document.getElementById("task-max-participants").value =
+    task.max_participants === null
+      ? "unlimited"
+      : String(task.max_participants);
+
   document.getElementById("task-status").value =
     task.status || "active";
 
-  const participantSelect =
-    document.getElementById("task-max-participants");
+  document.getElementById("create-task-submit").textContent =
+    "Save Changes";
 
-  if (task.max_participants === null) {
-    participantSelect.value = "unlimited";
-  } else {
-    participantSelect.value =
-      String(task.max_participants);
-  }
+  document.getElementById("create-task-section").style.display =
+    "block";
 
-  createTaskSection.style.display = "block";
-
-  createTaskSection.scrollIntoView({
+  document.getElementById("create-task-section").scrollIntoView({
     behavior: "smooth"
   });
+}
 
-  alert(
-    "Task loaded into the form.\n\n" +
-    "Change the details and use the update button."
-  );
+
+async function editTask(taskId) {
+  await manageTask(taskId);
 }
 
 
 loadCreatedTasks();
 loadTaskSubmissions();
+
 
 const createTaskButton =
   document.getElementById("create-task-button");
@@ -1357,7 +1294,6 @@ createTaskButton.addEventListener("click", function () {
   createTaskSection.scrollIntoView({
     behavior: "smooth"
   });
-
 });
 
 
@@ -1365,14 +1301,18 @@ cancelCreateTask.addEventListener("click", function () {
 
   createTaskSection.style.display = "none";
 
+  document.getElementById("editing-task-id").value = "";
+
+  document.getElementById("create-task-submit").textContent =
+    "Create Task";
 });
 
-  document
+
+document
   .getElementById("create-task-form")
   .addEventListener("submit", async function(event) {
 
     event.preventDefault();
-
 
     const title =
       document
@@ -1380,20 +1320,17 @@ cancelCreateTask.addEventListener("click", function () {
         .value
         .trim();
 
-
     const description =
       document
         .getElementById("task-description")
         .value
         .trim();
 
-
     const category =
       document
         .getElementById("task-category")
         .value
         .trim();
-
 
     const rewardAmount =
       Number(
@@ -1402,27 +1339,32 @@ cancelCreateTask.addEventListener("click", function () {
           .value
       );
 
-
     const taskLink =
       document
         .getElementById("task-link")
         .value
         .trim();
 
-   const maxParticipantsValue =
-  document
-    .getElementById("task-max-participants")
-    .value;
+    const maxParticipantsValue =
+      document
+        .getElementById("task-max-participants")
+        .value;
 
-const maxParticipants =
-  maxParticipantsValue === "unlimited"
-    ? null
-    : Number(maxParticipantsValue); 
+    const maxParticipants =
+      maxParticipantsValue === "unlimited"
+        ? null
+        : Number(maxParticipantsValue);
 
     const status =
       document
         .getElementById("task-status")
         .value;
+
+    const editingTaskId =
+      document
+        .getElementById("editing-task-id")
+        .value
+        .trim();
 
 
     if (!title || !description || !category) {
@@ -1430,7 +1372,6 @@ const maxParticipants =
       alert("Please complete the required fields.");
 
       return;
-
     }
 
 
@@ -1439,7 +1380,6 @@ const maxParticipants =
       alert("Enter a valid reward amount.");
 
       return;
-
     }
 
 
@@ -1456,182 +1396,96 @@ const maxParticipants =
       window.location.href = "login.html";
 
       return;
-
     }
 
 
-    const editingTaskId =
-  document.getElementById("editing-task-id").value.trim();
-
-let taskError;
-
-if (editingTaskId) {
-
-  // UPDATE existing task
-  const { error } = await supabaseClient
-    .from("tasks")
-    .update({
-      title: title,
-      description: description,
-      category: category,
-      reward_amount: rewardAmount,
-      task_link: taskLink || null,
-      max_participants: maxParticipants,
-      status: status
-    })
-    .eq("id", editingTaskId);
-
-  taskError = error;
-
-} else {
-
-  // CREATE new task
-  const { error } = await supabaseClient
-    .from("tasks")
-    .insert({
-      title: title,
-      description: description,
-      category: category,
-      reward_amount: rewardAmount,
-      task_link: taskLink || null,
-      max_participants: maxParticipants,
-      status: status,
-      created_by: user.id
-    });
-
-  taskError = error;
-}
+    let taskError = null;
 
 
-if (taskError) {
+    if (editingTaskId) {
 
-  console.error(
-    editingTaskId
-      ? "Update task error:"
-      : "Create task error:",
-    taskError
-  );
+      // UPDATE EXISTING TASK
+      const { error } =
+        await supabaseClient
+          .from("tasks")
+          .update({
+            title: title,
+            description: description,
+            category: category,
+            reward_amount: rewardAmount,
+            task_link: taskLink || null,
+            max_participants: maxParticipants,
+            status: status
+          })
+          .eq("id", editingTaskId);
 
-  document.getElementById(
-    "create-task-message"
-  ).textContent =
-    editingTaskId
-      ? "Unable to update the task: " + taskError.message
-      : "Unable to create the task: " + taskError.message;
+      taskError = error;
 
-  return;
-}
+    } else {
+
+      // CREATE NEW TASK
+      const { error } =
+        await supabaseClient
+          .from("tasks")
+          .insert({
+            title: title,
+            description: description,
+            category: category,
+            reward_amount: rewardAmount,
+            task_link: taskLink || null,
+            max_participants: maxParticipants,
+            status: status,
+            created_by: user.id
+          });
+
+      taskError = error;
+    }
 
 
-    if (error) {
+    if (taskError) {
 
       console.error(
-        "Create task error:",
-        error
+        editingTaskId
+          ? "Update task error:"
+          : "Create task error:",
+        taskError
       );
 
       document.getElementById(
         "create-task-message"
       ).textContent =
-        "Unable to create the task: " +
-        error.message;
+        editingTaskId
+          ? "Unable to update the task: " +
+            taskError.message
+          : "Unable to create the task: " +
+            taskError.message;
 
       return;
-
     }
 
 
     document.getElementById(
       "create-task-message"
     ).textContent =
-      "Task created successfully.";
-  async function manageTask(taskId) {
-
-  const { data: task, error } =
-    await supabaseClient
-      .from("tasks")
-      .select(`
-        id,
-        title,
-        description,
-        category,
-        reward_amount,
-        task_link,
-        max_participants,
-        status
-      `)
-      .eq("id", taskId)
-      .single();
+      editingTaskId
+        ? "Task updated successfully."
+        : "Task created successfully.";
 
 
-  if (error || !task) {
+    await loadCreatedTasks();
 
-    console.error(
-      "Load task for editing error:",
-      error
-    );
-
-    alert("Unable to load this task for editing.");
-
-    return;
-  }
-
-
-  document.getElementById("editing-task-id").value =
-    task.id;
-
-
-  document.getElementById("task-title").value =
-    task.title || "";
-
-
-  document.getElementById("task-description").value =
-    task.description || "";
-
-
-  document.getElementById("task-category").value =
-    task.category || "";
-
-
-  document.getElementById("task-reward").value =
-    task.reward_amount || 0;
-
-
-  document.getElementById("task-link").value =
-    task.task_link || "";
-
-
-  document.getElementById("task-max-participants").value =
-    task.max_participants === null
-      ? "unlimited"
-      : String(task.max_participants);
-
-
-  document.getElementById("task-status").value =
-    task.status || "active";
-
-
-  document.getElementById("create-task-submit").textContent =
-    "Save Changes";
-
-
-  document.getElementById("create-task-section").style.display =
-    "block";
-
-
-  document.getElementById("create-task-section").scrollIntoView({
-    behavior: "smooth"
-  });
-
-  }  
-loadCreatedTasks();
 
     document
       .getElementById("create-task-form")
       .reset();
 
+    document.getElementById("editing-task-id").value = "";
 
-    setTimeout(function () {
+    document.getElementById("create-task-submit").textContent =
+      "Create Task";
+
+
+    setTimeout(function() {
 
       createTaskSection.style.display =
         "none";
@@ -1643,6 +1497,8 @@ loadCreatedTasks();
     }, 1500);
 
   });
+
+      
 </script>
   
 </body>
