@@ -476,11 +476,23 @@ async function loadTasks() {
               }
             </p>
 
-            <strong class="task-reward">
-              ₦${Number(
-                task.reward_amount || 0
-              ).toLocaleString("en-NG")}
-            </strong>
+            <strong
+  class="task-reward"
+  style="
+    display:inline-block;
+    background:#FFD54A;
+    color:#111827 !important;
+    padding:8px 14px;
+    border-radius:10px;
+    font-size:22px;
+    font-weight:900;
+    opacity:1;
+  "
+>
+  ₦${Number(
+    task.reward_amount || 0
+  ).toLocaleString("en-NG")}
+</strong>
 ${
   task.task_link
     ? `
