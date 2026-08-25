@@ -6786,3 +6786,364 @@ body:has(.admin-management-grid) footer {
   }
 
 }
+/* =========================================================
+   EARNGIG MEMBER DASHBOARD — MATCH ADMIN GLOW STYLE
+   ========================================================= */
+
+body:has(.member-earning-grid) {
+  background:
+    radial-gradient(circle at 8% 12%, rgba(126, 87, 255, 0.25), transparent 28%),
+    radial-gradient(circle at 92% 18%, rgba(45, 120, 255, 0.20), transparent 30%),
+    radial-gradient(circle at 50% 90%, rgba(218, 72, 190, 0.12), transparent 32%),
+    linear-gradient(135deg, #070b25 0%, #10164a 48%, #090d2e 100%);
+}
+
+/* MEMBER HEADER */
+
+body:has(.member-earning-grid) header {
+  background: rgba(7, 11, 37, 0.94);
+  border-bottom: 1px solid rgba(137, 111, 255, 0.28);
+  box-shadow:
+    0 8px 35px rgba(0, 0, 0, 0.35),
+    0 0 30px rgba(93, 70, 255, 0.08);
+}
+
+body:has(.member-earning-grid) .logo {
+  color: #ffffff;
+}
+
+body:has(.member-earning-grid) .logo span {
+  color: #8c7cff;
+}
+
+body:has(.member-earning-grid) .logo-mark {
+  background: linear-gradient(135deg, #8b6cff, #367dff);
+
+  box-shadow:
+    0 0 18px rgba(125, 91, 255, 0.65),
+    0 0 40px rgba(55, 125, 255, 0.25);
+}
+
+/* NAVIGATION */
+
+body:has(.member-earning-grid) nav {
+  color: #c5cbea;
+}
+
+body:has(.member-earning-grid) nav a:hover {
+  color: #ffffff;
+}
+
+/* DASHBOARD BACKGROUND */
+
+body:has(.member-earning-grid) .dashboard-page {
+  min-height: calc(100vh - 76px);
+
+  padding: 60px 0 90px;
+
+  background:
+    radial-gradient(
+      circle at 12% 10%,
+      rgba(123, 81, 255, 0.20),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 88% 35%,
+      rgba(38, 111, 255, 0.16),
+      transparent 32%
+    ),
+    linear-gradient(
+      135deg,
+      #080d2f,
+      #101747 52%,
+      #090d2e
+    );
+}
+
+/* WELCOME */
+
+body:has(.member-earning-grid) .dashboard-heading h1 {
+  color: #ffffff;
+  font-size: 42px;
+}
+
+body:has(.member-earning-grid) .dashboard-heading p {
+  color: #aeb9dd;
+}
+
+body:has(.member-earning-grid) .eyebrow {
+  color: #a18cff;
+}
+
+/* BUTTONS */
+
+body:has(.member-earning-grid) .btn.primary {
+  background: linear-gradient(135deg, #6558ff, #8a42e8);
+
+  color: #ffffff;
+
+  border: 1px solid rgba(179, 157, 255, 0.35);
+
+  box-shadow:
+    0 8px 25px rgba(101, 78, 255, 0.28);
+
+  transition: 0.25s ease;
+}
+
+body:has(.member-earning-grid) .btn.primary:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 12px 32px rgba(101, 78, 255, 0.42);
+}
+
+body:has(.member-earning-grid) .btn.light {
+  background: rgba(255, 255, 255, 0.96);
+  color: #17204d;
+  border: none;
+}
+
+/* =========================================================
+   WALLET
+   ========================================================= */
+
+body:has(.member-earning-grid) .member-wallet {
+  position: relative;
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+
+  padding: 35px 40px;
+
+  margin-bottom: 25px;
+
+  border-radius: 22px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(31, 43, 103, 0.98),
+      rgba(16, 25, 68, 0.98)
+    );
+
+  border: 1px solid rgba(121, 113, 210, 0.34);
+
+  box-shadow:
+    0 18px 50px rgba(0, 0, 0, 0.28),
+    inset 0 1px rgba(255, 255, 255, 0.04);
+}
+
+body:has(.member-earning-grid) .member-wallet::after {
+  content: "";
+
+  position: absolute;
+
+  width: 220px;
+  height: 220px;
+
+  right: -80px;
+  top: -100px;
+
+  border-radius: 50%;
+
+  background: rgba(102, 79, 255, 0.22);
+
+  filter: blur(40px);
+
+  pointer-events: none;
+}
+
+body:has(.member-earning-grid) .member-wallet small {
+  color: #aeb9dc;
+}
+
+body:has(.member-earning-grid) .member-wallet strong {
+  display: block;
+
+  color: #ffd84d;
+
+  font-size: 46px;
+
+  line-height: 1.1;
+
+  margin: 8px 0;
+}
+
+body:has(.member-earning-grid) .member-wallet p {
+  color: #929ec8;
+  font-size: 12px;
+}
+
+body:has(.member-earning-grid) .wallet-actions {
+  display: flex;
+  gap: 12px;
+  position: relative;
+  z-index: 2;
+}
+
+/* =========================================================
+   STAT CARDS
+   ========================================================= */
+
+body:has(.member-earning-grid) .dashboard-stats {
+  display: grid;
+
+  grid-template-columns: repeat(4, 1fr);
+
+  gap: 18px;
+
+  margin-bottom: 28px;
+}
+
+body:has(.member-earning-grid) .dashboard-stat {
+  position: relative;
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(30, 40, 94, 0.96),
+      rgba(16, 24, 65, 0.98)
+    );
+
+  border: 1px solid rgba(116, 111, 206, 0.32);
+
+  border-radius: 18px;
+
+  padding: 23px;
+
+  box-shadow:
+    0 15px 40px rgba(0, 0, 0, 0.28);
+
+  transition: 0.25s ease;
+}
+
+body:has(.member-earning-grid) .dashboard-stat::after {
+  content: "";
+
+  position: absolute;
+
+  width: 100px;
+  height: 100px;
+
+  right: -40px;
+  top: -40px;
+
+  border-radius: 50%;
+
+  background: rgba(120, 92, 255, 0.18);
+
+  filter: blur(25px);
+}
+
+body:has(.member-earning-grid) .dashboard-stat:hover {
+  transform: translateY(-4px);
+
+  border-color: rgba(146, 119, 255, 0.60);
+
+  box-shadow:
+    0 18px 45px rgba(0, 0, 0, 0.34),
+    0 0 28px rgba(104, 79, 255, 0.14);
+}
+
+body:has(.member-earning-grid) .dashboard-stat small {
+  color: #aeb9dc;
+}
+
+body:has(.member-earning-grid) .dashboard-stat strong {
+  color: #ffffff;
+}
+
+/* =========================================================
+   DASHBOARD SECTIONS
+   ========================================================= */
+
+body:has(.member-earning-grid) .dashboard-section {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(22, 31, 78, 0.96),
+      rgba(13, 20, 57, 0.98)
+    );
+
+  border: 1px solid rgba(113, 108, 196, 0.30);
+
+  border-radius: 22px;
+
+  padding: 28px;
+
+  margin-bottom: 25px;
+
+  box-shadow:
+    0 18px 50px rgba(0, 0, 0, 0.27),
+    inset 0 1px rgba(255, 255, 255, 0.025);
+}
+
+body:has(.member-earning-grid) .section-title h2 {
+  color: #ffffff;
+}
+
+body:has(.member-earning-grid) .text-link {
+  color: #a38dff;
+}
+
+/* =========================================================
+   EARNING CARD GRID
+   ========================================================= */
+
+body:has(.member-earning-grid) .member-earning-grid {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 18px;
+}
+
+/* MEMBER EARNING CARDS */
+
+body:has(.member-earning-grid) .member-earning-card {
+  position: relative;
+  overflow: hidden;
+
+  display: block;
+
+  min-height: 230px;
+
+  padding: 25px;
+
+  border-radius: 19px;
+
+  border: 1px solid rgba(255, 255, 255, 0.09);
+
+  color: #ffffff;
+
+  box-shadow:
+    0 14px 35px rgba(0, 0, 0, 0.24);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+
+/* CARD COLORS */
+
+body:has(.member-earning-grid)
+.member-earning-card:nth-child(1) {
+  background:
+    linear-gradient(
+      145deg,
+      #30286e,
+      #211a4e
+    );
+}
+
+body:has(.member-earning-grid)
+.member-earning-card:nth-child(2) {
+  background:
+    linear-gradient(
+      145deg,
+     
