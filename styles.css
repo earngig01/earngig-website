@@ -7481,15 +7481,67 @@ body:has(.member-earning-grid)
 /* =========================================================
    TASK LIST
    ========================================================= */
-
 .task-grid {
   display: grid;
-
-  grid-template-columns: 1fr;
-
-  gap: 20px;
-
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
   width: 100%;
+}
+
+.task-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 20px;
+  min-height: 260px;
+  padding: 28px;
+  border: 1px solid rgba(126, 91, 255, 0.35);
+  border-radius: 20px;
+  background: linear-gradient(
+    145deg,
+    rgba(28, 39, 91, 0.98),
+    rgba(15, 24, 66, 0.98)
+  );
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+}
+
+.task-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.task-card h3 {
+  color: #ffffff;
+  font-size: 22px;
+}
+
+.task-card p {
+  color: #aeb9dc;
+  font-size: 13px;
+}
+
+.task-reward {
+  color: #ffd34d;
+  font-size: 20px;
+  margin-top: 5px;
+}
+
+.task-card .btn {
+  width: 100%;
+}
+
+/* MOBILE */
+@media (max-width: 620px) {
+  .task-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .task-card {
+    min-height: auto;
+    padding: 22px;
+  }
 }
 
 .task-card {
