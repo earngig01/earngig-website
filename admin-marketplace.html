@@ -1,4 +1,4 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -37,45 +37,89 @@
     <div class="dashboard-heading">
 
       <div>
+
         <span class="eyebrow">MARKETPLACE ADMIN</span>
 
         <h1>Marketplace Listings</h1>
 
         <p>
           Review seller listings and approve or reject
-          products and services before they appear publicly.
+          products and services.
         </p>
+
       </div>
 
     </div>
 
+
+    <div class="dashboard-stats">
+
+      <div class="dashboard-stat">
+        <small>Pending</small>
+        <strong id="pending-count">0</strong>
+      </div>
+
+      <div class="dashboard-stat">
+        <small>Active</small>
+        <strong id="active-count">0</strong>
+      </div>
+
+      <div class="dashboard-stat">
+        <small>Rejected</small>
+        <strong id="rejected-count">0</strong>
+      </div>
+
+      <div class="dashboard-stat">
+        <small>Total Listings</small>
+        <strong id="total-count">0</strong>
+      </div>
+
+    </div>
+
+
+    <!-- PENDING -->
 
     <section class="dashboard-section">
 
       <div class="section-title">
 
         <div>
-          <span class="eyebrow">LISTINGS</span>
-
+          <span class="eyebrow">REVIEW</span>
           <h2>Pending approval</h2>
-
         </div>
 
       </div>
 
 
-      <div id="listings-container">
+      <div id="pending-listings">
 
         <div class="empty-state">
+          <h3>Loading...</h3>
+        </div>
 
-          <div class="empty-icon">◷</div>
+      </div>
 
-          <h3>Loading listings...</h3>
+    </section>
 
-          <p>
-            Please wait while marketplace listings are loaded.
-          </p>
 
+    <!-- ALL LISTINGS -->
+
+    <section class="dashboard-section">
+
+      <div class="section-title">
+
+        <div>
+          <span class="eyebrow">MARKETPLACE</span>
+          <h2>All listings</h2>
+        </div>
+
+      </div>
+
+
+      <div id="all-listings">
+
+        <div class="empty-state">
+          <h3>Loading...</h3>
         </div>
 
       </div>
@@ -103,8 +147,11 @@
 
 async function loadListings() {
 
-  const container =
-    document.getElementById("listings-container");
+  const pendingContainer =
+    document.getElementById("pending-listings");
+
+  const allContainer =
+    document.getElementById("all-listings");
 
 
   const {
@@ -120,11 +167,9 @@ async function loadListings() {
       description,
       price,
       delivery_type,
-      file_url,
       status,
       created_at
     `)
-    .eq("status", "pending")
     .order("created_at", {
       ascending: false
     });
@@ -133,29 +178,83 @@ async function loadListings() {
   if (error) {
 
     console.error(
-      "Marketplace loading error:",
+      "Marketplace error:",
       error
     );
 
-    container.innerHTML = `
+    const errorHTML = `
       <div class="empty-state">
-
-        <div class="empty-icon">!</div>
 
         <h3>Unable to load listings</h3>
 
         <p>
-          ${error.message}
+          ${escapeHtml(error.message)}
         </p>
 
       </div>
     `;
 
+    pendingContainer.innerHTML = errorHTML;
+    allContainer.innerHTML = "";
+
     return;
   }
 
 
-  if (!listings || listings.length === 0) {
+  const items = listings || [];
+
+
+  const pending =
+    items.filter(function(item) {
+      return item.status === "pending";
+    });
+
+
+  const active =
+    items.filter(function(item) {
+      return item.status === "active";
+    });
+
+
+  const rejected =
+    items.filter(function(item) {
+      return item.status === "rejected";
+    });
+
+
+  document.getElementById(
+    "pending-count"
+  ).textContent = pending.length;
+
+
+  document.getElementById(
+    "active-count"
+  ).textContent = active.length;
+
+
+  document.getElementById(
+    "rejected-count"
+  ).textContent = rejected.length;
+
+
+  document.getElementById(
+    "total-count"
+  ).textContent = items.length;
+
+
+  renderPending(pending);
+  renderAll(items);
+
+}
+
+
+function renderPending(listings) {
+
+  const container =
+    document.getElementById("pending-listings");
+
+
+  if (!listings.length) {
 
     container.innerHTML = `
       <div class="empty-state">
@@ -165,8 +264,8 @@ async function loadListings() {
         <h3>No pending listings</h3>
 
         <p>
-          There are currently no marketplace listings
-          waiting for approval.
+          There are no marketplace listings waiting
+          for approval.
         </p>
 
       </div>
@@ -176,94 +275,179 @@ async function loadListings() {
   }
 
 
-  container.innerHTML = "";
+  container.innerHTML =
+    listings.map(function(listing) {
+
+      return listingCard(
+        listing,
+        true
+      );
+
+    }).join("");
+
+}
 
 
-  listings.forEach(function(listing) {
+function renderAll(listings) {
 
-    const card =
-      document.createElement("div");
-
-    card.className =
-      "admin-alert";
-
-    card.style.marginBottom = "16px";
+  const container =
+    document.getElementById("all-listings");
 
 
-    card.innerHTML = `
+  if (!listings.length) {
 
-      <div style="flex:1">
+    container.innerHTML = `
+      <div class="empty-state">
 
-        <span class="eyebrow">
-          ${escapeHtml(listing.category || "MARKETPLACE")}
+        <h3>No listings yet</h3>
+
+        <p>
+          Seller listings will appear here.
+        </p>
+
+      </div>
+    `;
+
+    return;
+  }
+
+
+  container.innerHTML =
+    listings.map(function(listing) {
+
+      return listingCard(
+        listing,
+        false
+      );
+
+    }).join("");
+
+}
+
+
+function listingCard(
+  listing,
+  showActions
+) {
+
+  let statusText =
+    String(
+      listing.status || "pending"
+    ).toUpperCase();
+
+
+  return `
+
+    <article
+      class="marketplace-card"
+      style="margin-bottom:20px;"
+    >
+
+      <div class="marketplace-card-body">
+
+        <span class="product-category">
+          ${escapeHtml(
+            listing.category || "MARKETPLACE"
+          )}
         </span>
+
 
         <h3>
           ${escapeHtml(listing.title)}
         </h3>
 
-        <p>
-          ${escapeHtml(listing.description || "")}
-        </p>
 
         <p>
-          <strong>
-            ₦${Number(listing.price || 0).toLocaleString("en-NG")}
-          </strong>
+          ${escapeHtml(
+            listing.description || ""
+          )}
         </p>
 
-        <small>
-          Delivery: ${escapeHtml(listing.delivery_type || "Not specified")}
-        </small>
 
-        <br>
+        <p>
+          <strong>Price:</strong>
 
-        <small>
-          Status: ${escapeHtml(listing.status)}
-        </small>
+          <span
+            style="
+              color:#159661;
+              font-size:20px;
+              font-weight:800;
+            "
+          >
+            ₦${Number(
+              listing.price || 0
+            ).toLocaleString("en-NG")}
+          </span>
+        </p>
+
+
+        <p>
+          <strong>Delivery:</strong>
+          ${escapeHtml(
+            listing.delivery_type ||
+            "Not specified"
+          )}
+        </p>
+
+
+        <p>
+          <strong>Status:</strong>
+          ${statusText}
+        </p>
+
+
+        ${
+          showActions
+            ? `
+
+              <div
+                style="
+                  display:flex;
+                  gap:10px;
+                  flex-wrap:wrap;
+                  margin-top:20px;
+                "
+              >
+
+                <button
+                  type="button"
+                  class="btn primary"
+                  onclick="approveListing('${listing.id}')"
+                >
+                  Approve
+                </button>
+
+
+                <button
+                  type="button"
+                  class="btn outline"
+                  onclick="rejectListing('${listing.id}')"
+                >
+                  Reject
+                </button>
+
+              </div>
+
+            `
+            : ""
+        }
 
       </div>
 
+    </article>
 
-      <div style="
-        display:flex;
-        gap:10px;
-        flex-wrap:wrap;
-        align-items:center;
-      ">
-
-        <button
-          class="btn primary"
-          onclick="approveListing('${listing.id}')"
-        >
-          Approve
-        </button>
-
-        <button
-          class="btn outline"
-          onclick="rejectListing('${listing.id}')"
-        >
-          Reject
-        </button>
-
-      </div>
-
-    `;
-
-
-    container.appendChild(card);
-
-  });
+  `;
 
 }
 
 
-async function approveListing(listingId) {
+async function approveListing(id) {
 
   const confirmed =
     confirm(
-      "Approve this marketplace listing?"
+      "Approve this listing?"
     );
+
 
   if (!confirmed) {
     return;
@@ -277,18 +461,18 @@ async function approveListing(listingId) {
     .update({
       status: "active"
     })
-    .eq("id", listingId);
+    .eq("id", id);
 
 
   if (error) {
 
     console.error(
-      "Approval error:",
+      "Approve error:",
       error
     );
 
     alert(
-      "Unable to approve listing.\n\n" +
+      "Unable to approve listing:\n\n" +
       error.message
     );
 
@@ -301,17 +485,18 @@ async function approveListing(listingId) {
   );
 
 
-  loadListings();
+  await loadListings();
 
 }
 
 
-async function rejectListing(listingId) {
+async function rejectListing(id) {
 
   const confirmed =
     confirm(
-      "Reject this marketplace listing?"
+      "Reject this listing?"
     );
+
 
   if (!confirmed) {
     return;
@@ -325,18 +510,18 @@ async function rejectListing(listingId) {
     .update({
       status: "rejected"
     })
-    .eq("id", listingId);
+    .eq("id", id);
 
 
   if (error) {
 
     console.error(
-      "Rejection error:",
+      "Reject error:",
       error
     );
 
     alert(
-      "Unable to reject listing.\n\n" +
+      "Unable to reject listing:\n\n" +
       error.message
     );
 
@@ -349,7 +534,7 @@ async function rejectListing(listingId) {
   );
 
 
-  loadListings();
+  await loadListings();
 
 }
 
