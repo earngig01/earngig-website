@@ -236,7 +236,99 @@
 <script src="supabase.js"></script>
 
 <script>
+async function checkSellerAccess() {
 
+  const {
+    data: { user },
+    error: userError
+  } = await supabaseClient.auth.getUser();
+
+  if (userError || !user) {
+    window.location.href = "login.html";
+    return false;
+  }
+
+  // First confirm the user's ₦9,000 membership.
+  const {
+    data: membership,
+    error: membershipError
+  } = await supabaseClient
+    .from("membership_payments")
+    .select("id")
+    .eq("user_id", user.id)
+    .eq("payment_type", "first_payment")
+    .eq("status", "confirmed")
+    .eq("amount", 9000)
+    .limit(1)
+    .maybeSingle();
+
+  if (membershipError || !membership) {
+
+    alert(
+      "You must have an active EarnGig membership before becoming a seller."
+    );
+
+    window.location.href = "login.html";
+
+    return false;
+  }
+
+  /*
+   * Seller subscription.
+   *
+   * This checks for a confirmed ₦2,500 seller payment
+   * whose payment date is within the current 30-day period.
+   */
+  const thirtyDaysAgo =
+    new Date(
+      Date.now() - 30 * 24 * 60 * 60 * 1000
+    ).toISOString();
+
+  const {
+    data: sellerPayment,
+    error: sellerPaymentError
+  } = await supabaseClient
+    .from("membership_payments")
+    .select("id, paid_at")
+    .eq("user_id", user.id)
+    .eq("payment_type", "seller")
+    .eq("status", "confirmed")
+    .eq("amount", 2500)
+    .gte("paid_at", thirtyDaysAgo)
+    .order("paid_at", {
+      ascending: false
+    })
+    .limit(1)
+    .maybeSingle();
+
+  if (sellerPaymentError) {
+
+    console.error(
+      "Seller subscription check error:",
+      sellerPaymentError
+    );
+
+    alert(
+      "Unable to verify your seller subscription."
+    );
+
+    return false;
+  }
+
+  if (!sellerPayment) {
+
+    alert(
+      "Seller access requires an active ₦2,500 monthly subscription."
+    );
+
+    window.location.href =
+      "seller-subscription.html";
+
+    return false;
+  }
+
+  return true;
+}
 async function loadSellerDashboard() {
 
   const {
@@ -657,7 +749,18 @@ async function loadSellerDashboard() {
 }
 
 
-loadSellerDashboard();
+(async function () {
+
+  const hasSellerAccess =
+    await checkSellerAccess();
+
+  if (!hasSellerAccess) {
+    return;
+  }
+
+  await loadSellerDashboard();
+
+})();
 
 </script>
 
