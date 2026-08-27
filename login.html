@@ -45,7 +45,7 @@
     </p>
 
 
-    <form>
+    <form id="login-form">
 
       <label for="email">
         Email Address
@@ -89,6 +89,7 @@
 
       <button
         type="submit"
+        id="login-button"
         class="btn primary auth-button"
       >
         Login
@@ -119,41 +120,113 @@
   </div>
 
 </footer>
+
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
-<script>
-  const loginForm = document.querySelector("form");
 
-  loginForm.addEventListener("submit", async function(event) {
+<script>
+
+const loginForm =
+  document.getElementById("login-form");
+
+const loginButton =
+  document.getElementById("login-button");
+
+
+loginForm.addEventListener(
+  "submit",
+  async function(event) {
 
     event.preventDefault();
 
     const email =
-      document.getElementById("email").value.trim();
+      document
+        .getElementById("email")
+        .value
+        .trim();
 
     const password =
-      document.getElementById("password").value;
+      document
+        .getElementById("password")
+        .value;
 
-    const { data, error } =
+
+    if (!email || !password) {
+
+      alert(
+        "Please enter your email and password."
+      );
+
+      return;
+    }
+
+
+    loginButton.disabled = true;
+
+    loginButton.textContent =
+      "Checking...";
+
+
+    /*
+     * LOGIN
+     */
+
+    const {
+      data,
+      error
+    } =
       await supabaseClient.auth.signInWithPassword({
         email: email,
         password: password
       });
 
+
     if (error) {
 
-      alert(error.message);
+      console.error(
+        "Login error:",
+        error
+      );
 
-      console.error("Login error:", error);
+      alert(
+        error.message
+      );
+
+      loginButton.disabled = false;
+
+      loginButton.textContent =
+        "Login";
 
       return;
     }
 
-    alert("Login successful!");
 
-    window.location.href = "dashboard.html";
-  });
-</script>
-  
-</body>
-</html>
+    const user =
+      data?.user;
+
+
+    if (!user) {
+
+      alert(
+        "Unable to verify your account."
+      );
+
+      loginButton.disabled = false;
+
+      loginButton.textContent =
+        "Login";
+
+      return;
+    }
+
+
+    /*
+     * CHECK INITIAL ₦9,000 PAYMENT
+     */
+
+    const {
+      data: payment,
+      error: paymentError
+    } =
+     
