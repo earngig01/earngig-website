@@ -42,28 +42,22 @@
         <p>
           Add your product or service to the EarnGig Marketplace.
         </p>
-
       </div>
 
     </div>
 
 
-    <form class="novel-form">
+    <form id="listing-form" class="novel-form">
 
       <section class="form-section">
 
         <div class="form-section-title">
-
           <span>01</span>
 
           <div>
             <h2>Listing information</h2>
-
-            <p>
-              Tell buyers what you're offering.
-            </p>
+            <p>Tell buyers what you're offering.</p>
           </div>
-
         </div>
 
 
@@ -89,11 +83,25 @@
             Select a category
           </option>
 
-          <option>Digital Products</option>
-          <option>Writing Services</option>
-          <option>Design Services</option>
-          <option>Education</option>
-          <option>Business Services</option>
+          <option value="Digital Products">
+            Digital Products
+          </option>
+
+          <option value="Writing Services">
+            Writing Services
+          </option>
+
+          <option value="Design Services">
+            Design Services
+          </option>
+
+          <option value="Education">
+            Education
+          </option>
+
+          <option value="Business Services">
+            Business Services
+          </option>
 
         </select>
 
@@ -140,7 +148,8 @@
           <input
             type="number"
             id="price"
-            min="0"
+            min="1"
+            step="1"
             placeholder="Enter price"
             required
           >
@@ -177,15 +186,15 @@
             Select delivery type
           </option>
 
-          <option>
+          <option value="Digital Download">
             Digital Download
           </option>
 
-          <option>
+          <option value="Service / Direct Contact">
             Service / Direct Contact
           </option>
 
-          <option>
+          <option value="External Delivery">
             External Delivery
           </option>
 
@@ -203,7 +212,7 @@
         >
 
         <small class="form-help">
-          Required for digital products where applicable.
+          Optional for now. File storage will be connected separately.
         </small>
 
       </section>
@@ -214,9 +223,8 @@
         <strong>Before your listing goes live</strong>
 
         <p>
-          EarnGig may review listings before publication.
-          Listings must comply with the platform's marketplace
-          rules and applicable laws.
+          Your listing will be submitted for review before it
+          becomes visible to marketplace buyers.
         </p>
 
       </section>
@@ -224,13 +232,23 @@
 
       <label class="submission-agreement">
 
-        <input type="checkbox" required>
+        <input
+          type="checkbox"
+          id="agreement"
+          required
+        >
 
         I confirm that I have the rights to sell this
         product or service and agree to EarnGig's
         Marketplace rules.
 
       </label>
+
+
+      <div
+        id="listing-message"
+        style="margin-top:20px;"
+      ></div>
 
 
       <div class="form-actions">
@@ -244,6 +262,7 @@
 
         <button
           type="submit"
+          id="submit-listing"
           class="btn primary big"
         >
           Submit Listing
@@ -265,6 +284,186 @@
   </div>
 
 </footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+
+<script>
+
+const listingForm =
+  document.getElementById("listing-form");
+
+const submitButton =
+  document.getElementById("submit-listing");
+
+const message =
+  document.getElementById("listing-message");
+
+
+listingForm.addEventListener(
+  "submit",
+  async function(event) {
+
+    event.preventDefault();
+
+    message.textContent = "";
+
+    submitButton.disabled = true;
+    submitButton.textContent = "Submitting...";
+
+
+    try {
+
+      const {
+        data: { user },
+        error: userError
+      } = await supabaseClient.auth.getUser();
+
+
+      if (userError || !user) {
+
+        window.location.href = "login.html";
+
+        return;
+      }
+
+
+      const title =
+        document
+          .getElementById("listing-title")
+          .value
+          .trim();
+
+
+      const category =
+        document
+          .getElementById("category")
+          .value;
+
+
+      const description =
+        document
+          .getElementById("description")
+          .value
+          .trim();
+
+
+      const price =
+        Number(
+          document
+            .getElementById("price")
+            .value
+        );
+
+
+      const deliveryType =
+        document
+          .getElementById("delivery")
+          .value;
+
+
+      if (
+        !title ||
+        !category ||
+        !description ||
+        !deliveryType ||
+        !Number.isFinite(price) ||
+        price <= 0
+      ) {
+
+        alert(
+          "Please complete all required fields."
+        );
+
+        return;
+      }
+
+
+      const {
+        data: listing,
+        error
+      } = await supabaseClient
+        .from("marketplace_listings")
+        .insert({
+
+          seller_id: user.id,
+
+          title: title,
+
+          category: category,
+
+          description: description,
+
+          price: price,
+
+          delivery_type: deliveryType,
+
+          status: "pending"
+
+        })
+        .select()
+        .single();
+
+
+      if (error) {
+
+        console.error(
+          "Create listing error:",
+          error
+        );
+
+        message.textContent =
+          "Unable to create listing: " +
+          error.message;
+
+        return;
+      }
+
+
+      console.log(
+        "Listing created:",
+        listing
+      );
+
+
+      message.textContent =
+        "Listing submitted successfully. It is awaiting review.";
+
+
+      listingForm.reset();
+
+
+      setTimeout(function() {
+
+        window.location.href =
+          "seller-dashboard.html";
+
+      }, 1500);
+
+
+    } catch (error) {
+
+      console.error(
+        "Listing error:",
+        error
+      );
+
+      message.textContent =
+        "Something went wrong. Please try again.";
+
+    } finally {
+
+      submitButton.disabled = false;
+
+      submitButton.textContent =
+        "Submit Listing";
+
+    }
+
+  });
+
+</script>
 
 </body>
 </html>
