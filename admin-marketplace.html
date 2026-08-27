@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Admin Marketplace | EarnGig</title>
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<header>
+  <div class="container nav">
+
+    <a class="logo" href="index.html">
+      <span class="logo-mark">E</span>
+      Earn<span>Gig</span>
+    </a>
+
+    <span class="admin-badge">ADMIN</span>
+
+    <a class="btn outline" href="admin-dashboard.html">
+      Admin Dashboard
+    </a>
+
+  </div>
+</header>
+
+
+<main class="dashboard-page">
+
+  <div class="container">
+
+    <div class="dashboard-heading">
+
+      <div>
+
+        <span class="eyebrow">MARKETPLACE ADMIN</span>
+
+        <h1>Marketplace Listings</h1>
+
+        <p>
+          Review seller listings before they appear
+          on the public marketplace.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <!-- PENDING LISTINGS -->
+
+    <section class="dashboard-section">
+
+      <div class="section-title">
+
+        <div>
+          <span class="eyebrow">REVIEW</span>
+          <h2>Pending listings</h2>
+        </div>
+
+      </div>
+
+
+      <div id="pending-listings">
+
+        <div class="empty-state">
+
+          <div class="empty-icon">▣</div>
+
+          <h3>Loading listings...</h3>
+
+          <p>
+            Loading marketplace submissions.
+          </p>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ALL LISTINGS -->
+
+    <section class="dashboard-section">
+
+      <div class="section-title">
+
+        <div>
+          <span class="eyebrow">MARKETPLACE</span>
+          <h2>All listings</h2>
+        </div>
+
+      </div>
+
+
+      <div id="all-listings">
+
+        <div class="empty-state">
+
+          <h3>Loading...</h3>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </div>
+
+</main>
+
+
+<footer>
+
+  <div class="container copy">
+    © 2026 EarnGig Administration.
+  </div>
+
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+
+<script>
+
+async function checkAdmin() {
+
+  const {
+    data: { user },
+    error: userError
+  } = await supabaseClient.auth.getUser();
+
+
+  if (userError || !user) {
+
+    window.location.href = "login.html";
+
+    return null;
+  }
+
+
+  const {
+    data: admin,
+    error: adminError
+  } = await supabaseClient
+    .from("admin_users")
+    .select("id")
+    .eq("id", user.id)
+    .maybeSingle();
+
+
+  if (adminError || !admin) {
+
+    alert("You do not have administrator access.");
+
+    window.location.href = "dashboard.html";
+
+    return null;
+  }
+
+
+  return user;
+
+}
+
+
+async function loadListings() {
+
+  const pendingContainer =
+    document.getElementById(
+      "pending-listings"
+    );
+
+  const allContainer =
+    document.getElementById(
+      "all-listings"
+    );
+
+
+  const {
+    data: listings,
+    error
+  } = await supabaseClient
+    .from("marketplace_listings")
+    .select(`
+      id,
+      seller_id,
+      title,
+      category,
+      description,
+      price,
+      delivery_type,
+      status,
+      created_at
+    `)
+    .order("created_at", {
+      ascending: false
+    });
+
+
+  if (error) {
+
+    console.error(
+      "Marketplace listings error:",
+      error
+    );
+
+
+    const message = `
+      <div class="empty-state">
+
+        <h3>Unable to load listings</h3>
+
+        <p>
+          ${escapeHtml(error.message)}
+        </p>
+
+      </div>
+    `;
+
+    pendingContainer.innerHTML = message;
+    allContainer.innerHTML = "";
+
+    return;
+  }
+
+
+  const all =
+    listings || [];
+
+
+  const pending =
+    all.filter(function(listing) {
+
+      return listing.status === "pending";
+
+    });
+
+
+  renderPendingListings(
+    pendingContainer,
+    pending
+  );
+
+
+  renderAllListings(
+    allContainer,
+    all
+  );
+
+}
+
+
+function renderPendingListings(
+  container,
+  listings
+) {
+
+  if (!listings.length) {
+
+    container.innerHTML = `
+      <div class="empty-state">
+
+        <div class="empty-icon">✓</div>
+
+        <h3>No pending listings</h3>
+
+        <p>
+          There are no marketplace listings waiting
+          for approval.
+        </p>
+
+      </div>
+    `;
+
+    return;
+  }
+
+
+  container.innerHTML =
+    listings.map(function(listing) {
+
+      return createListingCard(
+        listing,
+        true
+      );
+
+    }).join("");
+
+}
+
+
+function renderAllListings(
+  container,
+  listings
+) {
+
+  if (!listings.length) {
+
+    container.innerHTML = `
+      <div class="empty-state">
+
+        <h3>No listings yet</h3>
+
+        <p>
+          Seller listings will appear here.
+        </p>
+
+      </div>
+    `;
+
+    return;
+  }
+
+
+  container.innerHTML =
+    listings.map(function(listing) {
+
+      return createListingCard(
+        listing,
+        false
+      );
+
+    }).join("");
+
+}
+
+
+function createListingCard(
+  listing,
+  showActions
+) {
+
+  const statusClass =
+    listing.status === "active"
+      ? "listing-status-active"
+      : listing.status === "rejected"
+        ? "listing-status-rejected"
+        : "listing-status-pending";
+
+
+  return `
+
+    <article
+      class="marketplace-card"
+      style="margin-bottom:20px;"
+    >
+
+      <div class="marketplace-card-body">
+
+        <span class="product-category">
+          ${escapeHtml(
+            listing.category || "MARKETPLACE"
+          )}
+        </span>
+
+
+        <h3>
+          ${escapeHtml(listing.title)}
+        </h3>
+
+
+        <p>
+          ${escapeHtml(listing.description)}
+        </p>
+
+
+        <p>
+          <strong>Seller ID:</strong>
+          ${escapeHtml(listing.seller_id)}
+        </p>
+
+
+        <p>
+          <strong>Delivery:</strong>
+          ${escapeHtml(
+            listing.delivery_type || "Not specified"
+          )}
+        </p>
+
+
+        <div
+          style="
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            gap:15px;
+            flex-wrap:wrap;
+            margin-top:15px;
+          "
+        >
+
+          <strong
+            style="
+              font-size:20px;
+              color:#159661;
+            "
+          >
+            ₦${Number(
+              listing.price || 0
+            ).toLocaleString("en-NG")}
+          </strong>
+
+
+          <span
+            class="${statusClass}"
+            style="
+              font-weight:700;
+              text-transform:uppercase;
+            "
+          >
+            ${escapeHtml(listing.status)}
+          </span>
+
+        </div>
+
+
+        ${
+          showActions
+            ? `
+
+              <div
+                style="
+                  display:flex;
+                  gap:10px;
+                  flex-wrap:wrap;
+                  margin-top:20px;
+                "
+              >
+
+                <button
+                  class="btn primary"
+                  type="button"
+                  onclick="updateListingStatus(
+                    '${listing.id}',
+                    'active'
+                  )"
+                >
+                  Approve
+                </button>
+
+
+                <button
+                  class="btn outline"
+                  type="button"
+                  onclick="updateListingStatus(
+                    '${listing.id}',
+                    'rejected'
+                  )"
+                >
+                  Reject
+                </button>
+
+              </div>
+
+            `
+            : ""
+        }
+
+      </div>
+
+    </article>
+
+  `;
+
+}
+
+
+async function updateListingStatus(
+  listingId,
+  newStatus
+) {
+
+  const action =
+    newStatus === "active"
+      ? "approve"
+      : "reject";
+
+
+  const confirmed = confirm(
+    "Are you sure you want to " +
+    action +
+    " this listing?"
+  );
+
+
+  if (!confirmed) {
+    return;
+  }
+
+
+  const {
+    error
+  } = await supabaseClient
+    .from("marketplace_listings")
+    .update({
+      status: newStatus
+    })
+    .eq("id", listingId);
+
+
+  if (error) {
+
+    console.error(
+      "Listing status error:",
+      error
+    );
+
+    alert(
+      "Unable to update listing:\n\n" +
+      error.message
+    );
+
+    return;
+  }
+
+
+  alert(
+    newStatus === "active"
+      ? "Listing approved successfully."
+      : "Listing rejected."
+  );
+
+
+  loadListings();
+
+}
+
+
+function escapeHtml(value) {
+
+  return String(value || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+
+}
+
+
+async function startAdminMarketplace() {
+
+  const user =
+    await checkAdmin();
+
+
+  if (!user) {
+    return;
+  }
+
+
+  await loadListings();
+
+}
+
+
+startAdminMarketplace();
+
+</script>
+
+</body>
+</html>
