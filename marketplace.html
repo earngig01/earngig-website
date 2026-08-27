@@ -38,9 +38,6 @@
 
   <div class="container">
 
-
-    <!-- MARKETPLACE HEADER -->
-
     <div class="marketplace-header">
 
       <div>
@@ -69,21 +66,43 @@
 
       <input
         type="search"
+        id="search-input"
         placeholder="Search products or services..."
       >
 
-      <select>
+      <select id="category-filter">
 
-        <option>All categories</option>
-        <option>Digital Products</option>
-        <option>Design Services</option>
-        <option>Writing Services</option>
-        <option>Education</option>
-        <option>Business Services</option>
+        <option value="all">
+          All categories
+        </option>
+
+        <option value="Digital Products">
+          Digital Products
+        </option>
+
+        <option value="Design Services">
+          Design Services
+        </option>
+
+        <option value="Writing Services">
+          Writing Services
+        </option>
+
+        <option value="Education">
+          Education
+        </option>
+
+        <option value="Business Services">
+          Business Services
+        </option>
 
       </select>
 
-      <button class="btn primary">
+      <button
+        class="btn primary"
+        id="search-button"
+        type="button"
+      >
         Search
       </button>
 
@@ -106,31 +125,31 @@
 
       <div class="marketplace-categories">
 
-        <a href="#">
+        <a href="#" data-category="Digital Products">
           <span>▣</span>
           <strong>Digital Products</strong>
           <small>Templates, guides & more</small>
         </a>
 
-        <a href="#">
+        <a href="#" data-category="Writing Services">
           <span>✎</span>
           <strong>Writing</strong>
           <small>Writing & editing services</small>
         </a>
 
-        <a href="#">
+        <a href="#" data-category="Design Services">
           <span>◇</span>
           <strong>Design</strong>
           <small>Creative services</small>
         </a>
 
-        <a href="#">
+        <a href="#" data-category="Education">
           <span>★</span>
           <strong>Education</strong>
           <small>Learning materials</small>
         </a>
 
-        <a href="#">
+        <a href="#" data-category="Business Services">
           <span>↗</span>
           <strong>Business</strong>
           <small>Business services</small>
@@ -152,122 +171,48 @@
           <h2>Featured listings</h2>
         </div>
 
-        <select class="sort-select">
+        <select
+          class="sort-select"
+          id="sort-select"
+        >
 
-          <option>Recommended</option>
-          <option>Newest</option>
-          <option>Lowest price</option>
-          <option>Highest price</option>
+          <option value="recommended">
+            Recommended
+          </option>
+
+          <option value="newest">
+            Newest
+          </option>
+
+          <option value="lowest">
+            Lowest price
+          </option>
+
+          <option value="highest">
+            Highest price
+          </option>
 
         </select>
 
       </div>
 
 
-      <div class="marketplace-grid">
+      <div
+        class="marketplace-grid"
+        id="marketplace-listings"
+      >
 
+        <div class="empty-state">
 
-        <article class="marketplace-card">
+          <div class="empty-icon">▣</div>
 
-          <div class="product-image">
-            <span>PDF</span>
-          </div>
+          <h3>Loading listings...</h3>
 
-          <div class="marketplace-card-body">
+          <p>
+            Marketplace listings are being loaded.
+          </p>
 
-            <span class="product-category">
-              DIGITAL PRODUCT
-            </span>
-
-            <h3>Business Starter Guide</h3>
-
-            <p>
-              A practical digital guide for people starting
-              their first small business.
-            </p>
-
-            <div class="product-footer">
-
-              <strong>₦2,500</strong>
-
-              <button class="btn primary small">
-                View
-              </button>
-
-            </div>
-
-          </div>
-
-        </article>
-
-
-        <article class="marketplace-card">
-
-          <div class="product-image">
-            <span>DESIGN</span>
-          </div>
-
-          <div class="marketplace-card-body">
-
-            <span class="product-category">
-              DESIGN SERVICE
-            </span>
-
-            <h3>Social Media Design</h3>
-
-            <p>
-              Professional social media graphics for
-              businesses and personal brands.
-            </p>
-
-            <div class="product-footer">
-
-              <strong>₦5,000</strong>
-
-              <button class="btn primary small">
-                View
-              </button>
-
-            </div>
-
-          </div>
-
-        </article>
-
-
-        <article class="marketplace-card">
-
-          <div class="product-image">
-            <span>COURSE</span>
-          </div>
-
-          <div class="marketplace-card-body">
-
-            <span class="product-category">
-              EDUCATION
-            </span>
-
-            <h3>Digital Skills Course</h3>
-
-            <p>
-              Learn practical digital skills through a
-              structured beginner-friendly course.
-            </p>
-
-            <div class="product-footer">
-
-              <strong>₦4,000</strong>
-
-              <button class="btn primary small">
-                View
-              </button>
-
-            </div>
-
-          </div>
-
-        </article>
-
+        </div>
 
       </div>
 
@@ -291,7 +236,10 @@
 
       </div>
 
-      <a class="btn primary" href="seller-dashboard.html">
+      <a
+        class="btn primary"
+        href="seller-dashboard.html"
+      >
         Start Selling
       </a>
 
@@ -310,6 +258,468 @@
   </div>
 
 </footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+
+<script>
+
+let allListings = [];
+
+
+async function loadMarketplace() {
+
+  const listingContainer =
+    document.getElementById(
+      "marketplace-listings"
+    );
+
+
+  const {
+    data: listings,
+    error
+  } = await supabaseClient
+    .from("marketplace_listings")
+    .select(`
+      id,
+      seller_id,
+      title,
+      category,
+      description,
+      price,
+      delivery_type,
+      status,
+      created_at
+    `)
+    .eq("status", "active")
+    .order("created_at", {
+      ascending: false
+    });
+
+
+  if (error) {
+
+    console.error(
+      "Marketplace loading error:",
+      error
+    );
+
+    listingContainer.innerHTML = `
+      <div class="empty-state">
+
+        <h3>Unable to load marketplace</h3>
+
+        <p>
+          ${error.message}
+        </p>
+
+      </div>
+    `;
+
+    return;
+  }
+
+
+  allListings =
+    listings || [];
+
+
+  renderListings(allListings);
+
+}
+
+
+function renderListings(listings) {
+
+  const container =
+    document.getElementById(
+      "marketplace-listings"
+    );
+
+
+  if (!listings.length) {
+
+    container.innerHTML = `
+      <div class="empty-state">
+
+        <div class="empty-icon">▣</div>
+
+        <h3>No listings found</h3>
+
+        <p>
+          There are currently no marketplace listings
+          matching your search.
+        </p>
+
+      </div>
+    `;
+
+    return;
+  }
+
+
+  container.innerHTML =
+    listings.map(function(listing) {
+
+      return `
+
+        <article class="marketplace-card">
+
+          <div class="product-image">
+
+            <span>
+              ${getCategoryLabel(listing.category)}
+            </span>
+
+          </div>
+
+
+          <div class="marketplace-card-body">
+
+            <span class="product-category">
+
+              ${listing.category}
+
+            </span>
+
+
+            <h3>
+              ${escapeHtml(listing.title)}
+            </h3>
+
+
+            <p>
+              ${escapeHtml(listing.description)}
+            </p>
+
+
+            <div class="product-footer">
+
+              <strong
+                style="
+                  color:#159661;
+                  font-size:20px;
+                  font-weight:800;
+                "
+              >
+                ₦${Number(
+                  listing.price
+                ).toLocaleString("en-NG")}
+              </strong>
+
+
+              <button
+                class="btn primary small"
+                type="button"
+                onclick="purchaseListing('${listing.id}')"
+              >
+                Buy
+              </button>
+
+            </div>
+
+          </div>
+
+        </article>
+
+      `;
+
+    }).join("");
+
+}
+
+
+function getCategoryLabel(category) {
+
+  if (!category) {
+    return "ITEM";
+  }
+
+  if (
+    category
+      .toLowerCase()
+      .includes("digital")
+  ) {
+    return "PDF";
+  }
+
+  if (
+    category
+      .toLowerCase()
+      .includes("design")
+  ) {
+    return "DESIGN";
+  }
+
+  if (
+    category
+      .toLowerCase()
+      .includes("education")
+  ) {
+    return "COURSE";
+  }
+
+  return "SERVICE";
+
+}
+
+
+function escapeHtml(value) {
+
+  return String(value || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+
+}
+
+
+async function purchaseListing(listingId) {
+
+  const listing =
+    allListings.find(function(item) {
+
+      return item.id === listingId;
+
+    });
+
+
+  if (!listing) {
+
+    alert(
+      "This listing is no longer available."
+    );
+
+    return;
+  }
+
+
+  const confirmed = confirm(
+    "Purchase \"" +
+    listing.title +
+    "\" for ₦" +
+    Number(
+      listing.price
+    ).toLocaleString("en-NG") +
+    "?"
+  );
+
+
+  if (!confirmed) {
+    return;
+  }
+
+
+  const {
+    data,
+    error
+  } = await supabaseClient.rpc(
+    "purchase_marketplace_item",
+    {
+      p_listing_id: listingId
+    }
+  );
+
+
+  if (error) {
+
+    console.error(
+      "Purchase error:",
+      error
+    );
+
+    alert(
+      "Unable to complete purchase:\n\n" +
+      error.message
+    );
+
+    return;
+  }
+
+
+  console.log(
+    "Purchase completed:",
+    data
+  );
+
+
+  alert(
+    "Purchase successful!\n\n" +
+    "₦" +
+    Number(
+      listing.price
+    ).toLocaleString("en-NG") +
+    " has been deducted from your wallet."
+  );
+
+
+  loadMarketplace();
+
+}
+
+
+function filterListings() {
+
+  const search =
+    document
+      .getElementById("search-input")
+      .value
+      .trim()
+      .toLowerCase();
+
+
+  const category =
+    document
+      .getElementById("category-filter")
+      .value;
+
+
+  let filtered =
+    allListings.filter(function(listing) {
+
+      const matchesSearch =
+        !search ||
+        listing.title
+          .toLowerCase()
+          .includes(search) ||
+        listing.description
+          .toLowerCase()
+          .includes(search);
+
+
+      const matchesCategory =
+        category === "all" ||
+        listing.category === category;
+
+
+      return (
+        matchesSearch &&
+        matchesCategory
+      );
+
+    });
+
+
+  const sort =
+    document
+      .getElementById("sort-select")
+      .value;
+
+
+  if (sort === "lowest") {
+
+    filtered.sort(function(a, b) {
+
+      return Number(a.price) -
+        Number(b.price);
+
+    });
+
+  }
+
+
+  if (sort === "highest") {
+
+    filtered.sort(function(a, b) {
+
+      return Number(b.price) -
+        Number(a.price);
+
+    });
+
+  }
+
+
+  if (sort === "newest") {
+
+    filtered.sort(function(a, b) {
+
+      return new Date(b.created_at) -
+        new Date(a.created_at);
+
+    });
+
+  }
+
+
+  renderListings(filtered);
+
+}
+
+
+document
+  .getElementById("search-button")
+  .addEventListener(
+    "click",
+    filterListings
+  );
+
+
+document
+  .getElementById("search-input")
+  .addEventListener(
+    "input",
+    filterListings
+  );
+
+
+document
+  .getElementById("category-filter")
+  .addEventListener(
+    "change",
+    filterListings
+  );
+
+
+document
+  .getElementById("sort-select")
+  .addEventListener(
+    "change",
+    filterListings
+  );
+
+
+document
+  .querySelectorAll(
+    ".marketplace-categories a"
+  )
+  .forEach(function(link) {
+
+    link.addEventListener(
+      "click",
+      function(event) {
+
+        event.preventDefault();
+
+        const category =
+          link.dataset.category;
+
+        document.getElementById(
+          "category-filter"
+        ).value = category;
+
+        filterListings();
+
+        document
+          .getElementById(
+            "marketplace-listings"
+          )
+          .scrollIntoView({
+            behavior: "smooth"
+          });
+
+      }
+    );
+
+  });
+
+
+loadMarketplace();
+
+</script>
 
 </body>
 </html>
