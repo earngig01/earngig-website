@@ -374,7 +374,64 @@
 <script src="supabase.js"></script>
 
 <script>
+async function checkMembershipAccess() {
 
+  const {
+    data: { user },
+    error: userError
+  } = await supabaseClient.auth.getUser();
+
+  if (userError || !user) {
+    window.location.href = "login.html";
+    return false;
+  }
+
+  const {
+    data: payment,
+    error: paymentError
+  } = await supabaseClient
+    .from("membership_payments")
+    .select("id")
+    .eq("user_id", user.id)
+    .eq("payment_type", "first_payment")
+    .eq("status", "confirmed")
+    .eq("amount", 9000)
+    .limit(1)
+    .maybeSingle();
+
+  if (paymentError) {
+
+    console.error(
+      "Membership verification error:",
+      paymentError
+    );
+
+    alert(
+      "Unable to verify your membership. Please try again."
+    );
+
+    await supabaseClient.auth.signOut();
+
+    window.location.href = "login.html";
+
+    return false;
+  }
+
+  if (!payment) {
+
+    alert(
+      "₦9,000 membership payment required before you can access your dashboard."
+    );
+
+    await supabaseClient.auth.signOut();
+
+    window.location.href = "membership.html";
+
+    return false;
+  }
+
+  return true;
+}
 async function loadDashboard() {
 
   try {
@@ -804,8 +861,19 @@ async function loadTransactions() {
     }).join("");
 }
   
-loadDashboard();
-  loadTransactions();
+(async function () {
+
+  const hasAccess =
+    await checkMembershipAccess();
+
+  if (!hasAccess) {
+    return;
+  }
+
+  await loadDashboard();
+  await loadTransactions();
+
+})();
 document
   .getElementById("copy-referral-button")
   .addEventListener("click", async function () {
