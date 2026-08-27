@@ -464,6 +464,92 @@ listingForm.addEventListener(
   });
 
 </script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
 
+<script>
+
+const listingForm = document.querySelector(".novel-form");
+
+listingForm.addEventListener("submit", async function(event) {
+
+  event.preventDefault();
+
+  const {
+    data: { user },
+    error: userError
+  } = await supabaseClient.auth.getUser();
+
+  if (userError || !user) {
+    alert("Please log in before creating a listing.");
+    window.location.href = "login.html";
+    return;
+  }
+
+  const title =
+    document.getElementById("listing-title").value.trim();
+
+  const category =
+    document.getElementById("category").value.trim();
+
+  const description =
+    document.getElementById("description").value.trim();
+
+  const price =
+    Number(document.getElementById("price").value);
+
+  const deliveryType =
+    document.getElementById("delivery").value.trim();
+
+  if (!title || !category || !description || !Number.isFinite(price)) {
+    alert("Please complete all listing information.");
+    return;
+  }
+
+  const submitButton =
+    listingForm.querySelector('button[type="submit"]');
+
+  submitButton.disabled = true;
+  submitButton.textContent = "Creating...";
+
+  const {
+    data,
+    error
+  } = await supabaseClient
+    .from("marketplace_listings")
+    .insert({
+      seller_id: user.id,
+      title: title,
+      category: category,
+      description: description,
+      price: price,
+      delivery_type: deliveryType,
+      status: "active"
+    })
+    .select()
+    .single();
+
+  if (error) {
+
+    console.error("Listing creation error:", error);
+
+    alert(
+      "Unable to create listing:\n\n" +
+      error.message
+    );
+
+    submitButton.disabled = false;
+    submitButton.textContent = "Submit Listing";
+
+    return;
+  }
+
+  alert("Listing created successfully!");
+
+  window.location.href = "marketplace.html";
+
+});
+
+</script>
 </body>
 </html>
