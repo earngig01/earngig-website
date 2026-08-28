@@ -173,6 +173,8 @@ function openMembershipPayment() {
     "Opening Payment...";
 
 
+  try {
+
   const handler =
     PaystackPop.setup({
 
@@ -194,30 +196,28 @@ function openMembershipPayment() {
         "-" +
         Date.now(),
 
-
       callback:
         async function(response) {
 
           loginButton.textContent =
             "Verifying payment...";
 
-
           const {
             data: verification,
             error: verificationError
           } =
-            await supabaseClient
-              .functions
-              .invoke(
-                "paystack-payment",
-                {
-                  body: {
-                    reference:
-                      response.reference
-                  }
-                }
-              );
+            await supabaseClient.functions.invoke(
+              "paystack-payment",
+              {
+                body: {
+                  reference:
+                    response.reference,
 
+                  user_id:
+                    loggedInUser.id
+                }
+              }
+            );
 
           if (
             verificationError ||
@@ -234,8 +234,7 @@ function openMembershipPayment() {
               "Payment could not be verified. Your dashboard remains locked."
             );
 
-            loginButton.disabled =
-              false;
+            loginButton.disabled = false;
 
             loginButton.textContent =
               "Pay ₦9,000 to Continue";
@@ -243,33 +242,48 @@ function openMembershipPayment() {
             return;
           }
 
-
           alert(
             "Payment successful! Your EarnGig membership is now active."
           );
 
-
           window.location.href =
             "dashboard.html";
-
         },
-
 
       onClose:
         function() {
 
-          loginButton.disabled =
-            false;
+          loginButton.disabled = false;
 
           loginButton.textContent =
             "Pay ₦9,000 to Continue";
-
         }
 
     });
 
+  console.log(
+    "Paystack handler created:",
+    handler
+  );
 
   handler.openIframe();
+
+} catch (error) {
+
+  console.error(
+    "Paystack failed to open:",
+    error
+  );
+
+  alert(
+    "Paystack could not open. Please refresh the page and try again."
+  );
+
+  loginButton.disabled = false;
+
+  loginButton.textContent =
+    "Pay ₦9,000 to Continue";
+  }
 
 }
 
