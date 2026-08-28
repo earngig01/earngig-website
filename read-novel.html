@@ -8,6 +8,98 @@
   <title>Reading | EarnGig</title>
 
   <link rel="stylesheet" href="styles.css">
+
+  <style>
+    .novel-header-content {
+      display: grid;
+      grid-template-columns: 150px 1fr auto;
+      gap: 28px;
+      align-items: center;
+    }
+
+    .novel-cover {
+      width: 150px;
+      height: 210px;
+      object-fit: cover;
+      border-radius: 10px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+      background: #f1f1f1;
+    }
+
+    .quiz-card {
+      display: none;
+    }
+
+    .quiz-card.unlocked {
+      display: block;
+    }
+
+    .completion-message {
+      display: none;
+      margin-top: 20px;
+      padding: 20px;
+      border-radius: 12px;
+      background: #f5fff7;
+      border: 1px solid #b9e6c2;
+    }
+
+    .completion-message.show {
+      display: flex;
+      gap: 15px;
+      align-items: flex-start;
+    }
+
+    .completion-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #198754;
+      color: white;
+      font-weight: bold;
+      flex-shrink: 0;
+    }
+
+    .quiz-result {
+      display: none;
+      margin-top: 20px;
+      padding: 20px;
+      border-radius: 12px;
+    }
+
+    .quiz-result.success {
+      display: block;
+      background: #f5fff7;
+      border: 1px solid #b9e6c2;
+    }
+
+    .quiz-result.failed {
+      display: block;
+      background: #fff7f7;
+      border: 1px solid #f0b5b5;
+    }
+
+    .verification-status {
+      margin-top: 25px;
+    }
+
+    @media (max-width: 800px) {
+      .novel-header-content {
+        grid-template-columns: 1fr;
+      }
+
+      .novel-cover {
+        width: 130px;
+        height: 180px;
+      }
+
+      .reading-reward {
+        width: 100%;
+      }
+    }
+  </style>
 </head>
 
 <body>
@@ -37,26 +129,50 @@
 
     <section class="reading-header">
 
-      <div>
+      <div class="novel-header-content">
 
-        <span class="eyebrow">READ & EARN</span>
+        <!--
+          The writer's uploaded cover image is shown here.
+          In the real application, replace this URL with the
+          novel's cover_url from the novels table.
+        -->
 
-        <h1>The Hidden Promise</h1>
+        <img
+          class="novel-cover"
+          src="https://via.placeholder.com/300x420?text=Novel+Cover"
+          alt="The Hidden Promise cover"
+          id="novelCover"
+        >
 
-        <p>
-          By Jane Doe · Romance · 22 pages
-        </p>
 
-      </div>
+        <div>
+
+          <span class="eyebrow">READ & EARN</span>
+
+          <h1 id="novelTitle">
+            The Hidden Promise
+          </h1>
+
+          <p id="novelDetails">
+            By Jane Doe · Romance · 22 pages
+          </p>
+
+        </div>
 
 
-      <div class="reading-reward">
+        <div class="reading-reward">
 
-        <small>Your approved reward</small>
+          <small>Your approved reward</small>
 
-        <strong>₦100</strong>
+          <strong id="rewardAmount">
+            ₦100
+          </strong>
 
-        <span>after verified completion</span>
+          <span>
+            after verified completion
+          </span>
+
+        </div>
 
       </div>
 
@@ -70,23 +186,39 @@
       <div class="progress-heading">
 
         <div>
-          <small>READING PROGRESS</small>
-          <strong>Page 1 of 22</strong>
+
+          <small>
+            READING PROGRESS
+          </small>
+
+          <strong id="pageDisplay">
+            Page 1 of 22
+          </strong>
+
         </div>
 
-        <span>0%</span>
+        <span id="progressPercent">
+          0%
+        </span>
 
       </div>
+
 
       <div class="progress-bar">
 
-        <div class="progress-fill"></div>
+        <div
+          class="progress-fill"
+          id="progressFill"
+          style="width: 0%;"
+        ></div>
 
       </div>
 
-      <p>
-        Complete the required reading and quiz to qualify
-        for verification.
+
+      <p id="progressMessage">
+        Read the required portion of the novel. The
+        verification quiz will appear only after you
+        complete the required reading.
       </p>
 
     </section>
@@ -98,14 +230,21 @@
 
       <div class="chapter-heading">
 
-        <span>CHAPTER ONE</span>
+        <span id="chapterNumber">
+          CHAPTER ONE
+        </span>
 
-        <h2>The Beginning</h2>
+        <h2 id="chapterTitle">
+          The Beginning
+        </h2>
 
       </div>
 
 
-      <article class="novel-content">
+      <article
+        class="novel-content"
+        id="novelContent"
+      >
 
         <p>
           The evening sky had begun to change when Sarah
@@ -145,17 +284,25 @@
       <div class="reading-navigation">
 
         <button
+          type="button"
           class="btn light"
+          id="previousButton"
           disabled
         >
           ← Previous
         </button>
 
-        <span>
+
+        <span id="pageNumber">
           1 / 22
         </span>
 
-        <button class="btn primary">
+
+        <button
+          type="button"
+          class="btn primary"
+          id="nextButton"
+        >
           Next Page →
         </button>
 
@@ -164,35 +311,43 @@
     </section>
 
 
-    <!-- READING RULES -->
+    <!-- COMPLETION MESSAGE
+         HIDDEN UNTIL REQUIRED READING IS COMPLETE -->
 
-    <section class="verification-notice">
+    <section
+      class="completion-message"
+      id="completionMessage"
+    >
 
-      <strong>Before you finish</strong>
+      <div class="completion-icon">
+        ✓
+      </div>
 
-      <ul>
+      <div>
 
-        <li>
-          Complete the required reading percentage.
-        </li>
+        <strong>
+          Required reading completed
+        </strong>
 
-        <li>
-          Complete the verification quiz.
-        </li>
+        <p>
+          You have completed the required reading.
+          Your verification quiz is now available below.
+        </p>
 
-        <li>
-          Your completion will be reviewed before the
-          reward is credited.
-        </li>
-
-      </ul>
+      </div>
 
     </section>
 
 
-    <!-- QUIZ -->
+    <!-- QUIZ
+         IMPORTANT:
+         THIS IS HIDDEN WHILE THE READER IS READING.
+         IT ONLY APPEARS AFTER REQUIRED COMPLETION. -->
 
-    <section class="quiz-card">
+    <section
+      class="quiz-card"
+      id="quizCard"
+    >
 
       <div class="quiz-header">
 
@@ -200,17 +355,19 @@
           COMPLETION QUIZ
         </span>
 
-        <h2>Test your understanding</h2>
+        <h2>
+          Test your understanding
+        </h2>
 
         <p>
-          Complete the quiz after finishing the required
-          reading.
+          Complete the quiz to verify that you have read
+          the required portion of this novel.
         </p>
 
       </div>
 
 
-      <form>
+      <form id="quizForm">
 
 
         <div class="quiz-question">
@@ -223,6 +380,7 @@
             <input
               type="radio"
               name="q1"
+              value="friend"
             >
             To visit an old friend.
           </label>
@@ -231,6 +389,7 @@
             <input
               type="radio"
               name="q1"
+              value="past"
             >
             To face something from her past.
           </label>
@@ -239,6 +398,7 @@
             <input
               type="radio"
               name="q1"
+              value="business"
             >
             To start a new business.
           </label>
@@ -247,6 +407,7 @@
             <input
               type="radio"
               name="q1"
+              value="celebration"
             >
             To attend a celebration.
           </label>
@@ -264,6 +425,7 @@
             <input
               type="radio"
               name="q2"
+              value="door"
             >
             Opening the old door.
           </label>
@@ -272,6 +434,7 @@
             <input
               type="radio"
               name="q2"
+              value="road"
             >
             Finding the road.
           </label>
@@ -280,6 +443,7 @@
             <input
               type="radio"
               name="q2"
+              value="shop"
             >
             Finding a shop.
           </label>
@@ -288,6 +452,7 @@
             <input
               type="radio"
               name="q2"
+              value="town"
             >
             Leaving the town.
           </label>
@@ -304,6 +469,12 @@
 
       </form>
 
+
+      <div
+        class="quiz-result"
+        id="quizResult"
+      ></div>
+
     </section>
 
 
@@ -318,13 +489,14 @@
       <div>
 
         <strong>
-          Reward verification
+          Automatic reward verification
         </strong>
 
         <p>
-          Your reward will only be credited after EarnGig
-          verifies that the required reading and quiz
-          requirements have been completed.
+          Once you complete the required reading and pass
+          the verification quiz, your reward will be
+          processed automatically. No separate reader
+          approval is required.
         </p>
 
       </div>
@@ -344,6 +516,362 @@
   </div>
 
 </footer>
+
+
+<script>
+
+  /*
+   * -------------------------------------------------------
+   * READING CONFIGURATION
+   * -------------------------------------------------------
+   *
+   * In the real application these values should come from
+   * the selected novel in Supabase.
+   */
+
+  const TOTAL_PAGES = 22;
+
+  /*
+   * The required percentage can be changed here.
+   *
+   * Example:
+   * 100 = reader must finish every page
+   * 80  = reader must read at least 80%
+   */
+
+  const REQUIRED_READING_PERCENT = 100;
+
+
+  let currentPage = 1;
+
+
+  /*
+   * -------------------------------------------------------
+   * ELEMENTS
+   * -------------------------------------------------------
+   */
+
+  const previousButton =
+    document.getElementById("previousButton");
+
+  const nextButton =
+    document.getElementById("nextButton");
+
+  const pageDisplay =
+    document.getElementById("pageDisplay");
+
+  const pageNumber =
+    document.getElementById("pageNumber");
+
+  const progressPercent =
+    document.getElementById("progressPercent");
+
+  const progressFill =
+    document.getElementById("progressFill");
+
+  const progressMessage =
+    document.getElementById("progressMessage");
+
+  const completionMessage =
+    document.getElementById("completionMessage");
+
+  const quizCard =
+    document.getElementById("quizCard");
+
+  const quizForm =
+    document.getElementById("quizForm");
+
+  const quizResult =
+    document.getElementById("quizResult");
+
+
+  /*
+   * -------------------------------------------------------
+   * UPDATE READING PROGRESS
+   * -------------------------------------------------------
+   */
+
+  function updateProgress() {
+
+    const percentage =
+      Math.round(
+        (currentPage / TOTAL_PAGES) * 100
+      );
+
+
+    pageDisplay.textContent =
+      `Page ${currentPage} of ${TOTAL_PAGES}`;
+
+
+    pageNumber.textContent =
+      `${currentPage} / ${TOTAL_PAGES}`;
+
+
+    progressPercent.textContent =
+      `${percentage}%`;
+
+
+    progressFill.style.width =
+      `${percentage}%`;
+
+
+    previousButton.disabled =
+      currentPage <= 1;
+
+
+    if (currentPage >= TOTAL_PAGES) {
+
+      nextButton.disabled = true;
+
+      nextButton.textContent =
+        "Reading Complete ✓";
+
+
+      unlockQuiz();
+
+    } else {
+
+      nextButton.disabled = false;
+
+      nextButton.textContent =
+        "Next Page →";
+
+    }
+
+  }
+
+
+  /*
+   * -------------------------------------------------------
+   * UNLOCK QUIZ
+   * -------------------------------------------------------
+   *
+   * The quiz is NOT visible during reading.
+   */
+
+  function unlockQuiz() {
+
+    completionMessage.classList.add("show");
+
+    quizCard.classList.add("unlocked");
+
+
+    progressMessage.textContent =
+      "You have completed the required reading. " +
+      "Complete the verification quiz below to qualify " +
+      "for your reward.";
+
+
+    /*
+     * Bring the reader to the quiz automatically.
+     */
+
+    setTimeout(() => {
+
+      quizCard.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+
+    }, 300);
+
+  }
+
+
+  /*
+   * -------------------------------------------------------
+   * NEXT PAGE
+   * -------------------------------------------------------
+   */
+
+  nextButton.addEventListener(
+    "click",
+    function () {
+
+      if (currentPage < TOTAL_PAGES) {
+
+        currentPage++;
+
+        updateProgress();
+
+      }
+
+    }
+  );
+
+
+  /*
+   * -------------------------------------------------------
+   * PREVIOUS PAGE
+   * -------------------------------------------------------
+   */
+
+  previousButton.addEventListener(
+    "click",
+    function () {
+
+      if (currentPage > 1) {
+
+        currentPage--;
+
+        updateProgress();
+
+      }
+
+    }
+  );
+
+
+  /*
+   * -------------------------------------------------------
+   * QUIZ SUBMISSION
+   * -------------------------------------------------------
+   */
+
+  quizForm.addEventListener(
+    "submit",
+    function (event) {
+
+      event.preventDefault();
+
+
+      /*
+       * Correct answers for this sample novel.
+       *
+       * In the real application these answers MUST come
+       * from the novel's quiz data in Supabase.
+       */
+
+      const answer1 =
+        document.querySelector(
+          'input[name="q1"]:checked'
+        );
+
+      const answer2 =
+        document.querySelector(
+          'input[name="q2"]:checked'
+        );
+
+
+      if (!answer1 || !answer2) {
+
+        quizResult.className =
+          "quiz-result failed";
+
+        quizResult.innerHTML = `
+          <strong>Please answer all questions.</strong>
+          <p>
+            Select an answer for every question before
+            submitting the quiz.
+          </p>
+        `;
+
+        return;
+
+      }
+
+
+      let score = 0;
+
+
+      if (answer1.value === "past") {
+        score++;
+      }
+
+
+      if (answer2.value === "door") {
+        score++;
+      }
+
+
+      const totalQuestions = 2;
+
+
+      const percentage =
+        Math.round(
+          (score / totalQuestions) * 100
+        );
+
+
+      /*
+       * Passing score.
+       */
+
+      const PASSING_SCORE = 70;
+
+
+      if (percentage >= PASSING_SCORE) {
+
+        quizResult.className =
+          "quiz-result success";
+
+        quizResult.innerHTML = `
+          <strong>Quiz passed ✓</strong>
+
+          <p>
+            Your score is ${percentage}%.
+            Your reading completion has been verified.
+          </p>
+
+          <p>
+            <strong>
+              Your ₦100 reader reward is now being processed
+              automatically.
+            </strong>
+          </p>
+        `;
+
+
+        /*
+         * IMPORTANT:
+         *
+         * This is where the real application should call
+         * the Supabase backend function that:
+         *
+         * 1. Verifies the reader completion.
+         * 2. Creates novel_reader_rewards.
+         * 3. Creates novel_writer_earnings.
+         * 4. Creates the transaction.
+         * 5. Prevents duplicate payment.
+         *
+         * DO NOT credit money directly from the browser.
+         */
+
+
+        quizForm.querySelector(
+          'button[type="submit"]'
+        ).disabled = true;
+
+
+      } else {
+
+        quizResult.className =
+          "quiz-result failed";
+
+        quizResult.innerHTML = `
+          <strong>Quiz not passed.</strong>
+
+          <p>
+            Your score is ${percentage}%.
+            Please review the novel and try the quiz again.
+          </p>
+        `;
+
+      }
+
+    }
+  );
+
+
+  /*
+   * -------------------------------------------------------
+   * INITIAL STATE
+   * -------------------------------------------------------
+   */
+
+  updateProgress();
+
+</script>
 
 </body>
 </html>
