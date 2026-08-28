@@ -276,8 +276,9 @@ function openMembershipPayment() {
   );
 
   alert(
-    "Paystack could not open. Please refresh the page and try again."
-  );
+  "Paystack error: " +
+  (error?.message || error)
+);
 
   loginButton.disabled = false;
 
