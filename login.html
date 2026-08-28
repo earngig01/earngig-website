@@ -121,9 +121,11 @@
 
 </footer>
 
+
 <script src="https://js.paystack.co/v1/inline.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
+
 
 <script>
 
@@ -137,16 +139,18 @@ let loggedInUser = null;
 
 
 /*
- * Open the ₦9,000 Paystack checkout.
- *
- * This runs directly from the user's button click,
- * which is important for mobile browsers.
+ * --------------------------------------------------
+ * VERIFY A PAYSTACK PAYMENT
+ * --------------------------------------------------
  */
 
 async function verifyMembershipPayment(reference) {
 
+  loginButton.disabled = true;
+
   loginButton.textContent =
     "Verifying payment...";
+
 
   const {
     data: verification,
@@ -161,6 +165,7 @@ async function verifyMembershipPayment(reference) {
         }
       }
     );
+
 
   if (
     verificationError ||
@@ -179,20 +184,33 @@ async function verifyMembershipPayment(reference) {
 
     loginButton.disabled = false;
 
+    loginButton.type = "button";
+
     loginButton.textContent =
       "Pay ₦9,000 to Continue";
 
+    loginButton.onclick =
+      openMembershipPayment;
+
     return;
   }
+
 
   alert(
     "Payment successful! Your EarnGig membership is now active."
   );
 
+
   window.location.href =
     "dashboard.html";
 }
 
+
+/*
+ * --------------------------------------------------
+ * OPEN ₦9,000 FIRST PAYMENT
+ * --------------------------------------------------
+ */
 
 function openMembershipPayment() {
 
@@ -248,30 +266,37 @@ function openMembershipPayment() {
           "-" +
           Date.now(),
 
-        callback: function(response) {
 
-          verifyMembershipPayment(
-            response.reference
-          );
+        callback:
+          function(response) {
 
-        },
+            verifyMembershipPayment(
+              response.reference
+            );
 
-        onClose: function() {
+          },
 
-          loginButton.disabled = false;
 
-          loginButton.textContent =
-            "Pay ₦9,000 to Continue";
+        onClose:
+          function() {
 
-        }
+            loginButton.disabled =
+              false;
+
+            loginButton.type =
+              "button";
+
+            loginButton.textContent =
+              "Pay ₦9,000 to Continue";
+
+            loginButton.onclick =
+              openMembershipPayment;
+
+          }
 
       });
 
-console.log(
-      "Paystack handler created:",
-      handler
-    );
-    
+
     handler.openIframe();
 
 
@@ -289,15 +314,24 @@ console.log(
 
     loginButton.disabled = false;
 
+    loginButton.type = "button";
+
     loginButton.textContent =
       "Pay ₦9,000 to Continue";
+
+    loginButton.onclick =
+      openMembershipPayment;
   }
 
 }
 
+
 /*
+ * --------------------------------------------------
  * LOGIN
+ * --------------------------------------------------
  */
+
 loginForm.addEventListener(
   "submit",
   async function(event) {
@@ -327,16 +361,18 @@ loginForm.addEventListener(
     }
 
 
-    loginButton.disabled =
-      true;
+    loginButton.disabled = true;
+
+    loginButton.type = "submit";
 
     loginButton.textContent =
       "Checking...";
 
 
     /*
-     * Sign in with Supabase.
+     * SIGN IN
      */
+
     const {
       data,
       error
@@ -363,6 +399,9 @@ loginForm.addEventListener(
       loginButton.disabled =
         false;
 
+      loginButton.type =
+        "submit";
+
       loginButton.textContent =
         "Login";
 
@@ -383,6 +422,9 @@ loginForm.addEventListener(
       loginButton.disabled =
         false;
 
+      loginButton.type =
+        "submit";
+
       loginButton.textContent =
         "Login";
 
@@ -391,42 +433,43 @@ loginForm.addEventListener(
 
 
     /*
-     * Check whether the initial ₦9,000
-     * membership payment has already
-     * been confirmed.
+     * --------------------------------------------------
+     * CHECK MEMBERSHIP
+     *
+     * IMPORTANT:
+     * We now check the membership PERIOD,
+     * NOT the old ₦9,000 payment record.
+     * --------------------------------------------------
      */
+
+    loginButton.textContent =
+      "Checking membership...";
+
+
     const {
-      data: payment,
-      error: paymentError
+      data: membership,
+      error: membershipError
     } =
       await supabaseClient
-        .from("membership_payments")
-        .select("id")
+        .from("memberships")
+        .select(`
+          status,
+          current_period_start,
+          current_period_end,
+          next_payment_at
+        `)
         .eq(
           "user_id",
           loggedInUser.id
         )
-        .eq(
-          "payment_type",
-          "first_payment"
-        )
-        .eq(
-          "status",
-          "confirmed"
-        )
-        .eq(
-          "amount",
-          9000
-        )
-        .limit(1)
         .maybeSingle();
 
 
-    if (paymentError) {
+    if (membershipError) {
 
       console.error(
         "Membership check error:",
-        paymentError
+        membershipError
       );
 
       alert(
@@ -436,6 +479,9 @@ loginForm.addEventListener(
       loginButton.disabled =
         false;
 
+      loginButton.type =
+        "submit";
+
       loginButton.textContent =
         "Login";
 
@@ -444,11 +490,63 @@ loginForm.addEventListener(
 
 
     /*
-     * ALREADY PAID
+     * --------------------------------------------------
+     * NO MEMBERSHIP
      *
-     * Go directly to dashboard.
+     * User has never completed the ₦9,000
+     * initial membership payment.
+     * --------------------------------------------------
      */
-    if (payment) {
+
+    if (!membership) {
+
+      loginButton.disabled =
+        false;
+
+      loginButton.type =
+        "button";
+
+      loginButton.textContent =
+        "Pay ₦9,000 to Continue";
+
+      loginButton.onclick =
+        openMembershipPayment;
+
+      return;
+    }
+
+
+    /*
+     * --------------------------------------------------
+     * CHECK CURRENT MEMBERSHIP PERIOD
+     * --------------------------------------------------
+     */
+
+    const periodEnd =
+      membership.current_period_end
+        ? new Date(
+            membership.current_period_end
+          )
+        : null;
+
+
+    const membershipIsActive =
+      membership.status === "active" &&
+      periodEnd &&
+      periodEnd.getTime() > Date.now();
+
+
+    /*
+     * --------------------------------------------------
+     * ACTIVE MEMBERSHIP
+     *
+     * DO NOT ASK FOR ₦9,000 AGAIN.
+     *
+     * Send user directly to dashboard.
+     * --------------------------------------------------
+     */
+
+    if (membershipIsActive) {
 
       window.location.href =
         "dashboard.html";
@@ -458,30 +556,36 @@ loginForm.addEventListener(
 
 
     /*
-     * NOT PAID
+     * --------------------------------------------------
+     * MEMBERSHIP EXPIRED
      *
-     * Do NOT open Paystack here.
+     * The first ₦9,000 payment is NOT requested again.
      *
-     * Instead, give the user a fresh
-     * button click that will open it.
+     * The user needs the ₦5,000 monthly renewal.
+     * --------------------------------------------------
      */
+
     loginButton.disabled =
       false;
-
-    loginButton.textContent =
-      "Pay ₦9,000 to Continue";
 
     loginButton.type =
       "button";
 
+    loginButton.textContent =
+      "Renew for ₦5,000";
+
     loginButton.onclick =
-      openMembershipPayment;
+      function() {
+
+        window.location.href =
+          "membership.html";
+
+      };
 
   }
 );
 
 </script>
-                    
 
 </body>
 
