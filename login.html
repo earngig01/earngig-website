@@ -267,7 +267,11 @@ function openMembershipPayment() {
 
       });
 
-
+console.log(
+      "Paystack handler created:",
+      handler
+    );
+    
     handler.openIframe();
 
 
@@ -290,53 +294,6 @@ function openMembershipPayment() {
   }
 
 }
-
-          alert(
-            "Payment successful! Your EarnGig membership is now active."
-          );
-
-          window.location.href =
-            "dashboard.html";
-        },
-
-      onClose:
-        function() {
-
-          loginButton.disabled = false;
-
-          loginButton.textContent =
-            "Pay ₦9,000 to Continue";
-        }
-
-    });
-
-  console.log(
-    "Paystack handler created:",
-    handler
-  );
-
-  handler.openIframe();
-
-} catch (error) {
-
-  console.error(
-    "Paystack failed to open:",
-    error
-  );
-
-  alert(
-  "Paystack error: " +
-  (error?.message || error)
-);
-
-  loginButton.disabled = false;
-
-  loginButton.textContent =
-    "Pay ₦9,000 to Continue";
-  }
-
-}
-
 
 /*
  * LOGIN
