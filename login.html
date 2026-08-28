@@ -142,6 +142,58 @@ let loggedInUser = null;
  * This runs directly from the user's button click,
  * which is important for mobile browsers.
  */
+
+async function verifyMembershipPayment(reference) {
+
+  loginButton.textContent =
+    "Verifying payment...";
+
+  const {
+    data: verification,
+    error: verificationError
+  } =
+    await supabaseClient.functions.invoke(
+      "paystack-payment",
+      {
+        body: {
+          reference: reference,
+          user_id: loggedInUser.id
+        }
+      }
+    );
+
+  if (
+    verificationError ||
+    !verification?.success
+  ) {
+
+    console.error(
+      "Payment verification error:",
+      verificationError,
+      verification
+    );
+
+    alert(
+      "Payment could not be verified. Your dashboard remains locked."
+    );
+
+    loginButton.disabled = false;
+
+    loginButton.textContent =
+      "Pay ₦9,000 to Continue";
+
+    return;
+  }
+
+  alert(
+    "Payment successful! Your EarnGig membership is now active."
+  );
+
+  window.location.href =
+    "dashboard.html";
+}
+
+
 function openMembershipPayment() {
 
   if (!loggedInUser) {
@@ -175,72 +227,69 @@ function openMembershipPayment() {
 
   try {
 
-  const handler =
-    PaystackPop.setup({
+    const handler =
+      PaystackPop.setup({
 
-      key:
-        "pk_test_aca5cbbbfb6574c4712453be151178c139c74512",
+        key:
+          "pk_test_aca5cbbbfb6574c4712453be151178c139c74512",
 
-      email:
-        loggedInUser.email,
+        email:
+          loggedInUser.email,
 
-      amount:
-        900000,
+        amount:
+          900000,
 
-      currency:
-        "NGN",
+        currency:
+          "NGN",
 
-      ref:
-        "EG-MEMBER-" +
-        loggedInUser.id.substring(0, 8) +
-        "-" +
-        Date.now(),
+        ref:
+          "EG-MEMBER-" +
+          loggedInUser.id.substring(0, 8) +
+          "-" +
+          Date.now(),
 
-      callback:
-        async function(response) {
+        callback: function(response) {
+
+          verifyMembershipPayment(
+            response.reference
+          );
+
+        },
+
+        onClose: function() {
+
+          loginButton.disabled = false;
 
           loginButton.textContent =
-            "Verifying payment...";
+            "Pay ₦9,000 to Continue";
 
-          const {
-            data: verification,
-            error: verificationError
-          } =
-            await supabaseClient.functions.invoke(
-              "paystack-payment",
-              {
-                body: {
-                  reference:
-                    response.reference,
+        }
 
-                  user_id:
-                    loggedInUser.id
-                }
-              }
-            );
+      });
 
-          if (
-            verificationError ||
-            !verification?.success
-          ) {
 
-            console.error(
-              "Payment verification error:",
-              verificationError,
-              verification
-            );
+    handler.openIframe();
 
-            alert(
-              "Payment could not be verified. Your dashboard remains locked."
-            );
 
-            loginButton.disabled = false;
+  } catch (error) {
 
-            loginButton.textContent =
-              "Pay ₦9,000 to Continue";
+    console.error(
+      "Paystack failed to open:",
+      error
+    );
 
-            return;
-          }
+    alert(
+      "Paystack error: " +
+      (error?.message || error)
+    );
+
+    loginButton.disabled = false;
+
+    loginButton.textContent =
+      "Pay ₦9,000 to Continue";
+  }
+
+}
 
           alert(
             "Payment successful! Your EarnGig membership is now active."
