@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -40,79 +41,106 @@
     <div class="dashboard-heading">
 
       <div>
-        <span class="eyebrow">PREMIUM MEMBERSHIP</span>
 
-        <h1>Upgrade your EarnGig membership</h1>
+        <span class="eyebrow">
+          PREMIUM MEMBERSHIP
+        </span>
+
+        <h1>Manage your EarnGig membership</h1>
 
         <p>
-          Access Premium activities and additional earning
-          opportunities available to eligible members.
+          Manage your membership and access Premium
+          earning opportunities.
         </p>
+
       </div>
 
     </div>
 
 
+    <!-- MEMBERSHIP STATUS -->
+
     <section class="dashboard-section">
 
       <div class="member-earning-grid">
 
+
         <div class="member-earning-card">
 
-          <div class="member-card-icon blue">★</div>
+          <div class="member-card-icon blue">
+            ★
+          </div>
 
-          <h3>Premium Membership</h3>
+          <h3>
+            Premium Membership
+          </h3>
 
-          <p>
-            Premium membership gives eligible members access
-            to Premium activities on EarnGig.
+          <p id="membership-description">
+            Checking your membership...
           </p>
 
-          <strong>Membership fee: ₦9,000</strong>
+          <strong id="membership-price">
+            Checking...
+          </strong>
 
         </div>
 
 
         <div class="member-earning-card">
 
-          <div class="member-card-icon blue">✓</div>
+          <div class="member-card-icon blue">
+            ✓
+          </div>
 
-          <h3>Your membership status</h3>
+          <h3>
+            Your membership status
+          </h3>
 
           <p id="membership-status">
-            Checking membership status...
+            Checking...
           </p>
 
-          <p id="membership-period"></p>
+          <p id="membership-period">
+          </p>
 
         </div>
+
 
       </div>
 
     </section>
 
 
+    <!-- PAYMENT -->
+
     <section class="dashboard-section">
 
       <div class="novel-preview">
 
         <div>
-          <span class="eyebrow">PAYMENT</span>
 
-          <h3>Become a Premium member</h3>
+          <span class="eyebrow">
+            MEMBERSHIP PAYMENT
+          </span>
 
-          <p>
-            Payment must be successfully confirmed before
-            your membership is activated.
+          <h3 id="payment-title">
+            Checking payment requirement...
+          </h3>
+
+          <p id="payment-description">
+            Please wait while we check your membership.
           </p>
+
         </div>
+
 
         <button
           id="payment-button"
           class="btn primary"
           type="button"
+          disabled
         >
-          Proceed to Payment
+          Checking...
         </button>
 
       </div>
@@ -120,17 +148,25 @@
     </section>
 
 
+    <!-- INFORMATION -->
+
     <section class="dashboard-section">
 
       <div class="empty-state">
 
-        <div class="empty-icon">₦</div>
+        <div class="empty-icon">
+          ₦
+        </div>
 
-        <h3>Payment confirmation</h3>
+        <h3>
+          Membership payment information
+        </h3>
 
-        <p>
-          Your membership will only become active after the
-          payment provider confirms a successful payment.
+        <p id="payment-info">
+
+          Your membership status determines whether
+          you need an initial payment or a monthly renewal.
+
         </p>
 
       </div>
@@ -147,46 +183,123 @@
   <div class="container copy">
     © 2026 EarnGig. All rights reserved.
   </div>
-
 </footer>
 
+
+<!-- PAYSTACK -->
+
+<script src="https://js.paystack.co/v1/inline.js"></script>
+
+<!-- SUPABASE -->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
 
+
 <script>
+
+let currentUser = null;
+let currentMembership = null;
+
+let paymentType = null;
+let paymentAmount = 0;
+
+
+const paymentButton =
+  document.getElementById(
+    "payment-button"
+  );
+
+
+/*
+ * --------------------------------------------------
+ * LOAD MEMBERSHIP
+ * --------------------------------------------------
+ */
 
 async function loadMembership() {
 
   const {
     data: { user },
     error: userError
-  } = await supabaseClient.auth.getUser();
+  } =
+    await supabaseClient.auth.getUser();
+
 
   if (userError || !user) {
-    window.location.href = "login.html";
+
+    window.location.href =
+      "login.html";
+
     return;
+
   }
+
+
+  currentUser =
+    user;
 
 
   const {
     data: membership,
     error: membershipError
-  } = await supabaseClient
-    .from("memberships")
-    .select(
-      "status, started_at, current_period_start, current_period_end"
-    )
-    .eq("user_id", user.id)
-    .maybeSingle();
+  } =
+    await supabaseClient
+      .from("memberships")
+      .select(`
+        status,
+        started_at,
+        current_period_start,
+        current_period_end,
+        next_payment_at,
+        payment_count
+      `)
+      .eq(
+        "user_id",
+        user.id
+      )
+      .maybeSingle();
 
 
   const statusElement =
-    document.getElementById("membership-status");
+    document.getElementById(
+      "membership-status"
+    );
 
   const periodElement =
-    document.getElementById("membership-period");
+    document.getElementById(
+      "membership-period"
+    );
 
+  const descriptionElement =
+    document.getElementById(
+      "membership-description"
+    );
+
+  const priceElement =
+    document.getElementById(
+      "membership-price"
+    );
+
+  const paymentTitle =
+    document.getElementById(
+      "payment-title"
+    );
+
+  const paymentDescription =
+    document.getElementById(
+      "payment-description"
+    );
+
+  const paymentInfo =
+    document.getElementById(
+      "payment-info"
+    );
+
+
+  /*
+   * DATABASE ERROR
+   */
 
   if (membershipError) {
 
@@ -196,26 +309,237 @@ async function loadMembership() {
     );
 
     statusElement.textContent =
-      "Membership status unavailable.";
+      "Unable to check membership.";
+
+    paymentTitle.textContent =
+      "Membership check failed.";
+
+    paymentDescription.textContent =
+      "Please refresh the page and try again.";
+
+    paymentButton.disabled =
+      true;
 
     return;
+
   }
 
+
+  currentMembership =
+    membership;
+
+
+  /*
+   * --------------------------------------------------
+   * NO MEMBERSHIP
+   *
+   * First payment = ₦9,000
+   * --------------------------------------------------
+   */
 
   if (!membership) {
 
+    paymentType =
+      "first_payment";
+
+    paymentAmount =
+      9000;
+
+
     statusElement.textContent =
-      "No active membership.";
+      "No active membership";
+
 
     periodElement.textContent =
-      "Complete a confirmed payment to activate Premium.";
+      "Complete the first payment to activate your membership.";
+
+
+    descriptionElement.textContent =
+      "Your first Premium membership payment activates your account for one month.";
+
+
+    priceElement.textContent =
+      "First payment: ₦9,000";
+
+
+    paymentTitle.textContent =
+      "Activate your membership";
+
+
+    paymentDescription.textContent =
+      "Pay ₦9,000 to activate your EarnGig membership for the first month.";
+
+
+    paymentInfo.textContent =
+      "Your first membership payment is ₦9,000. After the first month, future renewals are ₦5,000.";
+
+
+    paymentButton.disabled =
+      false;
+
+
+    paymentButton.textContent =
+      "Pay ₦9,000";
+
 
     return;
+
   }
 
 
+  /*
+   * --------------------------------------------------
+   * CHECK MEMBERSHIP EXPIRY
+   * --------------------------------------------------
+   */
+
+  const periodEnd =
+    membership.current_period_end
+      ? new Date(
+          membership.current_period_end
+        )
+      : null;
+
+
+  const isActive =
+    membership.status === "active" &&
+    periodEnd &&
+    periodEnd.getTime() > Date.now();
+
+
+  /*
+   * --------------------------------------------------
+   * ACTIVE MEMBERSHIP
+   *
+   * NO PAYMENT.
+   * --------------------------------------------------
+   */
+
+  if (isActive) {
+
+    statusElement.textContent =
+      "Status: Active ✓";
+
+
+    descriptionElement.textContent =
+      "Your Premium membership is currently active.";
+
+
+    priceElement.textContent =
+      "No payment required right now";
+
+
+    paymentTitle.textContent =
+      "Your membership is active";
+
+
+    paymentDescription.textContent =
+      "You already have access to EarnGig. Your next payment will only be required after your current membership period ends.";
+
+
+    paymentButton.disabled =
+      true;
+
+
+    paymentButton.textContent =
+      "Membership Active";
+
+
+    if (membership.current_period_end) {
+
+      const endDate =
+        new Date(
+          membership.current_period_end
+        );
+
+
+      periodElement.textContent =
+        "Current period ends: " +
+        endDate.toLocaleDateString(
+          "en-NG",
+          {
+            year: "numeric",
+            month: "long",
+            day: "numeric"
+          }
+        );
+
+    }
+
+
+    if (membership.next_payment_at) {
+
+      const nextPayment =
+        new Date(
+          membership.next_payment_at
+        );
+
+
+      paymentInfo.textContent =
+        "Your membership is active. Your next ₦5,000 renewal will be due after your current membership period ends on " +
+        nextPayment.toLocaleDateString(
+          "en-NG",
+          {
+            year: "numeric",
+            month: "long",
+            day: "numeric"
+          }
+        ) +
+        ".";
+
+    }
+
+
+    return;
+
+  }
+
+
+  /*
+   * --------------------------------------------------
+   * EXPIRED MEMBERSHIP
+   *
+   * Renewal = ₦5,000
+   * --------------------------------------------------
+   */
+
+  paymentType =
+    "renewal";
+
+  paymentAmount =
+    5000;
+
+
   statusElement.textContent =
-    "Status: " + (membership.status || "unknown");
+    "Status: Expired";
+
+
+  descriptionElement.textContent =
+    "Your previous membership period has ended.";
+
+
+  priceElement.textContent =
+    "Monthly renewal: ₦5,000";
+
+
+  paymentTitle.textContent =
+    "Renew your membership";
+
+
+  paymentDescription.textContent =
+    "Pay ₦5,000 to renew your EarnGig membership for another month.";
+
+
+  paymentInfo.textContent =
+    "Your initial membership payment is ₦9,000. After that, membership renewals cost ₦5,000 per month.";
+
+
+  paymentButton.disabled =
+    false;
+
+
+  paymentButton.textContent =
+    "Renew for ₦5,000";
 
 
   if (membership.current_period_end) {
@@ -225,9 +549,17 @@ async function loadMembership() {
         membership.current_period_end
       );
 
+
     periodElement.textContent =
-      "Current period ends: " +
-      endDate.toLocaleDateString("en-NG");
+      "Previous period ended: " +
+      endDate.toLocaleDateString(
+        "en-NG",
+        {
+          year: "numeric",
+          month: "long",
+          day: "numeric"
+        }
+      );
 
   }
 
@@ -235,21 +567,292 @@ async function loadMembership() {
 
 
 /*
- * IMPORTANT:
- * This button does NOT mark the user as paid.
- *
- * A real payment provider will be connected here later.
+ * --------------------------------------------------
+ * OPEN PAYSTACK
+ * --------------------------------------------------
  */
-document
-  .getElementById("payment-button")
-  .addEventListener("click", function () {
+
+function openPayment() {
+
+  if (!currentUser) {
 
     alert(
-      "Payment processing is not connected yet. No payment has been recorded."
+      "Please log in first."
     );
 
-  });
+    window.location.href =
+      "login.html";
 
+    return;
+
+  }
+
+
+  if (!paymentType || !paymentAmount) {
+
+    alert(
+      "Unable to determine the required membership payment."
+    );
+
+    return;
+
+  }
+
+
+  if (
+    typeof PaystackPop ===
+    "undefined"
+  ) {
+
+    alert(
+      "Paystack could not load. Please refresh the page and try again."
+    );
+
+    return;
+
+  }
+
+
+  /*
+   * Safety check:
+   *
+   * Never allow an active member to
+   * accidentally make another payment.
+   */
+
+  if (currentMembership) {
+
+    const periodEnd =
+      currentMembership.current_period_end
+        ? new Date(
+            currentMembership.current_period_end
+          )
+        : null;
+
+
+    const active =
+      currentMembership.status === "active" &&
+      periodEnd &&
+      periodEnd.getTime() > Date.now();
+
+
+    if (active) {
+
+      alert(
+        "Your membership is already active. No payment is required yet."
+      );
+
+      return;
+
+    }
+
+  }
+
+
+  paymentButton.disabled =
+    true;
+
+  paymentButton.textContent =
+    "Opening Payment...";
+
+
+  try {
+
+    const handler =
+      PaystackPop.setup({
+
+        key:
+          "pk_test_aca5cbbbfb6574c4712453be151178c139c74512",
+
+        email:
+          currentUser.email,
+
+        amount:
+          paymentAmount * 100,
+
+        currency:
+          "NGN",
+
+        ref:
+          "EG-" +
+          paymentType.toUpperCase() +
+          "-" +
+          currentUser.id.substring(0, 8) +
+          "-" +
+          Date.now(),
+
+
+        callback:
+          function(response) {
+
+            verifyPayment(
+              response.reference
+            );
+
+          },
+
+
+        onClose:
+          function() {
+
+            paymentButton.disabled =
+              false;
+
+
+            paymentButton.textContent =
+              paymentType === "renewal"
+                ? "Renew for ₦5,000"
+                : "Pay ₦9,000";
+
+          }
+
+      });
+
+
+    handler.openIframe();
+
+
+  } catch (error) {
+
+    console.error(
+      "Paystack failed to open:",
+      error
+    );
+
+
+    alert(
+      "Paystack error: " +
+      (error?.message || error)
+    );
+
+
+    paymentButton.disabled =
+      false;
+
+
+    paymentButton.textContent =
+      paymentType === "renewal"
+        ? "Renew for ₦5,000"
+        : "Pay ₦9,000";
+
+  }
+
+}
+
+
+/*
+ * --------------------------------------------------
+ * VERIFY PAYMENT
+ * --------------------------------------------------
+ */
+
+async function verifyPayment(reference) {
+
+  paymentButton.disabled =
+    true;
+
+  paymentButton.textContent =
+    "Verifying payment...";
+
+
+  const {
+    data: result,
+    error
+  } =
+    await supabaseClient.functions.invoke(
+      "paystack-payment",
+      {
+        body: {
+
+          reference:
+            reference,
+
+          user_id:
+            currentUser.id,
+
+          payment_type:
+            paymentType,
+
+          amount:
+            paymentAmount
+
+        }
+      }
+    );
+
+
+  console.log(
+    "Payment verification result:",
+    result
+  );
+
+
+  if (
+    error ||
+    !result?.success
+  ) {
+
+    console.error(
+      "Payment verification failed:",
+      error,
+      result
+    );
+
+
+    alert(
+      "Payment could not be verified. Please contact support if your account was charged."
+    );
+
+
+    paymentButton.disabled =
+      false;
+
+
+    paymentButton.textContent =
+      paymentType === "renewal"
+        ? "Renew for ₦5,000"
+        : "Pay ₦9,000";
+
+
+    return;
+
+  }
+
+
+  /*
+   * SUCCESS
+   */
+
+  alert(
+    paymentType === "renewal"
+      ? "Renewal successful! Your membership has been extended for another month."
+      : "Payment successful! Your EarnGig membership is now active."
+  );
+
+
+  window.location.href =
+    "dashboard.html";
+
+}
+
+
+/*
+ * --------------------------------------------------
+ * BUTTON
+ * --------------------------------------------------
+ */
+
+paymentButton.addEventListener(
+  "click",
+  openPayment
+);
+
+
+/*
+ * --------------------------------------------------
+ * START
+ * --------------------------------------------------
+ */
 
 loadMembership();
 
