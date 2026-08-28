@@ -121,9 +121,10 @@
 
 </footer>
 
-
+<script src="https://js.paystack.co/v1/inline.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
+
 
 <script>
 
@@ -230,3 +231,163 @@ loginForm.addEventListener(
       error: paymentError
     } =
      
+    await supabaseClient
+      .from("membership_payments")
+      .select("id")
+      .eq("user_id", user.id)
+      .eq("payment_type", "first_payment")
+      .eq("status", "confirmed")
+      .eq("amount", 9000)
+      .limit(1)
+      .maybeSingle();
+
+
+    if (paymentError) {
+
+      console.error(
+        "Membership check error:",
+        paymentError
+      );
+
+      alert(
+        "Unable to verify your membership. Please try again."
+      );
+
+      loginButton.disabled = false;
+
+      loginButton.textContent =
+        "Login";
+
+      return;
+    }
+
+
+    /*
+     * ALREADY PAID
+     */
+
+    if (payment) {
+
+      window.location.href =
+        "dashboard.html";
+
+      return;
+    }
+
+
+    /*
+     * NOT PAID
+     *
+     * Open Paystack for ₦9,000.
+     */
+
+    loginButton.textContent =
+      "Payment Required";
+
+
+    const handler =
+      PaystackPop.setup({
+
+        key:
+          "pk_test_aca5cbbbfb6574c4712453be151178c139c74512",
+
+        email:
+          user.email,
+
+        amount:
+          900000,
+
+        currency:
+          "NGN",
+
+        ref:
+          "EG-MEMBER-" +
+          user.id.substring(0, 8) +
+          "-" +
+          Date.now(),
+
+
+        callback:
+          async function(response) {
+
+            loginButton.textContent =
+              "Verifying payment...";
+
+
+            const {
+              data: verification,
+              error: verificationError
+            } =
+              await supabaseClient.functions.invoke(
+                "paystack-payment",
+                {
+                  body: {
+                    reference:
+                      response.reference
+                  }
+                }
+              );
+
+
+            if (
+              verificationError ||
+              !verification?.success
+            ) {
+
+              console.error(
+                "Payment verification error:",
+                verificationError,
+                verification
+              );
+
+              alert(
+                "Payment was received but could not be verified automatically. Please contact support."
+              );
+
+              loginButton.disabled = false;
+
+              loginButton.textContent =
+                "Login";
+
+              return;
+            }
+
+
+            alert(
+              "Payment successful! Your EarnGig membership is now active."
+            );
+
+
+            window.location.href =
+              "dashboard.html";
+
+          },
+
+
+        onClose:
+          function() {
+
+            loginButton.disabled = false;
+
+            loginButton.textContent =
+              "Login";
+
+            alert(
+              "Payment was not completed. Your dashboard remains locked."
+            );
+
+          }
+
+      });
+
+
+    handler.openIframe();
+
+  }
+);
+
+</script>
+
+</body>
+
+</html>
