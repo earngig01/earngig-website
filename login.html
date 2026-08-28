@@ -125,7 +125,6 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
 
-
 <script>
 
 const loginForm =
@@ -134,12 +133,156 @@ const loginForm =
 const loginButton =
   document.getElementById("login-button");
 
+let loggedInUser = null;
 
+
+/*
+ * Open the ₦9,000 Paystack checkout.
+ *
+ * This runs directly from the user's button click,
+ * which is important for mobile browsers.
+ */
+function openMembershipPayment() {
+
+  if (!loggedInUser) {
+
+    alert(
+      "Please log in first."
+    );
+
+    return;
+  }
+
+
+  if (
+    typeof PaystackPop ===
+    "undefined"
+  ) {
+
+    alert(
+      "Paystack could not load. Please refresh the page and try again."
+    );
+
+    return;
+  }
+
+
+  loginButton.disabled = true;
+
+  loginButton.textContent =
+    "Opening Payment...";
+
+
+  const handler =
+    PaystackPop.setup({
+
+      key:
+        "pk_test_aca5cbbbfb6574c4712453be151178c139c74512",
+
+      email:
+        loggedInUser.email,
+
+      amount:
+        900000,
+
+      currency:
+        "NGN",
+
+      ref:
+        "EG-MEMBER-" +
+        loggedInUser.id.substring(0, 8) +
+        "-" +
+        Date.now(),
+
+
+      callback:
+        async function(response) {
+
+          loginButton.textContent =
+            "Verifying payment...";
+
+
+          const {
+            data: verification,
+            error: verificationError
+          } =
+            await supabaseClient
+              .functions
+              .invoke(
+                "paystack-payment",
+                {
+                  body: {
+                    reference:
+                      response.reference
+                  }
+                }
+              );
+
+
+          if (
+            verificationError ||
+            !verification?.success
+          ) {
+
+            console.error(
+              "Payment verification error:",
+              verificationError,
+              verification
+            );
+
+            alert(
+              "Payment could not be verified. Your dashboard remains locked."
+            );
+
+            loginButton.disabled =
+              false;
+
+            loginButton.textContent =
+              "Pay ₦9,000 to Continue";
+
+            return;
+          }
+
+
+          alert(
+            "Payment successful! Your EarnGig membership is now active."
+          );
+
+
+          window.location.href =
+            "dashboard.html";
+
+        },
+
+
+      onClose:
+        function() {
+
+          loginButton.disabled =
+            false;
+
+          loginButton.textContent =
+            "Pay ₦9,000 to Continue";
+
+        }
+
+    });
+
+
+  handler.openIframe();
+
+}
+
+
+/*
+ * LOGIN
+ */
 loginForm.addEventListener(
   "submit",
   async function(event) {
 
     event.preventDefault();
+
 
     const email =
       document
@@ -163,24 +306,26 @@ loginForm.addEventListener(
     }
 
 
-    loginButton.disabled = true;
+    loginButton.disabled =
+      true;
 
     loginButton.textContent =
       "Checking...";
 
 
     /*
-     * LOGIN
+     * Sign in with Supabase.
      */
-
     const {
       data,
       error
     } =
-      await supabaseClient.auth.signInWithPassword({
-        email: email,
-        password: password
-      });
+      await supabaseClient
+        .auth
+        .signInWithPassword({
+          email,
+          password
+        });
 
 
     if (error) {
@@ -194,7 +339,8 @@ loginForm.addEventListener(
         error.message
       );
 
-      loginButton.disabled = false;
+      loginButton.disabled =
+        false;
 
       loginButton.textContent =
         "Login";
@@ -203,17 +349,18 @@ loginForm.addEventListener(
     }
 
 
-    const user =
+    loggedInUser =
       data?.user;
 
 
-    if (!user) {
+    if (!loggedInUser) {
 
       alert(
         "Unable to verify your account."
       );
 
-      loginButton.disabled = false;
+      loginButton.disabled =
+        false;
 
       loginButton.textContent =
         "Login";
@@ -223,23 +370,35 @@ loginForm.addEventListener(
 
 
     /*
-     * CHECK INITIAL ₦9,000 PAYMENT
+     * Check whether the initial ₦9,000
+     * membership payment has already
+     * been confirmed.
      */
-
     const {
       data: payment,
       error: paymentError
     } =
-     
-    await supabaseClient
-      .from("membership_payments")
-      .select("id")
-      .eq("user_id", user.id)
-      .eq("payment_type", "first_payment")
-      .eq("status", "confirmed")
-      .eq("amount", 9000)
-      .limit(1)
-      .maybeSingle();
+      await supabaseClient
+        .from("membership_payments")
+        .select("id")
+        .eq(
+          "user_id",
+          loggedInUser.id
+        )
+        .eq(
+          "payment_type",
+          "first_payment"
+        )
+        .eq(
+          "status",
+          "confirmed"
+        )
+        .eq(
+          "amount",
+          9000
+        )
+        .limit(1)
+        .maybeSingle();
 
 
     if (paymentError) {
@@ -253,7 +412,8 @@ loginForm.addEventListener(
         "Unable to verify your membership. Please try again."
       );
 
-      loginButton.disabled = false;
+      loginButton.disabled =
+        false;
 
       loginButton.textContent =
         "Login";
@@ -264,8 +424,9 @@ loginForm.addEventListener(
 
     /*
      * ALREADY PAID
+     *
+     * Go directly to dashboard.
      */
-
     if (payment) {
 
       window.location.href =
@@ -278,115 +439,28 @@ loginForm.addEventListener(
     /*
      * NOT PAID
      *
-     * Open Paystack for ₦9,000.
+     * Do NOT open Paystack here.
+     *
+     * Instead, give the user a fresh
+     * button click that will open it.
      */
+    loginButton.disabled =
+      false;
 
     loginButton.textContent =
-      "Payment Required";
+      "Pay ₦9,000 to Continue";
 
+    loginButton.type =
+      "button";
 
-    const handler =
-      PaystackPop.setup({
-
-        key:
-          "pk_test_aca5cbbbfb6574c4712453be151178c139c74512",
-
-        email:
-          user.email,
-
-        amount:
-          900000,
-
-        currency:
-          "NGN",
-
-        ref:
-          "EG-MEMBER-" +
-          user.id.substring(0, 8) +
-          "-" +
-          Date.now(),
-
-
-        callback:
-          async function(response) {
-
-            loginButton.textContent =
-              "Verifying payment...";
-
-
-            const {
-              data: verification,
-              error: verificationError
-            } =
-              await supabaseClient.functions.invoke(
-                "paystack-payment",
-                {
-                  body: {
-                    reference:
-                      response.reference
-                  }
-                }
-              );
-
-
-            if (
-              verificationError ||
-              !verification?.success
-            ) {
-
-              console.error(
-                "Payment verification error:",
-                verificationError,
-                verification
-              );
-
-              alert(
-                "Payment was received but could not be verified automatically. Please contact support."
-              );
-
-              loginButton.disabled = false;
-
-              loginButton.textContent =
-                "Login";
-
-              return;
-            }
-
-
-            alert(
-              "Payment successful! Your EarnGig membership is now active."
-            );
-
-
-            window.location.href =
-              "dashboard.html";
-
-          },
-
-
-        onClose:
-          function() {
-
-            loginButton.disabled = false;
-
-            loginButton.textContent =
-              "Login";
-
-            alert(
-              "Payment was not completed. Your dashboard remains locked."
-            );
-
-          }
-
-      });
-
-
-    handler.openIframe();
+    loginButton.onclick =
+      openMembershipPayment;
 
   }
 );
 
 </script>
+                    
 
 </body>
 
