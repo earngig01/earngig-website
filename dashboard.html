@@ -386,24 +386,31 @@ async function checkMembershipAccess() {
     return false;
   }
 
+  /*
+   * Check the user's actual membership period.
+   *
+   * An active membership remains valid until
+   * current_period_end.
+   */
   const {
-    data: payment,
-    error: paymentError
+    data: membership,
+    error: membershipError
   } = await supabaseClient
-    .from("membership_payments")
-    .select("id")
+    .from("memberships")
+    .select(`
+      status,
+      current_period_start,
+      current_period_end,
+      next_payment_at
+    `)
     .eq("user_id", user.id)
-    .eq("payment_type", "first_payment")
-    .eq("status", "confirmed")
-    .eq("amount", 9000)
-    .limit(1)
     .maybeSingle();
 
-  if (paymentError) {
+  if (membershipError) {
 
     console.error(
       "Membership verification error:",
-      paymentError
+      membershipError
     );
 
     alert(
@@ -417,21 +424,62 @@ async function checkMembershipAccess() {
     return false;
   }
 
-  if (!payment) {
+  /*
+   * No membership record.
+   *
+   * This means the user has not completed
+   * the initial membership payment.
+   */
+  if (!membership) {
 
     alert(
       "₦9,000 membership payment required before you can access your dashboard."
     );
-
-    await supabaseClient.auth.signOut();
 
     window.location.href = "membership.html";
 
     return false;
   }
 
-  return true;
+  /*
+   * Check whether the membership is currently active.
+   */
+  const periodEnd =
+    membership.current_period_end
+      ? new Date(membership.current_period_end)
+      : null;
+
+  const membershipIsActive =
+    membership.status === "active" &&
+    periodEnd &&
+    periodEnd.getTime() > Date.now();
+
+  /*
+   * ACTIVE MEMBERSHIP
+   *
+   * The user has full dashboard access.
+   * Do NOT ask for another ₦9,000 payment.
+   */
+  if (membershipIsActive) {
+    return true;
+  }
+
+  /*
+   * Membership has expired.
+   *
+   * At this point the user should renew,
+   * rather than paying the initial ₦9,000 again.
+   */
+  alert(
+    "Your membership has expired. Please renew your membership to continue."
+  );
+
+  window.location.href =
+    "membership.html";
+
+  return false;
 }
+    
 async function loadDashboard() {
 
   try {
