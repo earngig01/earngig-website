@@ -516,277 +516,523 @@
   </div>
 
 </footer>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
 
 <script>
-  const REQUIRED_READING_PERCENT = 100;
+document.addEventListener("DOMContentLoaded", function () {
+
+  /*
+   * ======================================================
+   * READING DATA
+   * ======================================================
+   *
+   * For now we are using sample pages.
+   *
+   * Once navigation works correctly, we will connect the
+   * actual novel content from Supabase.
+   */
+
+  const pages = [
+
+    {
+      chapter: "CHAPTER ONE",
+      title: "The Beginning",
+      content: `
+        <p>
+          The evening sky had begun to change when Sarah
+          returned to the small town she had left years ago.
+          She had promised herself that she would never
+          return, but some promises are easier to make than
+          they are to keep.
+        </p>
+
+        <p>
+          The familiar road looked different now. The shops
+          were brighter, the houses had changed, and yet the
+          old memories remained exactly where she had left
+          them.
+        </p>
+      `
+    },
+
+    {
+      chapter: "CHAPTER ONE",
+      title: "The Old House",
+      content: `
+        <p>
+          Sarah stopped outside the house at the end of the
+          street. She stared at the wooden door for several
+          seconds before finally reaching for the handle.
+        </p>
+
+        <p>
+          She knew that opening that door meant facing a part
+          of her past she had spent years trying to forget.
+          But she also knew that the truth had waited long
+          enough.
+        </p>
+      `
+    },
+
+    {
+      chapter: "CHAPTER ONE",
+      title: "The Door",
+      content: `
+        <p>
+          She took a deep breath and stepped inside.
+        </p>
+
+        <p>
+          The room was exactly as she remembered it, although
+          a thin layer of dust covered the furniture.
+          Everything seemed strangely quiet.
+        </p>
+
+        <p>
+          Sarah looked around and noticed an old photograph
+          sitting on the table.
+        </p>
+      `
+    },
+
+    {
+      chapter: "CHAPTER TWO",
+      title: "The Photograph",
+      content: `
+        <p>
+          She picked up the photograph carefully.
+          There were three people standing together,
+          smiling at the camera.
+        </p>
+
+        <p>
+          Sarah recognized herself immediately.
+          Beside her stood someone she had not seen
+          in many years.
+        </p>
+      `
+    },
+
+    {
+      chapter: "CHAPTER TWO",
+      title: "A Forgotten Memory",
+      content: `
+        <p>
+          The photograph brought back memories Sarah had
+          tried very hard to forget.
+        </p>
+
+        <p>
+          She remembered the promise she had made before
+          leaving the town.
+        </p>
+
+        <p>
+          She had never expected that promise to bring her
+          back here.
+        </p>
+      `
+    },
+
+    {
+      chapter: "CHAPTER TWO",
+      title: "The Letter",
+      content: `
+        <p>
+          Behind the photograph was a small envelope.
+          Sarah noticed that her name was written across
+          the front.
+        </p>
+
+        <p>
+          Her hands trembled as she opened it.
+        </p>
+      `
+    },
+
+    {
+      chapter: "CHAPTER THREE",
+      title: "The Message",
+      content: `
+        <p>
+          The letter contained only a few paragraphs,
+          but every sentence made Sarah's heart beat faster.
+        </p>
+
+        <p>
+          Someone had known the truth all along.
+        </p>
+      `
+    },
+
+    {
+      chapter: "CHAPTER THREE",
+      title: "The Truth",
+      content: `
+        <p>
+          Sarah sat quietly while she read the final
+          lines of the letter.
+        </p>
+
+        <p>
+          For years she had blamed herself for what happened.
+          Now she began to understand that she had never
+          known the entire story.
+        </p>
+      `
+    },
+
+    {
+      chapter: "CHAPTER THREE",
+      title: "An Unexpected Visitor",
+      content: `
+        <p>
+          A knock suddenly came from the front door.
+        </p>
+
+        <p>
+          Sarah froze.
+        </p>
+
+        <p>
+          She had not told anyone that she was coming back.
+        </p>
+      `
+    },
+
+    {
+      chapter: "CHAPTER FOUR",
+      title: "The Visitor",
+      content: `
+        <p>
+          Sarah slowly walked toward the door.
+          She hesitated before opening it.
+        </p>
+
+        <p>
+          Standing outside was someone from her past.
+        </p>
+      `
+    },
+
+    {
+      chapter: "CHAPTER FOUR",
+      title: "Old Questions",
+      content: `
+        <p>
+          Neither of them spoke for several seconds.
+        </p>
+
+        <p>
+          There were too many questions between them
+          and too many years without answers.
+        </p>
+      `
+    },
+
+    {
+      chapter: "CHAPTER FOUR",
+      title: "The Conversation",
+      content: `
+        <p>
+          Sarah finally invited the visitor inside.
+        </p>
+
+        <p>
+          They sat across from each other and began
+          to talk about what had happened all those years ago.
+        </p>
+      `
+    },
+
+    {
+      chapter: "CHAPTER FIVE",
+      title: "The Promise",
+      content: `
+        <p>
+          Sarah remembered the promise she had made.
+          She had promised that she would return when
+          she was ready to hear the truth.
+        </p>
+      `
+    },
+
+    {
+      chapter: "CHAPTER FIVE",
+      title: "Understanding",
+      content: `
+        <p>
+          For the first time, Sarah understood why
+          everything had happened the way it did.
+        </p>
+
+        <p>
+          The truth was painful, but it was also freeing.
+        </p>
+      `
+    },
+
+    {
+      chapter: "CHAPTER FIVE",
+      title: "A New Decision",
+      content: `
+        <p>
+          Sarah looked out through the window.
+          The town no longer felt like the place she
+          had once feared.
+        </p>
+
+        <p>
+          She knew she had a decision to make.
+        </p>
+      `
+    },
+
+    {
+      chapter: "CHAPTER SIX",
+      title: "Moving Forward",
+      content: `
+        <p>
+          The following morning Sarah woke with a different
+          feeling.
+        </p>
+
+        <p>
+          She was no longer running from the past.
+        </p>
+      `
+    },
+
+    {
+      chapter: "CHAPTER SIX",
+      title: "The Road Home",
+      content: `
+        <p>
+          Sarah walked through the familiar streets again.
+          This time the memories did not hurt as much.
+        </p>
+      `
+    },
+
+    {
+      chapter: "CHAPTER SIX",
+      title: "Forgiveness",
+      content: `
+        <p>
+          She realized that forgiveness did not mean
+          forgetting what had happened.
+        </p>
+
+        <p>
+          It meant choosing not to allow the past
+          to control the future.
+        </p>
+      `
+    },
+
+    {
+      chapter: "CHAPTER SEVEN",
+      title: "The Final Answer",
+      content: `
+        <p>
+          Before leaving the house, Sarah found one final
+          note hidden beneath the photograph.
+        </p>
+
+        <p>
+          This time she smiled when she read it.
+        </p>
+      `
+    },
+
+    {
+      chapter: "CHAPTER SEVEN",
+      title: "The Promise Kept",
+      content: `
+        <p>
+          Sarah had finally discovered the truth she had
+          been searching for.
+        </p>
+
+        <p>
+          The promise that once brought her pain had
+          ultimately brought her peace.
+        </p>
+      `
+    },
+
+    {
+      chapter: "CHAPTER SEVEN",
+      title: "A New Beginning",
+      content: `
+        <p>
+          Sarah closed the door behind her and stepped
+          into the morning sunlight.
+        </p>
+
+        <p>
+          She knew that her life would never be exactly
+          the same again.
+        </p>
+
+        <p>
+          And for the first time, she was glad.
+        </p>
+      `
+    },
+
+    {
+      chapter: "CHAPTER SEVEN",
+      title: "The End",
+      content: `
+        <p>
+          Sarah looked back at the house one final time.
+        </p>
+
+        <p>
+          Then she turned toward the road ahead.
+        </p>
+
+        <p>
+          Some promises are made to be kept.
+          Others are made to help us find our way home.
+        </p>
+      `
+    }
+
+  ];
+
+
+  /*
+   * ======================================================
+   * STATE
+   * ======================================================
+   */
 
   let currentPage = 1;
-  let totalPages = 22;
-  let novelReaderId = null;
-  let quizQuestions = [];
-
-  const previousButton = document.getElementById("previousButton");
-  const nextButton = document.getElementById("nextButton");
-  const pageDisplay = document.getElementById("pageDisplay");
-  const pageNumber = document.getElementById("pageNumber");
-  const progressPercent = document.getElementById("progressPercent");
-  const progressFill = document.getElementById("progressFill");
-  const progressMessage = document.getElementById("progressMessage");
-  const completionMessage = document.getElementById("completionMessage");
-  const quizCard = document.getElementById("quizCard");
-  const quizForm = document.getElementById("quizForm");
-  const quizResult = document.getElementById("quizResult");
-
-  /*
-   * -------------------------------------------------------
-   * GET ASSIGNMENT ID
-   * -------------------------------------------------------
-   *
-   * The reading page should be opened like:
-   *
-   * read-novel.html?assignment=YOUR_NOVEL_READER_ID
-   *
-   */
-
-  function getAssignmentId() {
-    const params = new URLSearchParams(window.location.search);
-
-    return (
-      params.get("assignment") ||
-      params.get("novel_reader_id") ||
-      params.get("id")
-    );
-  }
+  const totalPages = pages.length;
 
 
   /*
-   * -------------------------------------------------------
-   * LOAD READING ASSIGNMENT
-   * -------------------------------------------------------
+   * ======================================================
+   * ELEMENTS
+   * ======================================================
    */
 
-  async function loadAssignment() {
+  const previousButton =
+    document.getElementById("previousButton");
 
-    novelReaderId = getAssignmentId();
+  const nextButton =
+    document.getElementById("nextButton");
 
-    if (!novelReaderId) {
+  const pageDisplay =
+    document.getElementById("pageDisplay");
 
-      progressMessage.textContent =
-        "This reading assignment could not be identified.";
+  const pageNumber =
+    document.getElementById("pageNumber");
 
-      nextButton.disabled = true;
+  const progressPercent =
+    document.getElementById("progressPercent");
 
-      return;
-    }
+  const progressFill =
+    document.getElementById("progressFill");
 
+  const progressMessage =
+    document.getElementById("progressMessage");
 
-    const {
-      data,
-      error
-    } = await supabaseClient
-      .from("novel_readers")
-      .select(`
-        id,
-        novel_id,
-        progress_percent,
-        pages_read,
-        quiz_completed,
-        verification_status,
-        reader_reward,
-        novels (
-          id,
-          title,
-          author,
-          genre,
-          total_pages,
-          cover_url
-        )
-      `)
-      .eq("id", novelReaderId)
-      .single();
+  const novelContent =
+    document.getElementById("novelContent");
+
+  const chapterNumber =
+    document.getElementById("chapterNumber");
+
+  const chapterTitle =
+    document.getElementById("chapterTitle");
+
+  const completionMessage =
+    document.getElementById("completionMessage");
+
+  const quizCard =
+    document.getElementById("quizCard");
 
 
-    if (error) {
+  /*
+   * ======================================================
+   * DISPLAY PAGE
+   * ======================================================
+   */
 
-      console.error(error);
+  function displayPage() {
 
-      progressMessage.textContent =
-        "Unable to load this reading assignment.";
-
-      nextButton.disabled = true;
-
-      return;
-    }
+    const page =
+      pages[currentPage - 1];
 
 
     /*
-     * ---------------------------------------------------
-     * LOAD NOVEL INFORMATION
-     * ---------------------------------------------------
+     * Change chapter.
      */
 
-    if (data.novels) {
-
-      const novel = data.novels;
-
-      document.getElementById("novelTitle").textContent =
-        novel.title || "Novel";
-
-      document.getElementById("novelDetails").textContent =
-        `By ${novel.author || "Unknown author"} · ` +
-        `${novel.genre || "Novel"} · ` +
-        `${novel.total_pages || 22} pages`;
-
-      if (novel.cover_url) {
-
-        document.getElementById("novelCover").src =
-          novel.cover_url;
-
-      }
-
-      totalPages =
-        Number(novel.total_pages) || 22;
-    }
+    chapterNumber.textContent =
+      page.chapter;
 
 
     /*
-     * ---------------------------------------------------
-     * RESTORE SAVED PROGRESS
-     * ---------------------------------------------------
+     * Change chapter title.
      */
 
-    const savedPages =
-      Number(data.pages_read) || 0;
-
-    currentPage =
-      Math.min(
-        Math.max(savedPages + 1, 1),
-        totalPages
-      );
+    chapterTitle.textContent =
+      page.title;
 
 
     /*
-     * If the database already says the reader completed
-     * the required reading, show the quiz.
+     * Change actual story content.
      */
 
-    if (
-      Number(data.progress_percent) >=
-      REQUIRED_READING_PERCENT
-    ) {
-
-      currentPage = totalPages;
-
-      updateProgress();
-
-      await loadQuiz();
-
-      return;
-    }
+    novelContent.innerHTML =
+      page.content;
 
 
-    updateProgress();
-  }
-
-
-  /*
-   * -------------------------------------------------------
-   * SAVE READING PROGRESS
-   * -------------------------------------------------------
-   */
-
-  async function saveProgress() {
-
-    if (!novelReaderId) {
-      return false;
-    }
-
-
-    const pagesRead =
-      Math.max(currentPage - 1, 0);
-
-
-    const percentage =
-      Math.round(
-        (pagesRead / totalPages) * 100
-      );
-
-
-    const finalPercentage =
-      currentPage >= totalPages
-        ? 100
-        : percentage;
-
-
-    const {
-      error
-    } = await supabaseClient
-      .from("novel_readers")
-      .update({
-        pages_read: pagesRead,
-        progress_percent: finalPercentage
-      })
-      .eq("id", novelReaderId);
-
-
-    if (error) {
-
-      console.error(
-        "Progress update failed:",
-        error
-      );
-
-      return false;
-    }
-
-
-    return true;
-  }
-
-
-  /*
-   * -------------------------------------------------------
-   * UPDATE SCREEN
-   * -------------------------------------------------------
-   */
-
-  function updateProgress() {
-
-    const pagesRead =
-      Math.max(currentPage - 1, 0);
-
-
-    const percentage =
-      currentPage >= totalPages
-        ? 100
-        : Math.round(
-            (pagesRead / totalPages) * 100
-          );
-
+    /*
+     * Update numbers.
+     */
 
     pageDisplay.textContent =
       `Page ${currentPage} of ${totalPages}`;
-
 
     pageNumber.textContent =
       `${currentPage} / ${totalPages}`;
 
 
+    /*
+     * Update progress.
+     */
+
+    const percentage =
+      Math.round(
+        (currentPage / totalPages) * 100
+      );
+
     progressPercent.textContent =
       `${percentage}%`;
-
 
     progressFill.style.width =
       `${percentage}%`;
 
 
+    /*
+     * Previous button.
+     */
+
     previousButton.disabled =
-      currentPage <= 1;
+      currentPage === 1;
 
 
-    if (currentPage >= totalPages) {
+    /*
+     * Next button.
+     */
+
+    if (currentPage === totalPages) {
 
       nextButton.disabled = true;
 
@@ -796,8 +1042,7 @@
       completionMessage.classList.add("show");
 
       progressMessage.textContent =
-        "You have completed the required reading. " +
-        "Complete the verification quiz below.";
+        "You have completed the required reading.";
 
     } else {
 
@@ -805,50 +1050,49 @@
 
       nextButton.textContent =
         "Next Page →";
+
+      completionMessage.classList.remove("show");
+
+      progressMessage.textContent =
+        "Continue reading the novel.";
     }
+
+
+    /*
+     * Always move the reader back to the top
+     * of the reading content when changing pages.
+     */
+
+    novelContent.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+
   }
 
 
   /*
-   * -------------------------------------------------------
-   * NEXT PAGE
-   * -------------------------------------------------------
+   * ======================================================
+   * NEXT
+   * ======================================================
    */
 
   nextButton.addEventListener(
     "click",
     function () {
 
-      console.log("NEXT BUTTON CLICKED");
+      console.log(
+        "NEXT CLICKED",
+        currentPage
+      );
 
-      if (currentPage >= totalPages) {
-        return;
-      }
 
-      currentPage++;
+      if (currentPage < totalPages) {
 
-      updateProgress();
+        currentPage++;
 
-      /*
-       * Save progress in the background.
-       * The page must NOT wait for Supabase.
-       */
+        displayPage();
 
-      saveProgress().then(function (saved) {
-
-        if (!saved) {
-          console.warn("Progress could not be saved.");
-        }
-
-      });
-
-      /*
-       * When the reader reaches the final page,
-       * load the quiz.
-       */
-
-      if (currentPage >= totalPages) {
-        loadQuiz();
       }
 
     }
@@ -856,462 +1100,43 @@
 
 
   /*
-   * -------------------------------------------------------
-   * PREVIOUS PAGE
-   * -------------------------------------------------------
+   * ======================================================
+   * PREVIOUS
+   * ======================================================
    */
 
   previousButton.addEventListener(
     "click",
     function () {
 
-      console.log("PREVIOUS BUTTON CLICKED");
+      console.log(
+        "PREVIOUS CLICKED",
+        currentPage
+      );
 
-      if (currentPage <= 1) {
-        return;
+
+      if (currentPage > 1) {
+
+        currentPage--;
+
+        displayPage();
+
       }
-
-      currentPage--;
-
-      updateProgress();
-
-      /*
-       * Save progress in the background.
-       */
-
-      saveProgress().then(function (saved) {
-
-        if (!saved) {
-          console.warn("Progress could not be saved.");
-        }
-
-      });
 
     }
   );
 
 
   /*
-   * -------------------------------------------------------
-   * LOAD QUIZ FROM SUPABASE
-   * -------------------------------------------------------
+   * ======================================================
+   * INITIAL PAGE
+   * ======================================================
    */
 
-  /*
-   * -------------------------------------------------------
-   * LOAD QUIZ FROM SUPABASE
-   * -------------------------------------------------------
-   */
+  displayPage();
 
-  async function loadQuiz() {
-
-    if (!novelReaderId) {
-      return;
-    }
-
-
-    /*
-     * First get the novel_id from the assignment.
-     */
-
-    const {
-      data: reader,
-      error: readerError
-    } = await supabaseClient
-      .from("novel_readers")
-      .select("novel_id")
-      .eq("id", novelReaderId)
-      .single();
-
-
-    if (readerError || !reader) {
-
-      console.error(readerError);
-
-      showQuizError(
-        "We could not identify this novel."
-      );
-
-      return;
-    }
-
-
-    /*
-     * Call the existing database function.
-     */
-
-    const {
-      data,
-      error
-    } = await supabaseClient.rpc(
-      "get_novel_quiz",
-      {
-        p_novel_id: reader.novel_id
-      }
-    );
-
-
-    if (error) {
-
-      console.error(
-        "Quiz loading failed:",
-        error
-      );
-
-      showQuizError(
-        "We could not load the verification quiz."
-      );
-
-      return;
-    }
-
-
-    quizQuestions = data || [];
-
-    renderQuiz();
-
-    quizCard.classList.add("unlocked");
-
-    setTimeout(() => {
-
-      quizCard.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-      });
-
-    }, 300);
-  }
-
-
-  /*
-   * -------------------------------------------------------
-   * DISPLAY QUIZ
-   * -------------------------------------------------------
-   */
-
-  function renderQuiz() {
-
-    quizForm.innerHTML = "";
-
-
-    if (!quizQuestions.length) {
-
-      quizForm.innerHTML = `
-        <p>
-          No quiz questions are available for this novel.
-        </p>
-      `;
-
-      return;
-    }
-
-
-    quizQuestions.forEach(
-      (question, index) => {
-
-        const questionId =
-          question.id;
-
-
-        const wrapper =
-          document.createElement("div");
-
-        wrapper.className =
-          "quiz-question";
-
-
-        wrapper.innerHTML = `
-          <strong>
-            ${index + 1}. ${escapeHtml(
-              question.question_text
-            )}
-          </strong>
-
-          <label>
-            <input
-              type="radio"
-              name="question_${questionId}"
-              value="a"
-            >
-            ${escapeHtml(question.option_a || "")}
-          </label>
-
-          <label>
-            <input
-              type="radio"
-              name="question_${questionId}"
-              value="b"
-            >
-            ${escapeHtml(question.option_b || "")}
-          </label>
-
-          <label>
-            <input
-              type="radio"
-              name="question_${questionId}"
-              value="c"
-            >
-            ${escapeHtml(question.option_c || "")}
-          </label>
-
-          <label>
-            <input
-              type="radio"
-              name="question_${questionId}"
-              value="d"
-            >
-            ${escapeHtml(question.option_d || "")}
-          </label>
-        `;
-
-
-        quizForm.appendChild(wrapper);
-      }
-    );
-
-
-    const button =
-      document.createElement("button");
-
-    button.type = "submit";
-    button.className = "btn primary";
-    button.textContent = "Submit Quiz";
-
-    quizForm.appendChild(button);
-  }
-
-
-  /*
-   * -------------------------------------------------------
-   * QUIZ SUBMISSION
-   * -------------------------------------------------------
-   */
-
-  quizForm.addEventListener(
-    "submit",
-    async function (event) {
-
-      event.preventDefault();
-
-
-      if (!novelReaderId) {
-
-        showQuizError(
-          "This reading assignment could not be identified."
-        );
-
-        return;
-      }
-
-
-      const answers = {};
-
-
-      for (const question of quizQuestions) {
-
-        const selected =
-          document.querySelector(
-            `input[name="question_${question.id}"]:checked`
-          );
-
-
-        if (!selected) {
-
-          showQuizError(
-            "Please answer all questions before submitting."
-          );
-
-          return;
-        }
-
-
-        answers[question.id] =
-          selected.value;
-      }
-
-
-      const submitButton =
-        quizForm.querySelector(
-          'button[type="submit"]'
-        );
-
-
-      if (submitButton) {
-        submitButton.disabled = true;
-        submitButton.textContent =
-          "Verifying...";
-      }
-
-
-      /*
-       * Call YOUR EXISTING Supabase function.
-       *
-       * We are NOT creating another reward system.
-       */
-
-      const {
-        data,
-        error
-      } = await supabaseClient.rpc(
-        "submit_novel_quiz",
-        {
-          p_novel_reader_id: novelReaderId,
-          p_answers: answers
-        }
-      );
-
-
-      if (error) {
-
-        console.error(
-          "Quiz submission failed:",
-          error
-        );
-
-        quizResult.className =
-          "quiz-result failed";
-
-        quizResult.innerHTML = `
-          <strong>Verification failed.</strong>
-          <p>
-            ${escapeHtml(error.message)}
-          </p>
-        `;
-
-
-        if (submitButton) {
-
-          submitButton.disabled = false;
-
-          submitButton.textContent =
-            "Submit Quiz";
-        }
-
-
-        return;
-      }
-
-
-      /*
-       * SUCCESS
-       */
-
-      if (data && data.success) {
-
-        quizResult.className =
-          "quiz-result success";
-
-        quizResult.innerHTML = `
-          <strong>Quiz passed ✓</strong>
-
-          <p>
-            Your reading completion has been verified.
-          </p>
-
-          <p>
-            <strong>
-              Your reader reward is now being processed
-              automatically.
-            </strong>
-          </p>
-        `;
-
-
-        progressMessage.textContent =
-          "Reading completed and verified successfully.";
-
-
-        /*
-         * Prevent another submission.
-         */
-
-        if (submitButton) {
-
-          submitButton.disabled = true;
-
-          submitButton.textContent =
-            "Verified ✓";
-        }
-
-
-        return;
-      }
-
-
-      /*
-       * If the function returns success:false
-       */
-
-      quizResult.className =
-        "quiz-result failed";
-
-      quizResult.innerHTML = `
-        <strong>Quiz not passed.</strong>
-
-        <p>
-          Your answers did not meet the required passing score.
-          Please review the novel and try again.
-        </p>
-      `;
-
-
-      if (submitButton) {
-
-        submitButton.disabled = false;
-
-        submitButton.textContent =
-          "Submit Quiz";
-      }
-    }
-  );
-
-
-  /*
-   * -------------------------------------------------------
-   * ERROR DISPLAY
-   * -------------------------------------------------------
-   */
-
-  function showQuizError(message) {
-
-    quizCard.classList.add("unlocked");
-
-    quizResult.className =
-      "quiz-result failed";
-
-    quizResult.innerHTML = `
-      <strong>Unable to continue.</strong>
-      <p>${escapeHtml(message)}</p>
-    `;
-  }
-
-
-  /*
-   * -------------------------------------------------------
-   * BASIC HTML ESCAPING
-   * -------------------------------------------------------
-   */
-
-  function escapeHtml(value) {
-
-    return String(value ?? "")
-      .replaceAll("&", "&amp;")
-      .replaceAll("<", "&lt;")
-      .replaceAll(">", "&gt;")
-      .replaceAll('"', "&quot;")
-      .replaceAll("'", "&#039;");
-  }
-
-
-  /*
-   * -------------------------------------------------------
-   * START
-   * -------------------------------------------------------
-   */
-
-  loadAssignment();
-
-</script>         
+});
+</script>
 
 </body>
-</html>
+</html>                        
