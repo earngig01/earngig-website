@@ -841,23 +841,7 @@
 
         progressMessage.textContent =
           "Your page changed, but we could not save " +
-          "your progress. Please try again.";
-
-      }
-
-
-      if (currentPage >= totalPages) {
-
-        await loadQuiz();
-      }
-
-
-      if (currentPage < totalPages) {
-
-        nextButton.disabled = false;
-      }
-    }
-  );
+          "your progress. Please try aga
 
 
   /*
@@ -866,20 +850,34 @@
    * -------------------------------------------------------
    */
 
-  previousButton.addEventListener(
-    "click",
-    function () {
+nextButton.addEventListener(
+  "click",
+  function () {
 
-      if (currentPage > 1) {
-
-        currentPage--;
-
-        updateProgress();
-
-      }
+    if (currentPage >= totalPages) {
+      return;
     }
-  );
 
+    currentPage++;
+
+    updateProgress();
+
+    // Save progress in the background.
+    // Do NOT make the reader wait for Supabase.
+    saveProgress().then((saved) => {
+
+      if (!saved) {
+        console.warn("Progress could not be saved.");
+      }
+
+    });
+
+    if (currentPage >= totalPages) {
+      loadQuiz();
+    }
+
+  }
+);
 
   /*
    * -------------------------------------------------------
