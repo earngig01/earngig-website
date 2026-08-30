@@ -861,7 +861,8 @@ document.addEventListener("DOMContentLoaded", function () {
         "Reading Complete ✓";
 
       completionMessage.classList.add("show");
-
+quizCard.classList.add("unlocked");
+      
       progressMessage.textContent =
         "You have completed the required reading. Complete the verification quiz below.";
 
@@ -873,7 +874,7 @@ document.addEventListener("DOMContentLoaded", function () {
         "Next Page →";
 
       completionMessage.classList.remove("show");
-
+quizCard.classList.remove("unlocked");
       progressMessage.textContent =
         "Continue reading the novel.";
     }
