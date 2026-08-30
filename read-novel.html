@@ -817,31 +817,42 @@
 
   nextButton.addEventListener(
     "click",
-    async function () {
+    function () {
+
+      console.log("NEXT BUTTON CLICKED");
 
       if (currentPage >= totalPages) {
         return;
       }
 
-
-      nextButton.disabled = true;
-
-
       currentPage++;
-
 
       updateProgress();
 
+      /*
+       * Save progress in the background.
+       * The page must NOT wait for Supabase.
+       */
 
-      const saved =
-        await saveProgress();
+      saveProgress().then(function (saved) {
 
+        if (!saved) {
+          console.warn("Progress could not be saved.");
+        }
 
-      if (!saved) {
+      });
 
-        progressMessage.textContent =
-          "Your page changed, but we could not save " +
-          "your progress. Please try aga
+      /*
+       * When the reader reaches the final page,
+       * load the quiz.
+       */
+
+      if (currentPage >= totalPages) {
+        loadQuiz();
+      }
+
+    }
+  );
 
 
   /*
@@ -850,34 +861,41 @@
    * -------------------------------------------------------
    */
 
-nextButton.addEventListener(
-  "click",
-  function () {
+  previousButton.addEventListener(
+    "click",
+    function () {
 
-    if (currentPage >= totalPages) {
-      return;
-    }
+      console.log("PREVIOUS BUTTON CLICKED");
 
-    currentPage++;
-
-    updateProgress();
-
-    // Save progress in the background.
-    // Do NOT make the reader wait for Supabase.
-    saveProgress().then((saved) => {
-
-      if (!saved) {
-        console.warn("Progress could not be saved.");
+      if (currentPage <= 1) {
+        return;
       }
 
-    });
+      currentPage--;
 
-    if (currentPage >= totalPages) {
-      loadQuiz();
+      updateProgress();
+
+      /*
+       * Save progress in the background.
+       */
+
+      saveProgress().then(function (saved) {
+
+        if (!saved) {
+          console.warn("Progress could not be saved.");
+        }
+
+      });
+
     }
+  );
 
-  }
-);
+
+  /*
+   * -------------------------------------------------------
+   * LOAD QUIZ FROM SUPABASE
+   * -------------------------------------------------------
+   */
 
   /*
    * -------------------------------------------------------
