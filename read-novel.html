@@ -516,95 +516,262 @@
   </div>
 
 </footer>
-
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
 
 <script>
-
-  /*
-   * -------------------------------------------------------
-   * READING CONFIGURATION
-   * -------------------------------------------------------
-   *
-   * In the real application these values should come from
-   * the selected novel in Supabase.
-   */
-
-  const TOTAL_PAGES = 22;
-
-  /*
-   * The required percentage can be changed here.
-   *
-   * Example:
-   * 100 = reader must finish every page
-   * 80  = reader must read at least 80%
-   */
-
   const REQUIRED_READING_PERCENT = 100;
 
-
   let currentPage = 1;
+  let totalPages = 22;
+  let novelReaderId = null;
+  let quizQuestions = [];
+
+  const previousButton = document.getElementById("previousButton");
+  const nextButton = document.getElementById("nextButton");
+  const pageDisplay = document.getElementById("pageDisplay");
+  const pageNumber = document.getElementById("pageNumber");
+  const progressPercent = document.getElementById("progressPercent");
+  const progressFill = document.getElementById("progressFill");
+  const progressMessage = document.getElementById("progressMessage");
+  const completionMessage = document.getElementById("completionMessage");
+  const quizCard = document.getElementById("quizCard");
+  const quizForm = document.getElementById("quizForm");
+  const quizResult = document.getElementById("quizResult");
+
+  /*
+   * -------------------------------------------------------
+   * GET ASSIGNMENT ID
+   * -------------------------------------------------------
+   *
+   * The reading page should be opened like:
+   *
+   * read-novel.html?assignment=YOUR_NOVEL_READER_ID
+   *
+   */
+
+  function getAssignmentId() {
+    const params = new URLSearchParams(window.location.search);
+
+    return (
+      params.get("assignment") ||
+      params.get("novel_reader_id") ||
+      params.get("id")
+    );
+  }
 
 
   /*
    * -------------------------------------------------------
-   * ELEMENTS
+   * LOAD READING ASSIGNMENT
    * -------------------------------------------------------
    */
 
-  const previousButton =
-    document.getElementById("previousButton");
+  async function loadAssignment() {
 
-  const nextButton =
-    document.getElementById("nextButton");
+    novelReaderId = getAssignmentId();
 
-  const pageDisplay =
-    document.getElementById("pageDisplay");
+    if (!novelReaderId) {
 
-  const pageNumber =
-    document.getElementById("pageNumber");
+      progressMessage.textContent =
+        "This reading assignment could not be identified.";
 
-  const progressPercent =
-    document.getElementById("progressPercent");
+      nextButton.disabled = true;
 
-  const progressFill =
-    document.getElementById("progressFill");
+      return;
+    }
 
-  const progressMessage =
-    document.getElementById("progressMessage");
 
-  const completionMessage =
-    document.getElementById("completionMessage");
+    const {
+      data,
+      error
+    } = await supabaseClient
+      .from("novel_readers")
+      .select(`
+        id,
+        novel_id,
+        progress_percent,
+        pages_read,
+        quiz_completed,
+        verification_status,
+        reader_reward,
+        novels (
+          id,
+          title,
+          author,
+          genre,
+          total_pages,
+          cover_url
+        )
+      `)
+      .eq("id", novelReaderId)
+      .single();
 
-  const quizCard =
-    document.getElementById("quizCard");
 
-  const quizForm =
-    document.getElementById("quizForm");
+    if (error) {
 
-  const quizResult =
-    document.getElementById("quizResult");
+      console.error(error);
+
+      progressMessage.textContent =
+        "Unable to load this reading assignment.";
+
+      nextButton.disabled = true;
+
+      return;
+    }
+
+
+    /*
+     * ---------------------------------------------------
+     * LOAD NOVEL INFORMATION
+     * ---------------------------------------------------
+     */
+
+    if (data.novels) {
+
+      const novel = data.novels;
+
+      document.getElementById("novelTitle").textContent =
+        novel.title || "Novel";
+
+      document.getElementById("novelDetails").textContent =
+        `By ${novel.author || "Unknown author"} · ` +
+        `${novel.genre || "Novel"} · ` +
+        `${novel.total_pages || 22} pages`;
+
+      if (novel.cover_url) {
+
+        document.getElementById("novelCover").src =
+          novel.cover_url;
+
+      }
+
+      totalPages =
+        Number(novel.total_pages) || 22;
+    }
+
+
+    /*
+     * ---------------------------------------------------
+     * RESTORE SAVED PROGRESS
+     * ---------------------------------------------------
+     */
+
+    const savedPages =
+      Number(data.pages_read) || 0;
+
+    currentPage =
+      Math.min(
+        Math.max(savedPages + 1, 1),
+        totalPages
+      );
+
+
+    /*
+     * If the database already says the reader completed
+     * the required reading, show the quiz.
+     */
+
+    if (
+      Number(data.progress_percent) >=
+      REQUIRED_READING_PERCENT
+    ) {
+
+      currentPage = totalPages;
+
+      updateProgress();
+
+      await loadQuiz();
+
+      return;
+    }
+
+
+    updateProgress();
+  }
 
 
   /*
    * -------------------------------------------------------
-   * UPDATE READING PROGRESS
+   * SAVE READING PROGRESS
+   * -------------------------------------------------------
+   */
+
+  async function saveProgress() {
+
+    if (!novelReaderId) {
+      return false;
+    }
+
+
+    const pagesRead =
+      Math.max(currentPage - 1, 0);
+
+
+    const percentage =
+      Math.round(
+        (pagesRead / totalPages) * 100
+      );
+
+
+    const finalPercentage =
+      currentPage >= totalPages
+        ? 100
+        : percentage;
+
+
+    const {
+      error
+    } = await supabaseClient
+      .from("novel_readers")
+      .update({
+        pages_read: pagesRead,
+        progress_percent: finalPercentage
+      })
+      .eq("id", novelReaderId);
+
+
+    if (error) {
+
+      console.error(
+        "Progress update failed:",
+        error
+      );
+
+      return false;
+    }
+
+
+    return true;
+  }
+
+
+  /*
+   * -------------------------------------------------------
+   * UPDATE SCREEN
    * -------------------------------------------------------
    */
 
   function updateProgress() {
 
+    const pagesRead =
+      Math.max(currentPage - 1, 0);
+
+
     const percentage =
-      Math.round(
-        (currentPage / TOTAL_PAGES) * 100
-      );
+      currentPage >= totalPages
+        ? 100
+        : Math.round(
+            (pagesRead / totalPages) * 100
+          );
 
 
     pageDisplay.textContent =
-      `Page ${currentPage} of ${TOTAL_PAGES}`;
+      `Page ${currentPage} of ${totalPages}`;
 
 
     pageNumber.textContent =
-      `${currentPage} / ${TOTAL_PAGES}`;
+      `${currentPage} / ${totalPages}`;
 
 
     progressPercent.textContent =
@@ -619,15 +786,18 @@
       currentPage <= 1;
 
 
-    if (currentPage >= TOTAL_PAGES) {
+    if (currentPage >= totalPages) {
 
       nextButton.disabled = true;
 
       nextButton.textContent =
         "Reading Complete ✓";
 
+      completionMessage.classList.add("show");
 
-      unlockQuiz();
+      progressMessage.textContent =
+        "You have completed the required reading. " +
+        "Complete the verification quiz below.";
 
     } else {
 
@@ -635,46 +805,7 @@
 
       nextButton.textContent =
         "Next Page →";
-
     }
-
-  }
-
-
-  /*
-   * -------------------------------------------------------
-   * UNLOCK QUIZ
-   * -------------------------------------------------------
-   *
-   * The quiz is NOT visible during reading.
-   */
-
-  function unlockQuiz() {
-
-    completionMessage.classList.add("show");
-
-    quizCard.classList.add("unlocked");
-
-
-    progressMessage.textContent =
-      "You have completed the required reading. " +
-      "Complete the verification quiz below to qualify " +
-      "for your reward.";
-
-
-    /*
-     * Bring the reader to the quiz automatically.
-     */
-
-    setTimeout(() => {
-
-      quizCard.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-      });
-
-    }, 300);
-
   }
 
 
@@ -686,16 +817,45 @@
 
   nextButton.addEventListener(
     "click",
-    function () {
+    async function () {
 
-      if (currentPage < TOTAL_PAGES) {
+      if (currentPage >= totalPages) {
+        return;
+      }
 
-        currentPage++;
 
-        updateProgress();
+      nextButton.disabled = true;
+
+
+      currentPage++;
+
+
+      updateProgress();
+
+
+      const saved =
+        await saveProgress();
+
+
+      if (!saved) {
+
+        progressMessage.textContent =
+          "Your page changed, but we could not save " +
+          "your progress. Please try again.";
 
       }
 
+
+      if (currentPage >= totalPages) {
+
+        await loadQuiz();
+      }
+
+
+      if (currentPage < totalPages) {
+
+        nextButton.disabled = false;
+      }
     }
   );
 
@@ -717,9 +877,192 @@
         updateProgress();
 
       }
-
     }
   );
+
+
+  /*
+   * -------------------------------------------------------
+   * LOAD QUIZ FROM SUPABASE
+   * -------------------------------------------------------
+   */
+
+  async function loadQuiz() {
+
+    if (!novelReaderId) {
+      return;
+    }
+
+
+    /*
+     * First get the novel_id from the assignment.
+     */
+
+    const {
+      data: reader,
+      error: readerError
+    } = await supabaseClient
+      .from("novel_readers")
+      .select("novel_id")
+      .eq("id", novelReaderId)
+      .single();
+
+
+    if (readerError || !reader) {
+
+      console.error(readerError);
+
+      showQuizError(
+        "We could not identify this novel."
+      );
+
+      return;
+    }
+
+
+    /*
+     * Call the existing database function.
+     */
+
+    const {
+      data,
+      error
+    } = await supabaseClient.rpc(
+      "get_novel_quiz",
+      {
+        p_novel_id: reader.novel_id
+      }
+    );
+
+
+    if (error) {
+
+      console.error(
+        "Quiz loading failed:",
+        error
+      );
+
+      showQuizError(
+        "We could not load the verification quiz."
+      );
+
+      return;
+    }
+
+
+    quizQuestions = data || [];
+
+    renderQuiz();
+
+    quizCard.classList.add("unlocked");
+
+    setTimeout(() => {
+
+      quizCard.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+
+    }, 300);
+  }
+
+
+  /*
+   * -------------------------------------------------------
+   * DISPLAY QUIZ
+   * -------------------------------------------------------
+   */
+
+  function renderQuiz() {
+
+    quizForm.innerHTML = "";
+
+
+    if (!quizQuestions.length) {
+
+      quizForm.innerHTML = `
+        <p>
+          No quiz questions are available for this novel.
+        </p>
+      `;
+
+      return;
+    }
+
+
+    quizQuestions.forEach(
+      (question, index) => {
+
+        const questionId =
+          question.id;
+
+
+        const wrapper =
+          document.createElement("div");
+
+        wrapper.className =
+          "quiz-question";
+
+
+        wrapper.innerHTML = `
+          <strong>
+            ${index + 1}. ${escapeHtml(
+              question.question_text
+            )}
+          </strong>
+
+          <label>
+            <input
+              type="radio"
+              name="question_${questionId}"
+              value="a"
+            >
+            ${escapeHtml(question.option_a || "")}
+          </label>
+
+          <label>
+            <input
+              type="radio"
+              name="question_${questionId}"
+              value="b"
+            >
+            ${escapeHtml(question.option_b || "")}
+          </label>
+
+          <label>
+            <input
+              type="radio"
+              name="question_${questionId}"
+              value="c"
+            >
+            ${escapeHtml(question.option_c || "")}
+          </label>
+
+          <label>
+            <input
+              type="radio"
+              name="question_${questionId}"
+              value="d"
+            >
+            ${escapeHtml(question.option_d || "")}
+          </label>
+        `;
+
+
+        quizForm.appendChild(wrapper);
+      }
+    );
+
+
+    const button =
+      document.createElement("button");
+
+    button.type = "submit";
+    button.className = "btn primary";
+    button.textContent = "Submit Quiz";
+
+    quizForm.appendChild(button);
+  }
 
 
   /*
@@ -730,77 +1073,114 @@
 
   quizForm.addEventListener(
     "submit",
-    function (event) {
+    async function (event) {
 
       event.preventDefault();
 
 
+      if (!novelReaderId) {
+
+        showQuizError(
+          "This reading assignment could not be identified."
+        );
+
+        return;
+      }
+
+
+      const answers = {};
+
+
+      for (const question of quizQuestions) {
+
+        const selected =
+          document.querySelector(
+            `input[name="question_${question.id}"]:checked`
+          );
+
+
+        if (!selected) {
+
+          showQuizError(
+            "Please answer all questions before submitting."
+          );
+
+          return;
+        }
+
+
+        answers[question.id] =
+          selected.value;
+      }
+
+
+      const submitButton =
+        quizForm.querySelector(
+          'button[type="submit"]'
+        );
+
+
+      if (submitButton) {
+        submitButton.disabled = true;
+        submitButton.textContent =
+          "Verifying...";
+      }
+
+
       /*
-       * Correct answers for this sample novel.
+       * Call YOUR EXISTING Supabase function.
        *
-       * In the real application these answers MUST come
-       * from the novel's quiz data in Supabase.
+       * We are NOT creating another reward system.
        */
 
-      const answer1 =
-        document.querySelector(
-          'input[name="q1"]:checked'
+      const {
+        data,
+        error
+      } = await supabaseClient.rpc(
+        "submit_novel_quiz",
+        {
+          p_novel_reader_id: novelReaderId,
+          p_answers: answers
+        }
+      );
+
+
+      if (error) {
+
+        console.error(
+          "Quiz submission failed:",
+          error
         );
-
-      const answer2 =
-        document.querySelector(
-          'input[name="q2"]:checked'
-        );
-
-
-      if (!answer1 || !answer2) {
 
         quizResult.className =
           "quiz-result failed";
 
         quizResult.innerHTML = `
-          <strong>Please answer all questions.</strong>
+          <strong>Verification failed.</strong>
           <p>
-            Select an answer for every question before
-            submitting the quiz.
+            ${escapeHtml(error.message)}
           </p>
         `;
 
+
+        if (submitButton) {
+
+          submitButton.disabled = false;
+
+          submitButton.textContent =
+            "Submit Quiz";
+        }
+
+
         return;
-
       }
-
-
-      let score = 0;
-
-
-      if (answer1.value === "past") {
-        score++;
-      }
-
-
-      if (answer2.value === "door") {
-        score++;
-      }
-
-
-      const totalQuestions = 2;
-
-
-      const percentage =
-        Math.round(
-          (score / totalQuestions) * 100
-        );
 
 
       /*
-       * Passing score.
+       * SUCCESS
        */
 
-      const PASSING_SCORE = 70;
-
-
-      if (percentage >= PASSING_SCORE) {
+      if (data && data.success) {
 
         quizResult.className =
           "quiz-result success";
@@ -809,69 +1189,113 @@
           <strong>Quiz passed ✓</strong>
 
           <p>
-            Your score is ${percentage}%.
             Your reading completion has been verified.
           </p>
 
           <p>
             <strong>
-              Your ₦100 reader reward is now being processed
+              Your reader reward is now being processed
               automatically.
             </strong>
           </p>
         `;
 
 
+        progressMessage.textContent =
+          "Reading completed and verified successfully.";
+
+
         /*
-         * IMPORTANT:
-         *
-         * This is where the real application should call
-         * the Supabase backend function that:
-         *
-         * 1. Verifies the reader completion.
-         * 2. Creates novel_reader_rewards.
-         * 3. Creates novel_writer_earnings.
-         * 4. Creates the transaction.
-         * 5. Prevents duplicate payment.
-         *
-         * DO NOT credit money directly from the browser.
+         * Prevent another submission.
          */
 
+        if (submitButton) {
 
-        quizForm.querySelector(
-          'button[type="submit"]'
-        ).disabled = true;
+          submitButton.disabled = true;
+
+          submitButton.textContent =
+            "Verified ✓";
+        }
 
 
-      } else {
-
-        quizResult.className =
-          "quiz-result failed";
-
-        quizResult.innerHTML = `
-          <strong>Quiz not passed.</strong>
-
-          <p>
-            Your score is ${percentage}%.
-            Please review the novel and try the quiz again.
-          </p>
-        `;
-
+        return;
       }
 
+
+      /*
+       * If the function returns success:false
+       */
+
+      quizResult.className =
+        "quiz-result failed";
+
+      quizResult.innerHTML = `
+        <strong>Quiz not passed.</strong>
+
+        <p>
+          Your answers did not meet the required passing score.
+          Please review the novel and try again.
+        </p>
+      `;
+
+
+      if (submitButton) {
+
+        submitButton.disabled = false;
+
+        submitButton.textContent =
+          "Submit Quiz";
+      }
     }
   );
 
 
   /*
    * -------------------------------------------------------
-   * INITIAL STATE
+   * ERROR DISPLAY
    * -------------------------------------------------------
    */
 
-  updateProgress();
+  function showQuizError(message) {
 
-</script>
+    quizCard.classList.add("unlocked");
+
+    quizResult.className =
+      "quiz-result failed";
+
+    quizResult.innerHTML = `
+      <strong>Unable to continue.</strong>
+      <p>${escapeHtml(message)}</p>
+    `;
+  }
+
+
+  /*
+   * -------------------------------------------------------
+   * BASIC HTML ESCAPING
+   * -------------------------------------------------------
+   */
+
+  function escapeHtml(value) {
+
+    return String(value ?? "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
+
+
+  /*
+   * -------------------------------------------------------
+   * START
+   * -------------------------------------------------------
+   */
+
+  loadAssignment();
+
+</script>         
 
 </body>
 </html>
