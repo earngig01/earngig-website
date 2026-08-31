@@ -160,7 +160,6 @@
         
 <article
   class="novel-card"
-  data-novel-id="b528c090-7958-43bb-8587-21048091a283"
 >
           <div class="novel-cover">
             <span>EG</span>
@@ -211,7 +210,6 @@
 
         <article
   class="novel-card"
-  data-novel-id="b528c090-7958-43bb-8587-21048091a283"
 >
 
           <div class="novel-cover">
@@ -307,6 +305,38 @@
   </div>
 
 </footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
 
+<script>
+document.addEventListener("DOMContentLoaded", async function () {
+
+  try {
+
+    const {
+      data: { user },
+      error: userError
+    } = await supabaseClient.auth.getUser();
+
+    if (userError || !user) {
+      console.log("No logged-in reader.");
+      return;
+    }
+
+    console.log("Logged-in reader:", user.id);
+
+    const {
+      data: assignments,
+      error: assignmentError
+    } = await supabaseClient
+      .from("novel_readers")
+      .select("novel_id, verification_status")
+      .eq("reader_id", user.id);
+
+    if (assignmentError) {
+      console.error(
+        "Could not load reader assignments:",
+        assignmentError
+      );
 </body>
 </html>
