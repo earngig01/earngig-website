@@ -530,7 +530,7 @@
 <script src="supabase.js"></script>
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
 
   /* =====================================================
      22 STORY PAGES
@@ -751,7 +751,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   let novelReaderId = null;
   let quizQuestions = [];
-
+const NOVEL_ID =
+  "b528c090-7958-43bb-8587-21048091a283";
 
   /* =====================================================
      ELEMENTS
@@ -803,23 +804,85 @@ document.addEventListener("DOMContentLoaded", function () {
   /* =====================================================
      GET READER ASSIGNMENT
      ===================================================== */
-function getAssignmentId() {
+async function getAssignmentId() {
 
   const params =
     new URLSearchParams(window.location.search);
 
-  const assignmentId =
+  // First, allow an assignment ID supplied in the URL.
+  const urlAssignmentId =
     params.get("assignment") ||
     params.get("novel_reader_id") ||
     params.get("assignment_id") ||
     params.get("id");
 
-  console.log("Reader assignment ID:", assignmentId);
-  console.log("Current URL:", window.location.href);
+  if (urlAssignmentId) {
+    console.log(
+      "Assignment ID from URL:",
+      urlAssignmentId
+    );
 
-  return assignmentId;
+    return urlAssignmentId;
+  }
+
+  // Otherwise, identify the logged-in reader.
+  const {
+    data: { user },
+    error: userError
+  } = await supabaseClient.auth.getUser();
+
+  if (userError || !user) {
+
+    console.error(
+      "Could not identify logged-in reader:",
+      userError
+    );
+
+    return null;
+  }
+
+  console.log(
+    "Logged-in user:",
+    user.id
+  );
+
+  // Find this reader's assignment for this novel.
+  const {
+    data: readerAssignment,
+    error: assignmentError
+  } = await supabaseClient
+    .from("novel_readers")
+    .select("id")
+    .eq("reader_id", user.id)
+    .eq("novel_id", NOVEL_ID)
+    .maybeSingle();
+
+  if (assignmentError) {
+
+    console.error(
+      "Could not find reading assignment:",
+      assignmentError
+    );
+
+    return null;
+  }
+
+  if (!readerAssignment) {
+
+    console.error(
+      "No novel_readers assignment found for this reader."
+    );
+
+    return null;
+  }
+
+  console.log(
+    "Found novel reader assignment:",
+    readerAssignment.id
+  );
+
+  return readerAssignment.id;
 }
-  
 
   /* =====================================================
      DISPLAY PAGE
@@ -1407,7 +1470,7 @@ quizCard.classList.remove("unlocked");
      ===================================================== */
 
   novelReaderId =
-    getAssignmentId();
+  await getAssignmentId();
 
 
   /* =====================================================
