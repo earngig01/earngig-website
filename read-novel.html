@@ -827,9 +827,13 @@ async function getAssignmentId() {
     error: userError
   } = await supabaseClient.auth.getUser();
 
-  console.log("AUTH USER:", user);
-  console.log("AUTH ERROR:", userError);
-
+  alert(
+  "AUTH USER:\n" +
+  JSON.stringify(user, null, 2) +
+  "\n\nAUTH ERROR:\n" +
+  JSON.stringify(userError, null, 2)
+);
+  
   if (userError || !user) {
     console.error("NO LOGGED-IN USER");
     return null;
@@ -844,8 +848,12 @@ async function getAssignmentId() {
     .eq("reader_id", user.id)
     .eq("novel_id", NOVEL_ID);
 
-  console.log("ASSIGNMENTS FOUND:", assignments);
-  console.log("ASSIGNMENT ERROR:", assignmentError);
+  alert(
+  "ASSIGNMENTS FOUND:\n" +
+  JSON.stringify(assignments, null, 2) +
+  "\n\nASSIGNMENT ERROR:\n" +
+  JSON.stringify(assignmentError, null, 2)
+);
 
   if (assignmentError) {
     return null;
