@@ -803,19 +803,23 @@ document.addEventListener("DOMContentLoaded", function () {
   /* =====================================================
      GET READER ASSIGNMENT
      ===================================================== */
+function getAssignmentId() {
 
-  function getAssignmentId() {
+  const params =
+    new URLSearchParams(window.location.search);
 
-    const params =
-      new URLSearchParams(window.location.search);
+  const assignmentId =
+    params.get("assignment") ||
+    params.get("novel_reader_id") ||
+    params.get("assignment_id") ||
+    params.get("id");
 
-    return (
-      params.get("assignment") ||
-      params.get("novel_reader_id") ||
-      params.get("id")
-    );
-  }
+  console.log("Reader assignment ID:", assignmentId);
+  console.log("Current URL:", window.location.href);
 
+  return assignmentId;
+}
+  
 
   /* =====================================================
      DISPLAY PAGE
