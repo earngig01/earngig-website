@@ -751,8 +751,20 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   let novelReaderId = null;
   let quizQuestions = [];
+const params =
+  new URLSearchParams(window.location.search);
+
 const NOVEL_ID =
-  "b528c090-7958-43bb-8587-21048091a283";
+  params.get("novel_id");
+  if (!NOVEL_ID) {
+
+  alert("No novel was selected.");
+
+  window.location.href =
+    "read-and-earn.html";
+
+  return;
+  }
 
   /* =====================================================
      ELEMENTS
