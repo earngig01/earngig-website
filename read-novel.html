@@ -953,42 +953,50 @@ quizCard.classList.remove("unlocked");
 
   async function saveProgress() {
 
-    if (!novelReaderId) {
-      return;
-    }
-
-
-    const pagesRead =
-      currentPage;
-
-
-    const percentage =
-      Math.round(
-        (pagesRead / totalPages) * 100
-      );
-
-
-    const {
-      error
-    } = await supabaseClient
-      .from("novel_readers")
-      .update({
-        pages_read: pagesRead,
-        progress_percent: percentage
-      })
-      .eq("id", novelReaderId);
-
-
-    if (error) {
-
-      console.error(
-        "Could not save progress:",
-        error
-      );
-
-    }
+  if (!novelReaderId) {
+    console.error("No novelReaderId available.");
+    return false;
   }
 
+  const pagesRead = currentPage;
+
+  const percentage = Math.round(
+    (pagesRead / totalPages) * 100
+  );
+
+  console.log("Saving reading progress:", {
+    novelReaderId,
+    pagesRead,
+    percentage
+  });
+
+  const { data, error } = await supabaseClient
+    .from("novel_readers")
+    .update({
+      pages_read: pagesRead,
+      progress_percent: percentage
+    })
+    .eq("id", novelReaderId)
+    .select("id, pages_read, progress_percent")
+    .single();
+
+  if (error) {
+
+    console.error(
+      "Could not save progress:",
+      error
+    );
+
+    return false;
+  }
+
+  console.log(
+    "Progress saved successfully:",
+    data
+  );
+
+  return true;
+  }
 
   /* =====================================================
      NEXT PAGE
@@ -1008,7 +1016,11 @@ quizCard.classList.remove("unlocked");
       displayPage();
 
 
-      await saveProgress();
+      const saved = await saveProgress();
+
+if (!saved) {
+  console.error("Progress update failed.");
+}
 
 
       if (currentPage === totalPages) {
