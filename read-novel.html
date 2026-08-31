@@ -816,53 +816,66 @@ async function getAssignmentId() {
     params.get("id");
 
   if (urlAssignmentId) {
-    console.log("ASSIGNMENT FROM URL:", urlAssignmentId);
+    console.log(
+      "Assignment from URL:",
+      urlAssignmentId
+    );
+
     return urlAssignmentId;
   }
 
-  console.log("NO ASSIGNMENT IN URL");
+  console.log("No assignment in URL");
+
 
   const {
     data: { user },
     error: userError
   } = await supabaseClient.auth.getUser();
 
-  alert(
-  "AUTH USER:\n" +
-  JSON.stringify(user, null, 2) +
-  "\n\nAUTH ERROR:\n" +
-  JSON.stringify(userError, null, 2)
-);
-  
+
   if (userError || !user) {
-    console.error("NO LOGGED-IN USER");
+
+    console.error(
+      "No logged-in user:",
+      userError
+    );
+
     return null;
   }
+
 
   const {
     data: assignments,
     error: assignmentError
   } = await supabaseClient
     .from("novel_readers")
-    .select("id, novel_id, reader_id, pages_read, progress_percent")
+    .select(
+      "id, novel_id, reader_id, pages_read, progress_percent"
+    )
     .eq("reader_id", user.id)
     .eq("novel_id", NOVEL_ID);
 
-  alert(
-  "ASSIGNMENTS FOUND:\n" +
-  JSON.stringify(assignments, null, 2) +
-  "\n\nASSIGNMENT ERROR:\n" +
-  JSON.stringify(assignmentError, null, 2)
-);
 
   if (assignmentError) {
+
+    console.error(
+      "Could not load assignment:",
+      assignmentError
+    );
+
     return null;
   }
 
+
   if (!assignments || assignments.length === 0) {
-    console.error("NO ASSIGNMENT FOUND");
+
+    console.error(
+      "No assignment found for this novel."
+    );
+
     return null;
   }
+
 
   return assignments[0].id;
 }
