@@ -809,7 +809,6 @@ async function getAssignmentId() {
   const params =
     new URLSearchParams(window.location.search);
 
-  // First, allow an assignment ID supplied in the URL.
   const urlAssignmentId =
     params.get("assignment") ||
     params.get("novel_reader_id") ||
@@ -817,71 +816,47 @@ async function getAssignmentId() {
     params.get("id");
 
   if (urlAssignmentId) {
-    console.log(
-      "Assignment ID from URL:",
-      urlAssignmentId
-    );
-
+    console.log("ASSIGNMENT FROM URL:", urlAssignmentId);
     return urlAssignmentId;
   }
 
-  // Otherwise, identify the logged-in reader.
+  console.log("NO ASSIGNMENT IN URL");
+
   const {
     data: { user },
     error: userError
   } = await supabaseClient.auth.getUser();
 
+  console.log("AUTH USER:", user);
+  console.log("AUTH ERROR:", userError);
+
   if (userError || !user) {
-
-    console.error(
-      "Could not identify logged-in reader:",
-      userError
-    );
-
+    console.error("NO LOGGED-IN USER");
     return null;
   }
 
-  console.log(
-    "Logged-in user:",
-    user.id
-  );
-
-  // Find this reader's assignment for this novel.
   const {
-    data: readerAssignment,
+    data: assignments,
     error: assignmentError
   } = await supabaseClient
     .from("novel_readers")
-    .select("id")
+    .select("id, novel_id, reader_id, pages_read, progress_percent")
     .eq("reader_id", user.id)
-    .eq("novel_id", NOVEL_ID)
-    .maybeSingle();
+    .eq("novel_id", NOVEL_ID);
+
+  console.log("ASSIGNMENTS FOUND:", assignments);
+  console.log("ASSIGNMENT ERROR:", assignmentError);
 
   if (assignmentError) {
-
-    console.error(
-      "Could not find reading assignment:",
-      assignmentError
-    );
-
     return null;
   }
 
-  if (!readerAssignment) {
-
-    console.error(
-      "No novel_readers assignment found for this reader."
-    );
-
+  if (!assignments || assignments.length === 0) {
+    console.error("NO ASSIGNMENT FOUND");
     return null;
   }
 
-  console.log(
-    "Found novel reader assignment:",
-    readerAssignment.id
-  );
-
-  return readerAssignment.id;
+  return assignments[0].id;
 }
 
   /* =====================================================
