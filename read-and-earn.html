@@ -85,17 +85,28 @@
           <h2>Find something to read</h2>
         </div>
 
-        <select class="novel-filter">
+        <div class="novel-search-filter">
 
-          <option>All genres</option>
-          <option>Romance</option>
-          <option>Drama</option>
-          <option>Thriller</option>
-          <option>Mystery</option>
-          <option>Fantasy</option>
-          <option>Adventure</option>
+  <input
+    type="search"
+    id="novel-search"
+    placeholder="Search novels..."
+    autocomplete="off"
+  >
 
-        </select>
+  <select class="novel-filter" id="genre-filter">
+
+    <option value="all">All genres</option>
+    <option value="romance">Romance</option>
+    <option value="drama">Drama</option>
+    <option value="thriller">Thriller</option>
+    <option value="mystery">Mystery</option>
+    <option value="fantasy">Fantasy</option>
+    <option value="adventure">Adventure</option>
+
+  </select>
+
+        </div>
 
       </div>
 
@@ -305,15 +316,10 @@
   </div>
 
 </footer>
-
-
 <!-- SUPABASE -->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
-
-
-<!-- REMOVE COMPLETED NOVELS -->
 
 <script>
 
@@ -321,29 +327,16 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   try {
 
-    // Get the currently logged-in reader
     const {
       data: { user },
       error: userError
     } = await supabaseClient.auth.getUser();
 
-
-    if (userError) {
-      console.error("User check failed:", userError);
+    if (userError || !user) {
       return;
     }
 
 
-    if (!user) {
-      console.log("No logged-in reader.");
-      return;
-    }
-
-
-    console.log("Logged-in reader:", user.id);
-
-
-    // Get this reader's novel assignments
     const {
       data: assignments,
       error: assignmentError
@@ -353,59 +346,22 @@ document.addEventListener("DOMContentLoaded", async function () {
       .eq("reader_id", user.id);
 
 
-    if (assignmentError) {
-
-      console.error(
-        "Available novels check failed:",
-        assignmentError
-      );
-
+    if (assignmentError || !assignments) {
       return;
     }
 
 
-    console.log("Reader assignments:", assignments);
+    assignments.forEach(function (assignment) {
 
+      if (assignment.verification_status === "verified") {
 
-    // Find novels that this reader has already completed
-    const completedNovelIds = assignments
-      .filter(function (assignment) {
+        const card = document.querySelector(
+          `.novel-card[data-novel-id="${assignment.novel_id}"]`
+        );
 
-        return assignment.verification_status === "verified";
-
-      })
-      .map(function (assignment) {
-
-        return assignment.novel_id;
-
-      });
-
-
-    console.log(
-      "Completed novel IDs:",
-      completedNovelIds
-    );
-
-
-    // Check every novel card on the page
-    const novelCards = document.querySelectorAll(
-      ".novel-card"
-    );
-
-
-    novelCards.forEach(function (card) {
-
-      const novelId = card.dataset.novelId;
-
-
-      // If this novel has been verified,
-      // remove it from Available Novels
-      if (
-        novelId &&
-        completedNovelIds.includes(novelId)
-      ) {
-
-        card.remove();
+        if (card) {
+          card.remove();
+        }
 
       }
 
@@ -424,8 +380,88 @@ document.addEventListener("DOMContentLoaded", async function () {
 });
 
 </script>
+<script>
 
+document.addEventListener("DOMContentLoaded", function () {
+
+  const searchInput =
+    document.getElementById("novel-search");
+
+  const genreFilter =
+    document.getElementById("genre-filter");
+
+  const novelCards =
+    document.querySelectorAll(".novel-card");
+
+
+  function filterNovels() {
+
+    const searchText =
+      searchInput.value
+        .toLowerCase()
+        .trim();
+
+    const selectedGenre =
+      genreFilter.value.toLowerCase();
+
+
+    novelCards.forEach(function (card) {
+
+      const title =
+        card.querySelector("h3")
+          ?.textContent
+          .toLowerCase() || "";
+
+      const description =
+        card.querySelector("p")
+          ?.textContent
+          .toLowerCase() || "";
+
+      const category =
+        card.querySelector(".novel-category")
+          ?.textContent
+          .toLowerCase()
+          .trim() || "";
+
+
+      const matchesSearch =
+        title.includes(searchText) ||
+        description.includes(searchText);
+
+      const matchesGenre =
+        selectedGenre === "all" ||
+        category === selectedGenre;
+
+
+      if (matchesSearch && matchesGenre) {
+
+        card.style.display = "";
+
+      } else {
+
+        card.style.display = "none";
+
+      }
+
+    });
+
+  }
+
+
+  searchInput.addEventListener(
+    "input",
+    filterNovels
+  );
+
+
+  genreFilter.addEventListener(
+    "change",
+    filterNovels
+  );
+
+});
+
+</script>
 </body>
 </html>
-</body>
-</html>
+
