@@ -952,7 +952,6 @@ quizCard.classList.remove("unlocked");
      ===================================================== */
 
   async function saveProgress() {
-
   if (!novelReaderId) {
     console.warn("No novelReaderId available.");
     return false;
@@ -974,12 +973,7 @@ quizCard.classList.remove("unlocked");
   );
 
   if (error) {
-
-    console.error(
-      "Could not save reading progress:",
-      error
-    );
-
+    console.error("Could not save reading progress:", error);
     return false;
   }
 
