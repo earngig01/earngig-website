@@ -891,6 +891,106 @@ async function getAssignmentId() {
 
   return assignments[0].id;
 }
+  async function loadSelectedNovel() {
+
+  if (!NOVEL_ID) {
+    return false;
+  }
+
+
+  const {
+    data: novel,
+    error
+  } = await supabaseClient
+    .from("novels")
+    .select(`
+      id,
+      title,
+      author_name,
+      description,
+      cover_url,
+      status
+    `)
+    .eq("id", NOVEL_ID)
+    .single();
+
+
+  if (error || !novel) {
+
+    console.error(
+      "Unable to load selected novel:",
+      error
+    );
+
+    alert(
+      "This novel could not be found."
+    );
+
+    window.location.href =
+      "read-and-earn.html";
+
+    return false;
+  }
+
+
+  /*
+   * Make sure the novel is approved.
+   */
+  if (novel.status !== "approved") {
+
+    alert(
+      "This novel is not currently available."
+    );
+
+    window.location.href =
+      "read-and-earn.html";
+
+    return false;
+  }
+
+
+  /*
+   * Update the page with the selected novel.
+   */
+
+  const titleElement =
+    document.getElementById("novelTitle");
+
+  if (titleElement) {
+    titleElement.textContent =
+      novel.title || "Untitled Novel";
+  }
+
+
+  const detailsElement =
+    document.getElementById("novelDetails");
+
+  if (detailsElement) {
+
+    detailsElement.textContent =
+      `By ${novel.author_name || "Unknown Author"}`;
+  }
+
+
+  const coverElement =
+    document.getElementById("novelCover");
+
+  if (coverElement && novel.cover_url) {
+
+    coverElement.src =
+      novel.cover_url;
+
+    coverElement.alt =
+      `${novel.title} cover`;
+  }
+
+
+  document.title =
+    `Reading | ${novel.title || "EarnGig"}`;
+
+
+  return true;
+  }
 
   /* =====================================================
      DISPLAY PAGE
@@ -1485,7 +1585,14 @@ if (!saved) {
      START
      ===================================================== */
 
-  displayPage();
+  const novelLoaded =
+  await loadSelectedNovel();
+
+if (!novelLoaded) {
+  return;
+}
+
+displayPage();
 
 
   /*
@@ -1544,7 +1651,7 @@ if (!saved) {
             totalPages;
 
 
-          displayPage();
+displayPage();
 
           loadQuiz();
 
