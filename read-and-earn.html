@@ -217,69 +217,13 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
-
 <script>
 
 document.addEventListener("DOMContentLoaded", async function () {
 
-  try {
-
-    const {
-      data: { user },
-      error: userError
-    } = await supabaseClient.auth.getUser();
-
-    if (userError || !user) {
-      return;
-    }
-
-
-    const {
-      data: assignments,
-      error: assignmentError
-    } = await supabaseClient
-      .from("novel_readers")
-      .select("novel_id, verification_status")
-      .eq("reader_id", user.id);
-
-
-    if (assignmentError || !assignments) {
-      return;
-    }
-
-
-    assignments.forEach(function (assignment) {
-
-      if (assignment.verification_status === "verified") {
-
-        const card = document.querySelector(
-          `.novel-card[data-novel-id="${assignment.novel_id}"]`
-        );
-
-        if (card) {
-          card.remove();
-        }
-
-      }
-
-    });
-
-
-  } catch (error) {
-
-    console.error(
-      "Available novels check failed:",
-      error
-    );
-
-  }
-
-});
-
-</script>
-<script>
-
-document.addEventListener("DOMContentLoaded", function () {
+  /*
+   * SEARCH + GENRE FILTER
+   */
 
   const searchInput =
     document.getElementById("novel-search");
@@ -287,19 +231,24 @@ document.addEventListener("DOMContentLoaded", function () {
   const genreFilter =
     document.getElementById("genre-filter");
 
-  const novelCards =
-    document.querySelectorAll(".novel-card");
+  const novelGrid =
+    document.querySelector(".novel-grid");
 
 
   function filterNovels() {
 
     const searchText =
-      searchInput.value
+      (searchInput?.value || "")
         .toLowerCase()
         .trim();
 
     const selectedGenre =
-      genreFilter.value.toLowerCase();
+      (genreFilter?.value || "all")
+        .toLowerCase();
+
+
+    const novelCards =
+      document.querySelectorAll(".novel-card");
 
 
     novelCards.forEach(function (card) {
@@ -310,7 +259,7 @@ document.addEventListener("DOMContentLoaded", function () {
           .toLowerCase() || "";
 
       const description =
-        card.querySelector("p")
+        card.querySelector(".novel-card-content > p")
           ?.textContent
           .toLowerCase() || "";
 
@@ -330,35 +279,120 @@ document.addEventListener("DOMContentLoaded", function () {
         category === selectedGenre;
 
 
-      if (matchesSearch && matchesGenre) {
-
-        card.style.display = "";
-
-      } else {
-
-        card.style.display = "none";
-
-      }
+      card.style.display =
+        matchesSearch && matchesGenre
+          ? ""
+          : "none";
 
     });
 
   }
 
 
-  searchInput.addEventListener(
-    "input",
-    filterNovels
-  );
+  if (searchInput) {
+    searchInput.addEventListener(
+      "input",
+      filterNovels
+    );
+  }
 
 
-  genreFilter.addEventListener(
-    "change",
-    filterNovels
-  );
+  if (genreFilter) {
+    genreFilter.addEventListener(
+      "change",
+      filterNovels
+    );
+  }
+
+
+  /*
+   * REMOVE NOVELS ALREADY VERIFIED
+   */
+
+  try {
+
+    const {
+      data: { user },
+      error: userError
+    } = await supabaseClient.auth.getUser();
+
+
+    if (userError || !user) {
+      return;
+    }
+
+
+    const {
+      data: assignments,
+      error: assignmentError
+    } = await supabaseClient
+      .from("novel_readers")
+      .select(
+        "novel_id, verification_status"
+      )
+      .eq("reader_id", user.id);
+
+
+    if (assignmentError) {
+
+      console.error(
+        "Unable to check completed novels:",
+        assignmentError
+      );
+
+      return;
+    }
+
+
+    const completedNovelIds =
+      (assignments || [])
+        .filter(function (assignment) {
+
+          return (
+            assignment.verification_status ===
+            "verified"
+          );
+
+        })
+        .map(function (assignment) {
+
+          return assignment.novel_id;
+
+        });
+
+
+    document
+      .querySelectorAll(".novel-card")
+      .forEach(function (card) {
+
+        const novelId =
+          card.dataset.novelId;
+
+
+        if (
+          novelId &&
+          completedNovelIds.includes(novelId)
+        ) {
+
+          card.remove();
+
+        }
+
+      });
+
+
+  } catch (error) {
+
+    console.error(
+      "Unable to check completed novels:",
+      error
+    );
+
+  }
 
 });
 
 </script>
+
 </body>
 </html>
-
