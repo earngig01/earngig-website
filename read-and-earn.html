@@ -305,26 +305,45 @@
   </div>
 
 </footer>
+
+
+<!-- SUPABASE -->
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
 
+
+<!-- REMOVE COMPLETED NOVELS -->
+
 <script>
+
 document.addEventListener("DOMContentLoaded", async function () {
 
   try {
 
+    // Get the currently logged-in reader
     const {
       data: { user },
       error: userError
     } = await supabaseClient.auth.getUser();
 
-    if (userError || !user) {
+
+    if (userError) {
+      console.error("User check failed:", userError);
+      return;
+    }
+
+
+    if (!user) {
       console.log("No logged-in reader.");
       return;
     }
 
+
     console.log("Logged-in reader:", user.id);
 
+
+    // Get this reader's novel assignments
     const {
       data: assignments,
       error: assignmentError
@@ -333,10 +352,80 @@ document.addEventListener("DOMContentLoaded", async function () {
       .select("novel_id, verification_status")
       .eq("reader_id", user.id);
 
+
     if (assignmentError) {
+
       console.error(
-        "Could not load reader assignments:",
+        "Available novels check failed:",
         assignmentError
       );
+
+      return;
+    }
+
+
+    console.log("Reader assignments:", assignments);
+
+
+    // Find novels that this reader has already completed
+    const completedNovelIds = assignments
+      .filter(function (assignment) {
+
+        return assignment.verification_status === "verified";
+
+      })
+      .map(function (assignment) {
+
+        return assignment.novel_id;
+
+      });
+
+
+    console.log(
+      "Completed novel IDs:",
+      completedNovelIds
+    );
+
+
+    // Check every novel card on the page
+    const novelCards = document.querySelectorAll(
+      ".novel-card"
+    );
+
+
+    novelCards.forEach(function (card) {
+
+      const novelId = card.dataset.novelId;
+
+
+      // If this novel has been verified,
+      // remove it from Available Novels
+      if (
+        novelId &&
+        completedNovelIds.includes(novelId)
+      ) {
+
+        card.remove();
+
+      }
+
+    });
+
+
+  } catch (error) {
+
+    console.error(
+      "Available novels check failed:",
+      error
+    );
+
+  }
+
+});
+
+</script>
+
+</body>
+</html>
 </body>
 </html>
