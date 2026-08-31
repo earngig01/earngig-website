@@ -856,85 +856,83 @@ async function loadNovelPages() {
 
   return true;
 }
-  
   /* =====================================================
-     DISPLAY PAGE
-     ===================================================== */
+   DISPLAY DATABASE PAGE
+   ===================================================== */
 
-  function displayPage() {
+function displayPage() {
 
-    const page =
-      pages[currentPage - 1];
+  const page =
+    pages[currentPage - 1];
 
-    if (!page) return;
-
-
-    chapterNumber.textContent =
-      page.chapter;
-
-    chapterTitle.textContent =
-      page.title;
-
-    novelContent.innerHTML =
-      page.content;
-
-
-    pageDisplay.textContent =
-      `Page ${currentPage} of ${totalPages}`;
-
-    pageNumber.textContent =
-      `${currentPage} / ${totalPages}`;
-
-
-    const percentage =
-      Math.round(
-        (currentPage / totalPages) * 100
-      );
-
-
-    progressPercent.textContent =
-      `${percentage}%`;
-
-    progressFill.style.width =
-      `${percentage}%`;
-
-
-    previousButton.disabled =
-      currentPage === 1;
-
-
-    if (currentPage === totalPages) {
-
-      nextButton.disabled = true;
-
-      nextButton.textContent =
-        "Reading Complete ✓";
-
-      completionMessage.classList.add("show");
-quizCard.classList.add("unlocked");
-      
-      progressMessage.textContent =
-        "You have completed the required reading. Complete the verification quiz below.";
-
-    } else {
-
-      nextButton.disabled = false;
-
-      nextButton.textContent =
-        "Next Page →";
-
-      completionMessage.classList.remove("show");
-quizCard.classList.remove("unlocked");
-      progressMessage.textContent =
-        "Continue reading the novel.";
-    }
-
-
-    novelContent.scrollIntoView({
-      behavior: "smooth",
-      block: "start"
-    });
+  if (!page) {
+    return;
   }
+
+  chapterNumber.textContent =
+    page.chapter || "";
+
+  chapterTitle.textContent =
+    page.title || "";
+
+  novelContent.innerHTML =
+    page.content || "<p>No content available.</p>";
+
+  pageDisplay.textContent =
+    `Page ${currentPage} of ${totalPages}`;
+
+  pageNumber.textContent =
+    `${currentPage} / ${totalPages}`;
+
+  const percentage =
+    Math.round(
+      (currentPage / totalPages) * 100
+    );
+
+  progressPercent.textContent =
+    `${percentage}%`;
+
+  progressFill.style.width =
+    `${percentage}%`;
+
+  previousButton.disabled =
+    currentPage === 1;
+
+  if (currentPage >= totalPages) {
+
+    nextButton.disabled = true;
+
+    nextButton.textContent =
+      "Reading Complete ✓";
+
+    completionMessage.classList.add("show");
+
+    quizCard.classList.add("unlocked");
+
+    progressMessage.textContent =
+      "You have completed the required reading. Complete the verification quiz below.";
+
+  } else {
+
+    nextButton.disabled = false;
+
+    nextButton.textContent =
+      "Next Page →";
+
+    completionMessage.classList.remove("show");
+
+    quizCard.classList.remove("unlocked");
+
+    progressMessage.textContent =
+      "Continue reading the novel.";
+
+  }
+
+  novelContent.scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+}  
 
 
   /* =====================================================
@@ -1450,12 +1448,33 @@ if (!saved) {
      START
      ===================================================== */
 
-  const novelLoaded =
+  /* =====================================================
+   LOAD NOVEL
+   ===================================================== */
+
+const novelLoaded =
   await loadSelectedNovel();
 
 if (!novelLoaded) {
   return;
 }
+
+
+/* =====================================================
+   LOAD NOVEL PAGES
+   ===================================================== */
+
+const pagesLoaded =
+  await loadNovelPages();
+
+if (!pagesLoaded) {
+  return;
+}
+
+
+/* =====================================================
+   START READING
+   ===================================================== */
 
 displayPage();
 
