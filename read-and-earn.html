@@ -119,52 +119,6 @@
   </div>
 
 </div>
-      
-          <div class="novel-cover">
-            <span>EG</span>
-          </div>
-
-          <div class="novel-card-content">
-
-            <span class="novel-category">
-              ROMANCE
-            </span>
-
-            <h3>The Hidden Promise</h3>
-
-            <p>
-              A young woman discovers that an old promise
-              could change her future forever.
-            </p>
-
-            <div class="novel-meta">
-
-              <span>22 pages</span>
-              <span>100 readers</span>
-
-            </div>
-
-            <div class="novel-reward">
-
-              <div>
-                <small>Your reader reward</small>
-                <strong>₦100</strong>
-              </div>
-
-              <a
-                href="read-novel.html"
-                class="btn primary"
-              >
-                Start Reading
-              </a>
-
-            </div>
-
-          </div>
-
-        </article>
-        
-      </div>
 
     </section>
 
@@ -217,12 +171,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
 <script>
-
 document.addEventListener("DOMContentLoaded", async function () {
-
-  /*
-   * SEARCH + GENRE FILTER
-   */
 
   const searchInput =
     document.getElementById("novel-search");
@@ -231,9 +180,224 @@ document.addEventListener("DOMContentLoaded", async function () {
     document.getElementById("genre-filter");
 
   const novelGrid =
-    document.querySelector(".novel-grid");
+    document.getElementById("novel-grid");
 
 
+  /*
+   * STORE LOADED NOVELS
+   */
+  let novels = [];
+
+
+  /*
+   * GET CURRENT USER
+   */
+  const {
+    data: { user },
+    error: userError
+  } = await supabaseClient.auth.getUser();
+
+
+  if (userError || !user) {
+
+    novelGrid.innerHTML = `
+      <div class="empty-state">
+        <h3>Please log in</h3>
+        <p>You need to be logged in to view available novels.</p>
+      </div>
+    `;
+
+    return;
+  }
+
+
+  /*
+   * GET NOVELS ALREADY COMPLETED BY THIS READER
+   */
+  const {
+    data: assignments,
+    error: assignmentError
+  } = await supabaseClient
+    .from("novel_readers")
+    .select("novel_id, verification_status")
+    .eq("reader_id", user.id);
+
+
+  if (assignmentError) {
+
+    console.error(
+      "Unable to check completed novels:",
+      assignmentError
+    );
+
+  }
+
+
+  const completedNovelIds =
+    (assignments || [])
+      .filter(function (assignment) {
+
+        return assignment.verification_status === "verified";
+
+      })
+      .map(function (assignment) {
+
+        return assignment.novel_id;
+
+      });
+
+
+  /*
+   * LOAD APPROVED NOVELS
+   */
+  const {
+    data: novelData,
+    error: novelsError
+  } = await supabaseClient
+    .from("novels")
+    .select(`
+      id,
+      title,
+      author_name,
+      description,
+      cover_url,
+      status
+    `)
+    .eq("status", "approved")
+    .order("created_at", {
+      ascending: false
+    });
+
+
+  if (novelsError) {
+
+    console.error(
+      "Unable to load novels:",
+      novelsError
+    );
+
+    novelGrid.innerHTML = `
+      <div class="empty-state">
+        <h3>Unable to load novels</h3>
+        <p>Please refresh the page and try again.</p>
+      </div>
+    `;
+
+    return;
+  }
+
+
+  /*
+   * REMOVE COMPLETED NOVELS
+   */
+  novels =
+    (novelData || []).filter(function (novel) {
+
+      return !completedNovelIds.includes(novel.id);
+
+    });
+
+
+  /*
+   * CREATE NOVEL CARDS
+   */
+  function displayNovels(list) {
+
+    if (!list.length) {
+
+      novelGrid.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-icon">📖</div>
+
+          <h3>No novels found</h3>
+
+          <p>
+            Try another search or genre.
+          </p>
+        </div>
+      `;
+
+      return;
+    }
+
+
+    novelGrid.innerHTML =
+      list.map(function (novel) {
+
+        const cover =
+          novel.cover_url
+            ? `
+              <img
+                src="${novel.cover_url}"
+                alt="${novel.title} cover"
+                class="novel-cover-image"
+              >
+            `
+            : `
+              <div class="novel-cover">
+                <span>EG</span>
+              </div>
+            `;
+
+
+        return `
+          <article
+            class="novel-card"
+            data-novel-id="${novel.id}"
+          >
+
+            ${cover}
+
+            <div class="novel-card-content">
+
+              <span class="novel-category">
+                NOVEL
+              </span>
+
+              <h3>
+                ${novel.title || "Untitled Novel"}
+              </h3>
+
+              <p>
+                ${novel.description || "Discover this novel and start reading."}
+              </p>
+
+              <div class="novel-meta">
+
+                <span>
+                  By ${novel.author_name || "Unknown Author"}
+                </span>
+
+              </div>
+
+              <div class="novel-reward">
+
+                <div>
+                  <small>Your reader reward</small>
+                  <strong>Available</strong>
+                </div>
+
+                <a
+                  href="read-novel.html?novel_id=${encodeURIComponent(novel.id)}"
+                  class="btn primary"
+                >
+                  Start Reading
+                </a>
+
+              </div>
+
+            </div>
+
+          </article>
+        `;
+
+      }).join("");
+  }
+
+
+  /*
+   * SEARCH + GENRE FILTER
+   */
   function filterNovels() {
 
     const searchText =
@@ -241,158 +405,87 @@ document.addEventListener("DOMContentLoaded", async function () {
         .toLowerCase()
         .trim();
 
+
     const selectedGenre =
       (genreFilter?.value || "all")
         .toLowerCase();
 
 
-    const novelCards =
-      document.querySelectorAll(".novel-card");
+    const filtered =
+      novels.filter(function (novel) {
+
+        const title =
+          (novel.title || "")
+            .toLowerCase();
 
 
-    novelCards.forEach(function (card) {
-
-      const title =
-        card.querySelector("h3")
-          ?.textContent
-          .toLowerCase() || "";
-
-      const description =
-        card.querySelector(".novel-card-content > p")
-          ?.textContent
-          .toLowerCase() || "";
-
-      const category =
-        card.querySelector(".novel-category")
-          ?.textContent
-          .toLowerCase()
-          .trim() || "";
+        const description =
+          (novel.description || "")
+            .toLowerCase();
 
 
-      const matchesSearch =
-        title.includes(searchText) ||
-        description.includes(searchText);
-
-      const matchesGenre =
-        selectedGenre === "all" ||
-        category === selectedGenre;
+        const author =
+          (novel.author_name || "")
+            .toLowerCase();
 
 
-      card.style.display =
-        matchesSearch && matchesGenre
-          ? ""
-          : "none";
-
-    });
-
-  }
+        const matchesSearch =
+          title.includes(searchText) ||
+          description.includes(searchText) ||
+          author.includes(searchText);
 
 
-  if (searchInput) {
-    searchInput.addEventListener(
-      "input",
-      filterNovels
-    );
-  }
+        /*
+         * Your current novels table screenshot
+         * does not show a genre column.
+         *
+         * Therefore "All genres" is used for now.
+         */
+        const matchesGenre =
+          selectedGenre === "all";
 
 
-  if (genreFilter) {
-    genreFilter.addEventListener(
-      "change",
-      filterNovels
-    );
-  }
-
-
-  /*
-   * REMOVE NOVELS ALREADY VERIFIED
-   */
-
-  try {
-
-    const {
-      data: { user },
-      error: userError
-    } = await supabaseClient.auth.getUser();
-
-
-    if (userError || !user) {
-      return;
-    }
-
-
-    const {
-      data: assignments,
-      error: assignmentError
-    } = await supabaseClient
-      .from("novel_readers")
-      .select(
-        "novel_id, verification_status"
-      )
-      .eq("reader_id", user.id);
-
-
-    if (assignmentError) {
-
-      console.error(
-        "Unable to check completed novels:",
-        assignmentError
-      );
-
-      return;
-    }
-
-
-    const completedNovelIds =
-      (assignments || [])
-        .filter(function (assignment) {
-
-          return (
-            assignment.verification_status ===
-            "verified"
-          );
-
-        })
-        .map(function (assignment) {
-
-          return assignment.novel_id;
-
-        });
-
-
-    document
-      .querySelectorAll(".novel-card")
-      .forEach(function (card) {
-
-        const novelId =
-          card.dataset.novelId;
-
-
-        if (
-          novelId &&
-          completedNovelIds.includes(novelId)
-        ) {
-
-          card.remove();
-
-        }
+        return matchesSearch && matchesGenre;
 
       });
 
 
-  } catch (error) {
+    displayNovels(filtered);
 
-    console.error(
-      "Unable to check completed novels:",
-      error
+  }
+
+
+  /*
+   * SHOW NOVELS
+   */
+  displayNovels(novels);
+
+
+  /*
+   * SEARCH EVENTS
+   */
+  if (searchInput) {
+
+    searchInput.addEventListener(
+      "input",
+      filterNovels
+    );
+
+  }
+
+
+  if (genreFilter) {
+
+    genreFilter.addEventListener(
+      "change",
+      filterNovels
     );
 
   }
 
 });
-
 </script>
-
+        
 </body>
 </html>
 
