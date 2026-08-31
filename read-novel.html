@@ -793,7 +793,70 @@ async function getAssignmentId() {
 
   return true;
   }
+/* =====================================================
+   LOAD NOVEL PAGES FROM DATABASE
+   ===================================================== */
 
+async function loadNovelPages() {
+
+  if (!NOVEL_ID) {
+    return false;
+  }
+
+  const {
+    data,
+    error
+  } = await supabaseClient
+    .from("novel_pages")
+    .select(`
+      page_number,
+      chapter,
+      title,
+      content
+    `)
+    .eq("novel_id", NOVEL_ID)
+    .order("page_number", {
+      ascending: true
+    });
+
+  if (error) {
+
+    console.error(
+      "Unable to load novel pages:",
+      error
+    );
+
+    alert(
+      "Unable to load the pages for this novel."
+    );
+
+    return false;
+  }
+
+  if (!data || data.length === 0) {
+
+    alert(
+      "This novel does not have any pages yet."
+    );
+
+    window.location.href =
+      "read-and-earn.html";
+
+    return false;
+  }
+
+  pages = data;
+
+  totalPages = pages.length;
+
+  console.log(
+    "Novel pages loaded:",
+    totalPages
+  );
+
+  return true;
+}
+  
   /* =====================================================
      DISPLAY PAGE
      ===================================================== */
