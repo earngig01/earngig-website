@@ -699,7 +699,6 @@ async function getAssignmentId() {
     return false;
   }
 
-
   const {
     data: novel,
     error
@@ -716,7 +715,6 @@ async function getAssignmentId() {
     .eq("id", NOVEL_ID)
     .single();
 
-
   if (error || !novel) {
 
     console.error(
@@ -724,14 +722,11 @@ async function getAssignmentId() {
       error
     );
 
-
-
     window.location.href =
       "read-and-earn.html";
 
     return false;
   }
-
 
   /*
    * Make sure the novel is approved.
@@ -748,11 +743,9 @@ async function getAssignmentId() {
     return false;
   }
 
-
   /*
-   * Update the page with the selected novel.
+   * Update title.
    */
-
   const titleElement =
     document.getElementById("novelTitle");
 
@@ -761,16 +754,20 @@ async function getAssignmentId() {
       novel.title || "Untitled Novel";
   }
 
-
+  /*
+   * Update author/details.
+   */
   const detailsElement =
     document.getElementById("novelDetails");
 
   if (detailsElement) {
-
     detailsElement.textContent =
-  `By ${novel.author_name || "Unknown Author"}`;
+      `By ${novel.author_name || "Unknown Author"}`;
+  }
 
-
+  /*
+   * Update cover.
+   */
   const coverElement =
     document.getElementById("novelCover");
 
@@ -783,10 +780,11 @@ async function getAssignmentId() {
       `${novel.title} cover`;
   }
 
-
+  /*
+   * Update browser title.
+   */
   document.title =
     `Reading | ${novel.title || "EarnGig"}`;
-
 
   return true;
   }
