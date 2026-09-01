@@ -1041,7 +1041,8 @@ async function loadTransactions() {
   }
 
   await loadDashboard();
-  await loadTransactions();
+await loadTransactions();
+await loadReferralHistory();
 
 })();
 document
@@ -1216,10 +1217,9 @@ document
 
     }).join("");
   }
-  async function loadReferralHistory() {
+ async function loadReferralHistory() {
 
-  const list =
-    document.getElementById("referral-history-list");
+  const list = document.getElementById("referral-history-list");
 
   if (!list) return;
 
@@ -1230,28 +1230,18 @@ document
 
   if (userError || !user) return;
 
+  // Get the real people referred by this user
   const {
-    data: referrals,
-    error
+    data: referredUsers,
+    error: profileError
   } = await supabaseClient
-    .from("referrals")
-    .select(`
-      id,
-      referred_user_id,
-      status,
-      created_at
-    `)
-    .eq("referrer_id", user.id)
-    .order("created_at", {
-      ascending: false
-    });
+    .from("profiles")
+    .select("id, full_name, created_at")
+    .eq("referred_by", user.id)
+    .order("created_at", { ascending: false });
 
-  if (error) {
-
-    console.error(
-      "Unable to load referral history:",
-      error
-    );
+  if (profileError) {
+    console.error("Unable to load referral history:", profileError);
 
     list.innerHTML = `
       <div class="empty-state">
@@ -1263,64 +1253,82 @@ document
     return;
   }
 
-  if (!referrals || referrals.length === 0) {
+  if (!referredUsers || referredUsers.length === 0) {
 
     list.innerHTML = `
       <div class="empty-state">
         <div class="empty-icon">👥</div>
-
         <h3>No referrals yet</h3>
-
-        <p>
-          Share your referral code to start earning.
-        </p>
+        <p>Share your referral code to start earning.</p>
       </div>
     `;
 
     return;
   }
 
-  list.innerHTML =
-    referrals.map(function(referral, index) {
+  const ids = referredUsers.map(function(referral) {
+    return referral.id;
+  });
 
-      const status =
-        referral.status || "pending";
+  // Get the real referral bonuses
+  const {
+    data: bonuses,
+    error: bonusError
+  } = await supabaseClient
+    .from("referral_bonus_ledger")
+    .select("referred_user_id, bonus_amount, bonus_type")
+    .in("referred_user_id", ids);
 
-      const statusText =
-        status.charAt(0).toUpperCase() +
-        status.slice(1);
-
-      const date =
-        referral.created_at
-          ? new Date(
-              referral.created_at
-            ).toLocaleDateString("en-NG")
-          : "";
-
-      return `
-        <div class="referral-history-row">
-
-          <div>
-            <strong>
-              Referral #${index + 1}
-            </strong>
-
-            <small>
-              Joined ${date}
-            </small>
-          </div>
-
-          <div>
-            <span class="referral-status">
-              ${statusText}
-            </span>
-          </div>
-
-        </div>
-      `;
-
-    }).join("");
+  if (bonusError) {
+    console.error("Unable to load referral bonuses:", bonusError);
   }
+
+  const bonusRows = bonuses || [];
+
+  list.innerHTML = referredUsers.map(function(referral) {
+
+    const userBonuses = bonusRows.filter(function(bonus) {
+      return bonus.referred_user_id === referral.id;
+    });
+
+    const totalBonus = userBonuses.reduce(function(total, bonus) {
+      return total + Number(bonus.bonus_amount || 0);
+    }, 0);
+
+    const bonusCount = userBonuses.length;
+
+    const date = referral.created_at
+      ? new Date(referral.created_at).toLocaleDateString("en-NG")
+      : "";
+
+    return `
+      <div class="referral-history-row">
+
+        <div>
+          <strong>
+            ${referral.full_name || "EarnGig Member"}
+          </strong>
+
+          <small>
+            Joined ${date}
+          </small>
+        </div>
+
+        <div>
+          <strong>
+            ₦${totalBonus.toLocaleString("en-NG")}
+          </strong>
+
+          <small>
+            ${bonusCount} bonus payment${bonusCount === 1 ? "" : "s"}
+          </small>
+        </div>
+
+      </div>
+    `;
+
+  }).join("");
+ } 
 </script>
     
 </body>
