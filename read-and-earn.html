@@ -170,7 +170,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
-<script>
+  <script>
 document.addEventListener("DOMContentLoaded", async function () {
 
   const searchInput =
@@ -182,11 +182,8 @@ document.addEventListener("DOMContentLoaded", async function () {
   const novelGrid =
     document.getElementById("novel-grid");
 
-
-  /*
-   * STORE LOADED NOVELS
-   */
   let novels = [];
+  let assignments = [];
 
 
   /*
@@ -203,7 +200,9 @@ document.addEventListener("DOMContentLoaded", async function () {
     novelGrid.innerHTML = `
       <div class="empty-state">
         <h3>Please log in</h3>
-        <p>You need to be logged in to view available novels.</p>
+        <p>
+          You need to be logged in to view available novels.
+        </p>
       </div>
     `;
 
@@ -212,32 +211,62 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
   /*
-   * GET NOVELS ALREADY COMPLETED BY THIS READER
+   * LOAD THIS USER'S READING ASSIGNMENTS
+   *
+   * We need the assignment ID because read-novel.html
+   * uses novel_readers.id to save progress and submit
+   * the verification quiz.
    */
   const {
-    data: assignments,
+    data: assignmentData,
     error: assignmentError
   } = await supabaseClient
     .from("novel_readers")
-    .select("novel_id, verification_status")
+    .select(`
+      id,
+      novel_id,
+      reader_id,
+      status,
+      verification_status,
+      progress_percent,
+      pages_read,
+      quiz_completed
+    `)
     .eq("reader_id", user.id);
 
 
   if (assignmentError) {
 
     console.error(
-      "Unable to check completed novels:",
+      "Unable to load reading assignments:",
       assignmentError
     );
 
+    novelGrid.innerHTML = `
+      <div class="empty-state">
+        <h3>Unable to load your reading assignments</h3>
+        <p>Please refresh the page and try again.</p>
+      </div>
+    `;
+
+    return;
   }
 
 
+  assignments =
+    assignmentData || [];
+
+
+  /*
+   * GET NOVELS ALREADY VERIFIED BY THIS READER
+   */
   const completedNovelIds =
-    (assignments || [])
+    assignments
       .filter(function (assignment) {
 
-        return assignment.verification_status === "verified";
+        return (
+          assignment.verification_status === "verified"
+        );
 
       })
       .map(function (assignment) {
@@ -288,7 +317,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
   /*
-   * REMOVE COMPLETED NOVELS
+   * REMOVE NOVELS ALREADY VERIFIED
    */
   novels =
     (novelData || []).filter(function (novel) {
@@ -296,6 +325,96 @@ document.addEventListener("DOMContentLoaded", async function () {
       return !completedNovelIds.includes(novel.id);
 
     });
+
+
+  /*
+   * GET OR CREATE READING ASSIGNMENT
+   *
+   * This is what makes the system work for:
+   *
+   * - existing novels
+   * - newly approved novels
+   * - new reader accounts
+   *
+   * We do NOT create an assignment until the reader
+   * actually clicks Start Reading.
+   */
+  async function getOrCreateAssignment(novelId) {
+
+    /*
+     * First check whether this reader already has
+     * an assignment for this novel.
+     */
+    const existingAssignment =
+      assignments.find(function (assignment) {
+
+        return assignment.novel_id === novelId;
+
+      });
+
+
+    if (existingAssignment) {
+
+      return existingAssignment.id;
+
+    }
+
+
+    /*
+     * No assignment exists yet.
+     *
+     * Create one.
+     */
+    const {
+      data: newAssignment,
+      error: createError
+    } = await supabaseClient
+      .from("novel_readers")
+      .insert({
+        novel_id: novelId,
+        reader_id: user.id,
+        status: "assigned",
+        progress_percent: 0,
+        pages_read: 0,
+        quiz_completed: false,
+        verification_status: "pending"
+      })
+      .select("id")
+      .single();
+
+
+    if (createError) {
+
+      console.error(
+        "Unable to create reading assignment:",
+        createError
+      );
+
+      alert(
+        "Unable to start this novel right now. Please try again."
+      );
+
+      return null;
+    }
+
+
+    /*
+     * Keep local assignment list updated.
+     */
+    assignments.push({
+      id: newAssignment.id,
+      novel_id: novelId,
+      reader_id: user.id,
+      status: "assigned",
+      verification_status: "pending",
+      progress_percent: 0,
+      pages_read: 0,
+      quiz_completed: false
+    });
+
+
+    return newAssignment.id;
+  }
 
 
   /*
@@ -329,7 +448,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             ? `
               <img
                 src="${novel.cover_url}"
-                alt="${novel.title} cover"
+                alt="${novel.title || "Novel"} cover"
                 class="novel-cover-image"
               >
             `
@@ -359,7 +478,8 @@ document.addEventListener("DOMContentLoaded", async function () {
               </h3>
 
               <p>
-                ${novel.description || "Discover this novel and start reading."}
+                ${novel.description ||
+                  "Discover this novel and start reading."}
               </p>
 
               <div class="novel-meta">
@@ -377,12 +497,13 @@ document.addEventListener("DOMContentLoaded", async function () {
                   <strong>Available</strong>
                 </div>
 
-                <a
-                  href="read-novel.html?novel_id=${encodeURIComponent(novel.id)}"
-                  class="btn primary"
+                <button
+                  type="button"
+                  class="btn primary start-reading-button"
+                  data-novel-id="${novel.id}"
                 >
                   Start Reading
-                </a>
+                </button>
 
               </div>
 
@@ -392,6 +513,69 @@ document.addEventListener("DOMContentLoaded", async function () {
         `;
 
       }).join("");
+
+
+    /*
+     * START READING BUTTONS
+     */
+    document
+      .querySelectorAll(".start-reading-button")
+      .forEach(function (button) {
+
+        button.addEventListener(
+          "click",
+          async function () {
+
+            const novelId =
+              button.dataset.novelId;
+
+            if (!novelId) {
+              return;
+            }
+
+
+            /*
+             * Prevent double-clicks.
+             */
+            button.disabled = true;
+
+            button.textContent =
+              "Starting...";
+
+
+            /*
+             * Get existing assignment or create
+             * a new one.
+             */
+            const assignmentId =
+              await getOrCreateAssignment(novelId);
+
+
+            if (!assignmentId) {
+
+              button.disabled = false;
+
+              button.textContent =
+                "Start Reading";
+
+              return;
+            }
+
+
+            /*
+             * Open the reader page with BOTH IDs.
+             */
+            window.location.href =
+              "read-novel.html?novel_id=" +
+              encodeURIComponent(novelId) +
+              "&assignment=" +
+              encodeURIComponent(assignmentId);
+
+          }
+        );
+
+      });
+
   }
 
 
@@ -436,16 +620,18 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
         /*
-         * Your current novels table screenshot
-         * does not show a genre column.
-         *
-         * Therefore "All genres" is used for now.
+         * Your current novels table does not have
+         * a genre column, so All genres remains the
+         * available option for now.
          */
         const matchesGenre =
           selectedGenre === "all";
 
 
-        return matchesSearch && matchesGenre;
+        return (
+          matchesSearch &&
+          matchesGenre
+        );
 
       });
 
@@ -484,7 +670,8 @@ document.addEventListener("DOMContentLoaded", async function () {
   }
 
 });
-</script>
+  </script>  
+ 
         
 </body>
 </html>
