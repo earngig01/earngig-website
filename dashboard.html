@@ -613,12 +613,15 @@ if (walletError) {
       "en-NG"
     )}`;
 
+document.getElementById(
+  "referral-earnings"
+).textContent =
+  `₦${Number(wallet.referral_earned || 0).toLocaleString("en-NG")}`;
+  
   document.getElementById(
-    "referral-earnings"
-  ).textContent =
-    `₦${Number(wallet.referral_earned || 0).toLocaleString(
-      "en-NG"
-    )}`;
+  "dashboard-referral-earnings"
+).textContent =
+  `₦${Number(wallet.referral_earned || 0).toLocaleString("en-NG")}`;
 
 } else {
 
