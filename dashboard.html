@@ -757,9 +757,31 @@ if (referredMembersError) {
    * from the members' actual membership status.
    */
 
+  const {
+  data: activeReferralCount,
+  error: activeReferralError
+} = await supabaseClient
+  .rpc("get_active_referral_count");
+
+if (activeReferralError) {
+
+  console.error(
+    "Unable to load active referral count:",
+    activeReferralError
+  );
+
   document.getElementById(
     "active-referrals"
-  ).textContent = members.length;
+  ).textContent = "0";
+
+} else {
+
+  document.getElementById(
+    "active-referrals"
+  ).textContent =
+    Number(activeReferralCount || 0);
+
+}
 
 }
 
