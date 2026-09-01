@@ -726,17 +726,26 @@ if (referralsError) {
   const referralList =
     referrals || [];
 
-  document.getElementById(
-    "successful-referrals"
-  ).textContent =
-    referralList.length;
+  const successfulReferrals =
+  referralList.filter(function(referral) {
+    return (
+      referral.status === "completed" ||
+      referral.status === "credited"
+    );
+  }).length;
 
-  const activeReferrals =
-    referralList.filter(function(referral) {
+const activeReferrals =
+  referralList.filter(function(referral) {
+    return referral.status === "active";
+  }).length;
 
-      return referral.status === "active";
+document.getElementById(
+  "successful-referrals"
+).textContent = successfulReferrals;
 
-    }).length;
+document.getElementById(
+  "active-referrals"
+).textContent = activeReferrals;
 
   document.getElementById(
     "active-referrals"
