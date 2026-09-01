@@ -828,29 +828,409 @@ async function loadNovelPages() {
     return false;
   }
 
-  if (!data || data.length === 0) {
+  /*
+   * If database pages exist, use them.
+   */
+  if (data && data.length > 0) {
 
-    alert(
-      "This novel does not have any pages yet."
+    pages = data;
+
+    totalPages = pages.length;
+
+    console.log(
+      "Novel pages loaded from database:",
+      totalPages
     );
 
-    window.location.href =
-      "read-and-earn.html";
-
-    return false;
+    return true;
   }
 
-  pages = data;
+  /*
+   * FALLBACK READING CONTENT
+   *
+   * This keeps the reader functional while the
+   * novel_pages table has no rows for this novel.
+   */
+  pages = [
+    {
+      page_number: 1,
+      chapter: "CHAPTER ONE",
+      title: "The Return",
+      content: `
+        <p>
+          The evening sky had begun to change when Sarah
+          returned to the small town she had left years ago.
+        </p>
+
+        <p>
+          She had promised herself that she would never
+          return, but some promises are easier to make than
+          they are to keep.
+        </p>
+      `
+    },
+
+    {
+      page_number: 2,
+      chapter: "CHAPTER ONE",
+      title: "Old Roads",
+      content: `
+        <p>
+          The familiar road looked different now.
+          The shops were brighter and the houses had changed.
+        </p>
+
+        <p>
+          Yet the old memories remained exactly where she
+          had left them.
+        </p>
+      `
+    },
+
+    {
+      page_number: 3,
+      chapter: "CHAPTER ONE",
+      title: "The House",
+      content: `
+        <p>
+          Sarah stopped outside the house at the end of
+          the street.
+        </p>
+
+        <p>
+          She stared at the wooden door for several seconds
+          before finally reaching for the handle.
+        </p>
+      `
+    },
+
+    {
+      page_number: 4,
+      chapter: "CHAPTER ONE",
+      title: "The Past",
+      content: `
+        <p>
+          She knew that opening that door meant facing a part
+          of her past she had spent years trying to forget.
+        </p>
+
+        <p>
+          But she also knew that the truth had waited long
+          enough.
+        </p>
+      `
+    },
+
+    {
+      page_number: 5,
+      chapter: "CHAPTER ONE",
+      title: "Inside",
+      content: `
+        <p>
+          She took a deep breath and stepped inside.
+        </p>
+
+        <p>
+          The hallway was quiet, but every corner seemed to
+          carry a memory.
+        </p>
+      `
+    },
+
+    {
+      page_number: 6,
+      chapter: "CHAPTER TWO",
+      title: "Memories",
+      content: `
+        <p>
+          Sarah walked slowly through the familiar hallway.
+          The years had changed the house, but not everything.
+        </p>
+
+        <p>
+          She remembered the days she had spent there as a
+          young woman.
+        </p>
+      `
+    },
+
+    {
+      page_number: 7,
+      chapter: "CHAPTER TWO",
+      title: "The Photograph",
+      content: `
+        <p>
+          On a small table she found an old photograph.
+          Dust covered its wooden frame.
+        </p>
+
+        <p>
+          Sarah picked it up and studied the faces she had
+          tried so hard to forget.
+        </p>
+      `
+    },
+
+    {
+      page_number: 8,
+      chapter: "CHAPTER TWO",
+      title: "A Forgotten Promise",
+      content: `
+        <p>
+          The photograph reminded Sarah of a promise made
+          many years earlier.
+        </p>
+
+        <p>
+          She wondered whether returning had been the right
+          decision.
+        </p>
+      `
+    },
+
+    {
+      page_number: 9,
+      chapter: "CHAPTER TWO",
+      title: "The Letter",
+      content: `
+        <p>
+          Behind the photograph was a folded letter.
+          Sarah recognized the handwriting immediately.
+        </p>
+
+        <p>
+          Her hands trembled as she opened it.
+        </p>
+      `
+    },
+
+    {
+      page_number: 10,
+      chapter: "CHAPTER TWO",
+      title: "The Truth",
+      content: `
+        <p>
+          The letter revealed something Sarah had never
+          known.
+        </p>
+
+        <p>
+          Someone had tried to tell her the truth years ago,
+          but the message had never reached her.
+        </p>
+      `
+    },
+
+    {
+      page_number: 11,
+      chapter: "CHAPTER THREE",
+      title: "Questions",
+      content: `
+        <p>
+          Sarah sat quietly and read the letter again.
+        </p>
+
+        <p>
+          For the first time, the events of her past began
+          to make sense.
+        </p>
+      `
+    },
+
+    {
+      page_number: 12,
+      chapter: "CHAPTER THREE",
+      title: "A Difficult Choice",
+      content: `
+        <p>
+          She knew that learning the truth would not change
+          what had already happened.
+        </p>
+
+        <p>
+          But perhaps it would allow her to finally move on.
+        </p>
+      `
+    },
+
+    {
+      page_number: 13,
+      chapter: "CHAPTER THREE",
+      title: "The Meeting",
+      content: `
+        <p>
+          The following morning Sarah decided to meet the
+          person who had written the letter.
+        </p>
+
+        <p>
+          She was nervous, but she knew she could no longer
+          avoid the past.
+        </p>
+      `
+    },
+
+    {
+      page_number: 14,
+      chapter: "CHAPTER THREE",
+      title: "An Old Friend",
+      content: `
+        <p>
+          The meeting took place at a quiet café near the
+          center of town.
+        </p>
+
+        <p>
+          When Sarah arrived, she saw a familiar face waiting
+          for her.
+        </p>
+      `
+    },
+
+    {
+      page_number: 15,
+      chapter: "CHAPTER THREE",
+      title: "The Conversation",
+      content: `
+        <p>
+          They talked for hours about what had happened.
+        </p>
+
+        <p>
+          Sarah listened carefully and finally understood
+          why everything had unfolded the way it had.
+        </p>
+      `
+    },
+
+    {
+      page_number: 16,
+      chapter: "CHAPTER FOUR",
+      title: "Forgiveness",
+      content: `
+        <p>
+          Forgiveness did not come easily.
+        </p>
+
+        <p>
+          Still, Sarah realized that holding on to anger
+          had kept her trapped for too long.
+        </p>
+      `
+    },
+
+    {
+      page_number: 17,
+      chapter: "CHAPTER FOUR",
+      title: "Moving Forward",
+      content: `
+        <p>
+          For the first time in years, Sarah felt free to
+          think about the future.
+        </p>
+
+        <p>
+          The town no longer seemed like a place she needed
+          to escape.
+        </p>
+      `
+    },
+
+    {
+      page_number: 18,
+      chapter: "CHAPTER FOUR",
+      title: "A New Beginning",
+      content: `
+        <p>
+          Sarah returned to the old house one final time.
+        </p>
+
+        <p>
+          She looked around and smiled at the memories that
+          no longer frightened her.
+        </p>
+      `
+    },
+
+    {
+      page_number: 19,
+      chapter: "CHAPTER FOUR",
+      title: "The Door",
+      content: `
+        <p>
+          She stood at the wooden door where her journey had
+          begun.
+        </p>
+
+        <p>
+          This time, she opened it without hesitation.
+        </p>
+      `
+    },
+
+    {
+      page_number: 20,
+      chapter: "CHAPTER FIVE",
+      title: "Home",
+      content: `
+        <p>
+          Outside, the evening sky was beginning to change.
+        </p>
+
+        <p>
+          Sarah realized that coming home had given her
+          something she had not expected: peace.
+        </p>
+      `
+    },
+
+    {
+      page_number: 21,
+      chapter: "CHAPTER FIVE",
+      title: "The Promise",
+      content: `
+        <p>
+          She remembered the promise she had made years ago.
+        </p>
+
+        <p>
+          This time, she decidedto make a different promise:
+          she would never again run from the truth.
+        </p>
+      `
+    },
+
+    {
+      page_number: 22,
+      chapter: "CHAPTER FIVE",
+      title: "The End",
+      content: `
+        <p>
+          Sarah looked back at the house one last time.
+        </p>
+
+        <p>
+          The past would always be part of her story, but it
+          no longer controlled her.
+        </p>
+
+        <p>
+          She turned toward the road and walked forward,
+          ready for whatever came next.
+        </p>
+      `
+    }
+  ];
 
   totalPages = pages.length;
 
   console.log(
-    "Novel pages loaded:",
+    "Using fallback pages:",
     totalPages
   );
 
   return true;
-}
+    }
   /* =====================================================
    DISPLAY DATABASE PAGE
    ===================================================== */
