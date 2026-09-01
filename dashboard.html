@@ -329,7 +329,25 @@
 </div>  
 
       </div>
+<div class="referral-history">
 
+  <div class="section-title">
+    <div>
+      <span class="eyebrow">REFERRAL HISTORY</span>
+      <h3>Your referrals</h3>
+    </div>
+  </div>
+
+  <div id="referral-history-list">
+
+    <div class="empty-state">
+      <h3>Loading referrals...</h3>
+      <p>Your referral activity will appear here.</p>
+    </div>
+
+  </div>
+
+</div>
     </section>
 
 
@@ -1194,6 +1212,111 @@ document
           </div>
 
         </article>
+      `;
+
+    }).join("");
+  }
+  async function loadReferralHistory() {
+
+  const list =
+    document.getElementById("referral-history-list");
+
+  if (!list) return;
+
+  const {
+    data: { user },
+    error: userError
+  } = await supabaseClient.auth.getUser();
+
+  if (userError || !user) return;
+
+  const {
+    data: referrals,
+    error
+  } = await supabaseClient
+    .from("referrals")
+    .select(`
+      id,
+      referred_user_id,
+      status,
+      created_at
+    `)
+    .eq("referrer_id", user.id)
+    .order("created_at", {
+      ascending: false
+    });
+
+  if (error) {
+
+    console.error(
+      "Unable to load referral history:",
+      error
+    );
+
+    list.innerHTML = `
+      <div class="empty-state">
+        <h3>Unable to load referrals</h3>
+        <p>Please try again later.</p>
+      </div>
+    `;
+
+    return;
+  }
+
+  if (!referrals || referrals.length === 0) {
+
+    list.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">👥</div>
+
+        <h3>No referrals yet</h3>
+
+        <p>
+          Share your referral code to start earning.
+        </p>
+      </div>
+    `;
+
+    return;
+  }
+
+  list.innerHTML =
+    referrals.map(function(referral, index) {
+
+      const status =
+        referral.status || "pending";
+
+      const statusText =
+        status.charAt(0).toUpperCase() +
+        status.slice(1);
+
+      const date =
+        referral.created_at
+          ? new Date(
+              referral.created_at
+            ).toLocaleDateString("en-NG")
+          : "";
+
+      return `
+        <div class="referral-history-row">
+
+          <div>
+            <strong>
+              Referral #${index + 1}
+            </strong>
+
+            <small>
+              Joined ${date}
+            </small>
+          </div>
+
+          <div>
+            <span class="referral-status">
+              ${statusText}
+            </span>
+          </div>
+
+        </div>
       `;
 
     }).join("");
