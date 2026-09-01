@@ -383,19 +383,23 @@ document.addEventListener("DOMContentLoaded", async function () {
       .single();
 
 
-    if (createError) {
+  if (createError) {
 
-      console.error(
-        "Unable to create reading assignment:",
-        createError
-      );
+  console.error(
+    "Unable to create reading assignment:",
+    createError
+  );
 
-      alert(
-        "Unable to start this novel right now. Please try again."
-      );
+  alert(
+    "START READING ERROR:\n\n" +
+    "Message: " + (createError.message || "Unknown error") +
+    "\n\nCode: " + (createError.code || "No code") +
+    "\n\nDetails: " + (createError.details || "No details") +
+    "\n\nHint: " + (createError.hint || "No hint")
+  );
 
-      return null;
-    }
+  return null;
+  }
 
 
     /*
