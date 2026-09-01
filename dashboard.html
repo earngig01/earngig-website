@@ -521,64 +521,86 @@ async function loadDashboard() {
       nameElement.textContent =
         profile?.full_name || "Member";
     }
-
-
-    /*
-     * Load this user's wallet
-     *
-     * Your database has:
-     * user_id
-     * balance
-     * total_earned
-     * referral_earned
-     */
-    const {
-      data: wallet,
-      error: walletError
-    } = await supabaseClient
-      .from("wallets")
-      .select(
-        "balance, total_earned, referral_earned"
-      )
-      .eq("user_id", user.id)
-      .maybeSingle();
-
-
-    if (walletError) {
-
-      console.error(
-        "Unable to load wallet:",
-        walletError
-      );
-
-    } else if (wallet) {
-
-      document.getElementById(
-        "wallet-balance"
-      ).textContent =
-        `₦${Number(wallet.balance || 0).toLocaleString(
-          "en-NG",
-          {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-          }
-        )}`;
-
-      document.getElementById(
-        "total-earned"
-      ).textContent =
-        `₦${Number(wallet.total_earned || 0).toLocaleString(
-          "en-NG"
-        )}`;
-
-      document.getElementById(
-        "referral-earnings"
-      ).textContent =
-        `₦${Number(wallet.referral_earned || 0).toLocaleString(
-          "en-NG"
-        )}`;
+    
 /*
- * Load referral information
+ * LOAD WALLET
+ */
+
+const {
+  data: wallet,
+  error: walletError
+} = await supabaseClient
+  .from("wallets")
+  .select(
+    "balance, total_earned, referral_earned"
+  )
+  .eq("user_id", user.id)
+  .maybeSingle();
+
+
+if (walletError) {
+
+  console.error(
+    "Unable to load wallet:",
+    walletError
+  );
+
+} else if (wallet) {
+
+  document.getElementById(
+    "wallet-balance"
+  ).textContent =
+    `₦${Number(wallet.balance || 0).toLocaleString(
+      "en-NG",
+      {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }
+    )}`;
+
+  document.getElementById(
+    "total-earned"
+  ).textContent =
+    `₦${Number(wallet.total_earned || 0).toLocaleString(
+      "en-NG"
+    )}`;
+
+  document.getElementById(
+    "referral-earnings"
+  ).textContent =
+    `₦${Number(wallet.referral_earned || 0).toLocaleString(
+      "en-NG"
+    )}`;
+
+} else {
+
+  /*
+   * New users may not have a wallet yet.
+   * Do NOT allow this to block the referral section.
+   */
+
+  document.getElementById(
+    "wallet-balance"
+  ).textContent = "₦0.00";
+
+  document.getElementById(
+    "total-earned"
+  ).textContent = "₦0";
+
+  document.getElementById(
+    "referral-earnings"
+  ).textContent = "₦0";
+
+}
+
+
+/*
+ * LOAD REFERRAL INFORMATION
+ *
+ * IMPORTANT:
+ * This is deliberately OUTSIDE the wallet block.
+ * A user does not need a wallet just to have a
+ * referral code.
  */
 
 const {
@@ -588,7 +610,14 @@ const {
   .from("profiles")
   .select("referral_code")
   .eq("id", user.id)
-  .single();
+  .maybeSingle();
+
+
+const referralCodeElement =
+  document.getElementById(
+    "dashboard-referral-code"
+  );
+
 
 if (referralProfileError) {
 
@@ -597,18 +626,30 @@ if (referralProfileError) {
     referralProfileError
   );
 
+  if (referralCodeElement) {
+    referralCodeElement.textContent =
+      "Unable to load";
+  }
+
+} else if (referralProfile?.referral_code) {
+
+  if (referralCodeElement) {
+    referralCodeElement.textContent =
+      referralProfile.referral_code;
+  }
+
 } else {
 
-  document.getElementById(
-    "dashboard-referral-code"
-  ).textContent =
-    referralProfile?.referral_code || "Not available";
+  if (referralCodeElement) {
+    referralCodeElement.textContent =
+      "Not available";
+  }
 
 }
 
 
 /*
- * Load referrals made by this user.
+ * LOAD REFERRALS MADE BY THIS USER
  */
 
 const {
@@ -616,8 +657,11 @@ const {
   error: referralsError
 } = await supabaseClient
   .from("referrals")
-  .select("referred_user_id, status")
+  .select(
+    "referred_user_id, status"
+  )
   .eq("referrer_id", user.id);
+
 
 if (referralsError) {
 
@@ -638,7 +682,9 @@ if (referralsError) {
 
   const activeReferrals =
     referralList.filter(function(referral) {
+
       return referral.status === "active";
+
     }).length;
 
   document.getElementById(
@@ -647,8 +693,6 @@ if (referralsError) {
     activeReferrals;
 
 }
-    }
-
 
     /*
      * Load this user's task attempts.
