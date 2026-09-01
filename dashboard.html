@@ -716,61 +716,53 @@ if (referralProfileError) {
 
 }
 
-
 /*
- * LOAD REFERRALS MADE BY THIS USER
+ * LOAD REFERRAL COUNTERS
+ *
+ * Referral relationships are stored in profiles.referred_by,
+ * not public.referrals.
  */
 
 const {
-  data: referrals,
-  error: referralsError
+  data: referredMembers,
+  error: referredMembersError
 } = await supabaseClient
-  .from("referrals")
-  .select(
-    "referred_user_id, status"
-  )
-  .eq("referrer_id", user.id);
+  .from("profiles")
+  .select("id")
+  .eq("referred_by", user.id);
 
-
-if (referralsError) {
+if (referredMembersError) {
 
   console.error(
-    "Unable to load referrals:",
-    referralsError
+    "Unable to load referral counters:",
+    referredMembersError
   );
 
 } else {
 
-  const referralList =
-    referrals || [];
+  const members =
+    referredMembers || [];
 
-  const successfulReferrals =
-  referralList.filter(function(referral) {
-    return (
-      referral.status === "completed" ||
-      referral.status === "credited"
-    );
-  }).length;
+  /*
+   * Every real member connected through
+   * profiles.referred_by counts as a successful referral.
+   */
 
-const activeReferrals =
-  referralList.filter(function(referral) {
-    return referral.status === "active";
-  }).length;
+  document.getElementById(
+    "successful-referrals"
+  ).textContent = members.length;
 
-document.getElementById(
-  "successful-referrals"
-).textContent = successfulReferrals;
-
-document.getElementById(
-  "active-referrals"
-).textContent = activeReferrals;
+  /*
+   * Active referrals will be handled separately
+   * from the members' actual membership status.
+   */
 
   document.getElementById(
     "active-referrals"
-  ).textContent =
-    activeReferrals;
+  ).textContent = members.length;
 
 }
+
 
     /*
      * Load this user's task attempts.
