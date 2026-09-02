@@ -1,333 +1,678 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Novel Assessment | EarnGig Admin</title>
-  <link rel="stylesheet" href="styles.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Novel Assessment | EarnGig Admin</title>
+<link rel="stylesheet" href="styles.css">
+
+<style>
+.review-list {
+    display: grid;
+    gap: 24px;
+}
+
+.review-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 26px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.08);
+}
+
+.review-card h2 {
+    margin: 8px 0;
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.novel-cover {
+    width: 130px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 18px;
+}
+
+.novel-details {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0,1fr));
+    gap: 14px;
+    margin-top: 20px;
+}
+
+.detail-box {
+    padding: 16px;
+    border-radius: 12px;
+    background: #f5f6fa;
+}
+
+.detail-box small {
+    display: block;
+    opacity: .65;
+    margin-bottom: 6px;
+}
+
+.detail-box strong {
+    font-size: 18px;
+}
+
+.assessment-form {
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid #ddd;
+}
+
+.assessment-form label {
+    display: block;
+    margin-top: 16px;
+    margin-bottom: 7px;
+    font-weight: 600;
+}
+
+.assessment-form input,
+.assessment-form select,
+.assessment-form textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+}
+
+.money-input {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.money-input span {
+    font-weight: 700;
+}
+
+.decision-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 24px;
+}
+
+.empty-review {
+    text-align: center;
+    padding: 50px 20px;
+    background: #fff;
+    border-radius: 20px;
+}
+
+.message {
+    margin-top: 18px;
+}
+
+@media(max-width:700px) {
+    .novel-details {
+        grid-template-columns: 1fr;
+    }
+
+    .review-header {
+        flex-direction: column;
+    }
+}
+</style>
 </head>
 
 <body>
 
 <header>
-  <div class="container nav">
+<div class="container nav">
 
-    <a class="logo" href="index.html">
-      <span class="logo-mark">E</span>
-      Earn<span>Gig</span>
-    </a>
+<a class="logo" href="index.html">
+<span class="logo-mark">E</span>
+Earn<span>Gig</span>
+</a>
 
-    <span class="admin-badge">ADMIN</span>
+<span class="admin-badge">ADMIN</span>
 
-  </div>
+</div>
 </header>
-
 
 <main class="dashboard-page">
 
-  <div class="container">
+<div class="container">
 
-    <div class="dashboard-heading">
+<div class="dashboard-heading">
 
-      <div>
-        <span class="eyebrow">NOVEL ASSESSMENT</span>
-        <h1>Review Submission</h1>
+<div>
+<span class="eyebrow">NOVEL ASSESSMENT</span>
+<h1>Review Submissions</h1>
+<p>Review novels that are currently waiting for admin approval.</p>
+</div>
 
-        <p>
-          Assess the writer's submission and determine the approved
-          earning rate and listing fee.
-        </p>
-      </div>
+<a class="btn outline" href="admin-dashboard.html">
+Admin Dashboard
+</a>
 
-      <a class="btn outline" href="admin-dashboard.html">
-        Admin Dashboard
-      </a>
+</div>
 
-    </div>
+<div id="review-list" class="review-list">
 
+<div class="empty-review">
+<h3>Loading submissions...</h3>
+<p>Please wait.</p>
+</div>
 
-    <div class="review-grid">
+</div>
 
-
-      <!-- NOVEL INFORMATION -->
-
-      <section class="review-card">
-
-        <div class="review-card-header">
-          <div>
-            <span class="eyebrow">SUBMISSION</span>
-            <h2>The Hidden Promise</h2>
-          </div>
-
-          <span class="status-badge pending">
-            Pending Review
-          </span>
-        </div>
-
-
-        <div class="novel-details">
-
-          <div>
-            <small>Writer</small>
-            <strong>Jane Doe</strong>
-          </div>
-
-          <div>
-            <small>Genre</small>
-            <strong>Romance</strong>
-          </div>
-
-          <div>
-            <small>Pages</small>
-            <strong>22</strong>
-          </div>
-
-          <div>
-            <small>Requested readers</small>
-            <strong>100</strong>
-          </div>
-
-        </div>
-
-
-        <div class="manuscript-box">
-
-          <span>MANUSCRIPT</span>
-
-          <h3>The Hidden Promise</h3>
-
-          <p>
-            Submitted manuscript is ready for quality assessment.
-          </p>
-
-          <button class="btn light">
-            View Manuscript
-          </button>
-
-        </div>
-
-
-        <div class="assessment-box">
-
-          <span>WRITER DESCRIPTION</span>
-
-          <p>
-            A young woman discovers that the promise she made
-            years ago could change her entire future.
-          </p>
-
-        </div>
-
-      </section>
-
-
-      <!-- ADMIN DECISION -->
-
-      <section class="review-card">
-
-        <div class="review-card-header">
-
-          <div>
-            <span class="eyebrow">ADMIN DECISION</span>
-            <h2>Assessment & Pricing</h2>
-          </div>
-
-        </div>
-
-
-        <form>
-
-
-          <label for="quality">
-            Quality assessment
-          </label>
-
-          <select id="quality">
-
-            <option value="">
-              Select assessment
-            </option>
-
-            <option>
-              Excellent
-            </option>
-
-            <option>
-              Good
-            </option>
-
-            <option>
-              Average
-            </option>
-
-            <option>
-              Needs Revision
-            </option>
-
-          </select>
-
-
-          <label for="pages-approved">
-            Approved page count
-          </label>
-
-          <input
-            type="number"
-            id="pages-approved"
-            value="22"
-            min="5"
-            max="25"
-          >
-
-
-          <label for="reader-rate">
-            Writer earning per verified reader
-          </label>
-
-          <div class="money-input">
-            <span>₦</span>
-
-            <input
-              type="number"
-              id="reader-rate"
-              placeholder="Example: 200"
-              min="0"
-            >
-          </div>
-
-
-          <small class="form-help">
-            This is the amount the writer earns for each
-            verified reader. It is determined by EarnGig
-            after assessment.
-          </small>
-
-
-          <label for="listing-fee">
-            Writer listing fee
-          </label>
-
-          <div class="money-input">
-            <span>₦</span>
-
-            <input
-              type="number"
-              id="listing-fee"
-              placeholder="Enter approved fee"
-              min="0"
-            >
-          </div>
-
-
-          <label for="reader-count">
-            Approved reader count
-          </label>
-
-          <select id="reader-count">
-
-            <option value="25">
-              Bronze — 25 readers
-            </option>
-
-            <option value="50">
-              Silver — 50 readers
-            </option>
-
-            <option value="100">
-              Gold — 100 readers
-            </option>
-
-          </select>
-
-
-          <label for="notes">
-            Assessment notes
-          </label>
-
-          <textarea
-            id="notes"
-            rows="5"
-            placeholder="Write notes for the writer..."
-          ></textarea>
-
-
-          <div class="decision-actions">
-
-            <button
-              type="button"
-              class="btn danger"
-            >
-              Reject
-            </button>
-
-            <button
-              type="button"
-              class="btn warning"
-            >
-              Request Revision
-            </button>
-
-            <button
-              type="button"
-              class="btn primary"
-            >
-              Approve & Set Pricing
-            </button>
-
-          </div>
-
-
-        </form>
-
-      </section>
-
-    </div>
-
-
-    <!-- FINANCIAL PREVIEW -->
-
-    <section class="review-card financial-preview">
-
-      <span class="eyebrow">EARNING PREVIEW</span>
-
-      <h2>Potential writer earnings</h2>
-
-      <div class="preview-grid">
-
-        <div>
-          <small>Approved rate</small>
-          <strong>₦200</strong>
-          <span>per verified reader</span>
-        </div>
-
-        <div>
-          <small>Reader target</small>
-          <strong>100</strong>
-          <span>verified readers</span>
-        </div>
-
-        <div>
-          <small>Maximum writer earnings</small>
-          <strong>₦20,000</strong>
-          <span>if all reads are verified</span>
-        </div>
-
-      </div>
-
-    </section>
-
-  </div>
+</div>
 
 </main>
 
-
 <footer>
-
-  <div class="container copy">
-    © 2026 EarnGig Administration.
-  </div>
-
+<div class="container copy">
+© 2026 EarnGig Administration.
+</div>
 </footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+
+<script>
+
+const reviewList = document.getElementById("review-list");
+
+function escapeHtml(value) {
+    return String(value || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+function formatNaira(amount) {
+    return "₦" + Number(amount || 0).toLocaleString("en-NG", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
+}
+
+async function checkAdmin() {
+
+    const {
+        data: { user },
+        error: userError
+    } = await supabaseClient.auth.getUser();
+
+    if (userError || !user) {
+        window.location.href = "login.html";
+        return null;
+    }
+
+    const { data: profile, error } = await supabaseClient
+        .from("profiles")
+        .select("is_admin")
+        .eq("id", user.id)
+        .single();
+
+    if (error || !profile?.is_admin) {
+        alert("Admin access required.");
+        window.location.href = "dashboard.html";
+        return null;
+    }
+
+    return user;
+}
+
+
+async function loadPendingNovels() {
+
+    const { data: novels, error } = await supabaseClient
+        .from("novels")
+        .select(`
+            id,
+            title,
+            author_name,
+            description,
+            cover_url,
+            genre,
+            page_count,
+            requested_reader_count,
+            submission_status,
+            manuscript_url,
+            created_at
+        `)
+        .eq("submission_status", "pending")
+        .order("created_at", { ascending: true });
+
+    if (error) {
+
+        reviewList.innerHTML = `
+            <div class="empty-review">
+                <h3>Unable to load submissions</h3>
+                <p>${escapeHtml(error.message)}</p>
+            </div>
+        `;
+
+        return;
+    }
+
+    if (!novels || novels.length === 0) {
+
+        reviewList.innerHTML = `
+            <div class="empty-review">
+                <h3>No pending submissions</h3>
+                <p>There are currently no novels waiting for admin review.</p>
+            </div>
+        `;
+
+        return;
+    }
+
+    reviewList.innerHTML = novels.map(novel => {
+
+        return `
+        <article class="review-card">
+
+            <div class="review-header">
+
+                <div>
+
+                    ${novel.cover_url
+                        ? `<img
+                            src="${escapeHtml(novel.cover_url)}"
+                            class="novel-cover"
+                            alt="${escapeHtml(novel.title)}"
+                          >`
+                        : ""
+                    }
+
+                    <span class="status-badge">
+                        Pending Review
+                    </span>
+
+                    <h2>${escapeHtml(novel.title)}</h2>
+
+                    <p>
+                        Submitted ${new Date(novel.created_at).toLocaleString()}
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="novel-details">
+
+                <div class="detail-box">
+                    <small>Author</small>
+                    <strong>${escapeHtml(novel.author_name)}</strong>
+                </div>
+
+                <div class="detail-box">
+                    <small>Genre</small>
+                    <strong>${escapeHtml(novel.genre)}</strong>
+                </div>
+
+                <div class="detail-box">
+                    <small>Pages</small>
+                    <strong>${Number(novel.page_count || 0)}</strong>
+                </div>
+
+                <div class="detail-box">
+                    <small>Requested readers</small>
+                    <strong>${Number(novel.requested_reader_count || 0)}</strong>
+                </div>
+
+            </div>
+
+            <div class="assessment-box" style="margin-top:20px">
+                <span>WRITER DESCRIPTION</span>
+                <p>${escapeHtml(novel.description)}</p>
+            </div>
+
+            <form
+                class="assessment-form"
+                onsubmit="return false;"
+            >
+
+                <label>
+                    Quality assessment
+                </label>
+
+                <select id="quality-${novel.id}">
+                    <option value="">Select assessment</option>
+                    <option value="Excellent">Excellent</option>
+                    <option value="Good">Good</option>
+                    <option value="Average">Average</option>
+                    <option value="Needs Revision">Needs Revision</option>
+                </select>
+
+
+                <label>
+                    Approved page count
+                </label>
+
+                <input
+                    type="number"
+                    id="pages-${novel.id}"
+                    value="${Number(novel.page_count || 0)}"
+                    min="1"
+                >
+
+
+                <label>
+                    Writer earning per verified reader
+                </label>
+
+                <div class="money-input">
+                    <span>₦</span>
+
+                    <input
+                        type="number"
+                        id="reward-${novel.id}"
+                        placeholder="Example: 100"
+                        min="0"
+                    >
+                </div>
+
+
+                <label>
+                    Writer listing fee
+                </label>
+
+                <div class="money-input">
+                    <span>₦</span>
+
+                    <input
+                        type="number"
+                        id="fee-${novel.id}"
+                        placeholder="Example: 1000"
+                        min="0"
+                    >
+                </div>
+
+
+                <label>
+                    Approved reader count
+                </label>
+
+                <select id="readers-${novel.id}">
+
+                    <option value="50"
+                        ${novel.requested_reader_count == 50 ? "selected" : ""}>
+                        50 readers
+                    </option>
+
+                    <option value="100"
+                        ${novel.requested_reader_count == 100 ? "selected" : ""}>
+                        100 readers
+                    </option>
+
+                    <option value="200"
+                        ${novel.requested_reader_count == 200 ? "selected" : ""}>
+                        200 readers
+                    </option>
+
+                    <option value="300"
+                        ${novel.requested_reader_count == 300 ? "selected" : ""}>
+                        300 readers
+                    </option>
+
+                    <option value="500"
+                        ${novel.requested_reader_count == 500 ? "selected" : ""}>
+                        500 readers
+                    </option>
+
+                </select>
+
+
+                <label>
+                    Assessment notes
+                </label>
+
+                <textarea
+                    id="notes-${novel.id}"
+                    rows="5"
+                    placeholder="Write notes for the writer..."
+                ></textarea>
+
+
+                <div class="decision-actions">
+
+                    <button
+                        type="button"
+                        class="btn danger"
+                        onclick="rejectNovel('${novel.id}')"
+                    >
+                        Reject
+                    </button>
+
+                    <button
+                        type="button"
+                        class="btn warning"
+                        onclick="requestRevision('${novel.id}')"
+                    >
+                        Request Revision
+                    </button>
+
+                    <button
+                        type="button"
+                        class="btn primary"
+                        onclick="approveNovel('${novel.id}')"
+                    >
+                        Approve & Set Pricing
+                    </button>
+
+                </div>
+
+                <div
+                    id="message-${novel.id}"
+                    class="message"
+                ></div>
+
+            </form>
+
+        </article>
+        `;
+
+    }).join("");
+}
+
+
+async function approveNovel(novelId) {
+
+    const reward = Number(
+        document.getElementById("reward-" + novelId).value
+    );
+
+    const fee = Number(
+        document.getElementById("fee-" + novelId).value
+    );
+
+    const pages = Number(
+        document.getElementById("pages-" + novelId).value
+    );
+
+    const readers = Number(
+        document.getElementById("readers-" + novelId).value
+    );
+
+    const quality = document.getElementById(
+        "quality-" + novelId
+    ).value;
+
+    const notes = document.getElementById(
+        "notes-" + novelId
+    ).value.trim();
+
+    const message = document.getElementById(
+        "message-" + novelId
+    );
+
+    if (!quality) {
+        alert("Please select a quality assessment.");
+        return;
+    }
+
+    if (!reward || reward <= 0) {
+        alert("Please enter the writer earning per verified reader.");
+        return;
+    }
+
+    if (fee < 0) {
+        alert("Please enter a valid listing fee.");
+        return;
+    }
+
+    if (!pages || pages <= 0) {
+        alert("Please enter the approved page count.");
+        return;
+    }
+
+    if (!readers) {
+        alert("Please select the approved reader count.");
+        return;
+    }
+
+    message.innerHTML = "Approving novel...";
+
+    const {
+        data: { user }
+    } = await supabaseClient.auth.getUser();
+
+    const { error } = await supabaseClient
+        .from("novels")
+        .update({
+            submission_status: "approved",
+            status: "approved",
+            page_count: pages,
+            approved_reader_count: readers,
+            approved_reader_reward: reward,
+            writer_listing_fee: fee,
+            writer_payment_status: "unpaid",
+            assessment_notes: notes,
+            approved_at: new Date().toISOString(),
+            approved_by: user.id
+        })
+        .eq("id", novelId)
+        .eq("submission_status", "pending");
+
+    if (error) {
+
+        message.innerHTML = `
+            <div class="assessment-notice">
+                <strong>Unable to approve novel.</strong>
+                <p>${escapeHtml(error.message)}</p>
+            </div>
+        `;
+
+        return;
+    }
+
+    message.innerHTML = `
+        <div class="assessment-notice">
+            <strong>Novel approved successfully.</strong>
+            <p>The writer can now see it under Approved / Awaiting Payment.</p>
+        </div>
+    `;
+
+    await loadPendingNovels();
+}
+
+
+async function rejectNovel(novelId) {
+
+    const notes = document.getElementById(
+        "notes-" + novelId
+    ).value.trim();
+
+    if (!confirm("Reject this novel submission?")) {
+        return;
+    }
+
+    const message = document.getElementById(
+        "message-" + novelId
+    );
+
+    const { error } = await supabaseClient
+        .from("novels")
+        .update({
+            submission_status: "rejected",
+            status: "rejected",
+            assessment_notes: notes
+        })
+        .eq("id", novelId)
+        .eq("submission_status", "pending");
+
+    if (error) {
+
+        message.innerHTML = `
+            <div class="assessment-notice">
+                <strong>Unable to reject novel.</strong>
+                <p>${escapeHtml(error.message)}</p>
+            </div>
+        `;
+
+        return;
+    }
+
+    await loadPendingNovels();
+}
+
+
+async function requestRevision(novelId) {
+
+    const notes = document.getElementById(
+        "notes-" + novelId
+    ).value.trim();
+
+    if (!notes) {
+        alert("Please write revision notes for the writer.");
+        return;
+    }
+
+    const message = document.getElementById(
+        "message-" + novelId
+    );
+
+    const { error } = await supabaseClient
+        .from("novels")
+        .update({
+            submission_status: "revision_requested",
+            status: "revision_requested",
+            assessment_notes: notes
+        })
+        .eq("id", novelId)
+        .eq("submission_status", "pending");
+
+    if (error) {
+
+        message.innerHTML = `
+            <div class="assessment-notice">
+                <strong>Unable to request revision.</strong>
+                <p>${escapeHtml(error.message)}</p>
+            </div>
+        `;
+
+        return;
+    }
+
+    await loadPendingNovels();
+}
+
+
+(async function() {
+
+    const user = await checkAdmin();
+
+    if (!user) return;
+
+    await loadPendingNovels();
+
+})();
+</script>
 
 </body>
 </html>
