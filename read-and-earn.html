@@ -279,24 +279,10 @@ document.addEventListener("DOMContentLoaded", async function () {
   /*
    * LOAD APPROVED NOVELS
    */
-  const {
+const {
     data: novelData,
     error: novelsError
-  } = await supabaseClient
-    .from("novels")
-    .select(`
-      id,
-      title,
-      author_name,
-      description,
-      cover_url,
-      status
-    `)
-    .eq("status", "approved")
-    .order("created_at", {
-      ascending: false
-    });
-
+} = await supabaseClient.rpc("get_read_earn_novels");
 
   if (novelsError) {
 
