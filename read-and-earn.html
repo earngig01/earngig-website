@@ -450,57 +450,126 @@ const {
 
 
         return `
-          <article
-            class="novel-card"
-            data-novel-id="${novel.id}"
-          >
+  <article
+    class="novel-card"
+    data-novel-id="${novel.id}"
+    style="
+      display:flex;
+      flex-direction:row;
+      gap:18px;
+      align-items:stretch;
+      padding:16px;
+      min-height:170px;
+    "
+  >
 
-            ${cover}
-
-            <div class="novel-card-content">
-
-              <span class="novel-category">
-                NOVEL
-              </span>
-
-              <h3>
-                ${novel.title || "Untitled Novel"}
-              </h3>
-
-              <p>
-                ${novel.description ||
-                  "Discover this novel and start reading."}
-              </p>
-
-              <div class="novel-meta">
-
-                <span>
-                  By ${novel.author_name || "Unknown Author"}
-                </span>
-
-              </div>
-
-              <div class="novel-reward">
-
-                <div>
-                  <small>Your reader reward</small>
-                  <strong>Available</strong>
-                </div>
-
-                <button
-                  type="button"
-                  class="btn primary start-reading-button"
-                  data-novel-id="${novel.id}"
-                >
-                  Start Reading
-                </button>
-
-              </div>
-
+    <div
+      style="
+        width:105px;
+        min-width:105px;
+        height:150px;
+        overflow:hidden;
+        border-radius:10px;
+        background:rgba(255,255,255,.08);
+      "
+    >
+      ${
+        novel.cover_url
+          ? `
+            <img
+              src="${novel.cover_url}"
+              alt="${novel.title || "Novel"} cover"
+              style="
+                width:100%;
+                height:100%;
+                object-fit:cover;
+                display:block;
+              "
+            >
+          `
+          : `
+            <div
+              style="
+                width:100%;
+                height:100%;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                font-weight:700;
+              "
+            >
+              EG
             </div>
+          `
+      }
+    </div>
 
-          </article>
-        `;
+    <div
+      class="novel-card-content"
+      style="
+        flex:1;
+        min-width:0;
+        display:flex;
+        flex-direction:column;
+      "
+    >
+
+      <span class="novel-category">
+        NOVEL
+      </span>
+
+      <h3 style="
+        margin:6px 0 6px;
+        line-height:1.25;
+      ">
+        ${novel.title || "Untitled Novel"}
+      </h3>
+
+      <div class="novel-meta">
+        By ${novel.author_name || "Unknown Author"}
+      </div>
+
+      <p style="
+        margin:8px 0;
+        display:-webkit-box;
+        -webkit-line-clamp:2;
+        -webkit-box-orient:vertical;
+        overflow:hidden;
+      ">
+        ${novel.description ||
+          "Discover this novel and start reading."}
+      </p>
+
+      <div
+        class="novel-reward"
+        style="
+          margin-top:auto;
+          display:flex;
+          align-items:center;
+          justify-content:space-between;
+          gap:12px;
+        "
+      >
+
+        <div>
+          <small>Your reader reward</small>
+          <strong>Available</strong>
+        </div>
+
+        <button
+          type="button"
+          class="btn primary start-reading-button"
+          data-novel-id="${novel.id}"
+        >
+          Start Reading
+        </button>
+
+      </div>
+
+    </div>
+
+  </article>
+`;
 
       }).join("");
 
