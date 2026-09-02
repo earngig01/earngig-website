@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Approved Novels | EarnGig</title>
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<header>
+  <div class="container nav">
+
+    <a class="logo" href="index.html">
+      <span class="logo-mark">E</span>
+      Earn<span>Gig</span>
+    </a>
+
+    <a class="btn outline" href="create-and-earn.html">
+      Back to Create & Earn
+    </a>
+
+  </div>
+</header>
+
+
+<main class="dashboard-page">
+
+  <div class="container">
+
+    <div class="dashboard-heading">
+
+      <div>
+        <span class="eyebrow">MY NOVELS</span>
+
+        <h1>Approved / Awaiting Payment</h1>
+
+        <p>
+          These novels have been approved and are waiting
+          for the listing fee to be paid before publication.
+        </p>
+      </div>
+
+    </div>
+
+
+    <div id="novel-list">
+
+      <div class="empty-state">
+
+        <h3>Loading approved novels...</h3>
+
+        <p>
+          Please wait.
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</main>
+
+
+<footer>
+
+  <div class="container copy">
+    © 2026 EarnGig. All rights reserved.
+  </div>
+
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+
+
+<script>
+
+async function loadApprovedNovels() {
+
+  const list =
+    document.getElementById("novel-list");
+
+
+  try {
+
+    /*
+     * Get logged-in writer
+     */
+
+    const {
+      data: { user },
+      error: userError
+    } = await supabaseClient.auth.getUser();
+
+
+    if (userError || !user) {
+
+      window.location.href =
+        "login.html";
+
+      return;
+    }
+
+
+    /*
+     * Load this writer's approved novels
+     */
+
+    const {
+      data: novels,
+      error
+    } = await supabaseClient
+
+      .from("novels")
+
+      .select(`
+        id,
+        title,
+        author_name,
+        description,
+        cover_url,
+        genre,
+        page_count,
+        submission_status,
+        approved_reader_reward,
+        requested_reader_count,
+        approved_reader_count,
+        writer_listing_fee,
+        writer_payment_status,
+        approved_at
+      `)
+
+      .eq("submitted_by", user.id)
+
+      .order("approved_at", {
+        ascending: false
+      });
+
+
+    if (error) {
+
+      console.error(
+        "Unable to load approved novels:",
+        error
+      );
+
+
+      list.innerHTML = `
+
+        <div class="empty-state">
+
+          <h3>Unable to load approved novels</h3>
+
+          <p>
+            ${escapeHtml(error.message)}
+          </p>
+
+        </div>
+
+      `;
+
+      return;
+    }
+
+
+    /*
+     * Only show approved novels that
+     * still need their listing fee paid.
+     */
+
+    const approvedNovels =
+      (novels || []).filter(function(novel) {
+
+        const submissionStatus =
+          String(
+            novel.submission_status || ""
+          ).toLowerCase();
+
+        const paymentStatus =
+          String(
+            novel.writer_payment_status || ""
+          ).toLowerCase();
+
+
+        const approved =
+          [
+            "approved",
+            "awaiting_payment"
+          ].includes(submissionStatus);
+
+
+        const unpaid =
+          [
+            "",
+            "pending",
+            "unpaid",
+            "awaiting_payment"
+          ].includes(paymentStatus);
+
+
+        return approved && unpaid;
+
+      });
+
+
+    /*
+     * Nothing waiting for payment
+     */
+
+    if (approvedNovels.length === 0) {
+
+      list.innerHTML = `
+
+        <div class="empty-state">
+
+          <div class="empty-icon">
+            ✓
+          </div>
+
+          <h3>
+            No approved novels awaiting payment
+          </h3>
+
+          <p>
+            Approved novels will appear here when
+            they are ready for publication.
+          </p>
+
+          <a
+            href="create-and-earn.html"
+            class="btn primary"
+          >
+            Create a Novel
+          </a>
+
+        </div>
+
+      `;
+
+      return;
+    }
+
+
+    /*
+     * Display approved novels
+     */
+
+    list.innerHTML =
+      approvedNovels.map(function(novel) {
+
+
+        const title =
+          escapeHtml(
+            novel.title || "Untitled Novel"
+          );
+
+
+        const description =
+          escapeHtml(
+            novel.description ||
+            "No description provided."
+          );
+
+
+        const genre =
+          escapeHtml(
+            novel.genre || "Not specified"
+          );
+
+
+        const readers =
+          Number(
+            novel.requested_reader_count || 0
+          );
+
+
+        const readerReward =
+          Number(
+            novel.approved_reader_reward || 0
+          );
+
+
+        const listingFee =
+          Number(
+            novel.writer_listing_fee || 0
+          );
+
+
+        const maximumEarnings =
+          readers * readerReward;
+
+
+        const cover =
+          novel.cover_url
+
+          ?
+
+          `
+          <img
+            src="${escapeHtml(novel.cover_url)}"
+            alt="Novel cover"
+            style="
+              width:100%;
+              height:240px;
+              object-fit:cover;
+              border-radius:14px;
+            "
+          >
+          `
+
+          :
+
+          `
+          <div
+            style="
+              width:100%;
+              height:240px;
+              border-radius:14px;
+              display:flex;
+              align-items:center;
+              justify-content:center;
+              font-size:52px;
+              background:rgba(255,255,255,.08);
+            "
+          >
+            📖
+          </div>
+          `;
+
+
+        return `
+
+        <article
+          class="novel-preview"
+          style="margin-bottom:24px;"
+        >
+
+          <div
+            style="
+              width:220px;
+              flex:0 0 220px;
+            "
+          >
+
+            ${cover}
+
+          </div>
+
+
+          <div style="flex:1;">
+
+            <span class="eyebrow">
+              APPROVED
+            </span>
+
+
+            <h2>
+              ${title}
+            </h2>
+
+
+            <p>
+              ${description}
+            </p>
+
+
+            <p>
+
+              <strong>
+                Genre:
+              </strong>
+
+              ${genre}
+
+            </p>
+
+
+            <div class="earning-box">
+
+
+              <div>
+
+                <small>
+                  Selected readers
+                </small>
+
+                <strong>
+                  ${readers}
+                </strong>
+
+              </div>
+
+
+              <div>
+
+                <small>
+                  Reader reward
+                </small>
+
+                <strong>
+                  ₦${readerReward.toLocaleString("en-NG")}
+                </strong>
+
+              </div>
+
+
+              <div>
+
+                <small>
+                  Listing fee
+                </small>
+
+                <strong>
+                  ₦${listingFee.toLocaleString("en-NG")}
+                </strong>
+
+              </div>
+
+
+              <div>
+
+                <small>
+                  Maximum writer earnings
+                </small>
+
+                <strong>
+                  ₦${maximumEarnings.toLocaleString("en-NG")}
+                </strong>
+
+              </div>
+
+
+            </div>
+
+
+            <div
+              style="
+                margin-top:20px;
+                padding:18px;
+                border-radius:14px;
+                background:rgba(255,255,255,.06);
+              "
+            >
+
+              <strong>
+                Ready for publication
+              </strong>
+
+              <p style="margin-bottom:0;">
+
+                Your novel has been approved.
+                Pay the listing fee to publish it
+                and make it available to readers.
+
+              </p>
+
+            </div>
+
+
+            <div
+              class="form-actions"
+              style="margin-top:20px;"
+            >
+
+              <button
+                type="button"
+                class="btn primary big"
+                onclick="payListingFee('${novel.id}')"
+              >
+                Pay ₦${listingFee.toLocaleString("en-NG")}
+              </button>
+
+            </div>
+
+
+          </div>
+
+        </article>
+
+        `;
+
+      }).join("");
+
+
+  } catch (error) {
+
+    console.error(
+      "Approved novels error:",
+      error
+    );
+
+
+    list.innerHTML = `
+
+      <div class="empty-state">
+
+        <h3>
+          Something went wrong
+        </h3>
+
+        <p>
+          Please refresh and try again.
+        </p>
+
+      </div>
+
+    `;
+
+  }
+
+}
+
+
+/*
+ * Listing-fee payment
+ *
+ * IMPORTANT:
+ * We are not connecting Paystack here yet.
+ * This button is prepared for the payment
+ * system we will connect next.
+ */
+
+async function payListingFee(novelId) {
+
+  try {
+
+    const {
+      data: { user },
+      error: userError
+    } = await supabaseClient.auth.getUser();
+
+
+    if (userError || !user) {
+
+      window.location.href =
+        "login.html";
+
+      return;
+    }
+
+
+    /*
+     * Get the approved novel again
+     */
+
+    const {
+      data: novel,
+      error
+    } = await supabaseClient
+
+      .from("novels")
+
+      .select(`
+        id,
+        title,
+        writer_listing_fee,
+        submission_status,
+        writer_payment_status
+      `)
+
+      .eq("id", novelId)
+
+      .eq("submitted_by", user.id)
+
+      .single();
+
+
+    if (error || !novel) {
+
+      alert(
+        "Unable to find this approved novel."
+      );
+
+      return;
+    }
+
+
+    const fee =
+      Number(
+        novel.writer_listing_fee || 0
+      );
+
+
+    if (fee <= 0) {
+
+      alert(
+        "No valid listing fee has been assigned to this novel."
+      );
+
+      return;
+    }
+
+
+    /*
+     * Payment connection comes next.
+     */
+
+    alert(
+      "Listing fee: ₦" +
+      fee.toLocaleString("en-NG") +
+      "\n\nPayment connection will be added next."
+    );
+
+
+  } catch (error) {
+
+    console.error(
+      "Listing fee error:",
+      error
+    );
+
+    alert(
+      "Unable to continue with payment."
+    );
+
+  }
+
+}
+
+
+/*
+ * Protect displayed text from HTML injection.
+ */
+
+function escapeHtml(value) {
+
+  return String(value)
+
+    .replaceAll("&", "&amp;")
+
+    .replaceAll("<", "&lt;")
+
+    .replaceAll(">", "&gt;")
+
+    .replaceAll('"', "&quot;")
+
+    .replaceAll("'", "&#039;");
+
+}
+
+
+loadApprovedNovels();
+
+</script>
+
+</body>
+  </html>
