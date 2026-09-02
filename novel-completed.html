@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Completed Novels | EarnGig</title>
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<header>
+  <div class="container nav">
+
+    <a class="logo" href="index.html">
+      <span class="logo-mark">E</span>
+      Earn<span>Gig</span>
+    </a>
+
+    <a
+      class="btn outline"
+      href="create-and-earn.html"
+    >
+      Back to Create & Earn
+    </a>
+
+  </div>
+</header>
+
+
+<main class="dashboard-page">
+
+  <div class="container">
+
+    <div class="dashboard-heading">
+
+      <div>
+
+        <span class="eyebrow">
+          MY NOVELS
+        </span>
+
+        <h1>
+          Completed Novels
+        </h1>
+
+        <p>
+          Novels where your selected reader target
+          has been reached.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div id="novel-list">
+
+      <div class="empty-state">
+
+        <h3>
+          Loading completed novels...
+        </h3>
+
+        <p>
+          Please wait.
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</main>
+
+
+<footer>
+
+  <div class="container copy">
+    © 2026 EarnGig. All rights reserved.
+  </div>
+
+</footer>
+
+
+<script
+  src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+</script>
+
+<script src="supabase.js"></script>
+
+
+<script>
+
+async function loadCompletedNovels() {
+
+  const list =
+    document.getElementById("novel-list");
+
+
+  try {
+
+    /*
+     * Get logged-in writer
+     */
+
+    const {
+      data: { user },
+      error: userError
+    } = await supabaseClient.auth.getUser();
+
+
+    if (userError || !user) {
+
+      window.location.href =
+        "login.html";
+
+      return;
+
+    }
+
+
+    /*
+     * Load this writer's novels.
+     */
+
+    const {
+      data: novels,
+      error: novelsError
+    } = await supabaseClient
+
+      .from("novels")
+
+      .select(`
+        id,
+        title,
+        author_name,
+        description,
+        cover_url,
+        genre,
+        page_count,
+        status,
+        submission_status,
+        requested_reader_count,
+        approved_reader_count,
+        approved_reader_reward,
+        writer_listing_fee,
+        writer_payment_status,
+        created_at,
+        updated_at
+      `)
+
+      .eq(
+        "submitted_by",
+        user.id
+      )
+
+      .order(
+        "updated_at",
+        {
+          ascending: false
+        }
+      );
+
+
+    if (novelsError) {
+
+      console.error(
+        "Unable to load novels:",
+        novelsError
+      );
+
+
+      list.innerHTML = `
+
+        <div class="empty-state">
+
+          <h3>
+            Unable to load your novels
+          </h3>
+
+          <p>
+            ${escapeHtml(
+              novelsError.message
+            )}
+          </p>
+
+        </div>
+
+      `;
+
+      return;
+
+    }
+
+
+    if (!novels || novels.length === 0) {
+
+      list.innerHTML = `
+
+        <div class="empty-state">
+
+          <div class="empty-icon">
+            📚
+          </div>
+
+          <h3>
+            No completed novels
+          </h3>
+
+          <p>
+            Novels will appear here after the
+            selected reader target has been reached.
+          </p>
+
+          <a
+            href="create-and-earn.html"
+            class="btn primary"
+          >
+            Create a Novel
+          </a>
+
+        </div>
+
+      `;
+
+      return;
+
+    }
+
+
+    /*
+     * Load all reader assignments belonging
+     * to these novels.
+     */
+
+    const novelIds =
+      novels.map(function(novel) {
+
+        return novel.id;
+
+      });
+
+
+    const {
+      data: readers,
+      error: readersError
+    } = await supabaseClient
+
+      .from("novel_readers")
+
+      .select(`
+        id,
+        novel_id,
+        status,
+        verification_status,
+        completed_at
+      `)
+
+      .in(
+        "novel_id",
+        novelIds
+      );
+
+
+    if (readersError) {
+
+      console.error(
+        "Unable to load reader progress:",
+        readersError
+      );
+
+    }
+
+
+    /*
+     * Load writer earnings.
+     */
+
+    const {
+      data: earnings,
+      error: earningsError
+    } = await supabaseClient
+
+      .from("novel_writer_earnings")
+
+      .select(`
+        novel_id,
+        amount,
+        status,
+        created_at,
+        paid_at
+      `)
+
+      .eq(
+        "writer_id",
+        user.id
+      );
+
+
+    if (earningsError) {
+
+      console.error(
+        "Unable to load writer earnings:",
+        earningsError
+      );
+
+    }
+
+
+    /*
+     * Find novels whose reader target
+     * has actually been reached.
+     */
+
+    const completedNovels =
+      novels.filter(function(novel) {
+
+
+        const target =
+          Number(
+            novel.approved_reader_count ||
+            novel.requested_reader_count ||
+            0
+          );
+
+
+        if (target <= 0) {
+
+          return false;
+
+        }
+
+
+        const novelReaders =
+          (readers || []).filter(
+            function(reader) {
+
+              return (
+                reader.novel_id ===
+                novel.id
+              );
+
+            }
+          );
+
+
+        const completedReaders =
+          novelReaders.filter(
+            function(reader) {
+
+              return (
+
+                reader.verification_status ===
+                  "verified"
+
+                ||
+
+                reader.status ===
+                  "completed"
+
+                ||
+
+                reader.completed_at
+
+              );
+
+            }
+          ).length;
+
+
+        return (
+          completedReaders >= target
+        );
+
+      });
+
+
+    /*
+     * Nothing completed yet.
+     */
+
+    if (completedNovels.length === 0) {
+
+      list.innerHTML = `
+
+        <div class="empty-state">
+
+          <div class="empty-icon">
+            📖
+          </div>
+
+          <h3>
+            No completed novels yet
+          </h3>
+
+          <p>
+            Your novel will move here once
+            the selected number of readers
+            have completed it.
+          </p>
+
+          <a
+            href="create-and-earn.html"
+            class="btn primary"
+          >
+            Back to My Novels
+          </a>
+
+        </div>
+
+      `;
+
+      return;
+
+    }
+
+
+    /*
+     * Display completed novels.
+     */
+
+    list.innerHTML =
+      completedNovels.map(
+        function(novel) {
+
+
+          const title =
+            escapeHtml(
+              novel.title ||
+              "Untitled Novel"
+            );
+
+
+          const description =
+            escapeHtml(
+              novel.description ||
+              "No description provided."
+            );
+
+
+          const genre =
+            escapeHtml(
+              novel.genre ||
+              "Not specified"
+            );
+
+
+          const target =
+            Number(
+              novel.approved_reader_count ||
+              novel.requested_reader_count ||
+              0
+            );
+
+
+          const rewardPerReader =
+            Number(
+              novel.approved_reader_reward ||
+              0
+            );
+
+
+          const maximumEarnings =
+            target *
+            rewardPerReader;
+
+
+          const novelReaders =
+            (readers || []).filter(
+              function(reader) {
+
+                return (
+                  reader.novel_id ===
+                  novel.id
+                );
+
+              }
+            );
+
+
+          const completedReaders =
+            novelReaders.filter(
+              function(reader) {
+
+                return (
+
+                  reader.verification_status ===
+                    "verified"
+
+                  ||
+
+                  reader.status ===
+                    "completed"
+
+                  ||
+
+                  reader.completed_at
+
+                );
+
+              }
+            ).length;
+
+
+          const novelEarnings =
+            (earnings || []).filter(
+              function(earning) {
+
+                return (
+                  earning.novel_id ===
+                  novel.id
+                );
+
+              }
+            );
+
+
+          const currentEarnings =
+            novelEarnings.reduce(
+              function(total, earning) {
+
+                return (
+                  total +
+                  Number(
+                    earning.amount || 0
+                  )
+                );
+
+              },
+              0
+            );
+
+
+          const cover =
+            novel.cover_url
+
+            ?
+
+            `
+              <img
+                src="${escapeHtml(
+                  novel.cover_url
+                )}"
+                alt="Novel cover"
+                style="
+                  width:100%;
+                  height:240px;
+                  object-fit:cover;
+                  border-radius:14px;
+                "
+              >
+            `
+
+            :
+
+            `
+              <div
+                style="
+                  width:100%;
+                  height:240px;
+                  border-radius:14px;
+                  display:flex;
+                  align-items:center;
+                  justify-content:center;
+                  font-size:52px;
+                  background:
+                    rgba(255,255,255,.08);
+                "
+              >
+                📖
+              </div>
+            `;
+
+
+          return `
+
+            <article
+              class="novel-preview"
+              style="
+                margin-bottom:24px;
+              "
+            >
+
+              <div
+                style="
+                  width:220px;
+                  flex:0 0 220px;
+                "
+              >
+
+                ${cover}
+
+              </div>
+
+
+              <div
+                style="
+                  flex:1;
+                "
+              >
+
+                <span class="eyebrow">
+                  COMPLETED
+                </span>
+
+
+                <h2>
+                  ${title}
+                </h2>
+
+
+                <p>
+                  ${description}
+                </p>
+
+
+                <p>
+
+                  <strong>
+                    Genre:
+                  </strong>
+
+                  ${genre}
+
+                </p>
+
+
+                <div
+                  class="earning-box"
+                >
+
+                  <div>
+
+                    <small>
+                      Readers completed
+                    </small>
+
+                    <strong>
+                      ${completedReaders}
+                      / ${target}
+                    </strong>
+
+                  </div>
+
+
+                  <div>
+
+                    <small>
+                      Earnings per reader
+                    </small>
+
+                    <strong>
+                      ₦${rewardPerReader.toLocaleString(
+                        "en-NG"
+                      )}
+                    </strong>
+
+                  </div>
+
+
+                  <div>
+
+                    <small>
+                      Current earnings
+                    </small>
+
+                    <strong>
+                      ₦${currentEarnings.toLocaleString(
+                        "en-NG"
+                      )}
+                    </strong>
+
+                  </div>
+
+
+                  <div>
+
+                    <small>
+                      Maximum earnings
+                    </small>
+
+                    <strong>
+                      ₦${maximumEarnings.toLocaleString(
+                        "en-NG"
+                      )}
+                    </strong>
+
+                  </div>
+
+                </div>
+
+
+                <div
+                  style="
+                    margin-top:20px;
+                    padding:18px;
+                    border-radius:14px;
+                    background:
+                      rgba(255,255,255,.06);
+                  "
+                >
+
+                  <strong>
+                    Reader target reached
+                  </strong>
+
+                  <p
+                    style="
+                      margin-bottom:0;
+                    "
+                  >
+                    Congratulations! The selected
+                    number of readers have completed
+                    this novel.
+                  </p>
+
+                </div>
+
+
+              </div>
+
+            </article>
+
+          `;
+
+        }
+      ).join("");
+
+
+  } catch (error) {
+
+    console.error(
+      "Completed novels error:",
+      error
+    );
+
+
+    list.innerHTML = `
+
+      <div class="empty-state">
+
+        <h3>
+          Something went wrong
+        </h3>
+
+        <p>
+          Please refresh and try again.
+        </p>
+
+      </div>
+
+    `;
+
+  }
+
+}
+
+
+/*
+ * Protect displayed text.
+ */
+
+function escapeHtml(value) {
+
+  return String(value)
+
+    .replaceAll(
+      "&",
+      "&amp;"
+    )
+
+    .replaceAll(
+      "<",
+      "&lt;"
+    )
+
+    .replaceAll(
+      ">",
+      "&gt;"
+    )
+
+    .replaceAll(
+      '"',
+      "&quot;"
+    )
+
+    .replaceAll(
+      "'",
+      "&#039;"
+    );
+
+}
+
+
+loadCompletedNovels();
+
+</script>
+
+</body>
+
+</html>
