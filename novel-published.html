@@ -754,22 +754,22 @@ const paidEarnings =
                       rgba(255,255,255,.06);
                   "
                 >
-${
-  completedReaders >= targetReaders &&
-  pendingEarnings > 0
+<div
+  style="
+    margin-top:18px;
+    padding:20px;
+    border-radius:14px;
+    background:rgba(255,255,255,.08);
+  "
+>
 
-  ?
+  ${
+    completedReaders >= targetReaders &&
+    pendingEarnings > 0
 
-  `
-    <div
-      style="
-        margin-top:18px;
-        padding:20px;
-        border-radius:14px;
-        background:rgba(255,255,255,.08);
-      "
-    >
+    ?
 
+    `
       <strong>
         🎉 Reader target reached
       </strong>
@@ -793,14 +793,50 @@ ${
       >
         Take Pay ₦${pendingEarnings.toLocaleString("en-NG")}
       </button>
+    `
 
-    </div>
-  `
+    :
 
-  :
+    `
+      <strong>
+        🔒 Take Pay is locked
+      </strong>
 
-  ""
-}
+      <p>
+        Complete all ${targetReaders} required readers
+        to unlock your writer earnings.
+      </p>
+
+      <p>
+        Readers completed:
+        <strong>
+          ${completedReaders} / ${targetReaders}
+        </strong>
+      </p>
+
+      <p>
+        Earnings currently held:
+        <strong>
+          ₦${pendingEarnings.toLocaleString("en-NG")}
+        </strong>
+      </p>
+
+      <button
+        type="button"
+        class="btn outline big"
+        disabled
+        style="
+          opacity:.55;
+          cursor:not-allowed;
+        "
+      >
+        🔒 Take Pay
+      </button>
+    `
+  }
+
+</div>
+              
                   <strong>
                     Your novel is live
                   </strong>
