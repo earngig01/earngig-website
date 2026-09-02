@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Published Novels | EarnGig</title>
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<header>
+  <div class="container nav">
+
+    <a class="logo" href="index.html">
+      <span class="logo-mark">E</span>
+      Earn<span>Gig</span>
+    </a>
+
+    <a
+      class="btn outline"
+      href="create-and-earn.html"
+    >
+      Back to Create & Earn
+    </a>
+
+  </div>
+</header>
+
+
+<main class="dashboard-page">
+
+  <div class="container">
+
+    <div class="dashboard-heading">
+
+      <div>
+
+        <span class="eyebrow">
+          MY NOVELS
+        </span>
+
+        <h1>
+          Published / Active
+        </h1>
+
+        <p>
+          Your published novels that are currently
+          available for readers.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div id="novel-list">
+
+      <div class="empty-state">
+
+        <h3>
+          Loading published novels...
+        </h3>
+
+        <p>
+          Please wait.
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</main>
+
+
+<footer>
+
+  <div class="container copy">
+    © 2026 EarnGig. All rights reserved.
+  </div>
+
+</footer>
+
+
+<script
+  src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+</script>
+
+<script src="supabase.js"></script>
+
+
+<script>
+
+async function loadPublishedNovels() {
+
+  const list =
+    document.getElementById("novel-list");
+
+
+  try {
+
+    /*
+     * Get logged-in writer
+     */
+
+    const {
+      data: { user },
+      error: userError
+    } = await supabaseClient.auth.getUser();
+
+
+    if (userError || !user) {
+
+      window.location.href =
+        "login.html";
+
+      return;
+
+    }
+
+
+    /*
+     * Load this writer's novels.
+     */
+
+    const {
+      data: novels,
+      error
+    } = await supabaseClient
+
+      .from("novels")
+
+      .select(`
+        id,
+        title,
+        author_name,
+        description,
+        cover_url,
+        genre,
+        page_count,
+        status,
+        submission_status,
+        requested_reader_count,
+        approved_reader_count,
+        approved_reader_reward,
+        writer_listing_fee,
+        writer_payment_status,
+        created_at,
+        updated_at
+      `)
+
+      .eq(
+        "submitted_by",
+        user.id
+      )
+
+      .order(
+        "updated_at",
+        {
+          ascending: false
+        }
+      );
+
+
+    if (error) {
+
+      console.error(
+        "Unable to load published novels:",
+        error
+      );
+
+
+      list.innerHTML = `
+
+        <div class="empty-state">
+
+          <h3>
+            Unable to load published novels
+          </h3>
+
+          <p>
+            ${escapeHtml(error.message)}
+          </p>
+
+        </div>
+
+      `;
+
+      return;
+
+    }
+
+
+    /*
+     * Published novels are novels that have
+     * been paid for and are active/published.
+     */
+
+    const publishedNovels =
+      (novels || []).filter(
+        function(novel) {
+
+          const status =
+            String(
+              novel.status || ""
+            ).toLowerCase();
+
+
+          const submissionStatus =
+            String(
+              novel.submission_status || ""
+            ).toLowerCase();
+
+
+          const paymentStatus =
+            String(
+              novel.writer_payment_status || ""
+            ).toLowerCase();
+
+
+          const publishedStatus =
+            [
+              "published",
+              "active",
+              "live"
+            ].includes(status);
+
+
+          const publishedSubmission =
+            [
+              "published",
+              "active",
+              "live"
+            ].includes(submissionStatus);
+
+
+          const paid =
+            [
+              "paid",
+              "completed",
+              "confirmed"
+            ].includes(paymentStatus);
+
+
+          return (
+            publishedStatus ||
+            publishedSubmission ||
+            (
+              paid &&
+              (
+                publishedStatus ||
+                publishedSubmission
+              )
+            )
+          );
+
+        }
+      );
+
+
+    /*
+     * No published novels
+     */
+
+    if (publishedNovels.length === 0) {
+
+      list.innerHTML = `
+
+        <div class="empty-state">
+
+          <div class="empty-icon">
+            📚
+          </div>
+
+          <h3>
+            No published novels
+          </h3>
+
+          <p>
+            Novels will appear here after they are
+            approved, paid for and published.
+          </p>
+
+          <a
+            href="create-and-earn.html"
+            class="btn primary"
+          >
+            Create a Novel
+          </a>
+
+        </div>
+
+      `;
+
+      return;
+
+    }
+
+
+    /*
+     * Load writer earnings.
+     */
+
+    const {
+      data: earnings,
+      error: earningsError
+    } = await supabaseClient
+
+      .from("novel_writer_earnings")
+
+      .select(`
+        novel_id,
+        amount,
+        status,
+        created_at
+      `)
+
+      .eq(
+        "writer_id",
+        user.id
+      );
+
+
+    if (earningsError) {
+
+      console.error(
+        "Unable to load writer earnings:",
+        earningsError
+      );
+
+    }
+
+
+    /*
+     * Load reader assignments for this writer's novels.
+     */
+
+    const publishedIds =
+      publishedNovels.map(
+        function(novel) {
+          return novel.id;
+        }
+      );
+
+
+    const {
+      data: readers,
+      error: readersError
+    } = await supabaseClient
+
+      .from("novel_readers")
+
+      .select(`
+        id,
+        novel_id,
+        status,
+        verification_status,
+        completed_at
+      `)
+
+      .in(
+        "novel_id",
+        publishedIds
+      );
+
+
+    if (readersError) {
+
+      console.error(
+        "Unable to load reader progress:",
+        readersError
+      );
+
+    }
+
+
+    /*
+     * Display published novels.
+     */
+
+    list.innerHTML =
+
+      publishedNovels.map(
+        function(novel) {
+
+
+          const title =
+            escapeHtml(
+              novel.title ||
+              "Untitled Novel"
+            );
+
+
+          const description =
+            escapeHtml(
+              novel.description ||
+              "No description provided."
+            );
+
+
+          const genre =
+            escapeHtml(
+              novel.genre ||
+              "Not specified"
+            );
+
+
+          const targetReaders =
+            Number(
+              novel.requested_reader_count ||
+              novel.approved_reader_count ||
+              0
+            );
+
+
+          const rewardPerReader =
+            Number(
+              novel.approved_reader_reward ||
+              0
+            );
+
+
+          const listingFee =
+            Number(
+              novel.writer_listing_fee ||
+              0
+            );
+
+
+          const maximumEarnings =
+            targetReaders *
+            rewardPerReader;
+
+
+          /*
+           * Calculate completed readers.
+           */
+
+          const novelReaders =
+            (readers || []).filter(
+              function(reader) {
+
+                return (
+                  reader.novel_id ===
+                  novel.id
+                );
+
+              }
+            );
+
+
+          const completedReaders =
+            novelReaders.filter(
+              function(reader) {
+
+                return (
+                  reader.verification_status ===
+                    "verified"
+
+                  ||
+
+                  reader.status ===
+                    "completed"
+
+                  ||
+
+                  reader.completed_at
+                );
+
+              }
+            ).length;
+
+
+          /*
+           * Calculate current writer earnings.
+           */
+
+          const novelEarnings =
+            (earnings || []).filter(
+              function(earning) {
+
+                return (
+                  earning.novel_id ===
+                  novel.id
+                );
+
+              }
+            );
+
+
+          const currentEarnings =
+            novelEarnings.reduce(
+              function(total, earning) {
+
+                return (
+                  total +
+                  Number(
+                    earning.amount || 0
+                  )
+                );
+
+              },
+              0
+            );
+
+
+          /*
+           * Public reader URL.
+           *
+           * Readers will be taken directly
+           * to this specific novel.
+           */
+
+          const novelUrl =
+            window.location.origin +
+            "/earngig-website/read-novel.html?novel_id=" +
+            encodeURIComponent(
+              novel.id
+            );
+
+
+          /*
+           * Short novel code.
+           *
+           * The novel ID is used as the
+           * shareable code for now.
+           */
+
+          const novelCode =
+            novel.id;
+
+
+          const cover =
+            novel.cover_url
+
+            ?
+
+            `
+              <img
+                src="${escapeHtml(
+                  novel.cover_url
+                )}"
+                alt="Novel cover"
+                style="
+                  width:100%;
+                  height:240px;
+                  object-fit:cover;
+                  border-radius:14px;
+                "
+              >
+            `
+
+            :
+
+            `
+              <div
+                style="
+                  width:100%;
+                  height:240px;
+                  border-radius:14px;
+                  display:flex;
+                  align-items:center;
+                  justify-content:center;
+                  font-size:52px;
+                  background:rgba(
+                    255,255,255,.08
+                  );
+                "
+              >
+                📖
+              </div>
+            `;
+
+
+          return `
+
+            <article
+              class="novel-preview"
+              style="
+                margin-bottom:24px;
+              "
+            >
+
+              <div
+                style="
+                  width:220px;
+                  flex:0 0 220px;
+                "
+              >
+
+                ${cover}
+
+              </div>
+
+
+              <div
+                style="
+                  flex:1;
+                "
+              >
+
+                <span class="eyebrow">
+                  PUBLISHED / ACTIVE
+                </span>
+
+
+                <h2>
+                  ${title}
+                </h2>
+
+
+                <p>
+                  ${description}
+                </p>
+
+
+                <p>
+
+                  <strong>
+                    Genre:
+                  </strong>
+
+                  ${genre}
+
+                </p>
+
+
+                <div
+                  class="earning-box"
+                >
+
+                  <div>
+
+                    <small>
+                      Reader target
+                    </small>
+
+                    <strong>
+                      ${targetReaders}
+                    </strong>
+
+                  </div>
+
+
+                  <div>
+
+                    <small>
+                      Readers completed
+                    </small>
+
+                    <strong>
+                      ${completedReaders}
+                      / ${targetReaders}
+                    </strong>
+
+                  </div>
+
+
+                  <div>
+
+                    <small>
+                      Earnings per reader
+                    </small>
+
+                    <strong>
+                      ₦${rewardPerReader.toLocaleString(
+                        "en-NG"
+                      )}
+                    </strong>
+
+                  </div>
+
+
+                  <div>
+
+                    <small>
+                      Current earnings
+                    </small>
+
+                    <strong>
+                      ₦${currentEarnings.toLocaleString(
+                        "en-NG"
+                      )}
+                    </strong>
+
+                  </div>
+
+
+                  <div>
+
+                    <small>
+                      Maximum earnings
+                    </small>
+
+                    <strong>
+                      ₦${maximumEarnings.toLocaleString(
+                        "en-NG"
+                      )}
+                    </strong>
+
+                  </div>
+
+
+                </div>
+
+
+                <div
+                  style="
+                    margin-top:20px;
+                    padding:18px;
+                    border-radius:14px;
+                    background:
+                      rgba(255,255,255,.06);
+                  "
+                >
+
+                  <strong>
+                    Your novel is live
+                  </strong>
+
+                  <p
+                    style="
+                      margin-bottom:0;
+                    "
+                  >
+                    Share the URL or novel code
+                    with readers so they can open
+                    this specific novel.
+                  </p>
+
+                </div>
+
+
+                <div
+                  class="form-actions"
+                  style="
+                    margin-top:20px;
+                    display:flex;
+                    flex-wrap:wrap;
+                    gap:10px;
+                  "
+                >
+
+                  <button
+                    type="button"
+                    class="btn primary"
+                    onclick="copyNovelUrl('${novelUrl}')"
+                  >
+                    Copy Novel URL
+                  </button>
+
+
+                  <button
+                    type="button"
+                    class="btn outline"
+                    onclick="copyNovelCode('${novelCode}')"
+                  >
+                    Copy Novel Code
+                  </button>
+
+                </div>
+
+
+                <div
+                  style="
+                    margin-top:12px;
+                    font-size:13px;
+                    opacity:.8;
+                    word-break:break-all;
+                  "
+                >
+
+                  <strong>
+                    Novel URL:
+                  </strong>
+
+                  ${escapeHtml(novelUrl)}
+
+                </div>
+
+
+              </div>
+
+            </article>
+
+          `;
+
+        }
+      ).join("");
+
+
+  } catch (error) {
+
+    console.error(
+      "Published novels error:",
+      error
+    );
+
+
+    list.innerHTML = `
+
+      <div class="empty-state">
+
+        <h3>
+          Something went wrong
+        </h3>
+
+        <p>
+          Please refresh and try again.
+        </p>
+
+      </div>
+
+    `;
+
+  }
+
+}
+
+
+/*
+ * Copy Novel URL
+ */
+
+async function copyNovelUrl(url) {
+
+  try {
+
+    await navigator.clipboard.writeText(url);
+
+    alert(
+      "Novel URL copied successfully!"
+    );
+
+  } catch (error) {
+
+    console.error(
+      "Copy URL error:",
+      error
+    );
+
+    prompt(
+      "Copy this Novel URL:",
+      url
+    );
+
+  }
+
+}
+
+
+/*
+ * Copy Novel Code
+ */
+
+async function copyNovelCode(code) {
+
+  try {
+
+    await navigator.clipboard.writeText(code);
+
+    alert(
+      "Novel code copied successfully!"
+    );
+
+  } catch (error) {
+
+    console.error(
+      "Copy code error:",
+      error
+    );
+
+    prompt(
+      "Copy this Novel Code:",
+      code
+    );
+
+  }
+
+}
+
+
+/*
+ * Protect displayed text.
+ */
+
+function escapeHtml(value) {
+
+  return String(value)
+
+    .replaceAll(
+      "&",
+      "&amp;"
+    )
+
+    .replaceAll(
+      "<",
+      "&lt;"
+    )
+
+    .replaceAll(
+      ">",
+      "&gt;"
+    )
+
+    .replaceAll(
+      '"',
+      "&quot;"
+    )
+
+    .replaceAll(
+      "'",
+      "&#039;"
+    );
+
+}
+
+
+loadPublishedNovels();
+
+</script>
+
+</body>
+
+</html>
