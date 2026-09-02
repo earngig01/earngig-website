@@ -212,8 +212,16 @@ earning rate and listing fee.
 
 </footer>
 
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.11.0/mammoth.browser.min.js"></script>
+
+<script>
+  pdfjsLib.GlobalWorkerOptions.workerSrc =
+    "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+</script>
 
 <script src="supabase.js"></script>
 
@@ -979,7 +987,197 @@ async function viewManuscript() {
     await loadNovel();
 
 })();
+async function processNovelManuscript() {
+  if (!currentNovel || !currentNovel.manuscript_url) {
+    alert("No manuscript was found for this novel.");
+    return false;
+  }
 
+  try {
+    alert("Processing manuscript. Please wait...");
+
+    // Get a temporary URL for the private manuscript
+    const { data: signedData, error: signedError } =
+      await supabaseClient.storage
+        .from("novel-manuscripts")
+        .createSignedUrl(currentNovel.manuscript_url, 3600);
+
+    if (signedError) throw signedError;
+
+    const fileUrl = signedData.signedUrl;
+
+    // Download manuscript
+    const response = await fetch(fileUrl);
+
+    if (!response.ok) {
+      throw new Error("Could not download the manuscript.");
+    }
+
+    const arrayBuffer = await response.arrayBuffer();
+
+    const fileName = currentNovel.manuscript_url.toLowerCase();
+
+    let pages = [];
+
+    /*
+     * PDF
+     */
+    if (fileName.endsWith(".pdf")) {
+      const pdf = await pdfjsLib.getDocument({
+        data: arrayBuffer
+      }).promise;
+
+      for (let i = 1; i <= pdf.numPages; i++) {
+        const page = await pdf.getPage(i);
+
+        const textContent = await page.getTextContent();
+
+        const text = textContent.items
+          .map(item => item.str || "")
+          .join(" ")
+          .replace(/\s+/g, " ")
+          .trim();
+
+        if (!text) {
+          throw new Error(
+            `Page ${i} contains no readable text. This PDF may be scanned/image-only.`
+          );
+        }
+
+        const safeText = text
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+
+        pages.push({
+          id: crypto.randomUUID(),
+          novel_id: currentNovel.id,
+          page_number: i,
+          chapter: "",
+          title: `Page ${i}`,
+          content: `<p>${safeText}</p>`
+        });
+      }
+    }
+
+    /*
+     * DOCX
+     */
+    else if (fileName.endsWith(".docx")) {
+      const result = await mammoth.convertToHtml({
+        arrayBuffer: arrayBuffer
+      });
+
+      const html = result.value;
+
+      const temp = document.createElement("div");
+      temp.innerHTML = html;
+
+      const paragraphs = Array.from(
+        temp.querySelectorAll("p")
+      )
+        .map(p => p.innerText.trim())
+        .filter(Boolean);
+
+      if (!paragraphs.length) {
+        throw new Error("The DOCX manuscript contains no readable text.");
+      }
+
+      /*
+       * DOCX does not reliably expose physical pages in the browser.
+       * We therefore create logical reading pages.
+       */
+      const chunkSize = 12;
+
+      for (let i = 0; i < paragraphs.length; i += chunkSize) {
+        const chunk = paragraphs.slice(i, i + chunkSize);
+
+        const content = chunk
+          .map(text => {
+            const safe = text
+              .replace(/&/g, "&amp;")
+              .replace(/</g, "&lt;")
+              .replace(/>/g, "&gt;")
+              .replace(/"/g, "&quot;")
+              .replace(/'/g, "&#039;");
+
+            return `<p>${safe}</p>`;
+          })
+          .join("");
+
+        pages.push({
+          id: crypto.randomUUID(),
+          novel_id: currentNovel.id,
+          page_number: pages.length + 1,
+          chapter: "",
+          title: `Page ${pages.length + 1}`,
+          content
+        });
+      }
+    }
+
+    else {
+      throw new Error(
+        "Unsupported manuscript format. Please upload PDF or DOCX."
+      );
+    }
+
+    if (!pages.length) {
+      throw new Error("No readable pages were created.");
+    }
+
+    /*
+     * Delete old processed pages only AFTER
+     * successful extraction.
+     */
+    const { error: deleteError } = await supabaseClient
+      .from("novel_pages")
+      .delete()
+      .eq("novel_id", currentNovel.id);
+
+    if (deleteError) throw deleteError;
+
+    /*
+     * Insert processed pages.
+     */
+    const { error: insertError } = await supabaseClient
+      .from("novel_pages")
+      .insert(pages);
+
+    if (insertError) throw insertError;
+
+    /*
+     * Keep the database page count synchronized
+     * with the actual processed manuscript.
+     */
+    const { error: updateError } = await supabaseClient
+      .from("novels")
+      .update({
+        page_count: pages.length
+      })
+      .eq("id", currentNovel.id);
+
+    if (updateError) throw updateError;
+
+    alert(
+      `Manuscript processed successfully.\n\n${pages.length} reading pages created.`
+    );
+
+    return true;
+
+  } catch (error) {
+    console.error("Manuscript processing error:", error);
+
+    alert(
+      "Manuscript processing failed:\n\n" +
+      (error.message || "Unknown error")
+    );
+
+    return false;
+  }
+    }
 </script>
 
 </body>
