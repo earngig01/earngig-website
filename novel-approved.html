@@ -598,15 +598,64 @@ async function payListingFee(novelId) {
     }
 
 
-    /*
-     * Payment connection comes next.
-     */
+const confirmed = confirm(
+  "Pay ₦" +
+  fee.toLocaleString("en-NG") +
+  " from your EarnGig wallet?\n\n" +
+  "This amount will be deducted from your wallet balance."
+);
 
-    alert(
-      "Listing fee: ₦" +
-      fee.toLocaleString("en-NG") +
-      "\n\nPayment connection will be added next."
-    );
+if (!confirmed) {
+  return;
+}
+
+
+const { data, error: paymentError } =
+  await supabaseClient.rpc(
+    "pay_novel_listing_fee",
+    {
+      p_novel_id: novelId
+    }
+  );
+
+
+if (paymentError) {
+
+  console.error(
+    "Listing fee payment error:",
+    paymentError
+  );
+
+  alert(
+    paymentError.message ||
+    "Unable to pay listing fee."
+  );
+
+  return;
+}
+
+
+if (!data?.success) {
+
+  alert(
+    "Listing fee payment could not be completed."
+  );
+
+  return;
+}
+
+
+alert(
+  "Payment successful!\n\n" +
+  "₦" +
+  Number(data.listing_fee).toLocaleString("en-NG") +
+  " has been deducted from your wallet.\n\n" +
+  "Your novel is now published."
+);
+
+
+window.location.href =
+  "novel-published.html";    
 
 
   } catch (error) {
