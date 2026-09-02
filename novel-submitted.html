@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Submitted Novels | EarnGig</title>
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<header>
+  <div class="container nav">
+
+    <a class="logo" href="index.html">
+      <span class="logo-mark">E</span>
+      Earn<span>Gig</span>
+    </a>
+
+    <a
+      class="btn outline"
+      href="create-and-earn.html"
+    >
+      Back to Create & Earn
+    </a>
+
+  </div>
+</header>
+
+
+<main class="dashboard-page">
+
+  <div class="container">
+
+    <div class="dashboard-heading">
+
+      <div>
+
+        <span class="eyebrow">
+          MY NOVELS
+        </span>
+
+        <h1>
+          Submitted / Pending
+        </h1>
+
+        <p>
+          Novels you have submitted and are
+          waiting for admin review.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div id="novel-list">
+
+      <div class="empty-state">
+
+        <h3>
+          Loading your novels...
+        </h3>
+
+        <p>
+          Please wait.
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</main>
+
+
+<footer>
+
+  <div class="container copy">
+
+    © 2026 EarnGig. All rights reserved.
+
+  </div>
+
+</footer>
+
+
+<script
+  src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+</script>
+
+<script src="supabase.js"></script>
+
+
+<script>
+
+async function loadSubmittedNovels() {
+
+  const list =
+    document.getElementById("novel-list");
+
+
+  try {
+
+    /*
+     * Get logged-in user
+     */
+
+    const {
+      data: { user },
+      error: userError
+    } = await supabaseClient.auth.getUser();
+
+
+    if (userError || !user) {
+
+      window.location.href =
+        "login.html";
+
+      return;
+
+    }
+
+
+    /*
+     * Load only novels submitted
+     * by this writer.
+     */
+
+    const {
+      data: novels,
+      error
+    } = await supabaseClient
+
+      .from("novels")
+
+      .select(`
+        id,
+        title,
+        author_name,
+        description,
+        cover_url,
+        genre,
+        page_count,
+        submission_status,
+        requested_reader_count,
+        approved_reader_reward,
+        writer_listing_fee,
+        writer_payment_status,
+        created_at
+      `)
+
+      .eq(
+        "submitted_by",
+        user.id
+      )
+
+      .order(
+        "created_at",
+        {
+          ascending: false
+        }
+      );
+
+
+    if (error) {
+
+      console.error(
+        "Unable to load submitted novels:",
+        error
+      );
+
+
+      list.innerHTML = `
+
+        <div class="empty-state">
+
+          <h3>
+            Unable to load your novels
+          </h3>
+
+          <p>
+            ${escapeHtml(error.message)}
+          </p>
+
+        </div>
+
+      `;
+
+      return;
+
+    }
+
+
+    /*
+     * Only show novels still waiting
+     * for admin review.
+     */
+
+    const pendingNovels =
+      (novels || []).filter(
+        function(novel) {
+
+          const status =
+            String(
+              novel.submission_status || ""
+            ).toLowerCase();
+
+
+          return [
+
+            "pending",
+            "submitted",
+            "under_review",
+            "awaiting_review",
+            "review"
+
+          ].includes(status);
+
+        }
+      );
+
+
+    /*
+     * No pending novels
+     */
+
+    if (pendingNovels.length === 0) {
+
+      list.innerHTML = `
+
+        <div class="empty-state">
+
+          <div class="empty-icon">
+            📚
+          </div>
+
+          <h3>
+            No submitted novels
+          </h3>
+
+          <p>
+            Novels waiting for admin review
+            will appear here.
+          </p>
+
+          <a
+            href="create-and-earn.html"
+            class="btn primary"
+          >
+            Submit a Novel
+          </a>
+
+        </div>
+
+      `;
+
+      return;
+
+    }
+
+
+    /*
+     * Display pending novels
+     */
+
+    list.innerHTML =
+
+      pendingNovels.map(
+        function(novel) {
+
+
+          const title =
+            escapeHtml(
+              novel.title ||
+              "Untitled Novel"
+            );
+
+
+          const description =
+            escapeHtml(
+              novel.description ||
+              "No description provided."
+            );
+
+
+          const genre =
+            escapeHtml(
+              novel.genre ||
+              "Not specified"
+            );
+
+
+          const readers =
+            Number(
+              novel.requested_reader_count ||
+              0
+            );
+
+
+          const reward =
+            Number(
+              novel.approved_reader_reward ||
+              0
+            );
+
+
+          const listingFee =
+            Number(
+              novel.writer_listing_fee ||
+              0
+            );
+
+
+          const cover =
+            novel.cover_url
+
+            ?
+
+            `
+              <img
+                src="${escapeHtml(
+                  novel.cover_url
+                )}"
+                alt="Novel cover"
+                style="
+                  width:100%;
+                  height:240px;
+                  object-fit:cover;
+                  border-radius:14px;
+                "
+              >
+            `
+
+            :
+
+            `
+              <div
+                style="
+                  width:100%;
+                  height:240px;
+                  border-radius:14px;
+                  display:flex;
+                  align-items:center;
+                  justify-content:center;
+                  font-size:52px;
+                  background:rgba(
+                    255,255,255,.08
+                  );
+                "
+              >
+                📖
+              </div>
+            `;
+
+
+          return `
+
+            <article
+              class="novel-preview"
+              style="
+                margin-bottom:24px;
+              "
+            >
+
+              <div
+                style="
+                  width:220px;
+                  flex:0 0 220px;
+                "
+              >
+
+                ${cover}
+
+              </div>
+
+
+              <div
+                style="
+                  flex:1;
+                "
+              >
+
+                <span class="eyebrow">
+                  SUBMITTED / PENDING
+                </span>
+
+
+                <h2>
+                  ${title}
+                </h2>
+
+
+                <p>
+                  ${description}
+                </p>
+
+
+                <p>
+
+                  <strong>
+                    Genre:
+                  </strong>
+
+                  ${genre}
+
+                </p>
+
+
+                <div
+                  class="earning-box"
+                >
+
+                  <div>
+
+                    <small>
+                      Reader target
+                    </small>
+
+                    <strong>
+                      ${
+                        readers ||
+                        "Not set"
+                      }
+                    </strong>
+
+                  </div>
+
+
+                  <div>
+
+                    <small>
+                      Reader reward
+                    </small>
+
+                    <strong>
+                      ₦${reward.toLocaleString(
+                        "en-NG"
+                      )}
+                    </strong>
+
+                  </div>
+
+
+                  <div>
+
+                    <small>
+                      Listing fee
+                    </small>
+
+                    <strong>
+                      ₦${listingFee.toLocaleString(
+                        "en-NG"
+                      )}
+                    </strong>
+
+                  </div>
+
+                </div>
+
+
+                <div
+                  style="
+                    margin-top:20px;
+                    padding:18px;
+                    border-radius:14px;
+                    background:
+                      rgba(255,255,255,.06);
+                  "
+                >
+
+                  <strong>
+                    Waiting for admin review
+                  </strong>
+
+                  <p
+                    style="
+                      margin-bottom:0;
+                    "
+                  >
+                    Your novel has been submitted
+                    successfully. Once it is reviewed,
+                    it will move to the Approved /
+                    Awaiting Payment section if approved.
+                  </p>
+
+                </div>
+
+
+                <p
+                  style="
+                    margin-top:16px;
+                  "
+                >
+
+                  <strong>
+                    Submission status:
+                  </strong>
+
+                  ${
+                    escapeHtml(
+                      novel.submission_status ||
+                      "Pending"
+                    )
+                  }
+
+                </p>
+
+
+              </div>
+
+            </article>
+
+          `;
+
+        }
+      ).join("");
+
+
+  } catch (error) {
+
+    console.error(
+      "Submitted novels error:",
+      error
+    );
+
+
+    list.innerHTML = `
+
+      <div class="empty-state">
+
+        <h3>
+          Something went wrong
+        </h3>
+
+        <p>
+          Please refresh and try again.
+        </p>
+
+      </div>
+
+    `;
+
+  }
+
+}
+
+
+/*
+ * Protect text displayed on the page.
+ */
+
+function escapeHtml(value) {
+
+  return String(value)
+
+    .replaceAll(
+      "&",
+      "&amp;"
+    )
+
+    .replaceAll(
+      "<",
+      "&lt;"
+    )
+
+    .replaceAll(
+      ">",
+      "&gt;"
+    )
+
+    .replaceAll(
+      '"',
+      "&quot;"
+    )
+
+    .replaceAll(
+      "'",
+      "&#039;"
+    );
+
+}
+
+
+loadSubmittedNovels();
+
+</script>
+
+</body>
+
+</html>
