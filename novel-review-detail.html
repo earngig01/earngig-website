@@ -225,7 +225,7 @@ const content = document.getElementById("content");
 const params = new URLSearchParams(window.location.search);
 
 const novelId = params.get("id");
-
+let currentNovel = null;
 
 function escapeHtml(value) {
 
@@ -323,7 +323,7 @@ async function loadNovel() {
 
         .single();
 
-
+currentNovel = novel;
     if (error || !novel) {
 
         content.innerHTML = `
@@ -454,18 +454,28 @@ async function loadNovel() {
             </div>
 
 
-            <div style="margin-top:20px">
+    <div style="margin-top:20px">
 
-                <span class="eyebrow">
-                    MANUSCRIPT
-                </span>
+    <span class="eyebrow">
+        MANUSCRIPT
+    </span>
 
-                <p>
-                    The writer has submitted a manuscript
-                    for assessment.
-                </p>
+    <p>
+        The writer has submitted a manuscript
+        for assessment.
+    </p>
 
-            </div>
+    <button
+        type="button"
+        class="btn primary"
+        onclick="viewManuscript()"
+    >
+        View Manuscript
+    </button>
+
+    <div id="manuscript-message" style="margin-top:12px"></div>
+
+</div>
 
         </section>
 
@@ -932,7 +942,33 @@ async function requestRevision() {
         "novel-review.html";
 
 }
+async function viewManuscript() {
 
+    const message = document.getElementById("manuscript-message");
+
+    message.textContent = "Opening manuscript...";
+
+    const { data, error } = await supabaseClient
+        .storage
+        .from("novel-manuscripts")
+        .createSignedUrl(currentNovel.manuscript_url, 3600);
+
+    if (error || !data?.signedUrl) {
+
+        message.innerHTML = `
+            <div class="assessment-notice">
+                <strong>Unable to open manuscript.</strong>
+                <p>${escapeHtml(error?.message || "Manuscript URL could not be created.")}</p>
+            </div>
+        `;
+
+        return;
+    }
+
+    window.open(data.signedUrl, "_blank");
+
+    message.textContent = "Manuscript opened in a new tab.";
+}
 
 (async function() {
 
