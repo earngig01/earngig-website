@@ -410,12 +410,12 @@ async function loadPublishedNovels() {
             );
 
 
-          const targetReaders =
-            Number(
-              novel.requested_reader_count ||
-              novel.approved_reader_count ||
-              0
-            );
+        const targetReaders =
+  Number(
+    novel.approved_reader_count ||
+    novel.requested_reader_count ||
+    0
+  );
 
 
           const rewardPerReader =
@@ -476,37 +476,73 @@ async function loadPublishedNovels() {
             ).length;
 
 
-          /*
-           * Calculate current writer earnings.
-           */
+        /*
+ * Calculate writer earnings.
+ *
+ * Pending earnings are held until the
+ * writer reaches the reader target and
+ * clicks Take Pay.
+ */
 
-          const novelEarnings =
-            (earnings || []).filter(
-              function(earning) {
+const novelEarnings =
+  (earnings || []).filter(
+    function(earning) {
 
-                return (
-                  earning.novel_id ===
-                  novel.id
-                );
+      return (
+        earning.novel_id ===
+        novel.id
+      );
 
-              }
-            );
+    }
+  );
 
 
-          const currentEarnings =
-            novelEarnings.reduce(
-              function(total, earning) {
+const pendingEarnings =
+  novelEarnings
+    .filter(function(earning) {
 
-                return (
-                  total +
-                  Number(
-                    earning.amount || 0
-                  )
-                );
+      return String(
+        earning.status || ""
+      ).toLowerCase() === "pending";
 
-              },
-              0
-            );
+    })
+    .reduce(
+      function(total, earning) {
+
+        return (
+          total +
+          Number(
+            earning.amount || 0
+          )
+        );
+
+      },
+      0
+    );
+
+
+const paidEarnings =
+  novelEarnings
+    .filter(function(earning) {
+
+      return String(
+        earning.status || ""
+      ).toLowerCase() === "paid";
+
+    })
+    .reduce(
+      function(total, earning) {
+
+        return (
+          total +
+          Number(
+            earning.amount || 0
+          )
+        );
+
+      },
+      0
+    );
 
 
           /*
@@ -678,15 +714,15 @@ async function loadPublishedNovels() {
 
                   <div>
 
-                    <small>
-                      Current earnings
-                    </small>
+              <small>
+  Earnings held
+</small>
 
-                    <strong>
-                      ₦${currentEarnings.toLocaleString(
-                        "en-NG"
-                      )}
-                    </strong>
+<strong>
+  ₦${pendingEarnings.toLocaleString(
+    "en-NG"
+  )}
+</strong>
 
                   </div>
 
@@ -718,7 +754,53 @@ async function loadPublishedNovels() {
                       rgba(255,255,255,.06);
                   "
                 >
+${
+  completedReaders >= targetReaders &&
+  pendingEarnings > 0
 
+  ?
+
+  `
+    <div
+      style="
+        margin-top:18px;
+        padding:20px;
+        border-radius:14px;
+        background:rgba(255,255,255,.08);
+      "
+    >
+
+      <strong>
+        🎉 Reader target reached
+      </strong>
+
+      <p>
+        All ${targetReaders} required readers
+        have completed this novel.
+      </p>
+
+      <p>
+        <strong>
+          ₦${pendingEarnings.toLocaleString("en-NG")}
+        </strong>
+        is ready for you to claim.
+      </p>
+
+      <button
+        type="button"
+        class="btn primary big"
+        onclick="takeNovelPay('${novel.id}')"
+      >
+        Take Pay ₦${pendingEarnings.toLocaleString("en-NG")}
+      </button>
+
+    </div>
+  `
+
+  :
+
+  ""
+}
                   <strong>
                     Your novel is live
                   </strong>
@@ -919,7 +1001,109 @@ function escapeHtml(value) {
     );
 
 }
+async function takeNovelPay(novelId) {
 
+  const confirmed = confirm(
+    "Your reader target has been completed.\n\n" +
+    "Your held novel earnings will be added to your EarnGig wallet.\n\n" +
+    "Continue?"
+  );
+
+
+  if (!confirmed) {
+    return;
+  }
+
+
+  try {
+
+    const {
+      data: { user },
+      error: userError
+    } = await supabaseClient.auth.getUser();
+
+
+    if (userError || !user) {
+
+      window.location.href =
+        "login.html";
+
+      return;
+
+    }
+
+
+    const {
+      data,
+      error
+    } = await supabaseClient.rpc(
+      "take_novel_earnings",
+      {
+        p_novel_id: novelId
+      }
+    );
+
+
+    if (error) {
+
+      console.error(
+        "Take Pay error:",
+        error
+      );
+
+      alert(
+        error.message ||
+        "Unable to claim your novel earnings."
+      );
+
+      if (button) {
+        button.disabled = false;
+        button.textContent = "Take Pay";
+      }
+
+      return;
+    }
+
+
+    if (!data?.success) {
+
+      alert(
+        "Your novel earnings could not be released."
+      );
+
+      return;
+
+    }
+
+
+    alert(
+      "Payment claimed successfully!\n\n" +
+      "₦" +
+      Number(
+        data.amount_released || 0
+      ).toLocaleString("en-NG") +
+      " has been added to your EarnGig wallet."
+    );
+
+
+    window.location.href =
+      "novel-completed.html";
+
+
+  } catch (error) {
+
+    console.error(
+      "Take Pay error:",
+      error
+    );
+
+    alert(
+      "Something went wrong while claiming your earnings."
+    );
+
+  }
+
+}
 
 loadPublishedNovels();
 </script>
