@@ -675,153 +675,110 @@ currentNovel = novel;
 
 }
 
+ async function approveNovel() {
+  if (!currentNovel) {
+    alert("Novel not loaded.");
+    return;
+  }
 
-async function approveNovel() {
+  const quality = document.getElementById("quality").value;
+  const pages = Number(document.getElementById("pages").value);
+  const reward = Number(document.getElementById("reward").value);
+  const fee = Number(document.getElementById("fee").value);
+  const readers = Number(document.getElementById("readers").value);
+  const notes = document.getElementById("notes").value.trim();
 
-    const quality =
-        document.getElementById("quality").value;
+  if (!pages || pages <= 0) {
+    alert("Please enter a valid page count.");
+    return;
+  }
 
-    const pages =
-        Number(document.getElementById("pages").value);
+  if (!reward || reward <= 0) {
+    alert("Please enter a valid reader reward.");
+    return;
+  }
 
-    const reward =
-        Number(document.getElementById("reward").value);
+  if (!fee || fee < 0) {
+    alert("Please enter a valid listing fee.");
+    return;
+  }
 
-    const fee =
-        Number(document.getElementById("fee").value);
+  if (!readers || readers <= 0) {
+    alert("Please enter a valid reader target.");
+    return;
+  }
 
-    const readers =
-        Number(document.getElementById("readers").value);
+  if (!currentNovel.manuscript_url) {
+    alert("This novel has no manuscript uploaded.");
+    return;
+  }
 
-    const notes =
-        document.getElementById("notes").value.trim();
+  if (!confirm(
+    "Approve this novel?\n\n" +
+    "The manuscript will be processed first. " +
+    "If processing fails, the novel will NOT be approved."
+  )) {
+    return;
+  }
 
-    const message =
-        document.getElementById("message");
+  const processButton = document.querySelector(
+    'button[onclick="approveNovel()"]'
+  );
 
+  if (processButton) {
+    processButton.disabled = true;
+    processButton.textContent = "Processing manuscript...";
+  }
 
-    if (!quality) {
+  try {
+    // 1. Process uploaded manuscript into novel_pages
+    const processed = await processNovelManuscript();
 
-        alert("Please select a quality assessment.");
-
-        return;
-
+    if (!processed) {
+      if (processButton) {
+        processButton.disabled = false;
+        processButton.textContent = "Approve Novel";
+      }
+      return;
     }
 
-
-    if (!reward || reward <= 0) {
-
-        alert("Please enter the reader reward.");
-
-        return;
-
-    }
-
-
-    if (fee < 0) {
-
-        alert("Please enter a valid listing fee.");
-
-        return;
-
-    }
-
-
-    if (!pages || pages <= 0) {
-
-        alert("Please enter the approved page count.");
-
-        return;
-
-    }
-
-
-    message.innerHTML = "Approving novel...";
-
-
-    const {
-        data: { user }
-    } = await supabaseClient.auth.getUser();
-
-
+    // 2. Only approve AFTER manuscript processing succeeds
     const { error } = await supabaseClient
+      .from("novels")
+      .update({
+        submission_status: "approved",
+        status: "approved",
+        page_count: pages,
+        approved_reader_count: readers,
+        approved_reader_reward: reward,
+        writer_listing_fee: fee,
+        writer_payment_status: "unpaid",
+        assessment_notes: notes,
+        approved_at: new Date().toISOString(),
+        approved_by: user.id
+      })
+      .eq("id", currentNovel.id);
 
-        .from("novels")
+    if (error) throw error;
 
-        .update({
+    alert("Novel approved successfully.");
 
-            submission_status: "approved",
+    window.location.href = "novel-review.html";
 
-            status: "approved",
+  } catch (error) {
+    console.error("Approval error:", error);
 
-            page_count: pages,
+    alert(
+      "Novel approval failed:\n\n" +
+      (error.message || "Unknown error")
+    );
 
-            approved_reader_count: readers,
-
-            approved_reader_reward: reward,
-
-            writer_listing_fee: fee,
-
-            writer_payment_status: "unpaid",
-
-            assessment_notes: notes,
-
-            approved_at: new Date().toISOString(),
-
-            approved_by: user.id
-
-        })
-
-        .eq("id", novelId)
-
-        .eq("submission_status", "pending");
-
-
-    if (error) {
-
-        message.innerHTML = `
-            <div class="assessment-notice">
-
-                <strong>
-                    Unable to approve novel.
-                </strong>
-
-                <p>
-                    ${escapeHtml(error.message)}
-                </p>
-
-            </div>
-        `;
-
-        return;
-
+    if (processButton) {
+      processButton.disabled = false;
+      processButton.textContent = "Approve Novel";
     }
-
-
-    message.innerHTML = `
-        <div class="assessment-notice">
-
-            <strong>
-                Novel approved successfully.
-            </strong>
-
-            <p>
-                The novel has moved to
-                Approved / Awaiting Payment.
-            </p>
-
-        </div>
-    `;
-
-
-   setTimeout(() => {
-
-    window.location.href =
-        "novel-review.html";
-
-}, 1200); 
-
-}
+  }
+ }        
 
 
 async function rejectNovel() {
