@@ -832,50 +832,79 @@ if (activeReferralError) {
     ).textContent = completedCount;
 
 
+    /
+
     /*
-     * Calculate today's credited earnings from
-     * approved/credited task attempts.
-     */
-    const today = new Date();
+ * CALCULATE TODAY'S EARNINGS
+ *
+ * The transactions table is the central wallet ledger.
+ *
+ * Any earning feature that credits money to the user's wallet
+ * should create a completed transaction for that user.
+ *
+ * This automatically supports:
+ * - Tasks
+ * - Read & Earn
+ * - Create & Earn
+ * - Watch & Earn
+ * - Marketplace seller earnings
+ * - Future earning features
+ */
 
-    const todayEarnings =
-      (attempts || [])
-        .filter(function (attempt) {
+const startOfToday = new Date();
 
-          const created =
-            new Date(attempt.created_at);
+startOfToday.setHours(0, 0, 0, 0);
 
-          const sameDay =
-            created.getFullYear() ===
-              today.getFullYear() &&
-            created.getMonth() ===
-              today.getMonth() &&
-            created.getDate() ===
-              today.getDate();
+const {
+  data: todayTransactions,
+  error: todayTransactionsError
+} = await supabaseClient
+  .from("transactions")
+  .select("amount, type, status, created_at")
+  .eq("user_id", user.id)
+  .eq("status", "completed")
+  .gte("created_at", startOfToday.toISOString());
 
-const credited =
-  attempt.reward_status === "credited" &&
-  attempt.status === "approved";
+if (todayTransactionsError) {
 
-          return sameDay && credited;
+  console.error(
+    "Unable to load today's earnings:",
+    todayTransactionsError
+  );
 
-        })
-        .reduce(function (total, attempt) {
+  document.getElementById(
+    "today-earnings"
+  ).textContent = "₦0";
 
-          return total +
-            Number(attempt.reward_amount || 0);
+} else {
 
-        }, 0);
+  const todayEarnings =
+    (todayTransactions || [])
+      .filter(function (transaction) {
 
+        /*
+         * Only positive transactions are earnings.
+         *
+         * This prevents withdrawals or other debits
+         * from reducing today's earnings.
+         */
+        return Number(transaction.amount || 0) > 0;
 
-    document.getElementById(
-      "today-earnings"
-    ).textContent =
-      `₦${todayEarnings.toLocaleString(
-        "en-NG"
-      )}`;
+      })
+      .reduce(function (total, transaction) {
 
+        return total +
+          Number(transaction.amount || 0);
 
+      }, 0);
+
+  document.getElementById(
+    "today-earnings"
+  ).textContent =
+    `₦${todayEarnings.toLocaleString(
+      "en-NG"
+    )}`;
+}
   } catch (error) {
 
     console.error(
