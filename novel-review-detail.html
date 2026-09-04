@@ -629,51 +629,41 @@ currentNovel = novel;
 
 
 
-                <div class="decision-actions">
+    <div class="decision-actions">
 
-                    <button
-                        type="button"
-                        class="btn danger"
-                        onclick="rejectNovel()"
-                    >
-                        Reject
-                    </button>
+    <button
+        type="button"
+        class="btn danger"
+        onclick="rejectNovel()"
+    >
+        Reject
+    </button>
 
+    <button
+        type="button"
+        class="btn warning"
+        onclick="requestRevision()"
+    >
+        Request Revision
+    </button>
 
-                    <button
-                        type="button"
-                        class="btn warning"
-                        onclick="requestRevision()"
-                    >
-                        Request Revision
-                    </button>
+    <button
+        type="button"
+        class="btn light"
+        onclick="processNovelManuscript()"
+    >
+        Process Manuscript
+    </button>
 
+    <button
+        type="button"
+        class="btn primary"
+        onclick="approveNovel()"
+    >
+        Approve & Set Pricing
+    </button>
 
-                    <button
-                        type="button"
-                        class="btn primary"
-                        onclick="approveNovel()"
-                    >
-                        Approve & Set Pricing
-                    </button>
-
-                </div>
-
-
-                <div
-                    id="message"
-                    class="message"
-                ></div>
-
-            </div>
-
-        </section>
-
-    </div>
-
-    `;
-
-}
+</div>            
 
  async function approveNovel() {
   if (!currentNovel) {
