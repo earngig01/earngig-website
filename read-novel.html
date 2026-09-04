@@ -863,51 +863,6 @@ async function getAssignmentId() {
   return true;
   }
 
-  /*
-   * Update title.
-   */
-  const titleElement =
-    document.getElementById("novelTitle");
-
-  if (titleElement) {
-    titleElement.textContent =
-      novel.title || "Untitled Novel";
-  }
-
-  /*
-   * Update author/details.
-   */
-  const detailsElement =
-    document.getElementById("novelDetails");
-
-  if (detailsElement) {
-    detailsElement.textContent =
-      `By ${novel.author_name || "Unknown Author"}`;
-  }
-
-  /*
-   * Update cover.
-   */
-  const coverElement =
-    document.getElementById("novelCover");
-
-  if (coverElement && novel.cover_url) {
-
-    coverElement.src =
-      novel.cover_url;
-
-    coverElement.alt =
-      `${novel.title} cover`;
-  }
-
-  /*
-   * Update browser title.
-   */
-  document.title =
-    `Reading | ${novel.title || "EarnGig"}`;
-
-  return true;
-  }
 /* =====================================================
    LOAD NOVEL PAGES FROM DATABASE
    ===================================================== */
