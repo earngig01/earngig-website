@@ -326,9 +326,6 @@ async function loadNovel() {
         `)
 
         .eq("id", novelId)
-
-        .eq("submission_status", "pending")
-
         .single();
 
 currentNovel = novel;
