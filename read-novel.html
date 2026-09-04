@@ -985,10 +985,25 @@ function displayPage() {
 
     completionMessage.classList.add("show");
 
-    quizCard.classList.add("unlocked");
-
     progressMessage.textContent =
       "You have completed the required reading. Complete the verification quiz below.";
+
+    await loadQuiz();
+
+  } else {
+
+    nextButton.disabled = false;
+
+    nextButton.textContent =
+      "Next Page →";
+
+    completionMessage.classList.remove("show");
+
+    quizCard.classList.remove("unlocked");
+
+    progressMessage.textContent =
+      "Continue reading the novel.";
+  }
 
   } else {
 
