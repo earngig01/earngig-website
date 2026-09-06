@@ -1603,22 +1603,117 @@ quizForm.addEventListener(
 
     }
 
+/* =====================================================
+   CHECK QUIZ RESULT AND REWARD VERIFICATION
+   ===================================================== */
 
-    quizResult.className =
-      "quiz-result success";
+console.log(
+  "Quiz result:",
+  data
+);
 
 
-    quizResult.innerHTML =
-      `
-        <strong>
-          ✓ Quiz submitted successfully.
-        </strong>
+/*
+ * Reload the reader assignment after quiz submission.
+ *
+ * The submit_novel_quiz RPC is responsible for:
+ *
+ * - checking the quiz answers
+ * - updating quiz_completed
+ * - updating verification_status
+ * - processing the reader reward
+ *
+ * We only check and display the final result here.
+ */
+const {
+  data: updatedAssignment,
+  error: assignmentCheckError
+} =
+  await supabaseClient
+    .from("novel_readers")
+    .select(`
+      id,
+      quiz_completed,
+      verification_status,
+      status
+    `)
+    .eq(
+      "id",
+      novelReaderId
+    )
+    .single();
 
-        <p>
-          Your reading has been submitted for automatic verification.
-          Your reward will be processed after successful verification.
-        </p>
-      `;
+
+if (assignmentCheckError) {
+
+  console.error(
+    "Could not verify quiz result:",
+    assignmentCheckError
+  );
+
+
+  quizResult.className =
+    "quiz-result failed";
+
+
+  quizResult.innerHTML =
+    `
+      <strong>
+        Quiz submitted.
+      </strong>
+
+      <p>
+        Your quiz was submitted, but the verification
+        status could not be checked.
+      </p>
+    `;
+
+
+} else if (
+  updatedAssignment.verification_status ===
+  "verified"
+) {
+
+  quizResult.className =
+    "quiz-result success";
+
+
+  quizResult.innerHTML =
+    `
+      <strong>
+        ✓ Reading verified successfully.
+      </strong>
+
+      <p>
+        You completed the required reading and passed
+        the verification quiz.
+      </p>
+
+      <p>
+        Your reader reward has been processed.
+      </p>
+    `;
+
+
+} else {
+
+  quizResult.className =
+    "quiz-result failed";
+
+
+  quizResult.innerHTML =
+    `
+      <strong>
+        Quiz submitted.
+      </strong>
+
+      <p>
+        Your reading has not been verified yet.
+      </p>
+    `;
+
+}
+    
 
 
     quizForm
