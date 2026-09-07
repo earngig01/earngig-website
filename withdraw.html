@@ -3,28 +3,42 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>Withdraw | EarnGig</title>
 
-  <link rel="stylesheet" href="styles.css">
+  <link
+    rel="stylesheet"
+    href="styles.css"
+  >
 </head>
 
 <body>
 
 <header>
+
   <div class="container nav">
 
-    <a class="logo" href="index.html">
+    <a
+      class="logo"
+      href="index.html"
+    >
       <span class="logo-mark">E</span>
       Earn<span>Gig</span>
     </a>
 
-    <a class="btn outline" href="wallet.html">
+    <a
+      class="btn outline"
+      href="wallet.html"
+    >
       ← Wallet
     </a>
 
   </div>
+
 </header>
 
 
@@ -40,11 +54,13 @@
           WALLET
         </span>
 
-        <h1>Request Withdrawal</h1>
+        <h1>
+          Request Withdrawal
+        </h1>
 
         <p>
-          Withdraw your available EarnGig balance to your
-          registered bank account.
+          Withdraw your available EarnGig balance
+          to your registered bank account.
         </p>
 
       </div>
@@ -54,12 +70,16 @@
 
     <section class="withdraw-card">
 
+
       <div class="withdraw-balance">
 
-        <small>Available balance</small>
+        <small>
+          Available balance
+        </small>
 
-        <strong id="available-balance">₦0.00</strong>
-        
+        <strong id="available-balance">
+          ₦0.00
+        </strong>
 
         <span>
           Minimum withdrawal: ₦15,000
@@ -68,12 +88,13 @@
       </div>
 
 
-      <form>
+      <form id="withdrawalForm">
 
 
         <label for="amount">
           Withdrawal amount
         </label>
+
 
         <div class="money-input">
 
@@ -83,6 +104,7 @@
             type="number"
             id="amount"
             min="15000"
+            step="1"
             placeholder="Minimum ₦15,000"
             required
           >
@@ -90,46 +112,125 @@
         </div>
 
 
-  <label for="bank">
-  Bank
-</label>
+        <label for="bank">
+          Bank
+        </label>
 
-<select id="bank" required>
 
-  <option value="">
-    Select your bank
-  </option>
+        <select
+          id="bank"
+          required
+        >
 
-  <option>Access Bank</option>
-  <option>Citibank Nigeria</option>
-  <option>Ecobank Nigeria</option>
-  <option>Fidelity Bank</option>
-  <option>First Bank</option>
-  <option>First City Monument Bank (FCMB)</option>
-  <option>Globus Bank</option>
-  <option>GTBank</option>
-  <option>Heritage Bank</option>
-  <option>Jaiz Bank</option>
-  <option>Keystone Bank</option>
-  <option>Kuda Bank</option>
-  <option>Moniepoint</option>
-  <option>Opay</option>
-  <option>Palmpay</option>
-  <option>Parallex Bank</option>
-  <option>Polaris Bank</option>
-  <option>PremiumTrust Bank</option>
-  <option>Providus Bank</option>
-  <option>Stanbic IBTC Bank</option>
-  <option>Sterling Bank</option>
-  <option>SunTrust Bank</option>
-  <option>TAJBank</option>
-  <option>Union Bank</option>
-  <option>United Bank for Africa (UBA)</option>
-  <option>Unity Bank</option>
-  <option>Wema Bank</option>
-  <option>Zenith Bank</option>
+          <option value="">
+            Select your bank
+          </option>
 
-</select>
+          <option value="Access Bank">
+            Access Bank
+          </option>
+
+          <option value="Citibank Nigeria">
+            Citibank Nigeria
+          </option>
+
+          <option value="Ecobank Nigeria">
+            Ecobank Nigeria
+          </option>
+
+          <option value="Fidelity Bank">
+            Fidelity Bank
+          </option>
+
+          <option value="First Bank">
+            First Bank
+          </option>
+
+          <option value="First City Monument Bank (FCMB)">
+            First City Monument Bank (FCMB)
+          </option>
+
+          <option value="Globus Bank">
+            Globus Bank
+          </option>
+
+          <option value="GTBank">
+            GTBank
+          </option>
+
+          <option value="Jaiz Bank">
+            Jaiz Bank
+          </option>
+
+          <option value="Keystone Bank">
+            Keystone Bank
+          </option>
+
+          <option value="Kuda Bank">
+            Kuda Bank
+          </option>
+
+          <option value="Moniepoint">
+            Moniepoint
+          </option>
+
+          <option value="Opay">
+            Opay
+          </option>
+
+          <option value="Palmpay">
+            Palmpay
+          </option>
+
+          <option value="Parallex Bank">
+            Parallex Bank
+          </option>
+
+          <option value="Polaris Bank">
+            Polaris Bank
+          </option>
+
+          <option value="PremiumTrust Bank">
+            PremiumTrust Bank
+          </option>
+
+          <option value="Providus Bank">
+            Providus Bank
+          </option>
+
+          <option value="Stanbic IBTC Bank">
+            Stanbic IBTC Bank
+          </option>
+
+          <option value="Sterling Bank">
+            Sterling Bank
+          </option>
+
+          <option value="TAJBank">
+            TAJBank
+          </option>
+
+          <option value="Union Bank">
+            Union Bank
+          </option>
+
+          <option value="United Bank for Africa (UBA)">
+            United Bank for Africa (UBA)
+          </option>
+
+          <option value="Unity Bank">
+            Unity Bank
+          </option>
+
+          <option value="Wema Bank">
+            Wema Bank
+          </option>
+
+          <option value="Zenith Bank">
+            Zenith Bank
+          </option>
+
+        </select>
 
 
         <label for="account-name">
@@ -182,9 +283,11 @@
             Cancel
           </a>
 
+
           <button
             type="submit"
             class="btn primary big"
+            id="submitButton"
           >
             Submit Withdrawal
           </button>
@@ -207,166 +310,422 @@
     © 2026 EarnGig. All rights reserved.
   </div>
 
-  </footer>
+</footer>
+
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script src="supabase.js"></script>
+
 
 <script>
 
-  const withdrawalForm = document.querySelector("form");
+/* ==========================================
+   CONSTANTS
+========================================== */
 
-  const balanceElement =
-  document.getElementById("available-balance");
+const MINIMUM_WITHDRAWAL = 15000;
+
+const withdrawalForm =
+  document.getElementById(
+    "withdrawalForm"
+  );
+
+const balanceElement =
+  document.getElementById(
+    "available-balance"
+  );
+
+const amountInput =
+  document.getElementById(
+    "amount"
+  );
+
+const bankInput =
+  document.getElementById(
+    "bank"
+  );
+
+const accountNameInput =
+  document.getElementById(
+    "account-name"
+  );
+
+const accountNumberInput =
+  document.getElementById(
+    "account-number"
+  );
+
+const submitButton =
+  document.getElementById(
+    "submitButton"
+  );
+
+
+let currentBalance = 0;
+
+
+/* ==========================================
+   FORMAT NAIRA
+========================================== */
+
+function formatNaira(amount) {
+
+  const value =
+    Number(amount);
+
+  if (
+    !Number.isFinite(value)
+  ) {
+
+    return "₦0.00";
+
+  }
+
+
+  return (
+    "₦" +
+    value.toLocaleString(
+      "en-NG",
+      {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }
+    )
+  );
+
+}
+
+
+/* ==========================================
+   LOAD WALLET BALANCE
+========================================== */
 
 async function loadWalletBalance() {
 
-  const {
-    data: { user },
-    error: userError
-  } = await supabaseClient.auth.getUser();
+  try {
 
-  if (userError || !user) {
-    window.location.href = "login.html";
-    return;
+    const {
+      data: {
+        user
+      },
+      error: userError
+    } =
+      await supabaseClient
+        .auth
+        .getUser();
+
+
+    if (
+      userError ||
+      !user
+    ) {
+
+      window.location.href =
+        "login.html";
+
+      return;
+
+    }
+
+
+    const {
+      data: wallet,
+      error: walletError
+    } =
+      await supabaseClient
+        .from("wallets")
+        .select("balance")
+        .eq(
+          "user_id",
+          user.id
+        )
+        .maybeSingle();
+
+
+    if (walletError) {
+
+      console.error(
+        "Unable to load wallet:",
+        walletError
+      );
+
+
+      alert(
+        "Unable to load your wallet balance."
+      );
+
+
+      return;
+
+    }
+
+
+    currentBalance =
+      Number(
+        wallet?.balance ?? 0
+      );
+
+
+    if (
+      !Number.isFinite(
+        currentBalance
+      )
+    ) {
+
+      currentBalance = 0;
+
+    }
+
+
+    if (balanceElement) {
+
+      balanceElement.textContent =
+        formatNaira(
+          currentBalance
+        );
+
+    }
+
+
   }
 
-  const {
-    data: wallet,
-    error: walletError
-  } = await supabaseClient
-    .from("wallets")
-    .select("balance")
-    .eq("user_id", user.id)
-    .maybeSingle();
-
-  if (walletError) {
+  catch (error) {
 
     console.error(
-      "Unable to load wallet:",
-      walletError
+      "Wallet loading error:",
+      error
     );
 
-    return;
   }
 
-  const balance =
-    Number(wallet?.balance || 0);
-
-  if (balanceElement) {
-
-    balanceElement.textContent =
-      `₦${balance.toLocaleString(
-        "en-NG",
-        {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2
-        }
-      )}`;
-
-  }
 }
 
+
+/* ==========================================
+   LOAD BALANCE
+========================================== */
+
 loadWalletBalance();
-  withdrawalForm.addEventListener("submit", async function (event) {
+
+
+/* ==========================================
+   ACCOUNT NUMBER
+========================================== */
+
+accountNumberInput.addEventListener(
+  "input",
+  function () {
+
+    this.value =
+      this.value.replace(
+        /\D/g,
+        ""
+      );
+
+  }
+);
+
+
+/* ==========================================
+   SUBMIT WITHDRAWAL
+========================================== */
+
+withdrawalForm.addEventListener(
+  "submit",
+
+  async function (event) {
 
     event.preventDefault();
 
-    const amountInput =
-      document.getElementById("amount");
 
-    const bankInput =
-      document.getElementById("bank");
+    /* ==========================
+       GET VALUES
+    ========================== */
 
-    const accountNameInput =
-      document.getElementById("account-name");
-
-    const accountNumberInput =
-      document.getElementById("account-number");
+    const rawAmount =
+      amountInput.value.trim();
 
 
     const amount =
-      Number(amountInput.value);
+      Number(
+        rawAmount
+      );
+
 
     const bankName =
       bankInput.value.trim();
 
+
     const accountName =
       accountNameInput.value.trim();
+
 
     const accountNumber =
       accountNumberInput.value.trim();
 
 
-    // Validate amount
-    if (!Number.isFinite(amount) || amount < 15000) {
+    /* ==========================
+       VALIDATE AMOUNT
+    ========================== */
 
-      alert("Minimum withdrawal amount is ₦15,000.");
+    if (
+      rawAmount === ""
+    ) {
+
+      alert(
+        "Please enter a withdrawal amount."
+      );
 
       return;
+
     }
 
 
-    // Validate bank
+    if (
+      !Number.isFinite(amount)
+    ) {
+
+      alert(
+        "Please enter a valid withdrawal amount."
+      );
+
+      return;
+
+    }
+
+
+    if (
+      amount < MINIMUM_WITHDRAWAL
+    ) {
+
+      alert(
+        "Minimum withdrawal amount is ₦15,000."
+      );
+
+      return;
+
+    }
+
+
+    if (
+      amount <= 0
+    ) {
+
+      alert(
+        "Withdrawal amount must be greater than zero."
+      );
+
+      return;
+
+    }
+
+
+    /* ==========================
+       VALIDATE BANK
+    ========================== */
+
     if (!bankName) {
 
-      alert("Please select your bank.");
+      alert(
+        "Please select your bank."
+      );
 
       return;
+
     }
 
 
-    // Validate account name
+    /* ==========================
+       VALIDATE ACCOUNT NAME
+    ========================== */
+
     if (!accountName) {
 
-      alert("Please enter the account name.");
+      alert(
+        "Please enter the account name."
+      );
 
       return;
+
     }
 
 
-    // Validate account number
-    if (!/^\d{10}$/.test(accountNumber)) {
+    /* ==========================
+       VALIDATE ACCOUNT NUMBER
+    ========================== */
 
-      alert("Please enter a valid 10-digit account number.");
+    if (
+      !/^\d{10}$/.test(
+        accountNumber
+      )
+    ) {
+
+      alert(
+        "Please enter a valid 10-digit account number."
+      );
 
       return;
+
     }
 
 
-    // Get logged-in member
+    /* ==========================
+       GET CURRENT USER
+    ========================== */
+
     const {
-      data: { user },
+      data: {
+        user
+      },
       error: userError
-    } = await supabaseClient.auth.getUser();
+    } =
+      await supabaseClient
+        .auth
+        .getUser();
 
 
-    if (userError || !user) {
+    if (
+      userError ||
+      !user
+    ) {
 
       console.error(
         "User error:",
         userError
       );
 
+
       alert(
-        "Your session could not be verified. Please log in again."
+        "Your session has expired. Please log in again."
       );
 
+
+      window.location.href =
+        "login.html";
+
+
       return;
+
     }
 
 
-    // Get wallet balance
+    /* ==========================
+       GET CURRENT WALLET
+    ========================== */
+
     const {
       data: wallet,
       error: walletError
-    } = await supabaseClient
-      .from("wallets")
-      .select(`
-        balance
-      `)
-      .eq("user_id", user.id)
-      .single();
+    } =
+      await supabaseClient
+        .from("wallets")
+        .select("balance")
+        .eq(
+          "user_id",
+          user.id
+        )
+        .maybeSingle();
 
 
     if (walletError) {
@@ -376,154 +735,220 @@ loadWalletBalance();
         walletError
       );
 
+
       alert(
         "Unable to load your wallet balance."
       );
 
+
       return;
+
+    }
+
+
+    if (!wallet) {
+
+      alert(
+        "Wallet not found."
+      );
+
+
+      return;
+
     }
 
 
     const balance =
-      Number(wallet.balance || 0);
+      Number(
+        wallet.balance ?? 0
+      );
 
 
-    // Check available balance
-    if (amount > balance) {
+    if (
+      !Number.isFinite(balance)
+    ) {
+
+      alert(
+        "Your wallet balance is invalid."
+      );
+
+
+      return;
+
+    }
+
+
+    /* ==========================
+       CHECK BALANCE
+    ========================== */
+
+    if (
+      amount > balance
+    ) {
 
       alert(
         "You do not have enough available balance for this withdrawal."
       );
 
+
       return;
+
     }
 
 
-    // Current withdrawal fee
+    /* ==========================
+       WITHDRAWAL FEE
+    ========================== */
+
     const fee = 0;
 
-    const netAmount =
-      amount - fee;
 
+    /* ==========================
+       CONFIRM
+    ========================== */
 
-    const confirmed = confirm(
-      "Submit this withdrawal request for ₦" +
-      amount.toLocaleString() +
-      "?"
-    );
+    const confirmed =
+      confirm(
+        "Submit a withdrawal request for " +
+        formatNaira(amount) +
+        "?"
+      );
 
 
     if (!confirmed) {
+
       return;
+
     }
 
 
-    // Disable submit while processing
-    const submitButton =
-      withdrawalForm.querySelector(
-        'button[type="submit"]'
-      );
+    /* ==========================
+       DISABLE BUTTON
+    ========================== */
 
-    if (submitButton) {
+    submitButton.disabled =
+      true;
 
-      submitButton.disabled = true;
-
-      submitButton.textContent =
-        "Submitting...";
-    }
-
-
-   // Create withdrawal and deduct balance atomically
-const {
-  data: withdrawal,
-  error: withdrawalError
-} = await supabaseClient.rpc(
-  "create_withdrawal",
-  {
-    p_amount: amount,
-    p_bank_name: bankName,
-    p_account_number: accountNumber,
-    p_account_name: accountName,
-    p_fee: fee
-  }
-);
-
-if (withdrawalError) {
-
-  console.error(
-    "Withdrawal error:",
-    withdrawalError
-  );
-
-  alert(
-    "Unable to submit your withdrawal request."
-  );
-
-  if (submitButton) {
-
-    submitButton.disabled = false;
 
     submitButton.textContent =
-      "Submit Withdrawal";
-  }
-
-  return;
-}
-
-console.log(
-  "Withdrawal created:",
-  withdrawal
-);
-
-alert(
-  "Withdrawal request submitted successfully."
-);
-
-window.location.href =
-  "wallet.html"; 
+      "Submitting...";
 
 
-    if (withdrawalError) {
+    try {
 
-      console.error(
-        "Withdrawal error:",
-        withdrawalError
-      );
 
-      alert(
-        "Unable to submit your withdrawal request."
-      );
+      /* ==========================
+         CREATE WITHDRAWAL
+      ========================== */
 
-      if (submitButton) {
+      const {
+        data: withdrawal,
+        error: withdrawalError
+      } =
+        await supabaseClient.rpc(
+          "create_withdrawal",
+          {
 
-        submitButton.disabled = false;
+            p_amount:
+              amount,
+
+            p_bank_name:
+              bankName,
+
+            p_account_number:
+              accountNumber,
+
+            p_account_name:
+              accountName,
+
+            p_fee:
+              fee
+
+          }
+        );
+
+
+      if (withdrawalError) {
+
+        console.error(
+          "Withdrawal RPC error:",
+          withdrawalError
+        );
+
+
+        /*
+         * Show the actual database error.
+         * This is important for debugging.
+         */
+
+        alert(
+          "Unable to submit withdrawal:\n\n" +
+          withdrawalError.message
+        );
+
+
+        submitButton.disabled =
+          false;
+
 
         submitButton.textContent =
           "Submit Withdrawal";
+
+
+        return;
+
       }
 
-      return;
+
+      console.log(
+        "Withdrawal created:",
+        withdrawal
+      );
+
+
+      alert(
+        "Withdrawal request submitted successfully."
+      );
+
+
+      window.location.href =
+        "wallet.html";
+
+
     }
 
-
-    console.log(
-      "Withdrawal created:",
-      withdrawal
-    );
+    catch (error) {
 
 
-    alert(
-      "Withdrawal request submitted successfully."
-    );
+      console.error(
+        "Withdrawal error:",
+        error
+      );
 
 
-    // Return to wallet
-    window.location.href =
-      "wallet.html";
+      alert(
+        "An unexpected error occurred:\n\n" +
+        (
+          error.message ||
+          "Unknown error"
+        )
+      );
 
-  });
+
+      submitButton.disabled =
+        false;
+
+
+      submitButton.textContent =
+        "Submit Withdrawal";
+
+    }
+
+  }
+);
 
 </script>
 
 </body>
+
 </html>
