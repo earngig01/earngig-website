@@ -1603,7 +1603,7 @@ quizForm.addEventListener(
     }
 
 /* =====================================================
-   CHECK QUIZ RESULT AND REWARD VERIFICATION
+   CHECK QUIZ RESULT
    ===================================================== */
 
 console.log(
@@ -1613,43 +1613,16 @@ console.log(
 
 
 /*
- * Reload the reader assignment after quiz submission.
+ * The RPC can return:
  *
- * The submit_novel_quiz RPC is responsible for:
+ * success: false
+ * verified: false
  *
- * - checking the quiz answers
- * - updating quiz_completed
- * - updating verification_status
- * - processing the reader reward
+ * when the reader fails the quiz.
  *
- * We only check and display the final result here.
+ * In that case, DO NOT lock the quiz.
  */
-const {
-  data: updatedAssignment,
-  error: assignmentCheckError
-} =
-  await supabaseClient
-    .from("novel_readers")
-    .select(`
-      id,
-      quiz_completed,
-      verification_status,
-      status
-    `)
-    .eq(
-      "id",
-      novelReaderId
-    )
-    .single();
-
-
-if (assignmentCheckError) {
-
-  console.error(
-    "Could not verify quiz result:",
-    assignmentCheckError
-  );
-
+if (!data || data.success !== true) {
 
   quizResult.className =
     "quiz-result failed";
@@ -1658,19 +1631,60 @@ if (assignmentCheckError) {
   quizResult.innerHTML =
     `
       <strong>
-        Quiz submitted.
+        Quiz not passed.
       </strong>
 
       <p>
-        Your quiz was submitted, but the verification
-        status could not be checked.
+        ${escapeHtml(
+          data?.message ||
+          "You did not pass the verification quiz."
+        )}
+      </p>
+
+      <p>
+        Score: ${
+          data?.score ?? 0
+        }%
+      </p>
+
+      <p>
+        Correct answers: ${
+          data?.correct_answers ?? 0
+        } / ${
+          data?.total_questions ??
+          quizQuestions.length
+        }
       </p>
     `;
 
 
-} else if (
-  updatedAssignment.verification_status ===
-  "verified"
+  /*
+   * Allow the reader to try again.
+   */
+  if (submitButton) {
+
+    submitButton.disabled =
+      false;
+
+
+    submitButton.textContent =
+      "Try Again";
+
+  }
+
+
+  return;
+
+}
+
+
+/* =====================================================
+   QUIZ WAS SUCCESSFUL
+   ===================================================== */
+
+if (
+  data.verified === true ||
+  data.success === true
 ) {
 
   quizResult.className =
@@ -1684,62 +1698,49 @@ if (assignmentCheckError) {
       </strong>
 
       <p>
-        You completed the required reading and passed
-        the verification quiz.
+        You completed the required reading and
+        passed the verification quiz.
       </p>
 
       <p>
         Your reader reward has been processed.
       </p>
-    `;
-
-
-} else {
-
-  quizResult.className =
-    "quiz-result failed";
-
-
-  quizResult.innerHTML =
-    `
-      <strong>
-        Quiz submitted.
-      </strong>
 
       <p>
-        Your reading has not been verified yet.
+        Reward: ₦${
+          Number(
+            data.amount || 0
+          ).toLocaleString("en-NG")
+        }
       </p>
     `;
 
-}
-    
 
-
-    quizForm
-      .querySelectorAll(
-        "input"
-      )
-      .forEach(
-        input =>
-          input.disabled = true
-      );
-
-
-    if (submitButton) {
-
-      submitButton.disabled =
-        true;
-
-      submitButton.textContent =
-        "Quiz Submitted ✓";
-
-    }
-
-
-    console.log(
-      "Quiz result:",
-      data
+  /*
+   * Lock the quiz only after successful verification.
+   */
+  quizForm
+    .querySelectorAll(
+      "input"
+    )
+    .forEach(
+      input =>
+        input.disabled = true
     );
+
+
+  if (submitButton) {
+
+    submitButton.disabled =
+      true;
+
+
+    submitButton.textContent =
+      "Quiz Submitted ✓";
+
+  }
+
+}
 
   }
 );
