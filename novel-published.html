@@ -367,7 +367,20 @@ async function loadPublishedNovels() {
         "novel_id",
         publishedIds
       );
+console.log(
+  "Writer novels:",
+  publishedIds
+);
 
+console.log(
+  "Reader records returned:",
+  readers
+);
+
+console.log(
+  "Reader query error:",
+  readersError
+);
 
     if (readersError) {
 
