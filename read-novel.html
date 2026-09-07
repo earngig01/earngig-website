@@ -1363,72 +1363,71 @@ function renderQuiz() {
       }
 
 
-      options.forEach(
-        function (option, optionIndex) {
+    options.forEach(
+  function (option, optionIndex) {
 
-          const label =
-            document.createElement(
-              "label"
-            );
-
-
-          const input =
-            document.createElement(
-              "input"
-            );
-
-
-          input.type =
-            "radio";
-
-
-          input.name =
-            `question_${question.id || questionNumber}`;
-
-
-          input.value =
-            typeof option === "object"
-              ? (
-                  option.value ||
-                  option.text ||
-                  option.label ||
-                  optionIndex
-                )
-              : option;
-
-
-          label.appendChild(
-            input
-          );
-
-
-          const text =
-            document.createTextNode(
-              " " +
-              (
-                typeof option === "object"
-                  ? (
-                      option.text ||
-                      option.label ||
-                      option.value ||
-                      ""
-                    )
-                  : option
-              )
-            );
-
-
-          label.appendChild(
-            text
-          );
-
-
-          wrapper.appendChild(
-            label
-          );
-
-        }
+    const label =
+      document.createElement(
+        "label"
       );
+
+
+    const input =
+      document.createElement(
+        "input"
+      );
+
+
+    input.type =
+      "radio";
+
+
+    input.name =
+      `question_${question.id || questionNumber}`;
+
+
+    const optionLetters =
+      ["a", "b", "c", "d"];
+
+
+    input.value =
+      optionLetters[optionIndex];
+
+
+    label.appendChild(
+      input
+    );
+
+
+    const optionText =
+      typeof option === "object"
+        ? (
+            option.text ||
+            option.label ||
+            option.value ||
+            ""
+          )
+        : option;
+
+
+    const text =
+      document.createTextNode(
+        " " + optionText
+      );
+
+
+    label.appendChild(
+      text
+    );
+
+
+    wrapper.appendChild(
+      label
+    );
+
+  }
+);  
+                
 
 
       quizForm.appendChild(
