@@ -2,20 +2,31 @@
 <html lang="en">
 
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>Reading | EarnGig</title>
 
-  <link rel="stylesheet" href="styles.css">
+  <link
+    rel="stylesheet"
+    href="styles.css"
+  >
+
 
   <style>
+
     .novel-header-content {
       display: grid;
       grid-template-columns: 150px 1fr auto;
       gap: 28px;
       align-items: center;
     }
+
 
     .novel-cover {
       width: 150px;
@@ -26,13 +37,16 @@
       background: #f1f1f1;
     }
 
+
     .quiz-card {
       display: none;
     }
 
+
     .quiz-card.unlocked {
       display: block;
     }
+
 
     .completion-message {
       display: none;
@@ -43,11 +57,13 @@
       border: 1px solid #b9e6c2;
     }
 
+
     .completion-message.show {
       display: flex;
       gap: 15px;
       align-items: flex-start;
     }
+
 
     .completion-icon {
       width: 40px;
@@ -62,6 +78,7 @@
       flex-shrink: 0;
     }
 
+
     .quiz-result {
       display: none;
       margin-top: 20px;
@@ -69,892 +86,1587 @@
       border-radius: 12px;
     }
 
+
     .quiz-result.success {
-  display: block;
-  background: #f5fff7;
-  border: 1px solid #b9e6c2;
-  color: #155724;
-}
 
-.quiz-result.failed {
-  display: block;
-  background: #fff7f7;
-  border: 1px solid #f0b5b5;
-  color: #721c24;
-}
+      display: block;
 
-.quiz-result strong {
-  color: inherit;
-}
+      background: #f5fff7;
 
-.quiz-result p {
-  color: inherit;
-}
+      border: 1px solid #b9e6c2;
+
+      color: #155724;
+
+    }
+
+
+    .quiz-result.failed {
+
+      display: block;
+
+      background: #fff7f7;
+
+      border: 1px solid #f0b5b5;
+
+      color: #721c24;
+
+    }
+
+
+    .quiz-result strong {
+      color: inherit;
+    }
+
+
+    .quiz-result p {
+      color: inherit;
+    }
+
 
     .verification-status {
       margin-top: 25px;
     }
 
+
     @media (max-width: 800px) {
+
       .novel-header-content {
         grid-template-columns: 1fr;
       }
+
 
       .novel-cover {
         width: 130px;
         height: 180px;
       }
 
+
       .reading-reward {
         width: 100%;
       }
+
     }
+
   </style>
+
 </head>
+
 
 <body>
 
+
 <header>
+
   <div class="container nav">
 
-    <a class="logo" href="index.html">
-      <span class="logo-mark">E</span>
+    <a
+      class="logo"
+      href="index.html"
+    >
+
+      <span class="logo-mark">
+        E
+      </span>
+
       Earn<span>Gig</span>
+
     </a>
 
-    <a class="btn outline" href="read-and-earn.html">
+
+    <a
+      class="btn outline"
+      href="read-and-earn.html"
+    >
+
       ← Back to Novels
+
     </a>
 
   </div>
+
 </header>
+
 
 
 <main class="reading-page">
 
+
   <div class="container">
 
 
-    <!-- NOVEL HEADER -->
+    <!-- =================================================
+         NOVEL HEADER
+         ================================================= -->
 
     <section class="reading-header">
 
+
       <div class="novel-header-content">
 
-        <!--
-          The writer's uploaded cover image is shown here.
-          In the real application, replace this URL with the
-          novel's cover_url from the novels table.
-        -->
 
         <img
+
           class="novel-cover"
+
           src="https://via.placeholder.com/300x420?text=Novel+Cover"
-          alt="The Hidden Promise cover"
+
+          alt="Novel cover"
+
           id="novelCover"
+
         >
+
 
 
         <div>
 
-          <span class="eyebrow">READ & EARN</span>
+
+          <span class="eyebrow">
+
+            READ & EARN
+
+          </span>
+
 
           <h1 id="novelTitle">
-            The Hidden Promise
+
+            Loading Novel...
+
           </h1>
 
+
           <p id="novelDetails">
-            By Jane Doe · Romance · 22 pages
+
+            Loading details...
+
           </p>
 
+
         </div>
+
 
 
         <div class="reading-reward">
 
-          <small>Your approved reward</small>
+
+          <small>
+
+            Your approved reward
+
+          </small>
+
 
           <strong id="rewardAmount">
-            ₦100
+
+            ₦0
+
           </strong>
 
+
           <span>
+
             after verified completion
+
           </span>
+
 
         </div>
 
+
       </div>
+
 
     </section>
 
 
-    <!-- PROGRESS -->
+
+    <!-- =================================================
+         PROGRESS
+         ================================================= -->
 
     <section class="reading-progress-card">
 
+
       <div class="progress-heading">
+
 
         <div>
 
+
           <small>
+
             READING PROGRESS
+
           </small>
 
+
           <strong id="pageDisplay">
-            Page 1 of 22
+
+            Loading...
+
           </strong>
+
 
         </div>
 
+
         <span id="progressPercent">
+
           0%
+
         </span>
 
+
       </div>
+
 
 
       <div class="progress-bar">
 
+
         <div
+
           class="progress-fill"
+
           id="progressFill"
+
           style="width: 0%;"
+
         ></div>
+
 
       </div>
 
 
+
       <p id="progressMessage">
-        Read the required portion of the novel. The
-        verification quiz will appear only after you
-        complete the required reading.
+
+        Loading the novel...
+
       </p>
+
 
     </section>
 
 
-    <!-- READING AREA -->
+
+    <!-- =================================================
+         READING AREA
+         ================================================= -->
 
     <section class="reading-card">
 
+
       <div class="chapter-heading">
 
+
         <span id="chapterNumber">
-          CHAPTER ONE
+
         </span>
 
+
         <h2 id="chapterTitle">
-          The Beginning
+
+          Loading...
+
         </h2>
+
 
       </div>
 
 
+
       <article
+
         class="novel-content"
+
         id="novelContent"
+
       >
 
         <p>
-          The evening sky had begun to change when Sarah
-          returned to the small town she had left years ago.
-          She had promised herself that she would never
-          return, but some promises are easier to make than
-          they are to keep.
+
+          Loading novel content...
+
         </p>
 
-        <p>
-          The familiar road looked different now. The shops
-          were brighter, the houses had changed, and yet the
-          old memories remained exactly where she had left
-          them.
-        </p>
-
-        <p>
-          Sarah stopped outside the house at the end of the
-          street. She stared at the wooden door for several
-          seconds before finally reaching for the handle.
-        </p>
-
-        <p>
-          She knew that opening that door meant facing a part
-          of her past she had spent years trying to forget.
-          But she also knew that the truth had waited long
-          enough.
-        </p>
-
-        <p>
-          She took a deep breath and stepped inside.
-        </p>
 
       </article>
 
 
+
       <div class="reading-navigation">
 
+
         <button
+
           type="button"
+
           class="btn light"
+
           id="previousButton"
+
           disabled
+
         >
+
           ← Previous
+
         </button>
+
 
 
         <span id="pageNumber">
-          1 / 22
+
+          0 / 0
+
         </span>
+
 
 
         <button
+
           type="button"
+
           class="btn primary"
+
           id="nextButton"
+
+          disabled
+
         >
+
           Next Page →
+
         </button>
 
+
       </div>
+
 
     </section>
 
 
-    <!-- COMPLETION MESSAGE
-         HIDDEN UNTIL REQUIRED READING IS COMPLETE -->
+
+    <!-- =================================================
+         COMPLETION MESSAGE
+         ================================================= -->
 
     <section
+
       class="completion-message"
+
       id="completionMessage"
+
     >
 
+
       <div class="completion-icon">
+
         ✓
+
       </div>
+
+
 
       <div>
 
+
         <strong>
+
           Required reading completed
+
         </strong>
 
+
         <p>
+
           You have completed the required reading.
           Your verification quiz is now available below.
+
         </p>
 
+
       </div>
+
 
     </section>
 
 
-    <!-- QUIZ
-         IMPORTANT:
-         THIS IS HIDDEN WHILE THE READER IS READING.
-         IT ONLY APPEARS AFTER REQUIRED COMPLETION. -->
+
+    <!-- =================================================
+         QUIZ
+         ================================================= -->
 
     <section
+
       class="quiz-card"
+
       id="quizCard"
+
     >
+
 
       <div class="quiz-header">
 
+
         <span class="eyebrow">
+
           COMPLETION QUIZ
+
         </span>
 
+
         <h2>
+
           Test your understanding
+
         </h2>
 
+
         <p>
+
           Complete the quiz to verify that you have read
           the required portion of this novel.
+
         </p>
 
+
       </div>
+
 
 
       <form id="quizForm">
 
 
-        <div class="quiz-question">
-
-          <strong>
-            1. Why did Sarah return to the town?
-          </strong>
-
-          <label>
-            <input
-              type="radio"
-              name="q1"
-              value="friend"
-            >
-            To visit an old friend.
-          </label>
-
-          <label>
-            <input
-              type="radio"
-              name="q1"
-              value="past"
-            >
-            To face something from her past.
-          </label>
-
-          <label>
-            <input
-              type="radio"
-              name="q1"
-              value="business"
-            >
-            To start a new business.
-          </label>
-
-          <label>
-            <input
-              type="radio"
-              name="q1"
-              value="celebration"
-            >
-            To attend a celebration.
-          </label>
-
-        </div>
-
-
-        <div class="quiz-question">
-
-          <strong>
-            2. What did Sarah find difficult?
-          </strong>
-
-          <label>
-            <input
-              type="radio"
-              name="q2"
-              value="door"
-            >
-            Opening the old door.
-          </label>
-
-          <label>
-            <input
-              type="radio"
-              name="q2"
-              value="road"
-            >
-            Finding the road.
-          </label>
-
-          <label>
-            <input
-              type="radio"
-              name="q2"
-              value="shop"
-            >
-            Finding a shop.
-          </label>
-
-          <label>
-            <input
-              type="radio"
-              name="q2"
-              value="town"
-            >
-            Leaving the town.
-          </label>
-
-        </div>
-
-
-        <button
-          type="submit"
-          class="btn primary"
-        >
-          Submit Quiz
-        </button>
-
       </form>
 
 
+
       <div
+
         class="quiz-result"
+
         id="quizResult"
+
       ></div>
+
 
     </section>
 
 
-    <!-- VERIFICATION STATUS -->
+
+    <!-- =================================================
+         VERIFICATION STATUS
+         ================================================= -->
 
     <section class="verification-status">
 
+
       <div class="verification-icon">
+
         ✓
+
       </div>
+
+
 
       <div>
 
+
         <strong>
+
           Automatic reward verification
+
         </strong>
 
+
         <p>
+
           Once you complete the required reading and pass
           the verification quiz, your reward will be
-          processed automatically. No separate reader
-          approval is required.
+          processed automatically.
+
         </p>
 
+
       </div>
+
 
     </section>
 
 
   </div>
+
 
 </main>
 
 
+
 <footer>
 
+
   <div class="container copy">
+
     © 2026 EarnGig. All rights reserved.
+
   </div>
 
+
 </footer>
+
+
+
+<!-- =====================================================
+     SUPABASE
+     ===================================================== -->
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script src="supabase.js"></script>
 
+
+
 <script>
-document.addEventListener("DOMContentLoaded", async function () {
 
-  /* =====================================================
-     22 STORY PAGES
-     ===================================================== */
 
-      
+document.addEventListener(
+  "DOMContentLoaded",
+  async function () {
 
-  /* =====================================================
-     STATE
-     ===================================================== */
+
+/* =====================================================
+   STATE
+   ===================================================== */
+
 
 let currentPage = 1;
+
+
 let totalPages = 0;
 
+
 let novelReaderId = null;
+
+
 let quizQuestions = [];
 
+
+/*
+ * Store the reward loaded from the novels table.
+ *
+ * This is always read from:
+ *
+ * novels.approved_reader_reward
+ */
+let currentNovelReward = 0;
+
+
+/*
+ * Store required reading percentage.
+ */
+let requiredReadingPercent = 100;
+
+
+/*
+ * Novel pages.
+ */
+let pages = [];
+
+
+/*
+ * URL parameters.
+ */
 const params =
-  new URLSearchParams(window.location.search);
+  new URLSearchParams(
+    window.location.search
+  );
+
 
 const NOVEL_ID =
   params.get("novel_id") ||
   params.get("novel") ||
   null;
 
-let pages = [];
-  
-  if (!NOVEL_ID) {
 
-  alert("No novel was selected.");
+
+/* =====================================================
+   VALIDATE NOVEL ID
+   ===================================================== */
+
+
+if (!NOVEL_ID) {
+
+
+  alert(
+    "No novel was selected."
+  );
+
 
   window.location.href =
     "read-and-earn.html";
 
+
   return;
+
+}
+
+
+
+/* =====================================================
+   ELEMENTS
+   ===================================================== */
+
+
+const previousButton =
+  document.getElementById(
+    "previousButton"
+  );
+
+
+const nextButton =
+  document.getElementById(
+    "nextButton"
+  );
+
+
+const pageDisplay =
+  document.getElementById(
+    "pageDisplay"
+  );
+
+
+const pageNumber =
+  document.getElementById(
+    "pageNumber"
+  );
+
+
+const progressPercent =
+  document.getElementById(
+    "progressPercent"
+  );
+
+
+const progressFill =
+  document.getElementById(
+    "progressFill"
+  );
+
+
+const progressMessage =
+  document.getElementById(
+    "progressMessage"
+  );
+
+
+const novelContent =
+  document.getElementById(
+    "novelContent"
+  );
+
+
+const chapterNumber =
+  document.getElementById(
+    "chapterNumber"
+  );
+
+
+const chapterTitle =
+  document.getElementById(
+    "chapterTitle"
+  );
+
+
+const completionMessage =
+  document.getElementById(
+    "completionMessage"
+  );
+
+
+const quizCard =
+  document.getElementById(
+    "quizCard"
+  );
+
+
+const quizForm =
+  document.getElementById(
+    "quizForm"
+  );
+
+
+const quizResult =
+  document.getElementById(
+    "quizResult"
+  );
+
+
+
+/* =====================================================
+   FORMAT MONEY
+   ===================================================== */
+
+
+function formatMoney(
+  amount
+) {
+
+
+  const number =
+    Number(amount);
+
+
+  if (
+    !Number.isFinite(number)
+  ) {
+
+    return "₦0";
+
   }
 
-  /* =====================================================
-     ELEMENTS
-     ===================================================== */
 
-  const previousButton =
-    document.getElementById("previousButton");
-
-  const nextButton =
-    document.getElementById("nextButton");
-
-  const pageDisplay =
-    document.getElementById("pageDisplay");
-
-  const pageNumber =
-    document.getElementById("pageNumber");
-
-  const progressPercent =
-    document.getElementById("progressPercent");
-
-  const progressFill =
-    document.getElementById("progressFill");
-
-  const progressMessage =
-    document.getElementById("progressMessage");
-
-  const novelContent =
-    document.getElementById("novelContent");
-
-  const chapterNumber =
-    document.getElementById("chapterNumber");
-
-  const chapterTitle =
-    document.getElementById("chapterTitle");
-
-  const completionMessage =
-    document.getElementById("completionMessage");
-
-  const quizCard =
-    document.getElementById("quizCard");
-
-  const quizForm =
-    document.getElementById("quizForm");
-
-  const quizResult =
-    document.getElementById("quizResult");
+  return (
+    "₦" +
+    number.toLocaleString(
+      "en-NG",
+      {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+      }
+    )
+  );
 
 
-  /* =====================================================
-     GET READER ASSIGNMENT
-     ===================================================== */
+}
+
+
+
+/* =====================================================
+   ESCAPE HTML
+   ===================================================== */
+
+
+function escapeHtml(
+  value
+) {
+
+
+  return String(
+    value ?? ""
+  )
+
+    .replaceAll(
+      "&",
+      "&amp;"
+    )
+
+    .replaceAll(
+      "<",
+      "&lt;"
+    )
+
+    .replaceAll(
+      ">",
+      "&gt;"
+    )
+
+    .replaceAll(
+      '"',
+      "&quot;"
+    )
+
+    .replaceAll(
+      "'",
+      "&#039;"
+    );
+
+
+}
+
+
+
+/* =====================================================
+   GET CURRENT USER
+   ===================================================== */
+
+
+async function getCurrentUser() {
+
+
+  const {
+    data: {
+      user
+    },
+    error
+  } =
+    await supabaseClient
+      .auth
+      .getUser();
+
+
+  if (
+    error ||
+    !user
+  ) {
+
+
+    console.error(
+      "User authentication error:",
+      error
+    );
+
+
+    return null;
+
+  }
+
+
+  return user;
+
+
+}
+
+
+
+/* =====================================================
+   GET READER ASSIGNMENT
+   ===================================================== */
+
+
 async function getAssignmentId() {
 
-  const params =
-    new URLSearchParams(window.location.search);
+
+  const urlParams =
+    new URLSearchParams(
+      window.location.search
+    );
+
 
   const urlAssignmentId =
-    params.get("assignment") ||
-    params.get("novel_reader_id") ||
-    params.get("assignment_id") ||
-    params.get("id");
 
+    urlParams.get("assignment") ||
+
+    urlParams.get("novel_reader_id") ||
+
+    urlParams.get("assignment_id") ||
+
+    null;
+
+
+
+  /*
+   * If assignment ID is in the URL,
+   * use it.
+   */
   if (urlAssignmentId) {
+
+
     console.log(
       "Assignment from URL:",
       urlAssignmentId
     );
 
+
     return urlAssignmentId;
+
   }
 
-  console.log("No assignment in URL");
 
 
-  const {
-    data: { user },
-    error: userError
-  } = await supabaseClient.auth.getUser();
+  /*
+   * Otherwise find the assignment
+   * belonging to the logged-in reader.
+   */
+  const user =
+    await getCurrentUser();
 
 
-  if (userError || !user) {
+  if (!user) {
 
-    console.error(
-      "No logged-in user:",
-      userError
-    );
 
     return null;
+
   }
+
 
 
   const {
     data: assignments,
     error: assignmentError
-  } = await supabaseClient
-    .from("novel_readers")
-    .select(
-      "id, novel_id, reader_id, pages_read, progress_percent"
-    )
-    .eq("reader_id", user.id)
-    .eq("novel_id", NOVEL_ID);
+  } =
+    await supabaseClient
+
+      .from("novel_readers")
+
+      .select(`
+        id,
+        novel_id,
+        reader_id,
+        pages_read,
+        progress_percent
+      `)
+
+      .eq(
+        "reader_id",
+        user.id
+      )
+
+      .eq(
+        "novel_id",
+        NOVEL_ID
+      )
+
+      .order(
+        "created_at",
+        {
+          ascending: false
+        }
+      )
+
+      .limit(1);
+
 
 
   if (assignmentError) {
+
 
     console.error(
       "Could not load assignment:",
       assignmentError
     );
 
+
     return null;
+
   }
 
 
-  if (!assignments || assignments.length === 0) {
+
+  if (
+    !assignments ||
+    assignments.length === 0
+  ) {
+
 
     console.error(
-      "No assignment found for this novel."
+      "No reading assignment found."
     );
 
+
     return null;
+
   }
+
 
 
   return assignments[0].id;
+
+
 }
-  async function loadSelectedNovel() {
 
-  if (!NOVEL_ID) {
-    return false;
-  }
 
-  /*
-   * Get the logged-in reader.
-   */
-  const {
-    data: { user },
-    error: userError
-  } = await supabaseClient.auth.getUser();
 
-  if (userError || !user) {
+/* =====================================================
+   LOAD SELECTED NOVEL
+   ===================================================== */
 
-    alert("Please log in to read this novel.");
+
+async function loadSelectedNovel() {
+
+
+  const user =
+    await getCurrentUser();
+
+
+  if (!user) {
+
+
+    alert(
+      "Please log in to read this novel."
+    );
+
 
     window.location.href =
-      "read-and-earn.html";
+      "login.html";
+
 
     return false;
+
   }
 
 
-  /*
-   * Load the selected published novel.
-   */
+
   const {
     data: novel,
     error
-  } = await supabaseClient
-    .from("novels")
-    .select(`
-      id,
-      title,
-      author_name,
-      description,
-      cover_url,
-      status,
-      submission_status,
-      submitted_by,
-      page_count,
-      required_reading_percent,
-      approved_reader_reward
-    `)
-    .eq("id", NOVEL_ID)
-    .single();
+  } =
+    await supabaseClient
+
+      .from("novels")
+
+      .select(`
+        id,
+        title,
+        author_name,
+        description,
+        cover_url,
+        status,
+        submission_status,
+        submitted_by,
+        page_count,
+        required_reading_percent,
+        approved_reader_reward
+      `)
+
+      .eq(
+        "id",
+        NOVEL_ID
+      )
+
+      .single();
 
 
-  if (error || !novel) {
+
+  if (
+    error ||
+    !novel
+  ) {
+
 
     console.error(
       "Unable to load selected novel:",
       error
     );
 
-    alert("This novel could not be found.");
+
+    alert(
+      "This novel could not be found."
+    );
+
 
     window.location.href =
       "read-and-earn.html";
 
+
     return false;
+
   }
 
 
-  /*
-   * IMPORTANT:
-   * A writer cannot read their own uploaded novel
-   * through Read & Earn.
-   */
-  if (novel.submitted_by === user.id) {
+
+  /* ===================================================
+     PREVENT WRITER FROM READING OWN NOVEL
+     =================================================== */
+
+
+  if (
+    novel.submitted_by === user.id
+  ) {
+
 
     alert(
       "You cannot read your own uploaded novel through Read & Earn."
     );
 
+
     window.location.href =
       "read-and-earn.html";
 
+
     return false;
+
   }
 
 
-  /*
-   * Only published novels are available to readers.
-   */
+
+  /* ===================================================
+     CHECK NOVEL AVAILABILITY
+     =================================================== */
+
+
   if (
-    novel.status !== "published" ||
-    novel.submission_status !== "published"
+    novel.status !== "published"
   ) {
+
 
     alert(
       "This novel is not currently available."
     );
 
+
     window.location.href =
       "read-and-earn.html";
 
+
     return false;
+
   }
 
 
-  /*
-   * Update title.
-   */
+
+  /* ===================================================
+     STORE REQUIRED READING PERCENTAGE
+     =================================================== */
+
+
+  const rawReadingPercent =
+    Number(
+      novel.required_reading_percent
+    );
+
+
+  if (
+    Number.isFinite(
+      rawReadingPercent
+    ) &&
+
+    rawReadingPercent > 0 &&
+
+    rawReadingPercent <= 100
+  ) {
+
+
+    requiredReadingPercent =
+      rawReadingPercent;
+
+  }
+
+  else {
+
+
+    requiredReadingPercent =
+      100;
+
+  }
+
+
+
+  /* ===================================================
+     UPDATE TITLE
+     =================================================== */
+
+
   const titleElement =
-    document.getElementById("novelTitle");
+    document.getElementById(
+      "novelTitle"
+    );
+
 
   if (titleElement) {
 
+
     titleElement.textContent =
-      novel.title || "Untitled Novel";
+      novel.title ||
+      "Untitled Novel";
+
   }
 
 
-  /*
-   * Update author/details.
-   */
+
+  /* ===================================================
+     UPDATE DETAILS
+     =================================================== */
+
+
   const detailsElement =
-    document.getElementById("novelDetails");
+    document.getElementById(
+      "novelDetails"
+    );
+
 
   if (detailsElement) {
 
+
     detailsElement.textContent =
-      `By ${novel.author_name || "Unknown Author"}`;
+      `By ${
+        novel.author_name ||
+        "Unknown Author"
+      }`;
+
   }
 
 
-  /*
-   * Update cover.
-   */
-  const coverElement =
-    document.getElementById("novelCover");
 
-  if (coverElement && novel.cover_url) {
+  /* ===================================================
+     UPDATE COVER
+     =================================================== */
+
+
+  const coverElement =
+    document.getElementById(
+      "novelCover"
+    );
+
+
+  if (
+    coverElement &&
+    novel.cover_url
+  ) {
+
 
     coverElement.src =
       novel.cover_url;
 
+
     coverElement.alt =
-      `${novel.title || "Novel"} cover`;
+      `${
+        novel.title ||
+        "Novel"
+      } cover`;
+
   }
 
 
-  /*
-   * Update reward.
-   */
+
+  /* ===================================================
+     LOAD AND VALIDATE REWARD
+     =================================================== */
+
+
   const rewardElement =
-    document.getElementById("rewardAmount");
-
-  if (rewardElement) {
-
-    rewardElement.textContent =
-      `₦${Number(
-        novel.approved_reader_reward || 0
-      ).toLocaleString("en-NG")}`;
-  }
+    document.getElementById(
+      "rewardAmount"
+    );
 
 
   /*
-   * Update browser title.
+   * Read EXACTLY from:
+   *
+   * approved_reader_reward
    */
+  const rawReward =
+    novel.approved_reader_reward;
+
+
+  /*
+   * Convert safely.
+   */
+  const reward =
+    Number(rawReward);
+
+
+
+  console.log(
+    "Novel reward from database:",
+    rawReward
+  );
+
+
+  console.log(
+    "Converted reward:",
+    reward
+  );
+
+
+
+  /*
+   * The reward must be a positive number.
+   */
+  if (
+    !Number.isFinite(
+      reward
+    ) ||
+
+    reward <= 0
+  ) {
+
+
+    console.error(
+      "Invalid approved_reader_reward:",
+      {
+        rawReward,
+        reward,
+        novelId: novel.id
+      }
+    );
+
+
+    currentNovelReward =
+      0;
+
+
+    if (rewardElement) {
+
+
+      rewardElement.textContent =
+        "Reward unavailable";
+
+    }
+
+
+    /*
+     * We do not redirect here.
+     *
+     * The novel can still be displayed,
+     * but the database function must
+     * contain a valid reward before
+     * crediting the reader.
+     */
+
+  }
+
+  else {
+
+
+    /*
+     * Store the valid reward.
+     */
+    currentNovelReward =
+      reward;
+
+
+
+    /*
+     * Display the reward.
+     */
+    if (rewardElement) {
+
+
+      rewardElement.textContent =
+        formatMoney(
+          currentNovelReward
+        );
+
+    }
+
+  }
+
+
+
+  /* ===================================================
+     UPDATE BROWSER TITLE
+     =================================================== */
+
+
   document.title =
-    `Reading | ${novel.title || "EarnGig"}`;
+    `Reading | ${
+      novel.title ||
+      "EarnGig"
+    }`;
+
+
+
+  console.log(
+    "Novel loaded successfully:",
+    novel.id
+  );
+
+
+  console.log(
+    "Approved reader reward:",
+    currentNovelReward
+  );
+
 
 
   return true;
-  }
+
+
+}
+
+
 
 /* =====================================================
-   LOAD NOVEL PAGES FROM DATABASE
+   LOAD NOVEL PAGES
    ===================================================== */
+
 
 async function loadNovelPages() {
 
-  if (!NOVEL_ID) {
-    return false;
-  }
 
   const {
     data,
     error
-  } = await supabaseClient
-    .from("novel_pages")
-    .select(`
-      page_number,
-      chapter,
-      title,
-      content
-    `)
-    .eq("novel_id", NOVEL_ID)
-    .order("page_number", {
-      ascending: true
-    });
+  } =
+    await supabaseClient
+
+      .from("novel_pages")
+
+      .select(`
+        page_number,
+        chapter,
+        title,
+        content
+      `)
+
+      .eq(
+        "novel_id",
+        NOVEL_ID
+      )
+
+      .order(
+        "page_number",
+        {
+          ascending: true
+        }
+      );
+
+
 
   if (error) {
+
 
     console.error(
       "Unable to load novel pages:",
       error
     );
 
+
     alert(
       "Unable to load the pages for this novel."
     );
 
+
     return false;
+
   }
 
-  /*
-   * If database pages exist, use them.
-   */
-  if (data && data.length > 0) {
 
-    pages = data;
 
-    totalPages = pages.length;
+  if (
+    data &&
+    data.length > 0
+  ) {
+
+
+    pages =
+      data;
+
+
+    totalPages =
+      pages.length;
+
 
     console.log(
-      "Novel pages loaded from database:",
+      "Novel pages loaded:",
       totalPages
     );
 
+
     return true;
+
   }
 
-/*
- * Do NOT use another novel as fallback content.
- *
- * Every published novel must have its own pages.
- */
-pages = [];
-totalPages = 0;
 
-alert(
-  "This novel has been published, but its reading pages are not available yet."
-);
 
-return false;
- }
-            
+  pages = [];
+
+
+  totalPages = 0;
+
+
+
+  alert(
+    "This novel has been published, but its reading pages are not available yet."
+  );
+
+
+  return false;
+
+
+}
+
+
+
 /* =====================================================
-   DISPLAY DATABASE PAGE
+   CALCULATE PROGRESS
    ===================================================== */
+
+
+function calculateProgressPercent() {
+
+
+  if (
+    !totalPages ||
+    totalPages <= 0
+  ) {
+
+
+    return 0;
+
+  }
+
+
+  return Math.min(
+    100,
+
+    Math.round(
+      (
+        currentPage /
+        totalPages
+      ) *
+      100
+    )
+  );
+
+
+}
+
+
+
+/* =====================================================
+   CHECK REQUIRED READING
+   ===================================================== */
+
+
+function hasCompletedRequiredReading() {
+
+
+  const progress =
+    calculateProgressPercent();
+
+
+  return (
+    progress >=
+    requiredReadingPercent
+  );
+
+
+}
+
+
+
+/* =====================================================
+   DISPLAY PAGE
+   ===================================================== */
+
 
 async function displayPage() {
 
+
   const page =
-    pages[currentPage - 1];
+    pages[
+      currentPage - 1
+    ];
+
+
 
   if (!page) {
+
+
+    console.error(
+      "Page not found:",
+      currentPage
+    );
+
+
     return;
+
   }
 
 
+
   chapterNumber.textContent =
-    page.chapter || "";
+    page.chapter ||
+    "";
+
 
 
   chapterTitle.textContent =
-    page.title || `Page ${currentPage}`;
+    page.title ||
+    `Page ${currentPage}`;
+
 
 
   novelContent.innerHTML =
@@ -962,39 +1674,44 @@ async function displayPage() {
     "<p>No content available.</p>";
 
 
+
   pageDisplay.textContent =
     `Page ${currentPage} of ${totalPages}`;
+
 
 
   pageNumber.textContent =
     `${currentPage} / ${totalPages}`;
 
 
+
   const percentage =
-    Math.round(
-      (currentPage / totalPages) * 100
-    );
+    calculateProgressPercent();
+
 
 
   progressPercent.textContent =
     `${percentage}%`;
 
 
+
   progressFill.style.width =
     `${percentage}%`;
+
 
 
   previousButton.disabled =
     currentPage === 1;
 
 
-  if (currentPage >= totalPages) {
 
-    nextButton.disabled =
-      true;
-
-    nextButton.textContent =
-      "Reading Complete ✓";
+  /*
+   * Check whether required reading
+   * has been completed.
+   */
+  if (
+    hasCompletedRequiredReading()
+  ) {
 
 
     completionMessage.classList.add(
@@ -1002,19 +1719,21 @@ async function displayPage() {
     );
 
 
+
     progressMessage.textContent =
       "You have completed the required reading. Complete the verification quiz below.";
 
 
+
+    /*
+     * Load the quiz.
+     */
     await loadQuiz();
 
-  } else {
 
-    nextButton.disabled =
-      false;
+  }
 
-    nextButton.textContent =
-      "Next Page →";
+  else {
 
 
     completionMessage.classList.remove(
@@ -1028,9 +1747,41 @@ async function displayPage() {
 
 
     progressMessage.textContent =
-      "Continue reading the novel.";
+      `Continue reading. Complete at least ${requiredReadingPercent}% to unlock the quiz.`;
 
   }
+
+
+
+  /*
+   * Navigation button.
+   */
+  if (
+    currentPage >= totalPages
+  ) {
+
+
+    nextButton.disabled =
+      true;
+
+
+    nextButton.textContent =
+      "Reading Complete ✓";
+
+  }
+
+  else {
+
+
+    nextButton.disabled =
+      false;
+
+
+    nextButton.textContent =
+      "Next Page →";
+
+  }
+
 
 
   novelContent.scrollIntoView({
@@ -1038,41 +1789,53 @@ async function displayPage() {
     block: "start"
   });
 
+
 }
+
 
 
 /* =====================================================
    SAVE PROGRESS
    ===================================================== */
 
+
 async function saveProgress() {
 
+
   if (!novelReaderId) {
+
 
     console.warn(
       "No novelReaderId available."
     );
 
-    return false;
-
-  }
-
-
-  if (!totalPages) {
 
     return false;
 
   }
+
+
+
+  if (
+    !totalPages ||
+    totalPages <= 0
+  ) {
+
+
+    return false;
+
+  }
+
 
 
   const pagesRead =
     currentPage;
 
 
+
   const percentage =
-    Math.round(
-      (pagesRead / totalPages) * 100
-    );
+    calculateProgressPercent();
+
 
 
   const {
@@ -1082,70 +1845,96 @@ async function saveProgress() {
     await supabaseClient.rpc(
       "update_novel_reading_progress",
       {
+
         p_novel_reader_id:
           novelReaderId,
+
 
         p_pages_read:
           pagesRead,
 
+
         p_progress_percent:
           percentage
+
       }
     );
 
 
+
   if (error) {
+
 
     console.error(
       "Could not save reading progress:",
       error
     );
 
+
     return false;
 
   }
 
 
+
   console.log(
     "Reading progress saved:",
-    pagesRead,
-    percentage + "%"
+    {
+      pagesRead,
+      percentage
+    }
   );
 
 
-  return data === true;
+
+  return (
+    data === true ||
+    data === null ||
+    data !== false
+  );
+
 
 }
+
 
 
 /* =====================================================
    NEXT PAGE
    ===================================================== */
 
+
 nextButton.addEventListener(
   "click",
+
   async function () {
+
 
     if (
       currentPage >= totalPages
     ) {
+
 
       return;
 
     }
 
 
+
     currentPage++;
 
 
+
     await displayPage();
+
 
 
     const saved =
       await saveProgress();
 
 
+
     if (!saved) {
+
 
       console.error(
         "Progress update failed."
@@ -1153,38 +1942,49 @@ nextButton.addEventListener(
 
     }
 
+
   }
 );
+
 
 
 /* =====================================================
    PREVIOUS PAGE
    ===================================================== */
 
+
 previousButton.addEventListener(
   "click",
+
   async function () {
+
 
     if (
       currentPage <= 1
     ) {
+
 
       return;
 
     }
 
 
+
     currentPage--;
 
 
+
     await displayPage();
+
 
 
     const saved =
       await saveProgress();
 
 
+
     if (!saved) {
+
 
       console.error(
         "Progress update failed."
@@ -1192,21 +1992,35 @@ previousButton.addEventListener(
 
     }
 
+
   }
 );
+
 
 
 /* =====================================================
    LOAD QUIZ
    ===================================================== */
 
+
 async function loadQuiz() {
 
-  if (!NOVEL_ID) {
+
+  /*
+   * Don't load repeatedly if already loaded.
+   */
+  if (
+    quizQuestions.length > 0
+  ) {
+
+
+    renderQuiz();
+
 
     return;
 
   }
+
 
 
   const {
@@ -1216,78 +2030,103 @@ async function loadQuiz() {
     await supabaseClient.rpc(
       "get_novel_quiz",
       {
+
         p_novel_id:
           NOVEL_ID
+
       }
     );
 
 
+
   if (error) {
+
 
     console.error(
       "Could not load quiz:",
       error
     );
 
+
     quizResult.className =
       "quiz-result failed";
+
 
     quizResult.textContent =
       "The verification quiz could not be loaded.";
 
+
     return;
 
   }
+
 
 
   quizQuestions =
     data || [];
 
 
+
   if (
     !quizQuestions.length
   ) {
+
 
     console.error(
       "No quiz questions found."
     );
 
+
     quizResult.className =
       "quiz-result failed";
 
+
     quizResult.textContent =
       "No verification questions are available for this novel.";
+
 
     return;
 
   }
 
 
+
   renderQuiz();
 
+
 }
+
 
 
 /* =====================================================
    RENDER QUIZ
    ===================================================== */
 
+
 function renderQuiz() {
+
 
   quizCard.classList.add(
     "unlocked"
   );
 
 
+
   quizForm.innerHTML =
     "";
 
 
+
   quizQuestions.forEach(
-    function (question, index) {
+    function (
+      question,
+      index
+    ) {
+
 
       const questionNumber =
         index + 1;
+
 
 
       const wrapper =
@@ -1296,14 +2135,17 @@ function renderQuiz() {
         );
 
 
+
       wrapper.className =
         "quiz-question";
+
 
 
       const questionText =
         document.createElement(
           "strong"
         );
+
 
 
       questionText.textContent =
@@ -1315,30 +2157,46 @@ function renderQuiz() {
         }`;
 
 
+
       wrapper.appendChild(
         questionText
       );
+
 
 
       let options =
         question.options;
 
 
+
+      /*
+       * Handle JSON/string options.
+       */
       if (
         typeof options ===
         "string"
       ) {
 
+
         try {
 
-          options =
-            JSON.parse(options);
 
-        } catch (e) {
+          options =
+            JSON.parse(
+              options
+            );
+
+
+        }
+
+        catch (error) {
+
 
           options =
             options
+
               .split("|")
+
               .map(
                 item =>
                   item.trim()
@@ -1346,96 +2204,146 @@ function renderQuiz() {
 
         }
 
+
       }
 
 
+
+      /*
+       * Use individual database columns
+       * if options array is unavailable.
+       */
       if (
-        !Array.isArray(options)
+        !Array.isArray(
+          options
+        )
       ) {
 
+
         options = [
+
           question.option_a,
+
           question.option_b,
+
           question.option_c,
+
           question.option_d
-        ].filter(Boolean);
+
+        ].filter(
+          Boolean
+        );
+
 
       }
 
 
-    options.forEach(
-  function (option, optionIndex) {
 
-    const label =
-      document.createElement(
-        "label"
+      const optionLetters =
+
+        [
+          "A",
+          "B",
+          "C",
+          "D"
+        ];
+
+
+
+      options.forEach(
+        function (
+          option,
+          optionIndex
+        ) {
+
+
+          const label =
+            document.createElement(
+              "label"
+            );
+
+
+
+          const input =
+            document.createElement(
+              "input"
+            );
+
+
+
+          input.type =
+            "radio";
+
+
+
+          input.name =
+            `question_${
+              question.id ||
+              questionNumber
+            }`;
+
+
+
+          input.value =
+            optionLetters[
+              optionIndex
+            ];
+
+
+
+          label.appendChild(
+            input
+          );
+
+
+
+          const optionText =
+
+            typeof option ===
+            "object"
+
+              ?
+
+              (
+                option.text ||
+                option.label ||
+                option.value ||
+                ""
+              )
+
+              :
+
+              option;
+
+
+
+          label.appendChild(
+            document.createTextNode(
+              " " +
+              optionText
+            )
+          );
+
+
+
+          wrapper.appendChild(
+            label
+          );
+
+
+        }
       );
 
-
-    const input =
-      document.createElement(
-        "input"
-      );
-
-
-    input.type =
-      "radio";
-
-
-    input.name =
-      `question_${question.id || questionNumber}`;
-
-
-    const optionLetters =
-      ["a", "b", "c", "d"];
-
-
-    input.value =
-      optionLetters[optionIndex];
-
-
-    label.appendChild(
-      input
-    );
-
-
-    const optionText =
-      typeof option === "object"
-        ? (
-            option.text ||
-            option.label ||
-            option.value ||
-            ""
-          )
-        : option;
-
-
-    const text =
-      document.createTextNode(
-        " " + optionText
-      );
-
-
-    label.appendChild(
-      text
-    );
-
-
-    wrapper.appendChild(
-      label
-    );
-
-  }
-);  
-                
 
 
       quizForm.appendChild(
         wrapper
       );
 
+
     }
   );
+
 
 
   const submitButton =
@@ -1444,56 +2352,129 @@ function renderQuiz() {
     );
 
 
+
   submitButton.type =
     "submit";
+
 
 
   submitButton.className =
     "btn primary";
 
 
+
   submitButton.textContent =
     "Submit Quiz";
+
 
 
   quizForm.appendChild(
     submitButton
   );
 
+
 }
+
 
 
 /* =====================================================
    SUBMIT QUIZ
    ===================================================== */
 
+
 quizForm.addEventListener(
   "submit",
-  async function (event) {
+
+  async function (
+    event
+  ) {
+
 
     event.preventDefault();
 
 
+
+    /* ===============================================
+       VALIDATE ASSIGNMENT
+       =============================================== */
+
+
     if (!novelReaderId) {
+
 
       alert(
         "Your reading assignment could not be found."
       );
+
 
       return;
 
     }
 
 
+
+    /* ===============================================
+       VALIDATE READING
+       =============================================== */
+
+
+    if (
+      !hasCompletedRequiredReading()
+    ) {
+
+
+      alert(
+        `Please complete at least ${requiredReadingPercent}% of the novel before submitting the quiz.`
+      );
+
+
+      return;
+
+    }
+
+
+
+    /* ===============================================
+       VALIDATE QUIZ
+       =============================================== */
+
+
+    if (
+      !quizQuestions.length
+    ) {
+
+
+      alert(
+        "No quiz questions are available."
+      );
+
+
+      return;
+
+    }
+
+
+
+    /* ===============================================
+       COLLECT ANSWERS
+       =============================================== */
+
+
     const answers = {};
 
 
+
     quizQuestions.forEach(
-      function (question, index) {
+      function (
+        question,
+        index
+      ) {
+
 
         const questionId =
           question.id ||
           index + 1;
+
 
 
         const selected =
@@ -1502,29 +2483,50 @@ quizForm.addEventListener(
           );
 
 
+
         if (selected) {
 
-          answers[questionId] =
+
+          answers[
+            questionId
+          ] =
             selected.value;
 
         }
+
 
       }
     );
 
 
+
+    /* ===============================================
+       CHECK ALL ANSWERS
+       =============================================== */
+
+
     if (
-      Object.keys(answers).length !==
+      Object.keys(
+        answers
+      ).length !==
       quizQuestions.length
     ) {
+
 
       alert(
         "Please answer all quiz questions before submitting."
       );
 
+
       return;
 
     }
+
+
+
+    /* ===============================================
+       SUBMIT BUTTON
+       =============================================== */
 
 
     const submitButton =
@@ -1533,15 +2535,24 @@ quizForm.addEventListener(
       );
 
 
+
     if (submitButton) {
+
 
       submitButton.disabled =
         true;
+
 
       submitButton.textContent =
         "Submitting...";
 
     }
+
+
+
+    /* ===============================================
+       SUBMIT TO DATABASE
+       =============================================== */
 
 
     const {
@@ -1551,16 +2562,26 @@ quizForm.addEventListener(
       await supabaseClient.rpc(
         "submit_novel_quiz",
         {
+
           p_novel_reader_id:
             novelReaderId,
 
+
           p_answers:
             answers
+
         }
       );
 
 
+
+    /* ===============================================
+       DATABASE ERROR
+       =============================================== */
+
+
     if (error) {
+
 
       console.error(
         "Quiz submission error:",
@@ -1574,285 +2595,431 @@ quizForm.addEventListener(
 
       quizResult.innerHTML =
         `
+
           <strong>
+
             Quiz submission failed.
+
           </strong>
 
+
           <p>
+
             ${escapeHtml(
               error.message ||
               "Please try again."
             )}
+
           </p>
+
         `;
+
 
 
       if (submitButton) {
 
+
         submitButton.disabled =
           false;
 
+
         submitButton.textContent =
-          "Submit Quiz";
+          "Try Again";
 
       }
+
 
 
       return;
 
     }
 
-/* =====================================================
-   CHECK QUIZ RESULT
-   ===================================================== */
-
-console.log(
-  "Quiz result:",
-  data
-);
 
 
-/*
- * The RPC can return:
- *
- * success: false
- * verified: false
- *
- * when the reader fails the quiz.
- *
- * In that case, DO NOT lock the quiz.
- */
-if (!data || data.success !== true) {
-
-  quizResult.className =
-    "quiz-result failed";
+    /* ===============================================
+       LOG RESULT
+       =============================================== */
 
 
-  quizResult.innerHTML =
-    `
-      <strong>
-        Quiz not passed.
-      </strong>
-
-      <p>
-        ${escapeHtml(
-          data?.message ||
-          "You did not pass the verification quiz."
-        )}
-      </p>
-
-      <p>
-        Score: ${
-          data?.score ?? 0
-        }%
-      </p>
-
-      <p>
-        Correct answers: ${
-          data?.correct_answers ?? 0
-        } / ${
-          data?.total_questions ??
-          quizQuestions.length
-        }
-      </p>
-    `;
-
-
-  /*
-   * Allow the reader to try again.
-   */
-  if (submitButton) {
-
-    submitButton.disabled =
-      false;
-
-
-    submitButton.textContent =
-      "Try Again";
-
-  }
-
-
-  return;
-
-}
-
-
-/* =====================================================
-   QUIZ WAS SUCCESSFUL
-   ===================================================== */
-
-if (
-  data.verified === true ||
-  data.success === true
-) {
-
-  quizResult.className =
-    "quiz-result success";
-
-
-  quizResult.innerHTML =
-    `
-      <strong>
-        ✓ Reading verified successfully.
-      </strong>
-
-      <p>
-        You completed the required reading and
-        passed the verification quiz.
-      </p>
-
-      <p>
-        Your reader reward has been processed.
-      </p>
-
-      <p>
-        Reward: ₦${
-          Number(
-            data.amount || 0
-          ).toLocaleString("en-NG")
-        }
-      </p>
-    `;
-
-
-  /*
-   * Lock the quiz only after successful verification.
-   */
-  quizForm
-    .querySelectorAll(
-      "input"
-    )
-    .forEach(
-      input =>
-        input.disabled = true
+    console.log(
+      "Quiz result:",
+      data
     );
 
 
-  if (submitButton) {
 
-    submitButton.disabled =
-      true;
+    /* ===============================================
+       CHECK FAILURE
+       =============================================== */
 
 
-    submitButton.textContent =
-      "Quiz Submitted ✓";
+    if (
+      !data ||
+      data.success !== true
+    ) {
 
-  }
 
-}
+      quizResult.className =
+        "quiz-result failed";
+
+
+
+      quizResult.innerHTML =
+        `
+
+          <strong>
+
+            Quiz not passed.
+
+          </strong>
+
+
+          <p>
+
+            ${escapeHtml(
+              data?.message ||
+              "You did not pass the verification quiz."
+            )}
+
+          </p>
+
+
+          <p>
+
+            Score:
+            ${data?.score ?? 0}%
+
+          </p>
+
+
+          <p>
+
+            Correct answers:
+
+            ${data?.correct_answers ?? 0}
+
+            /
+
+            ${
+              data?.total_questions ||
+              quizQuestions.length
+            }
+
+          </p>
+
+        `;
+
+
+
+      if (submitButton) {
+
+
+        submitButton.disabled =
+          false;
+
+
+        submitButton.textContent =
+          "Try Again";
+
+      }
+
+
+
+      return;
+
+    }
+
+
+
+    /* ===============================================
+       QUIZ SUCCESS
+       =============================================== */
+
+
+    /*
+     * The amount returned by the database
+     * is preferred.
+     *
+     * If the database does not return an
+     * amount, display the reward loaded
+     * from approved_reader_reward.
+     */
+
+
+    let creditedAmount =
+      Number(
+        data.amount ??
+        data.reward ??
+        data.reward_amount ??
+        currentNovelReward
+      );
+
+
+
+    /*
+     * Final safety fallback.
+     */
+    if (
+      !Number.isFinite(
+        creditedAmount
+      ) ||
+
+      creditedAmount < 0
+    ) {
+
+
+      creditedAmount =
+        currentNovelReward;
+
+    }
+
+
+
+    quizResult.className =
+      "quiz-result success";
+
+
+
+    quizResult.innerHTML =
+      `
+
+        <strong>
+
+          ✓ Reading verified successfully.
+
+        </strong>
+
+
+        <p>
+
+          You completed the required reading
+          and passed the verification quiz.
+
+        </p>
+
+
+        <p>
+
+          Your reader reward has been processed.
+
+        </p>
+
+
+        <p>
+
+          Reward:
+
+          ${formatMoney(
+            creditedAmount
+          )}
+
+        </p>
+
+      `;
+
+
+
+    /* ===============================================
+       LOCK QUIZ
+       =============================================== */
+
+
+    quizForm
+
+      .querySelectorAll(
+        "input"
+      )
+
+      .forEach(
+        function (
+          input
+        ) {
+
+
+          input.disabled =
+            true;
+
+
+        }
+      );
+
+
+
+    if (submitButton) {
+
+
+      submitButton.disabled =
+        true;
+
+
+      submitButton.textContent =
+        "Quiz Submitted ✓";
+
+    }
+
 
   }
 );
 
-
-/* =====================================================
-   ESCAPE HTML
-   ===================================================== */
-
-function escapeHtml(value) {
-
-  return String(
-    value ?? ""
-  )
-    .replaceAll(
-      "&",
-      "&amp;"
-    )
-    .replaceAll(
-      "<",
-      "&lt;"
-    )
-    .replaceAll(
-      ">",
-      "&gt;"
-    )
-    .replaceAll(
-      '"',
-      "&quot;"
-    )
-    .replaceAll(
-      "'",
-      "&#039;"
-    );
-
-}
 
 
 /* =====================================================
    INITIALIZE READING
    ===================================================== */
 
+
 async function initializeReading() {
+
+
+  /* ===============================================
+     GET ASSIGNMENT
+     =============================================== */
+
 
   const assignmentId =
     await getAssignmentId();
 
 
+
   if (!assignmentId) {
+
 
     alert(
       "No reading assignment was found for this novel."
     );
 
+
     window.location.href =
       "read-and-earn.html";
+
 
     return;
 
   }
+
 
 
   novelReaderId =
     assignmentId;
 
 
+
+  console.log(
+    "Reader assignment:",
+    novelReaderId
+  );
+
+
+
+  /* ===============================================
+     LOAD NOVEL
+     =============================================== */
+
+
   const novelLoaded =
     await loadSelectedNovel();
 
 
+
   if (!novelLoaded) {
+
 
     return;
 
   }
+
+
+
+  /* ===============================================
+     LOAD PAGES
+     =============================================== */
 
 
   const pagesLoaded =
     await loadNovelPages();
 
 
+
   if (!pagesLoaded) {
+
 
     return;
 
   }
 
 
+
+  /* ===============================================
+     SET FIRST PAGE
+     =============================================== */
+
+
   currentPage =
     1;
+
+
+
+  /*
+   * Enable next button.
+   */
+  if (
+    totalPages > 1
+  ) {
+
+
+    nextButton.disabled =
+      false;
+
+  }
+
+
+
+  /* ===============================================
+     DISPLAY FIRST PAGE
+     =============================================== */
 
 
   await displayPage();
 
 
+
+  /*
+   * Save initial progress.
+   */
+  await saveProgress();
+
+
+
   console.log(
-    "Reading page initialized successfully:",
-    totalPages,
-    "pages"
+    "Reading initialized successfully:",
+    {
+      novelId: NOVEL_ID,
+      assignmentId: novelReaderId,
+      totalPages,
+      reward: currentNovelReward
+    }
   );
 
+
 }
+
 
 
 /* =====================================================
    START
    ===================================================== */
 
+
 await initializeReading();
 
-});
+
+}
+);
+
+
 </script>
 
+
 </body>
-</html>                                                        
+
+</html>
