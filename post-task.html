@@ -10,472 +10,338 @@
     content="width=device-width, initial-scale=1.0"
   >
 
-  <title>
-    Post a Task | EarnGig
-  </title>
-
-
-  <!-- MAIN STYLES -->
+  <title>Post a Task | EarnGig</title>
 
   <link
     rel="stylesheet"
     href="styles.css?v=2"
   >
 
-
-  <!-- SUPABASE -->
-
-  <script
-    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
-  ></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <script src="supabase.js"></script>
 
 
   <style>
 
-
     /* =========================================
-       PAGE
+       POST TASK PAGE
     ========================================= */
 
     .post-task-page {
-
-      padding:
-        40px 0 70px;
-
+      padding-top: 35px;
+      padding-bottom: 60px;
     }
 
 
-    .post-task-wrapper {
-
-      max-width:
-        850px;
-
-      margin:
-        auto;
-
+    .post-task-layout {
+      max-width: 850px;
+      margin: 0 auto;
     }
 
-
-    /* =========================================
-       HEADER
-    ========================================= */
-
-    .post-task-heading {
-
-      margin-bottom:
-        30px;
-
-    }
-
-
-    .post-task-heading h1 {
-
-      margin:
-        8px 0 10px;
-
-    }
-
-
-    .post-task-heading p {
-
-      margin:
-        0;
-
-      color:
-        #686a7d;
-
-      line-height:
-        1.6;
-
-    }
-
-
-    /* =========================================
-       NOTICE
-    ========================================= */
-
-    .task-notice {
-
-      background:
-        #f3f0ff;
-
-      border:
-        1px solid #ddd5ff;
-
-      border-radius:
-        14px;
-
-      padding:
-        20px;
-
-      margin-bottom:
-        25px;
-
-    }
-
-
-    .task-notice strong {
-
-      display:
-        block;
-
-      margin-bottom:
-        8px;
-
-      color:
-        #4c35b8;
-
-    }
-
-
-    .task-notice p {
-
-      margin:
-        0;
-
-      color:
-        #5f6073;
-
-      line-height:
-        1.6;
-
-    }
-
-
-    /* =========================================
-       FORM CARD
-    ========================================= */
 
     .post-task-card {
+      background: white;
+      border-radius: 18px;
+      padding: 30px;
+      border: 1px solid #e5e7eb;
+      box-shadow: 0 10px 30px rgba(0,0,0,.05);
+    }
 
-      background:
-        white;
 
-      border:
-        1px solid #e6e7ee;
+    .post-task-header {
+      margin-bottom: 28px;
+    }
 
-      border-radius:
-        16px;
 
-      padding:
-        28px;
+    .post-task-header h1 {
+      margin: 8px 0 10px;
+    }
 
-      box-shadow:
-        0 6px 20px
-        rgba(0,0,0,.04);
 
+    .post-task-header p {
+      margin: 0;
+      color: #6b7280;
+      line-height: 1.6;
     }
 
 
     /* =========================================
-       FORM GROUP
+       FORM
     ========================================= */
 
-    .form-group {
+    .task-form-group {
+      margin-bottom: 20px;
+    }
 
-      margin-bottom:
-        22px;
+
+    .task-form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 700;
+      color: #1f2937;
+    }
+
+
+    .task-form-group small {
+      display: block;
+      margin-top: 6px;
+      color: #6b7280;
+      line-height: 1.5;
+    }
+
+
+    .task-form-group input,
+    .task-form-group select,
+    .task-form-group textarea {
+
+      width: 100%;
+
+      padding: 14px;
+
+      border: 1px solid #d1d5db;
+
+      border-radius: 10px;
+
+      font-size: 16px;
+
+      font-family: inherit;
+
+      outline: none;
+
+      background: white;
+
+      color: #1f2937;
 
     }
 
 
-    .form-group label {
+    .task-form-group input:focus,
+    .task-form-group select:focus,
+    .task-form-group textarea:focus {
 
-      display:
-        block;
-
-      margin-bottom:
-        8px;
-
-      font-weight:
-        700;
-
-      color:
-        #17182f;
-
-    }
-
-
-    .form-group small {
-
-      display:
-        block;
-
-      margin-top:
-        6px;
-
-      color:
-        #77798b;
-
-      line-height:
-        1.5;
-
-    }
-
-
-    /* =========================================
-       INPUTS
-    ========================================= */
-
-    .form-control {
-
-      width:
-        100%;
-
-      padding:
-        13px 14px;
-
-      border:
-        1px solid #dfe1ea;
-
-      border-radius:
-        9px;
-
-      font-family:
-        inherit;
-
-      font-size:
-        15px;
-
-      color:
-        #17182f;
-
-      background:
-        white;
-
-    }
-
-
-    .form-control:focus {
-
-      outline:
-        none;
-
-      border-color:
-        #6d4aff;
+      border-color: #6d4aff;
 
       box-shadow:
         0 0 0 3px
-        rgba(109,74,255,.10);
+        rgba(109,74,255,.12);
 
     }
 
 
-    textarea.form-control {
+    .task-form-group textarea {
 
-      min-height:
-        150px;
+      min-height: 140px;
 
-      resize:
-        vertical;
-
-      line-height:
-        1.5;
+      resize: vertical;
 
     }
 
 
-    /* =========================================
-       FORM ROW
-    ========================================= */
+    .task-form-grid {
 
-    .form-row {
-
-      display:
-        grid;
+      display: grid;
 
       grid-template-columns:
-        repeat(
-          2,
-          minmax(0,1fr)
+        repeat(2, minmax(0, 1fr));
+
+      gap: 18px;
+
+    }
+
+
+    /* =========================================
+       PROOF BOX
+    ========================================= */
+
+    .proof-box {
+
+      margin-top: 25px;
+
+      padding: 18px;
+
+      border-radius: 14px;
+
+      background: #f8f7ff;
+
+      border: 1px solid #e4ddff;
+
+    }
+
+
+    .proof-option {
+
+      display: flex;
+
+      align-items: flex-start;
+
+      gap: 12px;
+
+      cursor: pointer;
+
+    }
+
+
+    .proof-option input {
+
+      width: 20px;
+
+      height: 20px;
+
+      margin-top: 2px;
+
+      accent-color: #6d4aff;
+
+      cursor: pointer;
+
+    }
+
+
+    .proof-option strong {
+
+      display: block;
+
+      margin-bottom: 5px;
+
+    }
+
+
+    .proof-option p {
+
+      margin: 0;
+
+      color: #6b7280;
+
+      line-height: 1.5;
+
+      font-size: 14px;
+
+    }
+
+
+    /* =========================================
+       PAYMENT SUMMARY
+    ========================================= */
+
+    .payment-summary {
+
+      margin-top: 25px;
+
+      padding: 22px;
+
+      border-radius: 15px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #f8f7ff,
+          #ffffff
         );
 
-      gap:
-        18px;
+      border: 1px solid #ded8ff;
 
     }
 
 
-    /* =========================================
-       CHECKBOX
-    ========================================= */
+    .payment-summary-header {
 
-    .checkbox-group {
+      display: flex;
 
-      display:
-        flex;
+      align-items: center;
 
-      align-items:
-        flex-start;
+      justify-content: space-between;
 
-      gap:
-        12px;
+      gap: 15px;
 
-      padding:
-        15px;
-
-      background:
-        #fafafa;
-
-      border:
-        1px solid #eeeeee;
-
-      border-radius:
-        10px;
+      margin-bottom: 18px;
 
     }
 
 
-    .checkbox-group input {
+    .payment-summary-header h3 {
 
-      margin-top:
-        3px;
+      margin: 0;
 
-      width:
-        18px;
-
-      height:
-        18px;
-
-      cursor:
-        pointer;
+      font-size: 18px;
 
     }
 
 
-    .checkbox-group label {
+    .payment-summary-header span {
 
-      margin:
-        0;
+      font-size: 13px;
 
-      font-weight:
-        600;
+      color: #6d4aff;
 
-      cursor:
-        pointer;
+      font-weight: 700;
 
     }
 
 
-    .checkbox-group p {
+    .payment-row {
 
-      margin:
-        5px 0 0;
+      display: flex;
 
-      color:
-        #77798b;
+      align-items: center;
 
-      font-size:
-        13px;
+      justify-content: space-between;
 
-      line-height:
-        1.5;
+      gap: 20px;
 
-    }
-
-
-    /* =========================================
-       CALCULATION
-    ========================================= */
-
-    .task-calculation {
-
-      background:
-        #f7f7fb;
-
-      border:
-        1px solid #e6e7ee;
-
-      border-radius:
-        12px;
-
-      padding:
-        18px;
-
-      margin-bottom:
-        22px;
-
-    }
-
-
-    .task-calculation h3 {
-
-      margin:
-        0 0 15px;
-
-      font-size:
-        16px;
-
-    }
-
-
-    .calculation-row {
-
-      display:
-        flex;
-
-      justify-content:
-        space-between;
-
-      gap:
-        15px;
-
-      padding:
-        8px 0;
+      padding: 13px 0;
 
       border-bottom:
-        1px solid #e6e7ee;
+        1px solid #e8e7ee;
+
+      color: #6b7280;
 
     }
 
 
-    .calculation-row:last-child {
+    .payment-row strong {
 
-      border-bottom:
-        0;
+      color: #1f2937;
 
-      padding-bottom:
-        0;
+      font-size: 17px;
 
     }
 
 
-    .calculation-row span {
+    .payment-row.total {
 
-      color:
-        #686a7d;
+      margin-top: 5px;
 
-    }
+      padding-top: 18px;
 
+      border-bottom: none;
 
-    .calculation-row strong {
+      color: #1f2937;
 
-      color:
-        #17182f;
+      font-size: 17px;
 
-    }
-
-
-    .total-row {
-
-      padding-top:
-        14px;
-
-      font-size:
-        17px;
+      font-weight: 700;
 
     }
 
 
-    .total-row strong {
+    .payment-row.total strong {
 
-      color:
-        #6d4aff;
+      font-size: 24px;
 
-      font-size:
-        19px;
+      color: #6d4aff;
+
+    }
+
+
+    .fee-note {
+
+      margin: 15px 0 0;
+
+      font-size: 13px;
+
+      color: #6b7280;
+
+      line-height: 1.5;
 
     }
 
@@ -484,53 +350,54 @@
        BUTTON
     ========================================= */
 
-    .submit-task-btn {
+    .submit-task-button {
 
-      width:
-        100%;
+      width: 100%;
 
-      border:
-        0;
+      margin-top: 25px;
+
+      padding: 16px;
+
+      border: none;
+
+      border-radius: 11px;
 
       background:
-        #6d4aff;
+        linear-gradient(
+          135deg,
+          #7657ff,
+          #5b3de0
+        );
 
-      color:
-        white;
+      color: white;
 
-      padding:
-        14px;
+      font-size: 16px;
 
-      border-radius:
-        10px;
+      font-weight: 700;
 
-      font-size:
-        15px;
+      cursor: pointer;
 
-      font-weight:
-        700;
-
-      cursor:
-        pointer;
+      transition:
+        transform .2s,
+        opacity .2s;
 
     }
 
 
-    .submit-task-btn:hover {
+    .submit-task-button:hover {
 
-      opacity:
-        .92;
+      transform: translateY(-1px);
 
     }
 
 
-    .submit-task-btn:disabled {
+    .submit-task-button:disabled {
 
-      opacity:
-        .6;
+      opacity: .65;
 
-      cursor:
-        not-allowed;
+      cursor: not-allowed;
+
+      transform: none;
 
     }
 
@@ -541,54 +408,85 @@
 
     .form-message {
 
-      display:
-        none;
+      display: none;
 
-      padding:
-        15px;
+      margin-top: 18px;
 
-      border-radius:
-        10px;
+      padding: 15px;
 
-      margin-bottom:
-        20px;
+      border-radius: 10px;
 
-      line-height:
-        1.5;
+      line-height: 1.5;
 
     }
 
 
     .form-message.success {
 
-      display:
-        block;
+      display: block;
 
-      background:
-        #ecfdf3;
+      background: #ecfdf3;
 
-      border:
-        1px solid #a7f3c3;
+      border: 1px solid #a7f3c5;
 
-      color:
-        #166534;
+      color: #166534;
 
     }
 
 
     .form-message.error {
 
-      display:
-        block;
+      display: block;
 
-      background:
-        #fff5f5;
+      background: #fff5f5;
 
-      border:
-        1px solid #f0b5b5;
+      border: 1px solid #fecaca;
 
-      color:
-        #991b1b;
+      color: #991b1b;
+
+    }
+
+
+    /* =========================================
+       INFO BOX
+    ========================================= */
+
+    .task-rules {
+
+      margin-top: 25px;
+
+      padding: 20px;
+
+      border-radius: 14px;
+
+      background: #f9fafb;
+
+      border: 1px solid #e5e7eb;
+
+    }
+
+
+    .task-rules h3 {
+
+      margin:
+        0
+        0
+        12px;
+
+      font-size: 17px;
+
+    }
+
+
+    .task-rules ul {
+
+      margin: 0;
+
+      padding-left: 20px;
+
+      color: #6b7280;
+
+      line-height: 1.8;
 
     }
 
@@ -597,40 +495,32 @@
        MOBILE
     ========================================= */
 
-    @media (
-      max-width: 650px
-    ) {
-
-
-      .post-task-page {
-
-        padding:
-          25px 0 50px;
-
-      }
-
+    @media (max-width: 650px) {
 
       .post-task-card {
 
-        padding:
-          20px;
+        padding: 20px;
 
       }
 
 
-      .form-row {
+      .task-form-grid {
 
         grid-template-columns:
           1fr;
 
-        gap:
-          0;
+        gap: 0;
 
       }
 
 
-    }
+      .payment-row.total strong {
 
+        font-size: 21px;
+
+      }
+
+    }
 
   </style>
 
@@ -655,15 +545,12 @@
     >
 
       <span class="logo-mark">
-
         E
-
       </span>
 
       Earn<span>Gig</span>
 
     </a>
-
 
 
     <a
@@ -686,130 +573,57 @@
      MAIN
 ========================================= -->
 
-<main
-  class="post-task-page"
->
+<main class="dashboard-page post-task-page">
 
 
-  <div
-    class="container"
-  >
+  <div class="container">
 
 
-    <div
-      class="post-task-wrapper"
-    >
+    <div class="post-task-layout">
 
 
-      <!-- =====================================
-           PAGE HEADER
-      ====================================== -->
-
-      <section
-        class="post-task-heading"
-      >
+      <section class="post-task-card">
 
 
-        <span
-          class="eyebrow"
-        >
+        <!-- HEADER -->
 
-          CREATE A TASK
+        <div class="post-task-header">
 
-        </span>
-
-
-        <h1>
-
-          Post a Task
-
-        </h1>
+          <span class="eyebrow">
+            CREATE A TASK
+          </span>
 
 
-        <p>
-
-          Create a task for EarnGig members to complete.
-          Your task will be reviewed by an administrator
-          before it becomes available.
-
-        </p>
+          <h1>
+            Post a Task
+          </h1>
 
 
-      </section>
+          <p>
+            Need people to follow, like, comment,
+            subscribe, visit a website or complete
+            another activity? Submit your task for
+            EarnGig approval.
+          </p>
 
-
-
-      <!-- =====================================
-           NOTICE
-      ====================================== -->
-
-      <div
-        class="task-notice"
-      >
-
-
-        <strong>
-
-          📋 How task posting works
-
-        </strong>
-
-
-        <p>
-
-          Submit your task with clear instructions and
-          the correct link. An EarnGig administrator will
-          review your submission. Approved tasks may become
-          available to EarnGig members.
-
-        </p>
-
-
-      </div>
-
-
-
-      <!-- =====================================
-           FORM CARD
-      ====================================== -->
-
-      <section
-        class="post-task-card"
-      >
-
-
-        <!-- MESSAGE -->
-
-
-        <div
-          id="formMessage"
-          class="form-message"
-        >
 
         </div>
 
 
 
-        <!-- FORM -->
+        <!-- =========================================
+             FORM
+        ========================================= -->
+
+        <form id="postTaskForm">
 
 
-        <form
-          id="postTaskForm"
-        >
+          <!-- TASK TITLE -->
+
+          <div class="task-form-group">
 
 
-          <!-- =================================
-               TASK TITLE
-          ================================== -->
-
-          <div
-            class="form-group"
-          >
-
-
-            <label
-              for="taskTitle"
-            >
+            <label for="taskTitle">
 
               Task Title
 
@@ -817,48 +631,24 @@
 
 
             <input
-
               type="text"
-
               id="taskTitle"
-
-              class="form-control"
-
-              placeholder="
-                Example: Follow our TikTok account
-              "
-
-              maxlength="150"
-
+              placeholder="Example: Follow my TikTok account"
               required
-
+              maxlength="150"
             >
-
-
-            <small>
-
-              Give your task a short,
-              clear and descriptive title.
-
-            </small>
 
 
           </div>
 
 
 
-          <!-- =================================
-               CATEGORY
-          ================================== -->
+          <!-- CATEGORY -->
 
-          <div
-            class="form-group"
-          >
+          <div class="task-form-group">
 
 
-            <label
-              for="taskCategory"
-            >
+            <label for="taskCategory">
 
               Task Category
 
@@ -866,96 +656,45 @@
 
 
             <select
-
               id="taskCategory"
-
-              class="form-control"
-
               required
-
             >
 
-
-              <option
-                value=""
-              >
-
+              <option value="">
                 Select a category
-
               </option>
 
-
-              <option
-                value="Social Media"
-              >
-
+              <option value="Social Media">
                 Social Media
-
               </option>
 
-
-              <option
-                value="TikTok"
-              >
-
+              <option value="TikTok">
                 TikTok
-
               </option>
 
-
-              <option
-                value="Instagram"
-              >
-
+              <option value="Instagram">
                 Instagram
-
               </option>
 
-
-              <option
-                value="YouTube"
-              >
-
+              <option value="YouTube">
                 YouTube
-
               </option>
 
-
-              <option
-                value="Facebook"
-              >
-
-                Facebook
-
-              </option>
-
-
-              <option
-                value="Website"
-              >
-
+              <option value="Website">
                 Website Visit
-
               </option>
 
-
-              <option
-                value="App"
-              >
-
-                App / Download
-
+              <option value="App">
+                App Download
               </option>
 
+              <option value="Survey">
+                Survey
+              </option>
 
-              <option
-                value="Other"
-              >
-
+              <option value="Other">
                 Other
-
               </option>
-
 
             </select>
 
@@ -964,18 +703,12 @@
 
 
 
-          <!-- =================================
-               INSTRUCTIONS
-          ================================== -->
+          <!-- INSTRUCTIONS -->
 
-          <div
-            class="form-group"
-          >
+          <div class="task-form-group">
 
 
-            <label
-              for="taskInstructions"
-            >
+            <label for="taskDescription">
 
               Task Instructions
 
@@ -983,32 +716,17 @@
 
 
             <textarea
-
-              id="taskInstructions"
-
-              class="form-control"
-
-              placeholder="Explain exactly what participants should do.
-
-Example:
-
-1. Open the TikTok link.
-2. Follow the account.
-3. Like the latest video.
-4. Take a screenshot as proof."
-
-              maxlength="3000"
-
+              id="taskDescription"
+              placeholder="Clearly explain exactly what participants need to do..."
               required
-
+              maxlength="2000"
             ></textarea>
 
 
             <small>
 
-              Make your instructions clear so
-              participants know exactly what
-              they are expected to do.
+              Be clear and specific. Tasks with
+              confusing instructions may be rejected.
 
             </small>
 
@@ -1017,18 +735,12 @@ Example:
 
 
 
-          <!-- =================================
-               TASK LINK
-          ================================== -->
+          <!-- TASK LINK -->
 
-          <div
-            class="form-group"
-          >
+          <div class="task-form-group">
 
 
-            <label
-              for="taskLink"
-            >
+            <label for="taskLink">
 
               Task Link
 
@@ -1036,24 +748,16 @@ Example:
 
 
             <input
-
               type="url"
-
               id="taskLink"
-
-              class="form-control"
-
-              placeholder="
-                https://example.com/your-link
-              "
-
+              placeholder="https://..."
             >
 
 
             <small>
 
-              Add the link participants should
-              visit to complete the task.
+              Add the link participants should visit
+              to complete your task.
 
             </small>
 
@@ -1062,23 +766,17 @@ Example:
 
 
 
-          <!-- =================================
-               PARTICIPANTS + REWARD
-          ================================== -->
+          <!-- PARTICIPANTS + REWARD -->
 
-          <div
-            class="form-row"
-          >
+          <div class="task-form-grid">
 
 
-            <div
-              class="form-group"
-            >
+            <!-- PARTICIPANTS -->
+
+            <div class="task-form-group">
 
 
-              <label
-                for="maxParticipants"
-              >
+              <label for="participants">
 
                 Number of Participants
 
@@ -1086,29 +784,19 @@ Example:
 
 
               <input
-
                 type="number"
-
-                id="maxParticipants"
-
-                class="form-control"
-
-                value="10"
-
+                id="participants"
                 min="1"
-
-                max="100000"
-
+                step="1"
+                value="1"
                 required
-
               >
 
 
               <small>
 
-                Maximum number of EarnGig
-                members you want to complete
-                this task.
+                The number of people you want
+                to complete this task.
 
               </small>
 
@@ -1117,43 +805,32 @@ Example:
 
 
 
-            <div
-              class="form-group"
-            >
+            <!-- REWARD -->
+
+            <div class="task-form-group">
 
 
-              <label
-                for="rewardAmount"
-              >
+              <label for="rewardAmount">
 
-                Reward Per Participant (₦)
+                Reward Per Participant
 
               </label>
 
 
               <input
-
                 type="number"
-
                 id="rewardAmount"
-
-                class="form-control"
-
-                value="0"
-
-                min="0"
-
-                step="0.01"
-
+                min="10"
+                step="1"
+                value="10"
                 required
-
               >
 
 
               <small>
 
-                Amount each approved participant
-                should earn.
+                Minimum reward:
+                <strong>₦10 per participant.</strong>
 
               </small>
 
@@ -1165,41 +842,29 @@ Example:
 
 
 
-          <!-- =================================
-               PROOF REQUIRED
-          ================================== -->
+          <!-- =========================================
+               PROOF
+          ========================================= -->
 
-          <div
-            class="form-group"
-          >
+          <div class="proof-box">
 
 
-            <div
-              class="checkbox-group"
-            >
+            <label class="proof-option">
 
 
               <input
-
                 type="checkbox"
-
-                id="proofRequired"
-
+                id="requireProof"
                 checked
-
               >
 
 
               <div>
 
 
-                <label
-                  for="proofRequired"
-                >
-
+                <strong>
                   Require proof of completion
-
-                </label>
+                </strong>
 
 
                 <p>
@@ -1214,48 +879,47 @@ Example:
               </div>
 
 
-            </div>
+            </label>
 
 
           </div>
 
 
 
-          <!-- =================================
-               COST CALCULATION
-          ================================== -->
+          <!-- =========================================
+               PAYMENT SUMMARY
+          ========================================= -->
 
-          <div
-            class="task-calculation"
-          >
+          <div class="payment-summary">
 
 
-            <h3>
-
-              Task Reward Summary
-
-            </h3>
+            <div class="payment-summary-header">
 
 
-
-            <div
-              class="calculation-row"
-            >
+              <h3>
+                Task Payment Summary
+              </h3>
 
 
               <span>
+                EarnGig Fee: 20%
+              </span>
 
+
+            </div>
+
+
+
+            <div class="payment-row">
+
+
+              <span>
                 Participants
-
               </span>
 
 
-              <strong
-                id="summaryParticipants"
-              >
-
-                10
-
+              <strong id="summaryParticipants">
+                1
               </strong>
 
 
@@ -1263,23 +927,17 @@ Example:
 
 
 
-            <div
-              class="calculation-row"
-            >
+            <div class="payment-row">
 
 
               <span>
-
                 Reward per participant
-
               </span>
 
 
-              <strong
-                id="summaryReward"
-              >
+              <strong id="summaryReward">
 
-                ₦0
+                ₦10
 
               </strong>
 
@@ -1288,49 +946,85 @@ Example:
 
 
 
-            <div
-              class="
-                calculation-row
-                total-row
-              "
-            >
+            <div class="payment-row">
 
 
               <span>
-
-                Total reward commitment
-
+                Total reward budget
               </span>
 
 
-              <strong
-                id="summaryTotal"
-              >
+              <strong id="summaryBudget">
 
-                ₦0
+                ₦10
 
               </strong>
 
 
             </div>
+
+
+
+            <div class="payment-row">
+
+
+              <span>
+                EarnGig platform fee (20%)
+              </span>
+
+
+              <strong id="summaryFee">
+
+                ₦2
+
+              </strong>
+
+
+            </div>
+
+
+
+            <div class="payment-row total">
+
+
+              <span>
+                Total Payment
+              </span>
+
+
+              <strong id="summaryTotal">
+
+                ₦12
+
+              </strong>
+
+
+            </div>
+
+
+
+            <p class="fee-note">
+
+              The reward budget is reserved for
+              participants. EarnGig charges a 20%
+              platform fee for managing and operating
+              the task.
+
+            </p>
 
 
           </div>
 
 
 
-          <!-- =================================
-               SUBMIT
-          ================================== -->
+          <!-- =========================================
+               SUBMIT BUTTON
+          ========================================= -->
 
           <button
-
             type="submit"
-
-            class="submit-task-btn"
-
-            id="submitButton"
-
+            class="submit-task-button"
+            id="submitTaskButton"
           >
 
             Submit Task for Approval
@@ -1338,7 +1032,59 @@ Example:
           </button>
 
 
+
+          <!-- MESSAGE -->
+
+          <div
+            id="formMessage"
+            class="form-message"
+          ></div>
+
+
         </form>
+
+
+
+        <!-- =========================================
+             RULES
+        ========================================= -->
+
+        <div class="task-rules">
+
+
+          <h3>
+            Task Posting Rules
+          </h3>
+
+
+          <ul>
+
+            <li>
+              Your task must contain clear instructions.
+            </li>
+
+            <li>
+              The minimum reward is ₦10 per participant.
+            </li>
+
+            <li>
+              EarnGig charges a 20% platform fee.
+            </li>
+
+            <li>
+              All submitted tasks must be approved
+              before becoming available.
+            </li>
+
+            <li>
+              Fraudulent, misleading or prohibited
+              tasks may be rejected.
+            </li>
+
+          </ul>
+
+
+        </div>
 
 
       </section>
@@ -1361,12 +1107,9 @@ Example:
 <footer>
 
 
-  <div
-    class="container copy"
-  >
+  <div class="container copy">
 
-    © 2026 EarnGig.
-    All rights reserved.
+    © 2026 EarnGig. All rights reserved.
 
   </div>
 
@@ -1383,40 +1126,165 @@ Example:
 
 
 /* =========================================
+   CONFIGURATION
+========================================= */
+
+const PLATFORM_FEE_PERCENT = 20;
+
+const MINIMUM_REWARD = 10;
+
+
+/* =========================================
+   DOM ELEMENTS
+========================================= */
+
+const postTaskForm =
+  document.getElementById(
+    "postTaskForm"
+  );
+
+
+const participantsInput =
+  document.getElementById(
+    "participants"
+  );
+
+
+const rewardInput =
+  document.getElementById(
+    "rewardAmount"
+  );
+
+
+const summaryParticipants =
+  document.getElementById(
+    "summaryParticipants"
+  );
+
+
+const summaryReward =
+  document.getElementById(
+    "summaryReward"
+  );
+
+
+const summaryBudget =
+  document.getElementById(
+    "summaryBudget"
+  );
+
+
+const summaryFee =
+  document.getElementById(
+    "summaryFee"
+  );
+
+
+const summaryTotal =
+  document.getElementById(
+    "summaryTotal"
+  );
+
+
+const submitTaskButton =
+  document.getElementById(
+    "submitTaskButton"
+  );
+
+
+const formMessage =
+  document.getElementById(
+    "formMessage"
+  );
+
+
+/* =========================================
+   FORMAT NAIRA
+========================================= */
+
+function formatNaira(amount) {
+
+
+  const value =
+    Number(amount || 0);
+
+
+  return (
+    "₦" +
+    value.toLocaleString(
+      "en-NG",
+      {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+      }
+    )
+  );
+
+
+}
+
+
+/* =========================================
    GET CURRENT USER
 ========================================= */
 
 async function getCurrentUser() {
 
 
-  const {
-
-    data:
-    {
-      user
-    },
-
-    error
-
-  }
-
-  =
-
-  await supabaseClient
-
-    .auth
-
-    .getUser();
+  try {
 
 
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .auth
+        .getUser();
 
-  if (
 
-    error ||
+    if (error) {
 
-    !user
+      console.error(
+        "Authentication error:",
+        error
+      );
 
-  ) {
+
+      window.location.href =
+        "login.html";
+
+
+      return null;
+
+    }
+
+
+    const user =
+      data.user;
+
+
+    if (!user) {
+
+      window.location.href =
+        "login.html";
+
+
+      return null;
+
+    }
+
+
+    return user;
+
+
+  } catch (error) {
+
+
+    console.error(
+      "Unable to get current user:",
+      error
+    );
 
 
     window.location.href =
@@ -1428,93 +1296,210 @@ async function getCurrentUser() {
   }
 
 
-  return user;
+}
+
+
+/* =========================================
+   CALCULATE PAYMENT
+========================================= */
+
+function calculateTaskPayment() {
+
+
+  let participants =
+    Number(
+      participantsInput.value
+    );
+
+
+  let reward =
+    Number(
+      rewardInput.value
+    );
+
+
+  if (
+    !Number.isFinite(participants) ||
+    participants < 1
+  ) {
+
+    participants = 1;
+
+  }
+
+
+  if (
+    !Number.isFinite(reward) ||
+    reward < MINIMUM_REWARD
+  ) {
+
+    reward =
+      MINIMUM_REWARD;
+
+  }
+
+
+  const rewardBudget =
+    participants * reward;
+
+
+  const platformFee =
+    rewardBudget *
+    (
+      PLATFORM_FEE_PERCENT / 100
+    );
+
+
+  const totalPayment =
+    rewardBudget +
+    platformFee;
+
+
+  return {
+
+    participants:
+      participants,
+
+    reward:
+      reward,
+
+    rewardBudget:
+      rewardBudget,
+
+    platformFee:
+      platformFee,
+
+    totalPayment:
+      totalPayment
+
+  };
+
 
 }
 
 
 /* =========================================
-   ESCAPE HTML
+   UPDATE PAYMENT SUMMARY
 ========================================= */
 
-function escapeHtml(
-  value
-) {
+function updatePaymentSummary() {
 
 
-  return String(
+  const payment =
+    calculateTaskPayment();
 
-    value ??
-    ""
 
-  )
+  summaryParticipants.textContent =
+    payment.participants.toLocaleString(
+      "en-NG"
+    );
 
-  .replaceAll(
-    "&",
-    "&amp;"
-  )
 
-  .replaceAll(
-    "<",
-    "&lt;"
-  )
+  summaryReward.textContent =
+    formatNaira(
+      payment.reward
+    );
 
-  .replaceAll(
-    ">",
-    "&gt;"
-  )
 
-  .replaceAll(
-    '"',
-    "&quot;"
-  )
+  summaryBudget.textContent =
+    formatNaira(
+      payment.rewardBudget
+    );
 
-  .replaceAll(
-    "'",
-    "&#039;"
-  );
+
+  summaryFee.textContent =
+    formatNaira(
+      payment.platformFee
+    );
+
+
+  summaryTotal.textContent =
+    formatNaira(
+      payment.totalPayment
+    );
+
 
 }
 
 
 /* =========================================
-   FORMAT MONEY
+   PARTICIPANTS CHANGE
 ========================================= */
 
-function formatMoney(
-  amount
-) {
+participantsInput.addEventListener(
+  "input",
+  function() {
 
 
-  const value =
-    Number(amount || 0);
+    if (
+      Number(participantsInput.value) < 1
+    ) {
 
-
-  return new Intl.NumberFormat(
-
-    "en-NG",
-
-    {
-
-      style:
-        "currency",
-
-      currency:
-        "NGN",
-
-      minimumFractionDigits:
-        0,
-
-      maximumFractionDigits:
-        2
+      participantsInput.value = 1;
 
     }
 
-  )
 
-  .format(value);
+    updatePaymentSummary();
 
-}
+
+  }
+);
+
+
+/* =========================================
+   REWARD CHANGE
+========================================= */
+
+rewardInput.addEventListener(
+  "input",
+  function() {
+
+
+    updatePaymentSummary();
+
+
+  }
+);
+
+
+/* =========================================
+   REWARD VALIDATION
+========================================= */
+
+rewardInput.addEventListener(
+  "change",
+  function() {
+
+
+    let reward =
+      Number(
+        rewardInput.value
+      );
+
+
+    if (
+      !Number.isFinite(reward) ||
+      reward < MINIMUM_REWARD
+    ) {
+
+      rewardInput.value =
+        MINIMUM_REWARD;
+
+
+      showMessage(
+        "The minimum reward is ₦10 per participant.",
+        "error"
+      );
+
+    }
+
+
+    updatePaymentSummary();
+
+
+  }
+);
 
 
 /* =========================================
@@ -1522,607 +1507,536 @@ function formatMoney(
 ========================================= */
 
 function showMessage(
-  type,
-  message
+  message,
+  type
 ) {
 
 
-  const element =
-    document.getElementById(
-      "formMessage"
-    );
-
-
-  element.className =
-    `form-message ${type}`;
-
-
-  element.textContent =
+  formMessage.textContent =
     message;
 
 
-  element.scrollIntoView({
+  formMessage.className =
+    "form-message " + type;
 
-    behavior:
-      "smooth",
-
-    block:
-      "nearest"
-
-  });
 
 }
 
 
 /* =========================================
-   UPDATE REWARD SUMMARY
+   CLEAR MESSAGE
 ========================================= */
 
-function updateSummary() {
+function clearMessage() {
 
 
-  const participantsInput =
-    document.getElementById(
-      "maxParticipants"
-    );
+  formMessage.textContent =
+    "";
 
 
-  const rewardInput =
-    document.getElementById(
-      "rewardAmount"
-    );
+  formMessage.className =
+    "form-message";
 
-
-  const participants =
-    Math.max(
-
-      0,
-
-      Number(
-        participantsInput.value
-      ) || 0
-
-    );
-
-
-  const reward =
-    Math.max(
-
-      0,
-
-      Number(
-        rewardInput.value
-      ) || 0
-
-    );
-
-
-  const total =
-    participants * reward;
-
-
-
-  document.getElementById(
-    "summaryParticipants"
-  )
-
-  .textContent =
-    participants.toLocaleString(
-      "en-NG"
-    );
-
-
-
-  document.getElementById(
-    "summaryReward"
-  )
-
-  .textContent =
-    formatMoney(
-      reward
-    );
-
-
-
-  document.getElementById(
-    "summaryTotal"
-  )
-
-  .textContent =
-    formatMoney(
-      total
-    );
 
 }
 
 
 /* =========================================
-   ADD SUMMARY LISTENERS
+   VALIDATE URL
 ========================================= */
 
-document
-
-  .getElementById(
-    "maxParticipants"
-  )
-
-  .addEventListener(
-
-    "input",
-
-    updateSummary
-
-  );
+function validateUrl(value) {
 
 
+  if (!value) {
 
-document
+    return true;
 
-  .getElementById(
-    "rewardAmount"
-  )
+  }
 
-  .addEventListener(
 
-    "input",
+  try {
 
-    updateSummary
 
-  );
+    const url =
+      new URL(value);
+
+
+    return (
+      url.protocol === "http:" ||
+      url.protocol === "https:"
+    );
+
+
+  } catch (error) {
+
+
+    return false;
+
+  }
+
+
+}
 
 
 /* =========================================
    SUBMIT TASK
 ========================================= */
 
-document
-
-  .getElementById(
-    "postTaskForm"
-  )
-
-  .addEventListener(
-
-    "submit",
-
-    async function(
-      event
-    ) {
+postTaskForm.addEventListener(
+  "submit",
+  async function(event) {
 
 
-      event.preventDefault();
+    event.preventDefault();
 
 
-
-      const submitButton =
-        document.getElementById(
-          "submitButton"
-        );
+    clearMessage();
 
 
-      /* GET USER */
+    const user =
+      await getCurrentUser();
 
 
-      const user =
-        await getCurrentUser();
+    if (!user) {
+
+      return;
+
+    }
 
 
-      if (!user) {
-
-        return;
-
-      }
-
-
-
-      /* GET VALUES */
-
-
-      const title =
-        document.getElementById(
-          "taskTitle"
-        )
-
+    const title =
+      document
+        .getElementById("taskTitle")
         .value
-
         .trim();
 
 
+    const category =
+      document
+        .getElementById("taskCategory")
+        .value;
 
-      const category =
-        document.getElementById(
-          "taskCategory"
-        )
 
+    const description =
+      document
+        .getElementById("taskDescription")
         .value
-
         .trim();
 
 
-
-      const instructions =
-        document.getElementById(
-          "taskInstructions"
-        )
-
+    const taskLink =
+      document
+        .getElementById("taskLink")
         .value
-
         .trim();
 
 
-
-      const taskLink =
-        document.getElementById(
-          "taskLink"
-        )
-
-        .value
-
-        .trim();
-
-
-
-      const maxParticipants =
-        Number(
-
-          document.getElementById(
-            "maxParticipants"
-          )
-
-          .value
-
-        );
-
-
-
-      const rewardAmount =
-        Number(
-
-          document.getElementById(
-            "rewardAmount"
-          )
-
-          .value
-
-        );
-
-
-
-      const proofRequired =
-        document.getElementById(
-          "proofRequired"
-        )
-
+    const requireProof =
+      document
+        .getElementById("requireProof")
         .checked;
 
 
+    const payment =
+      calculateTaskPayment();
 
-      /* VALIDATION */
 
+    /* =====================================
+       BASIC VALIDATION
+    ===================================== */
 
-      if (!title) {
+    if (!title) {
 
 
-        showMessage(
+      showMessage(
+        "Please enter a task title.",
+        "error"
+      );
 
-          "error",
 
-          "Please enter a task title."
+      return;
 
-        );
+    }
 
 
-        return;
+    if (!category) {
 
-      }
 
+      showMessage(
+        "Please select a task category.",
+        "error"
+      );
 
 
-      if (!category) {
+      return;
 
+    }
 
-        showMessage(
 
-          "error",
+    if (!description) {
 
-          "Please select a task category."
 
-        );
+      showMessage(
+        "Please enter clear task instructions.",
+        "error"
+      );
 
 
-        return;
+      return;
 
-      }
+    }
 
 
+    if (
+      payment.reward <
+      MINIMUM_REWARD
+    ) {
 
-      if (!instructions) {
 
+      showMessage(
+        "The minimum reward is ₦10 per participant.",
+        "error"
+      );
 
-        showMessage(
 
-          "error",
+      rewardInput.value =
+        MINIMUM_REWARD;
 
-          "Please provide task instructions."
 
-        );
+      updatePaymentSummary();
 
 
-        return;
+      return;
 
-      }
+    }
 
 
+    if (
+      !validateUrl(taskLink)
+    ) {
 
-      if (
 
-        !Number.isFinite(
-          maxParticipants
-        )
+      showMessage(
+        "Please enter a valid website link starting with http:// or https://",
+        "error"
+      );
 
-        ||
 
-        maxParticipants < 1
+      return;
 
-      ) {
+    }
 
 
-        showMessage(
+    /* =====================================
+       CONFIRM PAYMENT
+    ===================================== */
 
-          "error",
+    const confirmed =
+      confirm(
 
-          "Please enter a valid number of participants."
+        "Task Payment Summary\n\n" +
 
-        );
+        "Participants: " +
+        payment.participants.toLocaleString("en-NG") +
 
+        "\n\nReward per participant: " +
+        formatNaira(payment.reward) +
 
-        return;
+        "\n\nReward budget: " +
+        formatNaira(payment.rewardBudget) +
 
-      }
+        "\n\nEarnGig platform fee (20%): " +
+        formatNaira(payment.platformFee) +
 
+        "\n\nTotal payment: " +
+        formatNaira(payment.totalPayment) +
 
+        "\n\nContinue with task submission?"
 
-      if (
+      );
 
-        !Number.isFinite(
-          rewardAmount
-        )
 
-        ||
+    if (!confirmed) {
 
-        rewardAmount < 0
+      return;
 
-      ) {
+    }
 
 
-        showMessage(
+    /* =====================================
+       DISABLE BUTTON
+    ===================================== */
 
-          "error",
+    submitTaskButton.disabled =
+      true;
 
-          "Please enter a valid reward amount."
 
-        );
+    submitTaskButton.textContent =
+      "Submitting Task...";
 
 
-        return;
+    try {
 
-      }
 
+      /*
+       * IMPORTANT:
+       *
+       * The task is submitted as "pending".
+       *
+       * It will NOT appear to workers until
+       * an administrator approves it.
+       *
+       * We store the task creator's user ID
+       * in user_id.
+       */
 
 
-      /* DISABLE BUTTON */
+      const taskData = {
 
 
-      submitButton.disabled =
-        true;
+        title:
+          title,
 
 
-      submitButton.textContent =
-        "Submitting...";
+        category:
+          category,
 
 
+        description:
+          description,
 
-      try {
 
+        task_link:
+          taskLink || null,
 
-        /* =====================================
-           INSERT SUBMISSION
-        ===================================== */
 
+        max_participants:
+          payment.participants,
 
-        const {
 
-          data,
+        reward_amount:
+          payment.reward,
 
-          error
 
-        }
+        status:
+          "pending",
 
-        =
 
+        user_id:
+          user.id
+
+
+      };
+
+
+      /*
+       * If your tasks table contains
+       * require_proof, it is also included.
+       *
+       * We try the complete insert first.
+       */
+
+
+      taskData.require_proof =
+        requireProof;
+
+
+      let {
+        data,
+        error
+      } =
         await supabaseClient
-
-          .from(
-            "task_submissions"
-          )
-
-          .insert({
-
-            user_id:
-              user.id,
-
-
-            title:
-              title,
-
-
-            category:
-              category,
-
-
-            instructions:
-              instructions,
-
-
-            task_link:
-              taskLink || null,
-
-
-            max_participants:
-              Math.floor(
-                maxParticipants
-              ),
-
-
-            reward_per_participant:
-              rewardAmount,
-
-
-            proof_required:
-              proofRequired,
-
-
-            status:
-              "pending"
-
-          })
-
-
-          .select(
-            "id"
-          )
-
+          .from("tasks")
+          .insert(taskData)
+          .select()
           .single();
 
 
-
-        if (error) {
-
-          throw error;
-
-        }
-
-
-
-        /* SUCCESS */
+      /*
+       * Some existing EarnGig databases may
+       * not yet have require_proof.
+       *
+       * If that column does not exist,
+       * retry without it.
+       */
 
 
-        document.getElementById(
-          "postTaskForm"
+      if (
+        error &&
+        (
+          error.message
+            .toLowerCase()
+            .includes("require_proof") ||
+
+          error.message
+            .toLowerCase()
+            .includes("column")
         )
-
-        .reset();
-
-
-
-        updateSummary();
-
-
-
-        showMessage(
-
-          "success",
-
-          "Your task has been submitted successfully and is now awaiting administrator approval."
-
-        );
-
-
-
-        setTimeout(
-
-          function() {
-
-
-            window.location.href =
-              "tasks.html";
-
-
-          },
-
-          2500
-
-        );
-
-
-      }
-
-
-      catch (
-        error
       ) {
 
 
+        delete taskData.require_proof;
+
+
+        const retry =
+          await supabaseClient
+            .from("tasks")
+            .insert(taskData)
+            .select()
+            .single();
+
+
+        data =
+          retry.data;
+
+
+        error =
+          retry.error;
+
+      }
+
+
+      if (error) {
+
+
         console.error(
-
           "Task submission error:",
-
           error
-
         );
 
 
-        showMessage(
-
-          "error",
-
-          "Unable to submit your task: " +
-
-          (
-
-            error.message ||
-
-            "Unknown error"
-
-          )
-
-        );
-
+        throw error;
 
       }
 
 
-      finally {
+      console.log(
+        "Task submitted:",
+        data
+      );
 
 
-        submitButton.disabled =
-          false;
+      showMessage(
+
+        "Your task has been submitted successfully. " +
+
+        "It is now awaiting EarnGig administrator approval. " +
+
+        "After approval, the next step will be payment confirmation before the task becomes active.",
+
+        "success"
+
+      );
 
 
-        submitButton.textContent =
-          "Submit Task for Approval";
+      postTaskForm.reset();
 
+
+      participantsInput.value = 1;
+
+
+      rewardInput.value =
+        MINIMUM_REWARD;
+
+
+      document
+        .getElementById("requireProof")
+        .checked = true;
+
+
+      updatePaymentSummary();
+
+
+      /*
+       * OPTIONAL REDIRECT
+       *
+       * You can later create:
+       *
+       * my-posted-tasks.html
+       *
+       * Then redirect the user there.
+       */
+
+
+      setTimeout(
+        function() {
+
+
+          window.location.href =
+            "tasks.html";
+
+
+        },
+        2500
+      );
+
+
+    } catch (error) {
+
+
+      console.error(
+        "Task submission failed:",
+        error
+      );
+
+
+      let message =
+        error.message ||
+        "Unable to submit your task.";
+
+
+      /*
+       * Give a clearer message if
+       * the database is missing user_id.
+       */
+
+
+      if (
+        message
+          .toLowerCase()
+          .includes("user_id")
+      ) {
+
+
+        message =
+
+          "Your tasks table needs a user_id column so EarnGig can identify who created each task. " +
+
+          "Please send me a screenshot of your tasks table definition and I will give you the exact SQL to fix it.";
 
       }
+
+
+      showMessage(
+        message,
+        "error"
+      );
+
+
+    } finally {
+
+
+      submitTaskButton.disabled =
+        false;
+
+
+      submitTaskButton.textContent =
+        "Submit Task for Approval";
 
 
     }
 
-  );
+
+  }
+);
 
 
 /* =========================================
-   START PAGE
+   INITIAL PAYMENT CALCULATION
 ========================================= */
 
-(async function() {
-
-
-  const user =
-    await getCurrentUser();
-
-
-  if (!user) {
-
-    return;
-
-  }
-
-
-  updateSummary();
-
-
-})();
+updatePaymentSummary();
 
 
 </script>
