@@ -10,314 +10,175 @@
     content="width=device-width, initial-scale=1.0"
   >
 
-  <title>
-    Tasks | EarnGig
-  </title>
-
+  <title>Tasks | EarnGig</title>
 
   <link
     rel="stylesheet"
-    href="styles.css?v=2"
+    href="styles.css?v=3"
   >
-
 
   <style>
 
-
     /* =========================================
-       TASK PAGE EXTRAS
+       TASK PAGE ADDITIONS
     ========================================= */
 
-
-    .task-page-actions {
-
-      display:
-        flex;
-
-      gap:
-        12px;
-
-      flex-wrap:
-        wrap;
-
-      margin-top:
-        18px;
-
+    .task-actions {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-bottom: 25px;
     }
 
 
-    .post-task-btn {
+    .task-action-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
 
-      background:
-        #6d4aff;
+      padding: 20px;
 
-      color:
-        white;
+      border-radius: 16px;
 
-      border:
-        0;
+      background: white;
 
-      text-decoration:
-        none;
-
-    }
-
-
-    .post-task-btn:hover {
-
-      opacity:
-        .9;
-
-    }
-
-
-    /* =========================================
-       TASK NAVIGATION
-    ========================================= */
-
-
-    .task-navigation {
-
-      display:
-        grid;
-
-      grid-template-columns:
-        repeat(
-          auto-fit,
-          minmax(240px, 1fr)
-        );
-
-      gap:
-        16px;
-
-      margin-bottom:
-        30px;
-
-    }
-
-
-    .task-nav-card {
-
-      background:
-        white;
-
-      border:
-        1px solid #e6e7ee;
-
-      border-radius:
-        14px;
-
-      padding:
-        20px;
-
-      text-decoration:
-        none;
-
-      color:
-        inherit;
-
-      transition:
-        transform .2s ease,
-        box-shadow .2s ease;
-
-    }
-
-
-    .task-nav-card:hover {
-
-      transform:
-        translateY(-2px);
+      border: 1px solid #e6e7ee;
 
       box-shadow:
-        0 8px 22px
-        rgba(0,0,0,.07);
-
+        0 6px 20px rgba(0, 0, 0, 0.05);
     }
 
 
-    .task-nav-icon {
-
-      font-size:
-        28px;
-
-      margin-bottom:
-        10px;
-
+    .task-action-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
     }
 
 
-    .task-nav-card h3 {
+    .task-action-icon {
+      width: 48px;
+      height: 48px;
 
-      margin:
-        0 0 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
-      color:
-        #17182f;
+      border-radius: 12px;
 
+      font-size: 23px;
+
+      background: #f1efff;
     }
 
 
-    .task-nav-card p {
+    .task-action-card h3 {
+      margin: 0 0 5px;
 
-      margin:
-        0;
-
-      color:
-        #686a7d;
-
-      font-size:
-        14px;
-
-      line-height:
-        1.5;
-
+      font-size: 17px;
     }
 
 
-    /* =========================================
-       TASK CARD
-    ========================================= */
+    .task-action-card p {
+      margin: 0;
 
+      color: #6b6d7c;
 
-    .task-card {
+      font-size: 14px;
 
-      position:
-        relative;
-
+      line-height: 1.5;
     }
 
 
-    .task-source {
-
-      display:
-        inline-flex;
-
-      align-items:
-        center;
-
-      gap:
-        6px;
-
-      margin-bottom:
-        10px;
-
-      padding:
-        5px 9px;
-
-      border-radius:
-        20px;
-
-      background:
-        #f0eeff;
-
-      color:
-        #6d4aff;
-
-      font-size:
-        11px;
-
-      font-weight:
-        700;
-
-      text-transform:
-        uppercase;
-
+    .task-action-card .btn {
+      white-space: nowrap;
     }
 
 
-    .task-links {
-
-      display:
-        flex;
-
-      gap:
-        10px;
-
-      flex-wrap:
-        wrap;
-
-      margin-top:
-        15px;
-
+    .task-filter-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
 
-    .task-links a {
-
-      text-decoration:
-        none;
-
+    .task-filter {
+      min-width: 170px;
     }
 
 
-    /* =========================================
-       REWARD
-    ========================================= */
+    .task-link-btn {
+      margin-top: 15px;
+      margin-right: 8px;
+
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
 
 
     .task-reward {
+      display: inline-block;
 
-      display:
-        inline-block;
+      margin-top: 14px;
 
-      margin-top:
-        15px;
+      background: #fff3b0;
 
-      background:
-        #FFD54A;
+      color: #17182f;
 
-      color:
-        #111827 !important;
+      padding: 7px 12px;
 
-      padding:
-        8px 14px;
+      border-radius: 9px;
 
-      border-radius:
-        10px;
+      font-size: 17px;
 
-      font-size:
-        20px;
-
-      font-weight:
-        900;
-
+      font-weight: 800;
     }
 
 
-    /* =========================================
-       MOBILE
-    ========================================= */
+    .task-card-actions {
+      display: flex;
+      flex-wrap: wrap;
 
+      gap: 10px;
 
-    @media (
-      max-width: 650px
-    ) {
-
-
-      .task-page-actions {
-
-        width:
-          100%;
-
-      }
-
-
-      .task-page-actions .btn {
-
-        flex:
-          1;
-
-        text-align:
-          center;
-
-      }
-
-
+      margin-top: 18px;
     }
 
+
+    @media (max-width: 700px) {
+
+      .task-actions {
+        grid-template-columns: 1fr;
+      }
+
+
+      .task-action-card {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+
+      .task-action-card .btn {
+        width: 100%;
+      }
+
+
+      .section-title {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+
+      .task-filter-wrap,
+      .task-filter {
+        width: 100%;
+      }
+
+    }
 
   </style>
-
 
 </head>
 
@@ -329,9 +190,7 @@
      HEADER
 ========================================= -->
 
-
 <header>
-
 
   <div class="container nav">
 
@@ -341,129 +200,63 @@
       href="index.html"
     >
 
-      <span
-        class="logo-mark"
-      >
-
+      <span class="logo-mark">
         E
-
       </span>
-
 
       Earn<span>Gig</span>
 
-
     </a>
-
 
 
     <a
       class="btn outline"
       href="dashboard.html"
     >
-
       Dashboard
-
     </a>
 
 
   </div>
-
 
 </header>
 
 
 
 <!-- =========================================
-     MAIN
+     MAIN CONTENT
 ========================================= -->
 
-
-<main
-  class="dashboard-page"
->
+<main class="dashboard-page">
 
 
-  <div
-    class="container"
-  >
-
+  <div class="container">
 
 
     <!-- =====================================
-         PAGE HEADER
+         PAGE HEADING
     ====================================== -->
 
-
-    <div
-      class="dashboard-heading"
-    >
+    <div class="dashboard-heading">
 
 
       <div>
 
 
-        <span
-          class="eyebrow"
-        >
-
+        <span class="eyebrow">
           EARN & COMPLETE
-
         </span>
 
 
         <h1>
-
           Tasks
-
         </h1>
 
 
         <p>
-
-          Complete tasks, earn rewards,
-          or submit your own task for approval.
-
+          Complete available tasks, earn rewards or
+          create a task for other EarnGig members.
         </p>
-
-
-
-        <!-- PAGE ACTIONS -->
-
-
-        <div
-          class="task-page-actions"
-        >
-
-
-          <a
-            href="create-task.html"
-            class="
-              btn
-              primary
-              post-task-btn
-            "
-          >
-
-            + Post a Task
-
-          </a>
-
-
-          <a
-            href="watch-and-earn.html"
-            class="
-              btn
-              outline
-            "
-          >
-
-            ▶ Watch & Earn
-
-          </a>
-
-
-        </div>
 
 
       </div>
@@ -477,118 +270,60 @@
          TASK STATISTICS
     ====================================== -->
 
-
-    <div
-      class="
-        dashboard-stats
-        task-stats
-      "
-    >
+    <div class="dashboard-stats task-stats">
 
 
-      <div
-        class="
-          dashboard-stat
-          task-stat
-        "
-      >
+      <div class="dashboard-stat task-stat">
 
         <small>
-
           Available Tasks
-
         </small>
 
-
-        <strong
-          id="available-tasks"
-        >
-
+        <strong id="available-tasks">
           0
-
         </strong>
-
 
       </div>
 
 
 
-      <div
-        class="
-          dashboard-stat
-          task-stat
-        "
-      >
+      <div class="dashboard-stat task-stat">
 
         <small>
-
           Completed
-
         </small>
 
-
-        <strong
-          id="completed-tasks"
-        >
-
+        <strong id="completed-tasks">
           0
-
         </strong>
-
 
       </div>
 
 
 
-      <div
-        class="
-          dashboard-stat
-          task-stat
-        "
-      >
+      <div class="dashboard-stat task-stat">
 
         <small>
-
           Pending
-
         </small>
 
-
-        <strong
-          id="pending-tasks"
-        >
-
+        <strong id="pending-tasks">
           0
-
         </strong>
-
 
       </div>
 
 
 
-      <div
-        class="
-          dashboard-stat
-          task-stat
-        "
-      >
+      <div class="dashboard-stat task-stat">
 
         <small>
-
           Task Earnings
-
         </small>
 
-
-        <strong
-          id="task-earnings"
-        >
-
+        <strong id="task-earnings">
           ₦0
-
         </strong>
-
 
       </div>
 
@@ -598,127 +333,131 @@
 
 
     <!-- =====================================
-         EARNGIG FEATURES
+         TASK MANAGEMENT
     ====================================== -->
 
-
-    <section
-      class="task-navigation"
-    >
+    <section class="dashboard-section">
 
 
-
-      <!-- POST TASK -->
-
-
-      <a
-        href="create-task.html"
-        class="task-nav-card"
-      >
+      <div class="section-title">
 
 
-        <div
-          class="task-nav-icon"
-        >
+        <div>
 
-          📋
+
+          <span class="eyebrow">
+            TASK MANAGEMENT
+          </span>
+
+
+          <h2>
+            Manage your tasks
+          </h2>
+
 
         </div>
 
 
-        <h3>
-
-          Post a Task
-
-        </h3>
-
-
-        <p>
-
-          Need people to follow, like,
-          comment or perform another activity?
-          Submit your task for EarnGig approval.
-
-        </p>
-
-
-      </a>
+      </div>
 
 
 
-      <!-- WATCH AND EARN -->
+      <div class="task-actions">
 
 
-      <a
-        href="watch-and-earn.html"
-        class="task-nav-card"
-      >
+        <!-- CREATE TASK -->
+
+        <div class="task-action-card">
 
 
-        <div
-          class="task-nav-icon"
-        >
+          <div class="task-action-left">
 
-          ▶️
+
+            <div class="task-action-icon">
+              ➕
+            </div>
+
+
+            <div>
+
+
+              <h3>
+                Create a Task
+              </h3>
+
+
+              <p>
+                Need people to follow, like, comment,
+                subscribe or complete another activity?
+                Submit your task for EarnGig approval.
+              </p>
+
+
+            </div>
+
+
+          </div>
+
+
+
+          <a
+            href="post-task.html"
+            class="btn primary"
+          >
+            Create Task
+          </a>
+
 
         </div>
 
 
-        <h3>
 
-          Watch & Earn
+        <!-- MY POSTED TASKS -->
 
-        </h3>
-
-
-        <p>
-
-          Watch available videos and earn
-          rewards while discovering content
-          from creators and advertisers.
-
-        </p>
+        <div class="task-action-card">
 
 
-      </a>
+          <div class="task-action-left">
+
+
+            <div class="task-action-icon">
+              📊
+            </div>
+
+
+            <div>
+
+
+              <h3>
+                My Posted Tasks
+              </h3>
+
+
+              <p>
+                View tasks you submitted and check
+                their approval status and activity.
+              </p>
+
+
+            </div>
+
+
+          </div>
 
 
 
-      <!-- MY POSTED TASKS -->
+          <a
+            href="my-posted-tasks.html"
+            class="btn outline"
+          >
+            View Tasks
+          </a>
 
-
-      <a
-        href="my-posted-tasks.html"
-        class="task-nav-card"
-      >
-
-
-        <div
-          class="task-nav-icon"
-        >
-
-          📊
 
         </div>
 
 
-        <h3>
-
-          My Posted Tasks
-
-        </h3>
-
-
-        <p>
-
-          View tasks you submitted,
-          check their approval status
-          and manage your active tasks.
-
-        </p>
-
-
-      </a>
+      </div>
 
 
     </section>
@@ -729,33 +468,22 @@
          AVAILABLE TASKS
     ====================================== -->
 
-
-    <section
-      class="dashboard-section"
-    >
+    <section class="dashboard-section">
 
 
-      <div
-        class="section-title"
-      >
+      <div class="section-title">
 
 
         <div>
 
 
-          <span
-            class="eyebrow"
-          >
-
+          <span class="eyebrow">
             AVAILABLE TASKS
-
           </span>
 
 
           <h2>
-
             Complete tasks to earn
-
           </h2>
 
 
@@ -763,58 +491,43 @@
 
 
 
-        <!-- TASK FILTER -->
+        <div class="task-filter-wrap">
 
 
-        <select
-          class="task-filter"
-          id="taskFilter"
-        >
+          <select
+            id="task-filter"
+            class="task-filter"
+          >
+
+            <option value="all">
+              All Tasks
+            </option>
+
+            <option value="social media">
+              Social Media
+            </option>
+
+            <option value="videos">
+              Videos
+            </option>
+
+            <option value="surveys">
+              Surveys
+            </option>
+
+            <option value="engagement">
+              Engagement
+            </option>
+
+            <option value="other">
+              Other
+            </option>
 
 
-          <option value="all">
-
-            All Tasks
-
-          </option>
+          </select>
 
 
-          <option value="social media">
-
-            Social Media
-
-          </option>
-
-
-          <option value="videos">
-
-            Videos
-
-          </option>
-
-
-          <option value="surveys">
-
-            Surveys
-
-          </option>
-
-
-          <option value="engagement">
-
-            Engagement
-
-          </option>
-
-
-          <option value="other">
-
-            Other
-
-          </option>
-
-
-        </select>
+        </div>
 
 
       </div>
@@ -823,39 +536,27 @@
 
       <!-- TASK LIST -->
 
-
       <div
         class="task-grid"
         id="task-list"
       >
 
 
-        <div
-          class="empty-state"
-        >
+        <div class="empty-state">
 
 
-          <div
-            class="empty-icon"
-          >
-
+          <div class="empty-icon">
             ⏳
-
           </div>
 
 
           <h3>
-
             Loading tasks...
-
           </h3>
 
 
           <p>
-
-            Please wait while available
-            tasks are loaded.
-
+            Please wait while available tasks are loaded.
           </p>
 
 
@@ -873,97 +574,36 @@
          HOW TASKS WORK
     ====================================== -->
 
-
-    <section
-      class="assessment-notice"
-    >
+    <section class="assessment-notice">
 
 
       <strong>
-
         How EarnGig Tasks Work
-
       </strong>
 
 
       <p>
-
-        Choose an available task,
-        follow the instructions and
-        complete the required action.
-
+        Choose an available task, read the instructions
+        carefully and complete the required action.
       </p>
 
 
       <p>
-
-        Some tasks may require proof
-        before they can be verified.
-        Submit your completed task
-        and wait for verification.
-
+        Some tasks require proof of completion.
+        Submit your completed task for verification
+        when required.
       </p>
 
 
       <p>
-
-        Your reward is credited to
-        your EarnGig wallet after
-        successful verification.
-
+        Your reward is credited to your EarnGig wallet
+        after your task has been successfully verified
+        and approved.
       </p>
 
 
     </section>
 
-
-
-    <!-- =====================================
-         POSTING TASKS
-    ====================================== -->
-
-
-    <section
-      class="assessment-notice"
-      style="margin-top:20px;"
-    >
-
-
-      <strong>
-
-        Want to Post a Task?
-
-      </strong>
-
-
-      <p>
-
-        EarnGig members can submit
-        tasks for other users to complete.
-
-      </p>
-
-
-      <p>
-
-        For example, you may request
-        followers, likes, comments,
-        video engagement, website visits
-        or other approved activities.
-
-      </p>
-
-
-      <p>
-
-        Every submitted task must be
-        reviewed and approved by EarnGig
-        before it becomes available.
-
-      </p>
-
-
-    </section>
 
 
   </div>
@@ -977,16 +617,12 @@
      FOOTER
 ========================================= -->
 
-
 <footer>
 
 
-  <div
-    class="container copy"
-  >
+  <div class="container copy">
 
-    © 2026 EarnGig.
-    All rights reserved.
+    © 2026 EarnGig. All rights reserved.
 
   </div>
 
@@ -999,37 +635,22 @@
      SUPABASE
 ========================================= -->
 
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 
 <script src="supabase.js"></script>
 
-
-
-<!-- =========================================
-     JAVASCRIPT
-========================================= -->
 
 
 <script>
 
 
 /* =========================================
-   GLOBAL VARIABLES
+   GLOBAL DATA
 ========================================= */
 
+let currentUser = null;
 
-let currentUser =
-  null;
-
-
-let allAvailableTasks =
-  [];
-
-
-let userTaskAttempts =
-  [];
+let allAvailableTasks = [];
 
 
 
@@ -1037,36 +658,22 @@ let userTaskAttempts =
    GET CURRENT USER
 ========================================= */
 
-
 async function getCurrentUser() {
 
 
   const {
-
-    data:
-    {
+    data: {
       user
     },
-
     error
-
-  }
-
-  =
-
-  await supabaseClient
-    .auth
-    .getUser();
+  } =
+    await supabaseClient
+      .auth
+      .getUser();
 
 
 
-  if (
-
-    error ||
-
-    !user
-
-  ) {
+  if (error || !user) {
 
 
     window.location.href =
@@ -1075,14 +682,13 @@ async function getCurrentUser() {
 
     return null;
 
+
   }
 
 
-  currentUser =
-    user;
-
 
   return user;
+
 
 }
 
@@ -1092,78 +698,41 @@ async function getCurrentUser() {
    ESCAPE HTML
 ========================================= */
 
-
-function escapeHtml(
-  value
-) {
+function escapeHtml(value) {
 
 
-  if (
+  return String(value ?? "")
 
-    value === null ||
-
-    value === undefined
-
-  ) {
-
-
-    return "";
-
-  }
-
-
-  return String(value)
 
     .replaceAll(
       "&",
       "&amp;"
     )
 
+
     .replaceAll(
       "<",
       "&lt;"
     )
+
 
     .replaceAll(
       ">",
       "&gt;"
     )
 
+
     .replaceAll(
       '"',
       "&quot;"
     )
+
 
     .replaceAll(
       "'",
       "&#039;"
     );
 
-}
-
-
-
-/* =========================================
-   FORMAT MONEY
-========================================= */
-
-
-function formatMoney(
-  amount
-) {
-
-
-  return
-
-    `₦${Number(
-
-      amount || 0
-
-    ).toLocaleString(
-
-      "en-NG"
-
-    )}`;
 
 }
 
@@ -1173,12 +742,10 @@ function formatMoney(
    LOAD TASK PAGE
 ========================================= */
 
-
 async function loadTasks() {
 
 
   const taskList =
-
     document.getElementById(
       "task-list"
     );
@@ -1190,107 +757,77 @@ async function loadTasks() {
 
     taskList.innerHTML = `
 
+      <div class="empty-state">
 
-      <div
-        class="empty-state"
-      >
-
-
-        <div
-          class="empty-icon"
-        >
-
+        <div class="empty-icon">
           ⏳
-
         </div>
 
-
         <h3>
-
           Loading tasks...
-
         </h3>
 
-
         <p>
-
-          Please wait while available
-          tasks are loaded.
-
+          Please wait while available tasks are loaded.
         </p>
-
 
       </div>
 
-
     `;
+
 
   }
 
 
 
-  /* =====================================
-     GET USER
-  ===================================== */
-
+  /* -----------------------------------------
+     GET LOGGED-IN USER
+  ----------------------------------------- */
 
   const user =
-
     await getCurrentUser();
 
 
 
   if (!user) {
-
     return;
-
   }
 
 
 
-  /* =====================================
-     LOAD USER ATTEMPTS
-  ===================================== */
+  currentUser =
+    user;
 
+
+
+  /* -----------------------------------------
+     LOAD USER TASK ATTEMPTS
+  ----------------------------------------- */
 
   const {
+    data: attempts,
+    error: attemptsError
+  } =
+    await supabaseClient
 
-    data:
-    attempts,
 
-    error:
-    attemptsError
+      .from("task_attempts")
 
-  }
 
-  =
-
-  await supabaseClient
-
-    .from(
-      "task_attempts"
-    )
-
-    .select(
-
-      `
+      .select(`
         id,
         task_id,
         status,
         reward_amount,
         reward_status,
         created_at
-      `
+      `)
 
-    )
 
-    .eq(
-
-      "user_id",
-
-      user.id
-
-    );
+      .eq(
+        "user_id",
+        user.id
+      );
 
 
 
@@ -1298,80 +835,99 @@ async function loadTasks() {
 
 
     console.error(
-
-      "Task attempts error:",
-
+      "Error loading task attempts:",
       attemptsError
-
     );
 
 
+
     showTaskError(
-
-      "Unable to load your task history."
-
+      "Unable to load your task history.",
+      attemptsError.message
     );
 
 
     return;
 
+
   }
 
 
 
-  userTaskAttempts =
-
+  const userAttempts =
     attempts || [];
 
 
 
-  /* =====================================
-     LOAD ACTIVE TASKS
-  ===================================== */
+  /* -----------------------------------------
+     FIND TASKS ALREADY ATTEMPTED
+  ----------------------------------------- */
+
+  const attemptedTaskIds =
+    new Set(
 
 
-  const {
+      userAttempts
 
-    data:
-    tasks,
 
-    error:
-    tasksError
+        .filter(
+          function(attempt) {
 
-  }
 
-  =
+            return (
+              attempt.status !==
+              "rejected"
+            );
 
-  await supabaseClient
 
-    .from(
-      "tasks"
-    )
+          }
+        )
 
-    .select(
-      "*"
-    )
 
-    .eq(
+        .map(
+          function(attempt) {
 
-      "status",
 
-      "active"
+            return attempt.task_id;
 
-    )
 
-    .order(
+          }
+        )
 
-      "created_at",
-
-      {
-
-        ascending:
-          false
-
-      }
 
     );
+
+
+
+  /* -----------------------------------------
+     LOAD ACTIVE TASKS
+  ----------------------------------------- */
+
+  const {
+    data: tasks,
+    error: tasksError
+  } =
+    await supabaseClient
+
+
+      .from("tasks")
+
+
+      .select("*")
+
+
+      .eq(
+        "status",
+        "active"
+      )
+
+
+      .order(
+        "created_at",
+        {
+          ascending: false
+        }
+      );
 
 
 
@@ -1379,128 +935,252 @@ async function loadTasks() {
 
 
     console.error(
-
-      "Tasks loading error:",
-
+      "Error loading tasks:",
       tasksError
-
     );
 
 
+
     showTaskError(
-
-      "Unable to load available tasks."
-
+      "Unable to load available tasks.",
+      tasksError.message
     );
 
 
     return;
 
+
   }
 
 
 
-  /* =====================================
-     PREVENT DUPLICATE TASKS
-  ===================================== */
+  /* -----------------------------------------
+     REMOVE USER'S OWN TASKS
+
+     A user should not complete
+     their own posted task.
+  ----------------------------------------- */
+
+  const availableTasks =
+    (tasks || [])
 
 
-  const attemptedTaskIds =
+      .filter(
+        function(task) {
 
-    new Set(
 
-      userTaskAttempts
+          /*
+           * Do not show tasks posted
+           * by the current user.
+           *
+           * This supports either
+           * user_id or created_by.
+           */
 
-        .filter(
-
-          function(
-            attempt
+          if (
+            task.user_id === user.id ||
+            task.created_by === user.id
           ) {
 
-
-            return
-
-              attempt.status !==
-              "rejected";
-
+            return false;
 
           }
 
-        )
-
-        .map(
-
-          function(
-            attempt
-          ) {
 
 
-            return
+          /*
+           * Do not show tasks already
+           * attempted by this user.
+           */
 
-              attempt.task_id;
-
-
-          }
-
-        )
-
-    );
-
-
-
-  /* =====================================
-     AVAILABLE TASKS
-  ===================================== */
-
-
-  allAvailableTasks =
-
-    (
-
-      tasks || []
-
-    )
-
-    .filter(
-
-      function(
-        task
-      ) {
-
-
-        return
-
-          !
-
-          attemptedTaskIds.has(
-            task.id
+          return (
+            !attemptedTaskIds.has(
+              task.id
+            )
           );
 
 
-      }
-
-    );
-
+        }
+      );
 
 
-  /* =====================================
+
+  allAvailableTasks =
+    availableTasks;
+
+
+
+  /* -----------------------------------------
+     CALCULATE COMPLETED TASKS
+  ----------------------------------------- */
+
+  const completedCount =
+    userAttempts
+
+
+      .filter(
+        function(attempt) {
+
+
+          return (
+
+
+            attempt.status ===
+            "completed"
+
+
+            ||
+
+
+            attempt.status ===
+            "approved"
+
+
+          );
+
+
+        }
+      )
+
+
+      .length;
+
+
+
+  /* -----------------------------------------
+     CALCULATE PENDING TASKS
+  ----------------------------------------- */
+
+  const pendingCount =
+    userAttempts
+
+
+      .filter(
+        function(attempt) {
+
+
+          return (
+
+
+            attempt.status ===
+            "started"
+
+
+            ||
+
+
+            attempt.status ===
+            "pending"
+
+
+            ||
+
+
+            attempt.status ===
+            "submitted"
+
+
+          );
+
+
+        }
+      )
+
+
+      .length;
+
+
+
+  /* -----------------------------------------
+     CALCULATE TASK EARNINGS
+
+     Only approved/credited rewards
+     are counted.
+  ----------------------------------------- */
+
+  const taskEarnings =
+    userAttempts
+
+
+      .filter(
+        function(attempt) {
+
+
+          return (
+
+
+            attempt.reward_status ===
+            "credited"
+
+
+            ||
+
+
+            attempt.reward_status ===
+            "paid"
+
+
+            ||
+
+
+            attempt.status ===
+            "approved"
+
+
+          );
+
+
+        }
+      )
+
+
+      .reduce(
+        function(total, attempt) {
+
+
+          return (
+            total +
+            Number(
+              attempt.reward_amount || 0
+            )
+          );
+
+
+        },
+        0
+      );
+
+
+
+  /* -----------------------------------------
      UPDATE STATISTICS
-  ===================================== */
+  ----------------------------------------- */
+
+  updateStatistics(
 
 
-  updateTaskStatistics();
+    availableTasks.length,
+
+
+    completedCount,
+
+
+    pendingCount,
+
+
+    taskEarnings
+
+
+  );
 
 
 
-  /* =====================================
+  /* -----------------------------------------
      RENDER TASKS
-  ===================================== */
-
+  ----------------------------------------- */
 
   renderTasks(
-
-    allAvailableTasks
-
+    availableTasks
   );
 
 
@@ -1509,89 +1189,62 @@ async function loadTasks() {
 
 
 /* =========================================
-   UPDATE TASK STATISTICS
+   UPDATE STATISTICS
 ========================================= */
 
+function updateStatistics(
 
-async function updateTaskStatistics() {
+
+  availableCount,
+
+
+  completedCount,
+
+
+  pendingCount,
+
+
+  earnings
+
+
+) {
 
 
   const availableElement =
-
     document.getElementById(
       "available-tasks"
     );
 
 
   const completedElement =
-
     document.getElementById(
       "completed-tasks"
     );
 
 
   const pendingElement =
-
     document.getElementById(
       "pending-tasks"
     );
 
 
   const earningsElement =
-
     document.getElementById(
       "task-earnings"
     );
 
 
 
-  /* AVAILABLE */
-
-
   if (availableElement) {
 
 
     availableElement.textContent =
-
-      allAvailableTasks.length;
+      Number(
+        availableCount || 0
+      ).toLocaleString();
 
 
   }
-
-
-
-  /* COMPLETED */
-
-
-  const completedCount =
-
-    userTaskAttempts
-
-      .filter(
-
-        function(
-          attempt
-        ) {
-
-
-          return (
-
-            attempt.status ===
-            "completed"
-
-            ||
-
-            attempt.status ===
-            "approved"
-
-          );
-
-
-        }
-
-      )
-
-      .length;
 
 
 
@@ -1599,51 +1252,12 @@ async function updateTaskStatistics() {
 
 
     completedElement.textContent =
-
-      completedCount;
+      Number(
+        completedCount || 0
+      ).toLocaleString();
 
 
   }
-
-
-
-  /* PENDING */
-
-
-  const pendingCount =
-
-    userTaskAttempts
-
-      .filter(
-
-        function(
-          attempt
-        ) {
-
-
-          return (
-
-            attempt.status ===
-            "started"
-
-            ||
-
-            attempt.status ===
-            "submitted"
-
-            ||
-
-            attempt.status ===
-            "pending"
-
-          );
-
-
-        }
-
-      )
-
-      .length;
 
 
 
@@ -1651,80 +1265,12 @@ async function updateTaskStatistics() {
 
 
     pendingElement.textContent =
-
-      pendingCount;
+      Number(
+        pendingCount || 0
+      ).toLocaleString();
 
 
   }
-
-
-
-  /* =====================================
-     TASK EARNINGS
-  ===================================== */
-
-
-  const taskEarnings =
-
-    userTaskAttempts
-
-      .filter(
-
-        function(
-          attempt
-        ) {
-
-
-          return (
-
-            attempt.status ===
-            "completed"
-
-            ||
-
-            attempt.status ===
-            "approved"
-
-          )
-
-          &&
-
-          attempt.reward_status ===
-          "credited";
-
-
-        }
-
-      )
-
-      .reduce(
-
-        function(
-          total,
-          attempt
-        ) {
-
-
-          return
-
-            total
-
-            +
-
-            Number(
-
-              attempt.reward_amount ||
-
-              0
-
-            );
-
-
-        },
-
-        0
-
-      );
 
 
 
@@ -1732,9 +1278,11 @@ async function updateTaskStatistics() {
 
 
     earningsElement.textContent =
-
-      formatMoney(
-        taskEarnings
+      "₦" +
+      Number(
+        earnings || 0
+      ).toLocaleString(
+        "en-NG"
       );
 
 
@@ -1749,14 +1297,10 @@ async function updateTaskStatistics() {
    RENDER TASKS
 ========================================= */
 
-
-function renderTasks(
-  tasks
-) {
+function renderTasks(tasks) {
 
 
   const taskList =
-
     document.getElementById(
       "task-list"
     );
@@ -1764,99 +1308,195 @@ function renderTasks(
 
 
   if (!taskList) {
-
     return;
-
   }
 
 
 
-  /* =====================================
+  /* -----------------------------------------
      NO TASKS
-  ===================================== */
+  ----------------------------------------- */
 
-
-  if (
-
-    !tasks ||
-
-    tasks.length === 0
-
-  ) {
+  if (!tasks || tasks.length === 0) {
 
 
     taskList.innerHTML = `
 
-
-      <div
-        class="empty-state"
-      >
+      <div class="empty-state">
 
 
-        <div
-          class="empty-icon"
-        >
-
-          📭
-
+        <div class="empty-icon">
+          📋
         </div>
 
 
         <h3>
-
           No New Tasks Available
-
         </h3>
 
 
         <p>
-
-          There are currently no tasks
-          available for you.
-
-          Please check again later.
-
+          There are currently no tasks available
+          for you. Please check again later.
         </p>
 
 
       </div>
-
 
     `;
 
 
     return;
 
+
   }
 
 
 
-  /* =====================================
-     CREATE TASK CARDS
-  ===================================== */
-
+  /* -----------------------------------------
+     DISPLAY TASKS
+  ----------------------------------------- */
 
   taskList.innerHTML =
-
     tasks
 
+
       .map(
-
-        function(
-          task
-        ) {
+        function(task) {
 
 
-          return
-
-            createTaskCard(
-              task
+          const category =
+            escapeHtml(
+              task.category || "TASK"
             );
 
 
-        }
 
+          const title =
+            escapeHtml(
+              task.title ||
+              "Available Task"
+            );
+
+
+
+          const description =
+            escapeHtml(
+              task.description ||
+              "Complete this task to earn the reward assigned to it."
+            );
+
+
+
+          const reward =
+            Number(
+              task.reward_amount || 0
+            ).toLocaleString(
+              "en-NG"
+            );
+
+
+
+          const taskLink =
+            task.task_link
+              ? String(
+                  task.task_link
+                )
+              : "";
+
+
+
+          return `
+
+
+            <article class="task-card">
+
+
+              <div class="task-card-content">
+
+
+                <span class="eyebrow">
+
+                  ${category}
+
+                </span>
+
+
+
+                <h3>
+
+                  ${title}
+
+                </h3>
+
+
+
+                <p>
+
+                  ${description}
+
+                </p>
+
+
+
+                <strong class="task-reward">
+
+                  ₦${reward}
+
+                </strong>
+
+
+
+                <div class="task-card-actions">
+
+
+                  ${
+                    taskLink
+                      ? `
+
+                        <a
+                          class="btn outline task-link-btn"
+                          href="${escapeHtml(taskLink)}"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+
+                          Open Task Link
+
+                        </a>
+
+                      `
+                      : ""
+                  }
+
+
+
+                  <button
+                    type="button"
+                    class="btn primary"
+                    onclick="startTask('${task.id}')"
+                  >
+
+                    Start Task
+
+                  </button>
+
+
+                </div>
+
+
+              </div>
+
+
+            </article>
+
+
+          `;
+
+
+        }
       )
+
 
       .join("");
 
@@ -1866,239 +1506,95 @@ function renderTasks(
 
 
 /* =========================================
-   CREATE TASK CARD
+   FILTER TASKS
 ========================================= */
 
-
-function createTaskCard(
-  task
-) {
+function filterTasks() {
 
 
-  const category =
-
-    task.category ||
-
-    "Task";
-
-
-  const title =
-
-    task.title ||
-
-    "Available Task";
-
-
-  const description =
-
-    task.description ||
-
-    "Complete this task and earn the assigned reward.";
-
-
-  const reward =
-
-    Number(
-
-      task.reward_amount ||
-
-      0
-
+  const filter =
+    document.getElementById(
+      "task-filter"
     );
 
 
 
-  /* =====================================
-     TASK SOURCE
-  ===================================== */
+  if (!filter) {
 
 
-  let taskSource =
-
-    "EarnGig Task";
-
-
-  if (
-
-    task.created_by
-
-  ) {
+    renderTasks(
+      allAvailableTasks
+    );
 
 
-    taskSource =
-
-      "Community Task";
+    return;
 
 
   }
 
 
 
-  /* =====================================
-     TASK LINK
-  ===================================== */
+  const selectedCategory =
+    String(
+      filter.value || "all"
+    )
+      .toLowerCase()
+      .trim();
 
 
-  let taskLinkHtml =
 
-    "";
-
-
+  /* -----------------------------------------
+     ALL TASKS
+  ----------------------------------------- */
 
   if (
-
-    task.task_link
-
+    selectedCategory ===
+    "all"
   ) {
 
 
-    taskLinkHtml = `
+    renderTasks(
+      allAvailableTasks
+    );
 
 
-      <div
-        class="task-links"
-      >
-
-
-        <a
-
-          class="
-            btn
-            outline
-          "
-
-          href="${escapeHtml(
-
-            task.task_link
-
-          )}"
-
-          target="_blank"
-
-          rel="
-            noopener
-            noreferrer
-          "
-
-        >
-
-          Open Task Link ↗
-
-        </a>
-
-
-      </div>
-
-
-    `;
+    return;
 
 
   }
 
 
 
-  return `
+  /* -----------------------------------------
+     FILTER BY CATEGORY
+  ----------------------------------------- */
+
+  const filteredTasks =
+    allAvailableTasks
 
 
-    <article
-      class="task-card"
-    >
+      .filter(
+        function(task) {
 
 
-      <div
-        class="task-card-content"
-      >
+          return (
+            String(
+              task.category || ""
+            )
+              .toLowerCase()
+              .trim() ===
+            selectedCategory
+          );
 
 
-        <span
-          class="task-source"
-        >
-
-          ${escapeHtml(
-            taskSource
-          )}
-
-        </span>
-
-
-
-        <span
-          class="eyebrow"
-        >
-
-          ${escapeHtml(
-            category
-          )}
-
-        </span>
+        }
+      );
 
 
 
-        <h3>
-
-          ${escapeHtml(
-            title
-          )}
-
-        </h3>
-
-
-
-        <p>
-
-          ${escapeHtml(
-            description
-          )}
-
-        </p>
-
-
-
-        <strong
-          class="task-reward"
-        >
-
-          ${formatMoney(
-            reward
-          )}
-
-        </strong>
-
-
-
-        ${taskLinkHtml}
-
-
-      </div>
-
-
-
-      <button
-
-        type="button"
-
-        class="
-          btn
-          primary
-        "
-
-        onclick="
-          startTask(
-            '${task.id}'
-          )
-        "
-
-      >
-
-        Start Task
-
-      </button>
-
-
-    </article>
-
-
-  `;
+  renderTasks(
+    filteredTasks
+  );
 
 
 }
@@ -2106,427 +1602,266 @@ function createTaskCard(
 
 
 /* =========================================
-   TASK FILTER
-========================================= */
-
-
-document
-
-  .getElementById(
-    "taskFilter"
-  )
-
-  .addEventListener(
-
-    "change",
-
-    function() {
-
-
-      const filter =
-
-        String(
-
-          this.value ||
-
-          "all"
-
-        )
-
-        .toLowerCase();
-
-
-
-      /* ALL TASKS */
-
-
-      if (
-
-        filter ===
-        "all"
-
-      ) {
-
-
-        renderTasks(
-
-          allAvailableTasks
-
-        );
-
-
-        return;
-
-      }
-
-
-
-      /* FILTER CATEGORY */
-
-
-      const filteredTasks =
-
-        allAvailableTasks
-
-          .filter(
-
-            function(
-              task
-            ) {
-
-
-              return
-
-                String(
-
-                  task.category ||
-
-                  ""
-
-                )
-
-                .toLowerCase()
-
-                ===
-
-                filter;
-
-
-            }
-
-          );
-
-
-
-      renderTasks(
-
-        filteredTasks
-
-      );
-
-
-    }
-
-  );
-
-
-
-/* =========================================
    START TASK
 ========================================= */
 
-
-async function startTask(
-  taskId
-) {
+async function startTask(taskId) {
 
 
   const user =
-
+    currentUser ||
     await getCurrentUser();
 
 
 
   if (!user) {
-
     return;
-
   }
 
 
 
-  /* =====================================
-     GET TASK
-  ===================================== */
-
+  /* -----------------------------------------
+     LOAD TASK
+  ----------------------------------------- */
 
   const {
+    data: task,
+    error: taskError
+  } =
+    await supabaseClient
 
-    data:
-    task,
 
-    error:
-    taskError
+      .from("tasks")
 
-  }
 
-  =
+      .select("*")
 
-  await supabaseClient
 
-    .from(
-      "tasks"
-    )
+      .eq(
+        "id",
+        taskId
+      )
 
-    .select(
 
-      `
-        id,
-        title,
-        description,
-        category,
-        reward_amount,
-        task_link,
-        max_participants,
-        status
-      `
+      .eq(
+        "status",
+        "active"
+      )
 
-    )
 
-    .eq(
-
-      "id",
-
-      taskId
-
-    )
-
-    .eq(
-
-      "status",
-
-      "active"
-
-    )
-
-    .single();
+      .single();
 
 
 
   if (
-
     taskError ||
-
     !task
-
   ) {
 
 
     console.error(
-
       "Task loading error:",
-
       taskError
-
     );
+
 
 
     alert(
-
       "This task is no longer available."
-
     );
-
-
-    await loadTasks();
 
 
     return;
 
-  }
-
-
-
-  /* =====================================
-     CHECK EXISTING ATTEMPTS
-  ===================================== */
-
-
-  const {
-
-    data:
-    existingAttempts,
-
-    error:
-    existingAttemptError
 
   }
 
-  =
 
-  await supabaseClient
 
-    .from(
-      "task_attempts"
-    )
+  /* -----------------------------------------
+     PREVENT USER FROM
+     COMPLETING OWN TASK
+  ----------------------------------------- */
 
-    .select(
+  if (
+    task.user_id === user.id ||
+    task.created_by === user.id
+  ) {
 
-      "id, status"
 
-    )
-
-    .eq(
-
-      "user_id",
-
-      user.id
-
-    )
-
-    .eq(
-
-      "task_id",
-
-      taskId
-
-    )
-
-    .neq(
-
-      "status",
-
-      "rejected"
-
-    )
-
-    .limit(
-      1
+    alert(
+      "You cannot complete a task that you posted."
     );
 
 
+    return;
 
-  if (existingAttemptError) {
+
+  }
+
+
+
+  /* -----------------------------------------
+     CHECK EXISTING ATTEMPT
+  ----------------------------------------- */
+
+  const {
+    data: existingAttempts,
+    error: existingAttemptError
+  } =
+    await supabaseClient
+
+
+      .from("task_attempts")
+
+
+      .select(
+        "id, status"
+      )
+
+
+      .eq(
+        "user_id",
+        user.id
+      )
+
+
+      .eq(
+        "task_id",
+        taskId
+      )
+
+
+      .neq(
+        "status",
+        "rejected"
+      )
+
+
+      .limit(1);
+
+
+
+  if (
+    existingAttemptError
+  ) {
 
 
     console.error(
-
-      "Existing attempt error:",
-
+      "Error checking existing attempt:",
       existingAttemptError
-
     );
 
 
+
     alert(
-
-      "Unable to verify this task right now."
-
+      "Unable to verify this task right now. Please try again."
     );
 
 
     return;
+
 
   }
 
 
 
   if (
-
     existingAttempts &&
-
     existingAttempts.length > 0
-
   ) {
 
 
     alert(
-
-      "You have already started or completed this task."
-
+      "You have already started or attempted this task."
     );
 
 
     return;
 
+
   }
 
 
 
-  /* =====================================
+  /* -----------------------------------------
      CREATE TASK ATTEMPT
-  ===================================== */
-
+  ----------------------------------------- */
 
   const {
+    error: attemptError
+  } =
+    await supabaseClient
 
-    error:
+
+      .from("task_attempts")
+
+
+      .insert({
+
+
+        task_id:
+          task.id,
+
+
+        user_id:
+          user.id,
+
+
+        reward_amount:
+          Number(
+            task.reward_amount || 0
+          ),
+
+
+        status:
+          "started",
+
+
+        reward_status:
+          "pending"
+
+
+      });
+
+
+
+  if (
     attemptError
-
-  }
-
-  =
-
-  await supabaseClient
-
-    .from(
-      "task_attempts"
-    )
-
-    .insert({
-
-
-      task_id:
-
-        task.id,
-
-
-      user_id:
-
-        user.id,
-
-
-      reward_amount:
-
-        task.reward_amount,
-
-
-      status:
-
-        "started",
-
-
-      reward_status:
-
-        "pending"
-
-
-    });
-
-
-
-  if (attemptError) {
+  ) {
 
 
     console.error(
-
       "Task attempt error:",
-
       attemptError
-
     );
 
 
+
     alert(
-
       "Unable to start task: " +
-
       attemptError.message
-
     );
 
 
     return;
 
+
   }
 
 
 
-  /* =====================================
-     GO TO SUBMISSION PAGE
-  ===================================== */
+  /* -----------------------------------------
+     GO TO TASK DETAILS
 
+     The task details page will show
+     instructions before submission.
+  ----------------------------------------- */
 
   window.location.href =
-
-    "submit-task.html?task="
-
-    +
-
+    "task-details.html?task=" +
     encodeURIComponent(
-
       task.id
-
     );
 
 
@@ -2538,14 +1873,19 @@ async function startTask(
    SHOW TASK ERROR
 ========================================= */
 
-
 function showTaskError(
+
+
+  title,
+
+
   message
+
+
 ) {
 
 
   const taskList =
-
     document.getElementById(
       "task-list"
     );
@@ -2553,9 +1893,7 @@ function showTaskError(
 
 
   if (!taskList) {
-
     return;
-
   }
 
 
@@ -2563,52 +1901,37 @@ function showTaskError(
   taskList.innerHTML = `
 
 
-    <div
-      class="empty-state"
-    >
+    <div class="empty-state">
 
 
-      <div
-        class="empty-icon"
-      >
-
+      <div class="empty-icon">
         !
-
       </div>
 
 
       <h3>
 
-        Unable to Load Tasks
+        ${escapeHtml(title)}
 
       </h3>
 
 
       <p>
 
-        ${escapeHtml(
-          message
-        )}
+        ${
+          escapeHtml(
+            message ||
+            "Please try again later."
+          )
+        }
 
       </p>
 
 
-      <br>
-
-
       <button
-
         type="button"
-
-        class="
-          btn
-          primary
-        "
-
-        onclick="
-          loadTasks()
-        "
-
+        class="btn primary"
+        onclick="loadTasks()"
       >
 
         Try Again
@@ -2627,9 +1950,27 @@ function showTaskError(
 
 
 /* =========================================
-   START PAGE
+   FILTER EVENT
 ========================================= */
 
+document
+
+
+  .getElementById(
+    "task-filter"
+  )
+
+
+  .addEventListener(
+    "change",
+    filterTasks
+  );
+
+
+
+/* =========================================
+   START APPLICATION
+========================================= */
 
 loadTasks();
 
