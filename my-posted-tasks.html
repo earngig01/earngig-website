@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>My Posted Tasks | EarnGig</title>
+
+  <link
+    rel="stylesheet"
+    href="styles.css?v=2"
+  >
+
+</head>
+
+
+<body>
+
+
+<!-- ================================
+     HEADER
+================================ -->
+
+<header>
+
+  <div class="container nav">
+
+    <a
+      class="logo"
+      href="index.html"
+    >
+
+      <span class="logo-mark">
+        E
+      </span>
+
+      Earn<span>Gig</span>
+
+    </a>
+
+
+    <a
+      class="btn outline"
+      href="tasks.html"
+    >
+
+      ← Back to Tasks
+
+    </a>
+
+  </div>
+
+</header>
+
+
+
+<!-- ================================
+     MAIN PAGE
+================================ -->
+
+<main class="dashboard-page">
+
+  <div class="container">
+
+
+    <!-- ================================
+         PAGE HEADING
+    ================================ -->
+
+    <div class="dashboard-heading">
+
+      <div>
+
+        <span class="eyebrow">
+          TASK MANAGEMENT
+        </span>
+
+
+        <h1>
+          My Posted Tasks
+        </h1>
+
+
+        <p>
+          View tasks you submitted and check their
+          approval status and activity.
+        </p>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- ================================
+         STATISTICS
+    ================================ -->
+
+    <div
+      class="dashboard-stats task-stats"
+    >
+
+
+      <div
+        class="dashboard-stat task-stat"
+      >
+
+        <small>
+          Total Tasks
+        </small>
+
+
+        <strong id="total-tasks">
+          0
+        </strong>
+
+      </div>
+
+
+
+      <div
+        class="dashboard-stat task-stat"
+      >
+
+        <small>
+          Pending Approval
+        </small>
+
+
+        <strong id="pending-tasks">
+          0
+        </strong>
+
+      </div>
+
+
+
+      <div
+        class="dashboard-stat task-stat"
+      >
+
+        <small>
+          Active Tasks
+        </small>
+
+
+        <strong id="active-tasks">
+          0
+        </strong>
+
+      </div>
+
+
+
+      <div
+        class="dashboard-stat task-stat"
+      >
+
+        <small>
+          Total Paid
+        </small>
+
+
+        <strong id="total-paid">
+          ₦0
+        </strong>
+
+      </div>
+
+
+    </div>
+
+
+
+    <!-- ================================
+         TASK SECTION
+    ================================ -->
+
+    <section class="dashboard-section">
+
+
+      <div class="section-title">
+
+
+        <div>
+
+          <span class="eyebrow">
+            YOUR SUBMISSIONS
+          </span>
+
+
+          <h2>
+            Submitted Tasks
+          </h2>
+
+        </div>
+
+
+
+        <!-- FILTER -->
+
+        <select
+          id="task-status-filter"
+          class="task-filter"
+        >
+
+          <option value="all">
+            All Tasks
+          </option>
+
+
+          <option value="pending">
+            Pending Approval
+          </option>
+
+
+          <option value="active">
+            Active
+          </option>
+
+
+          <option value="paused">
+            Paused
+          </option>
+
+
+          <option value="completed">
+            Completed
+          </option>
+
+
+          <option value="rejected">
+            Rejected
+          </option>
+
+        </select>
+
+
+      </div>
+
+
+
+      <!-- ================================
+           TASK LIST
+      ================================ -->
+
+      <div
+        class="task-grid"
+        id="posted-task-list"
+      >
+
+
+        <div class="empty-state">
+
+
+          <div class="empty-icon">
+            ⏳
+          </div>
+
+
+          <h3>
+            Loading your tasks...
+          </h3>
+
+
+          <p>
+            Please wait while we load your submitted tasks.
+          </p>
+
+
+        </div>
+
+
+      </div>
+
+
+    </section>
+
+
+
+    <!-- ================================
+         INFORMATION
+    ================================ -->
+
+    <section class="assessment-notice">
+
+
+      <strong>
+        How task approval works
+      </strong>
+
+
+      <p>
+        Tasks submitted by users are reviewed by
+        the EarnGig administration before becoming
+        available to participants.
+      </p>
+
+
+      <p>
+        You can check the status of your task here.
+        Approved tasks may become active after
+        administrative review.
+      </p>
+
+
+    </section>
+
+
+  </div>
+
+</main>
+
+
+
+<!-- ================================
+     FOOTER
+================================ -->
+
+<footer>
+
+  <div class="container copy">
+
+    © 2026 EarnGig. All rights reserved.
+
+  </div>
+
+</footer>
+
+
+
+<!-- ================================
+     SUPABASE
+================================ -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="supabase.js"></script>
+
+
+
+<script>
+
+
+/* ========================================
+   GLOBAL VARIABLES
+======================================== */
+
+let allPostedTasks = [];
+
+
+/* ========================================
+   GET CURRENT USER
+======================================== */
+
+async function getCurrentUser() {
+
+
+  const {
+
+    data: {
+      user
+    },
+
+    error
+
+  } =
+  await supabaseClient
+    .auth
+    .getUser();
+
+
+  if (error || !user) {
+
+
+    window.location.href =
+      "login.html";
+
+
+    return null;
+
+  }
+
+
+  return user;
+
+
+}
+
+
+
+/* ========================================
+   FORMAT MONEY
+======================================== */
+
+function formatMoney(amount) {
+
+
+  return `₦${Number(
+    amount || 0
+  ).toLocaleString("en-NG")}`;
+
+
+}
+
+
+
+/* ========================================
+   GET STATUS CLASS
+======================================== */
+
+function getStatusClass(status) {
+
+
+  const cleanStatus =
+    String(
+      status || "pending"
+    ).toLowerCase();
+
+
+  if (
+    cleanStatus === "active"
+  ) {
+
+    return "status-active";
+
+  }
+
+
+  if (
+    cleanStatus === "approved"
+  ) {
+
+    return "status-active";
+
+  }
+
+
+  if (
+    cleanStatus === "rejected"
+  ) {
+
+    return "status-rejected";
+
+  }
+
+
+  if (
+    cleanStatus === "paused"
+  ) {
+
+    return "status-paused";
+
+  }
+
+
+  if (
+    cleanStatus === "completed"
+  ) {
+
+    return "status-completed";
+
+  }
+
+
+  return "status-pending";
+
+
+}
+
+
+
+/* ========================================
+   FORMAT STATUS
+======================================== */
+
+function formatStatus(status) {
+
+
+  const cleanStatus =
+    String(
+      status || "pending"
+    ).toLowerCase();
+
+
+  if (
+    cleanStatus === "pending"
+  ) {
+
+    return "Pending Approval";
+
+  }
+
+
+  if (
+    cleanStatus === "active"
+  ) {
+
+    return "Active";
+
+  }
+
+
+  if (
+    cleanStatus === "approved"
+  ) {
+
+    return "Approved";
+
+  }
+
+
+  if (
+    cleanStatus === "paused"
+  ) {
+
+    return "Paused";
+
+  }
+
+
+  if (
+    cleanStatus === "completed"
+  ) {
+
+    return "Completed";
+
+  }
+
+
+  if (
+    cleanStatus === "rejected"
+  ) {
+
+    return "Rejected";
+
+  }
+
+
+  return status;
+
+
+}
+
+
+
+/* ========================================
+   LOAD POSTED TASKS
+======================================== */
+
+async function loadPostedTasks() {
+
+
+  const taskList =
+    document.getElementById(
+      "posted-task-list"
+    );
+
+
+  const user =
+    await getCurrentUser();
+
+
+  if (!user) {
+
+    return;
+
+  }
+
+
+
+  /*
+   * Load only tasks created
+   * by the current user.
+   */
+  const {
+
+    data: tasks,
+
+    error
+
+  } =
+  await supabaseClient
+    .from("tasks")
+    .select("*")
+    .eq(
+      "user_id",
+      user.id
+    )
+    .order(
+      "created_at",
+      {
+        ascending: false
+      }
+    );
+
+
+
+  /*
+   * HANDLE DATABASE ERROR
+   */
+  if (error) {
+
+
+    console.error(
+      "Error loading posted tasks:",
+      error
+    );
+
+
+    taskList.innerHTML = `
+
+      <div class="empty-state">
+
+
+        <div class="empty-icon">
+          !
+        </div>
+
+
+        <h3>
+          Unable to load your tasks
+        </h3>
+
+
+        <p>
+          ${error.message}
+        </p>
+
+
+      </div>
+
+    `;
+
+
+    return;
+
+  }
+
+
+
+  /*
+   * STORE TASKS
+   */
+  allPostedTasks =
+    tasks || [];
+
+
+
+  /*
+   * UPDATE STATISTICS
+   */
+  updateStatistics(
+    allPostedTasks
+  );
+
+
+
+  /*
+   * RENDER TASKS
+   */
+  renderPostedTasks(
+    allPostedTasks
+  );
+
+
+}
+
+
+
+/* ========================================
+   UPDATE STATISTICS
+======================================== */
+
+function updateStatistics(tasks) {
+
+
+  const totalTasks =
+    tasks.length;
+
+
+
+  const pendingTasks =
+    tasks.filter(function (task) {
+
+
+      return String(
+        task.status || ""
+      ).toLowerCase() === "pending";
+
+
+    }).length;
+
+
+
+  const activeTasks =
+    tasks.filter(function (task) {
+
+
+      const status =
+        String(
+          task.status || ""
+        ).toLowerCase();
+
+
+      return (
+        status === "active" ||
+        status === "approved"
+      );
+
+
+    }).length;
+
+
+
+  /*
+   * CALCULATE TOTAL PAID
+   */
+  const totalPaid =
+    tasks.reduce(
+      function (
+        total,
+        task
+      ) {
+
+
+        /*
+         * If total_amount exists,
+         * use it.
+         */
+        if (
+          task.total_amount !==
+          undefined
+        ) {
+
+
+          return (
+            total +
+            Number(
+              task.total_amount || 0
+            )
+          );
+
+        }
+
+
+
+        /*
+         * Otherwise calculate
+         * payment.
+         */
+        const participants =
+          Number(
+            task.max_participants ||
+            task.participant_count ||
+            0
+          );
+
+
+        const reward =
+          Number(
+            task.reward_amount || 0
+          );
+
+
+        const taskBudget =
+          participants *
+          reward;
+
+
+        const platformFee =
+          taskBudget *
+          0.20;
+
+
+        return (
+          total +
+          taskBudget +
+          platformFee
+        );
+
+
+      },
+      0
+    );
+
+
+
+  document.getElementById(
+    "total-tasks"
+  ).textContent =
+    totalTasks;
+
+
+
+  document.getElementById(
+    "pending-tasks"
+  ).textContent =
+    pendingTasks;
+
+
+
+  document.getElementById(
+    "active-tasks"
+  ).textContent =
+    activeTasks;
+
+
+
+  document.getElementById(
+    "total-paid"
+  ).textContent =
+    formatMoney(
+      totalPaid
+    );
+
+
+}
+
+
+
+/* ========================================
+   RENDER POSTED TASKS
+======================================== */
+
+function renderPostedTasks(tasks) {
+
+
+  const taskList =
+    document.getElementById(
+      "posted-task-list"
+    );
+
+
+
+  /*
+   * NO TASKS
+   */
+  if (
+    !tasks ||
+    tasks.length === 0
+  ) {
+
+
+    taskList.innerHTML = `
+
+      <div class="empty-state">
+
+
+        <div class="empty-icon">
+          📋
+        </div>
+
+
+        <h3>
+          No tasks submitted yet
+        </h3>
+
+
+        <p>
+          You haven't submitted any tasks yet.
+          Create a task and submit it for
+          EarnGig approval.
+        </p>
+
+
+        <br>
+
+
+        <a
+          href="post-task.html"
+          class="btn primary"
+        >
+
+          + Create a Task
+
+        </a>
+
+
+      </div>
+
+    `;
+
+
+    return;
+
+  }
+
+
+
+  /*
+   * RENDER TASK CARDS
+   */
+  taskList.innerHTML =
+    tasks.map(
+      function (task) {
+
+
+        /*
+         * PARTICIPANTS
+         */
+        const participants =
+          Number(
+            task.max_participants ||
+            task.participant_count ||
+            0
+          );
+
+
+
+        /*
+         * REWARD
+         */
+        const reward =
+          Number(
+            task.reward_amount ||
+            0
+          );
+
+
+
+        /*
+         * TASK BUDGET
+         */
+        const taskBudget =
+          participants *
+          reward;
+
+
+
+        /*
+         * PLATFORM FEE
+         */
+        const platformFee =
+          task.platform_fee !==
+          undefined
+
+            ?
+
+            Number(
+              task.platform_fee || 0
+            )
+
+            :
+
+            taskBudget *
+            0.20;
+
+
+
+        /*
+         * TOTAL PAYMENT
+         */
+        const totalPayment =
+          task.total_amount !==
+          undefined
+
+            ?
+
+            Number(
+              task.total_amount || 0
+            )
+
+            :
+
+            taskBudget +
+            platformFee;
+
+
+
+        return `
+
+
+          <article
+            class="task-card posted-task-card"
+          >
+
+
+            <div
+              class="task-card-content"
+            >
+
+
+              <!-- CATEGORY -->
+
+              <span class="eyebrow">
+
+                ${
+                  task.category ||
+                  "TASK"
+                }
+
+              </span>
+
+
+
+              <!-- TITLE -->
+
+              <h3>
+
+                ${
+                  task.title ||
+                  "Untitled Task"
+                }
+
+              </h3>
+
+
+
+              <!-- DESCRIPTION -->
+
+              <p>
+
+                ${
+                  task.description ||
+                  "No task description provided."
+                }
+
+              </p>
+
+
+
+              <!-- STATUS -->
+
+              <div
+                class="posted-task-status"
+              >
+
+                <span>
+                  Status:
+                </span>
+
+
+                <strong
+                  class="
+                    task-status
+                    ${getStatusClass(
+                      task.status
+                    )}
+                  "
+                >
+
+                  ${formatStatus(
+                    task.status
+                  )}
+
+                </strong>
+
+
+              </div>
+
+
+
+              <!-- TASK DETAILS -->
+
+              <div
+                class="posted-task-details"
+              >
+
+
+                <div>
+
+                  <span>
+                    Participants
+                  </span>
+
+
+                  <strong>
+
+                    ${participants}
+
+                  </strong>
+
+                </div>
+
+
+
+                <div>
+
+                  <span>
+                    Reward per person
+                  </span>
+
+
+                  <strong>
+
+                    ${formatMoney(
+                      reward
+                    )}
+
+                  </strong>
+
+                </div>
+
+
+
+                <div>
+
+                  <span>
+                    Task reward budget
+                  </span>
+
+
+                  <strong>
+
+                    ${formatMoney(
+                      taskBudget
+                    )}
+
+                  </strong>
+
+                </div>
+
+
+
+                <div>
+
+                  <span>
+                    EarnGig fee (20%)
+                  </span>
+
+
+                  <strong>
+
+                    ${formatMoney(
+                      platformFee
+                    )}
+
+                  </strong>
+
+                </div>
+
+
+
+                <div>
+
+                  <span>
+                    Total payment
+                  </span>
+
+
+                  <strong
+                    class="total-payment"
+                  >
+
+                    ${formatMoney(
+                      totalPayment
+                    )}
+
+                  </strong>
+
+                </div>
+
+
+              </div>
+
+
+
+              <!-- TASK LINK -->
+
+              ${
+                task.task_link
+
+                  ?
+
+                  `
+
+                    <a
+                      href="${task.task_link}"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="btn outline"
+                    >
+
+                      Open Task Link
+
+                    </a>
+
+                  `
+
+                  :
+
+                  ""
+
+              }
+
+
+            </div>
+
+
+
+            <!-- TASK STATUS ACTION -->
+
+            <div
+              class="posted-task-footer"
+            >
+
+
+              <small>
+
+                Submitted:
+
+                ${
+                  task.created_at
+
+                    ?
+
+                    new Date(
+                      task.created_at
+                    ).toLocaleDateString(
+                      "en-NG",
+                      {
+
+                        year:
+                          "numeric",
+
+                        month:
+                          "short",
+
+                        day:
+                          "numeric"
+
+                      }
+                    )
+
+                    :
+
+                    "Unknown"
+
+                }
+
+              </small>
+
+
+            </div>
+
+
+          </article>
+
+
+        `;
+
+
+      }
+    ).join("");
+
+
+}
+
+
+
+/* ========================================
+   FILTER TASKS
+======================================== */
+
+document
+  .getElementById(
+    "task-status-filter"
+  )
+  .addEventListener(
+    "change",
+    function () {
+
+
+      const selectedStatus =
+        this.value;
+
+
+
+      /*
+       * ALL TASKS
+       */
+      if (
+        selectedStatus === "all"
+      ) {
+
+
+        renderPostedTasks(
+          allPostedTasks
+        );
+
+
+        return;
+
+      }
+
+
+
+      /*
+       * FILTER TASKS
+       */
+      const filteredTasks =
+        allPostedTasks.filter(
+          function (task) {
+
+
+            return String(
+              task.status || ""
+            ).toLowerCase()
+            ===
+            selectedStatus;
+
+
+          }
+        );
+
+
+
+      renderPostedTasks(
+        filteredTasks
+      );
+
+
+    }
+  );
+
+
+
+/* ========================================
+   LOAD PAGE
+======================================== */
+
+loadPostedTasks();
+
+
+</script>
+
+
+</body>
+
+</html>
