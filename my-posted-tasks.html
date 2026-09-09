@@ -13,11 +13,11 @@
   <title>My Posted Tasks | EarnGig</title>
 
 
-  <!-- MAIN STYLES -->
+  <!-- MAIN CSS -->
 
   <link
     rel="stylesheet"
-    href="styles.css?v=3"
+    href="styles.css?v=4"
   >
 
 
@@ -25,45 +25,31 @@
 
 
     /* ========================================
-       MY POSTED TASKS PAGE
+       PAGE ADDITIONS
     ======================================== */
 
-
-    /* ========================================
-       COMPACT TASK CARDS
-    ======================================== */
-
-    .compact-task-card {
+    .posted-task-card {
 
       position: relative;
 
-      padding: 20px;
+      overflow: hidden;
 
       background:
         linear-gradient(
           135deg,
-          #3b5688 0%,
-          #2f4675 50%,
-          #26385f 100%
+          #ffffff 0%,
+          #f7f9ff 100%
         );
 
       border:
         1px solid
-        rgba(135, 165, 255, 0.30);
-
-      border-top:
-        3px solid
-        #7c6cff;
+        #dce4f5;
 
       border-radius: 16px;
 
-      color: #ffffff;
-
-      margin-bottom: 14px;
-
       box-shadow:
-        0 8px 25px
-        rgba(0, 0, 0, 0.16);
+        0 8px 22px
+        rgba(20, 35, 75, 0.06);
 
       transition:
         transform 0.2s ease,
@@ -72,28 +58,66 @@
     }
 
 
-    .compact-task-card:hover {
+    .posted-task-card:hover {
 
       transform:
         translateY(-2px);
 
       box-shadow:
-        0 12px 30px
-        rgba(0, 0, 0, 0.22);
+        0 12px 28px
+        rgba(20, 35, 75, 0.10);
 
     }
 
 
+    /* TOP LINE */
+
+    .posted-task-card::before {
+
+      content: "";
+
+      position: absolute;
+
+      top: 0;
+
+      left: 0;
+
+      width: 100%;
+
+      height: 4px;
+
+      background:
+        linear-gradient(
+          90deg,
+          #6d4aff,
+          #5c8dff,
+          #78b7ff
+        );
+
+    }
+
 
     /* ========================================
-       TOP ROW
+       TASK CONTENT
     ======================================== */
 
-    .compact-task-top {
+    .posted-task-card
+    .task-card-content {
+
+      padding: 18px;
+
+    }
+
+
+    /* ========================================
+       TASK HEADER
+    ======================================== */
+
+    .posted-task-header {
 
       display: flex;
 
-      align-items: center;
+      align-items: flex-start;
 
       justify-content: space-between;
 
@@ -104,152 +128,289 @@
     }
 
 
-    .compact-task-top .eyebrow {
+    .posted-task-title-area {
 
-      margin: 0;
-
-      color: #c2ceff;
-
-      font-size: 11px;
-
-      font-weight: 800;
-
-      letter-spacing: 2px;
-
-    }
-
-
-
-    /* ========================================
-       TITLE
-    ======================================== */
-
-    .compact-task-card h3 {
-
-      margin:
-        0
-        0
-        6px;
-
-      color:
-        #ffffff !important;
-
-      font-size:
-        20px;
-
-      font-weight:
-        700;
-
-      line-height:
-        1.3;
-
-    }
-
-
-
-    /* ========================================
-       DESCRIPTION
-    ======================================== */
-
-    .compact-description {
-
-      margin: 0;
-
-      color:
-        #dce5ff !important;
-
-      font-size:
-        14px;
-
-      line-height:
-        1.5;
-
-      white-space:
-        nowrap;
-
-      overflow:
-        hidden;
-
-      text-overflow:
-        ellipsis;
-
-    }
-
-
-
-    /* ========================================
-       QUICK DETAILS
-    ======================================== */
-
-    .compact-task-details {
-
-      display: grid;
-
-      grid-template-columns:
-        repeat(3, 1fr);
-
-      gap: 12px;
-
-      margin-top:
-        15px;
-
-      padding-top:
-        14px;
-
-      border-top:
-        1px solid
-        rgba(255, 255, 255, 0.14);
-
-    }
-
-
-    .compact-task-details div {
-
-      display: flex;
-
-      flex-direction: column;
-
-      gap: 4px;
+      flex: 1;
 
       min-width: 0;
 
     }
 
 
-    .compact-task-details span {
+    .posted-task-card
+    .eyebrow {
 
-      color:
-        #bfcceb !important;
+      display: block;
 
-      font-size:
+      margin-bottom: 7px;
+
+      font-size: 11px;
+
+      letter-spacing: 1.5px;
+
+    }
+
+
+    .posted-task-card h3 {
+
+      margin: 0;
+
+      color: #17182f;
+
+      font-size: 18px;
+
+      line-height: 1.3;
+
+    }
+
+
+    /* ========================================
+       DESCRIPTION
+    ======================================== */
+
+    .posted-task-description {
+
+      margin:
+
+        8px
+        0
+        10px;
+
+      color: #656b7b;
+
+      font-size: 14px;
+
+      line-height: 1.45;
+
+      display:
+
+        -webkit-box;
+
+      -webkit-line-clamp: 2;
+
+      -webkit-box-orient:
+
+        vertical;
+
+      overflow: hidden;
+
+    }
+
+
+    /* ========================================
+       POSTED BY
+    ======================================== */
+
+    .posted-by {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 6px;
+
+      margin-bottom: 13px;
+
+      color: #73798b;
+
+      font-size: 12px;
+
+    }
+
+
+    .posted-by strong {
+
+      color: #39415a;
+
+      font-weight: 700;
+
+    }
+
+
+    /* ========================================
+       STATUS
+    ======================================== */
+
+    .task-status {
+
+      display: inline-flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      padding:
+
+        6px
+        10px;
+
+      border-radius: 20px;
+
+      font-size: 11px;
+
+      font-weight: 700;
+
+      white-space: nowrap;
+
+    }
+
+
+    .status-pending {
+
+      color: #9a6500;
+
+      background: #fff3d6;
+
+      border:
+        1px solid
+        #f2d38b;
+
+    }
+
+
+    .status-active {
+
+      color: #157347;
+
+      background: #ddf5e8;
+
+      border:
+        1px solid
+        #a8dfbf;
+
+    }
+
+
+    .status-rejected {
+
+      color: #b42318;
+
+      background: #ffe4e1;
+
+      border:
+        1px solid
+        #f5b5ae;
+
+    }
+
+
+    .status-paused {
+
+      color: #7a4b00;
+
+      background: #fff0cf;
+
+      border:
+        1px solid
+        #f0cf8b;
+
+    }
+
+
+    .status-completed {
+
+      color: #3655a5;
+
+      background: #e5ecff;
+
+      border:
+        1px solid
+        #bdccff;
+
+    }
+
+
+    /* ========================================
+       COMPACT DETAILS
+    ======================================== */
+
+    .posted-task-details {
+
+      display: grid;
+
+      grid-template-columns:
+
+        repeat(
+          3,
+          minmax(0, 1fr)
+        );
+
+      gap: 8px;
+
+      margin-top: 12px;
+
+    }
+
+
+    .posted-task-details
+    .task-detail {
+
+      padding:
+
+        10px
         11px;
 
-      line-height:
-        1.3;
+      border-radius: 10px;
+
+      background:
+
+        linear-gradient(
+          135deg,
+          #f1f5ff,
+          #e9f1ff
+        );
+
+      border:
+        1px solid
+        #dce6f7;
 
     }
 
 
-    .compact-task-details strong {
+    .posted-task-details span {
 
-      color:
-        #ffffff !important;
+      display: block;
 
-      font-size:
-        16px;
+      margin-bottom: 5px;
 
-      font-weight:
-        700;
+      color: #7a8192;
+
+      font-size: 10px;
+
+      line-height: 1.2;
 
     }
 
+
+    .posted-task-details strong {
+
+      display: block;
+
+      color: #202940;
+
+      font-size: 14px;
+
+      font-weight: 800;
+
+    }
+
+
+    /* ========================================
+       TOTAL PAYMENT
+    ======================================== */
+
+    .total-payment {
+
+      color: #4d3cc7 !important;
+
+    }
 
 
     /* ========================================
        FOOTER
     ======================================== */
 
-    .compact-task-footer {
+    .posted-task-footer {
 
       display: flex;
 
@@ -257,275 +418,224 @@
 
       justify-content: space-between;
 
-      gap: 15px;
-
-      margin-top:
-        14px;
-
-      padding-top:
-        12px;
-
-      border-top:
-        1px solid
-        rgba(255, 255, 255, 0.10);
-
-    }
-
-
-    .compact-task-footer small {
-
-      color:
-        #bfcceb !important;
-
-      font-size:
-        12px;
-
-    }
-
-
-    .compact-link {
-
-      color:
-        #c7c0ff !important;
-
-      font-size:
-        13px;
-
-      font-weight:
-        700;
-
-      text-decoration:
-        none;
-
-      white-space:
-        nowrap;
-
-    }
-
-
-    .compact-link:hover {
-
-      color:
-        #ffffff !important;
-
-    }
-
-
-
-    /* ========================================
-       STATUS BADGES
-    ======================================== */
-
-    .task-status {
-
-      display:
-        inline-flex;
-
-      align-items:
-        center;
-
-      justify-content:
-        center;
+      gap: 10px;
 
       padding:
-        6px 11px;
 
-      border-radius:
-        20px;
+        12px
+        18px;
 
-      font-size:
-        11px;
+      border-top:
 
-      font-weight:
-        700;
-
-      white-space:
-        nowrap;
-
-    }
-
-
-
-    /* PENDING */
-
-    .status-pending {
+        1px solid
+        #e5eaf4;
 
       background:
-        rgba(255, 190, 80, 0.16);
 
-      border:
-        1px solid
-        rgba(255, 190, 80, 0.35);
-
-      color:
-        #ffda8a !important;
-
-    }
-
-
-
-    /* ACTIVE */
-
-    .status-active {
-
-      background:
-        rgba(70, 220, 150, 0.16);
-
-      border:
-        1px solid
-        rgba(70, 220, 150, 0.35);
-
-      color:
-        #82f2ba !important;
+        rgba(
+          244,
+          247,
+          255,
+          0.7
+        );
 
     }
 
 
+    .posted-task-footer small {
 
-    /* REJECTED */
+      color: #747b8c;
 
-    .status-rejected {
-
-      background:
-        rgba(255, 100, 100, 0.16);
-
-      border:
-        1px solid
-        rgba(255, 100, 100, 0.35);
-
-      color:
-        #ffabab !important;
+      font-size: 11px;
 
     }
-
-
-
-    /* PAUSED */
-
-    .status-paused {
-
-      background:
-        rgba(180, 180, 200, 0.15);
-
-      border:
-        1px solid
-        rgba(180, 180, 200, 0.25);
-
-      color:
-        #dddded !important;
-
-    }
-
-
-
-    /* COMPLETED */
-
-    .status-completed {
-
-      background:
-        rgba(100, 160, 255, 0.16);
-
-      border:
-        1px solid
-        rgba(100, 160, 255, 0.30);
-
-      color:
-        #aac8ff !important;
-
-    }
-
 
 
     /* ========================================
-       FILTER
+       ACTION BUTTONS
     ======================================== */
 
-    .task-filter {
+    .posted-task-actions {
 
-      min-width:
-        180px;
+      display: flex;
+
+      align-items: center;
+
+      flex-wrap: wrap;
+
+      gap: 8px;
 
     }
 
+
+    .task-action-btn {
+
+      display: inline-flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      padding:
+
+        8px
+        11px;
+
+      border-radius: 8px;
+
+      border: 0;
+
+      font-size: 12px;
+
+      font-weight: 700;
+
+      cursor: pointer;
+
+      text-decoration: none;
+
+      transition:
+
+        opacity 0.2s ease,
+        transform 0.2s ease;
+
+    }
+
+
+    .task-action-btn:hover {
+
+      opacity: 0.9;
+
+      transform:
+        translateY(-1px);
+
+    }
+
+
+    .open-task-btn {
+
+      background: #edf2ff;
+
+      color: #4056a1;
+
+      border:
+        1px solid
+        #d6e0fb;
+
+    }
+
+
+    .delete-task-btn {
+
+      background: #fff0f0;
+
+      color: #c93636;
+
+      border:
+        1px solid
+        #f3c5c5;
+
+    }
+
+
+    .delete-task-btn:disabled {
+
+      opacity: 0.6;
+
+      cursor: not-allowed;
+
+      transform: none;
+
+    }
+
+
+    /* ========================================
+       DELETE WARNING
+    ======================================== */
+
+    .delete-note {
+
+      margin-top: 10px;
+
+      padding:
+
+        8px
+        10px;
+
+      border-radius: 8px;
+
+      color: #8a6517;
+
+      background: #fff9e8;
+
+      font-size: 11px;
+
+      line-height: 1.4;
+
+    }
+
+
+    /* ========================================
+       EMPTY STATE
+    ======================================== */
+
+    .empty-state {
+
+      grid-column: 1 / -1;
+
+    }
 
 
     /* ========================================
        MOBILE
     ======================================== */
 
-    @media (max-width: 600px) {
+    @media (
+      max-width: 650px
+    ) {
 
 
-      .compact-task-card {
+      .posted-task-header {
 
-        padding:
-          16px;
+        flex-direction: column;
 
-      }
-
-
-      .compact-task-details {
-
-        gap:
-          8px;
+        gap: 10px;
 
       }
 
 
-      .compact-task-details span {
+      .posted-task-details {
 
-        font-size:
-          10px;
+        grid-template-columns:
 
-      }
-
-
-      .compact-task-details strong {
-
-        font-size:
-          14px;
+          repeat(
+            2,
+            minmax(0, 1fr)
+          );
 
       }
 
 
-      .compact-task-footer {
+      .posted-task-footer {
 
-        align-items:
-          flex-start;
+        align-items: flex-start;
 
-        flex-direction:
-          column;
-
-        gap:
-          8px;
+        flex-direction: column;
 
       }
 
 
-      .compact-description {
+      .posted-task-actions {
 
-        white-space:
-          normal;
-
-        display:
-          -webkit-box;
-
-        -webkit-line-clamp:
-          2;
-
-        -webkit-box-orient:
-          vertical;
+        width: 100%;
 
       }
 
 
-      .task-filter {
+      .task-action-btn {
 
-        width:
-          100%;
+        flex: 1;
 
       }
-
 
     }
 
@@ -605,18 +715,26 @@
 
 
         <span class="eyebrow">
+
           TASK MANAGEMENT
+
         </span>
 
 
+
         <h1>
+
           My Posted Tasks
+
         </h1>
 
 
+
         <p>
-          View tasks you submitted and check their
-          approval status and activity.
+
+          View and manage tasks
+          you have submitted.
+
         </p>
 
 
@@ -631,13 +749,16 @@
          STATISTICS
     ===================================== -->
 
-    <div class="dashboard-stats task-stats">
+    <div
+      class="dashboard-stats task-stats"
+    >
 
 
-      <!-- TOTAL TASKS -->
+      <!-- TOTAL -->
 
-      <div class="dashboard-stat task-stat">
-
+      <div
+        class="dashboard-stat task-stat"
+      >
 
         <small>
           Total Tasks
@@ -655,11 +776,12 @@
 
       <!-- PENDING -->
 
-      <div class="dashboard-stat task-stat">
-
+      <div
+        class="dashboard-stat task-stat"
+      >
 
         <small>
-          Pending Approval
+          Pending
         </small>
 
 
@@ -674,11 +796,12 @@
 
       <!-- ACTIVE -->
 
-      <div class="dashboard-stat task-stat">
-
+      <div
+        class="dashboard-stat task-stat"
+      >
 
         <small>
-          Active Tasks
+          Active
         </small>
 
 
@@ -691,10 +814,11 @@
 
 
 
-      <!-- TOTAL PAID -->
+      <!-- PAID -->
 
-      <div class="dashboard-stat task-stat">
-
+      <div
+        class="dashboard-stat task-stat"
+      >
 
         <small>
           Total Paid
@@ -727,12 +851,17 @@
 
 
           <span class="eyebrow">
+
             YOUR SUBMISSIONS
+
           </span>
 
 
+
           <h2>
+
             Submitted Tasks
+
           </h2>
 
 
@@ -740,7 +869,7 @@
 
 
 
-        <!-- STATUS FILTER -->
+        <!-- FILTER -->
 
         <select
           id="task-status-filter"
@@ -760,6 +889,11 @@
 
           <option value="active">
             Active
+          </option>
+
+
+          <option value="approved">
+            Approved
           </option>
 
 
@@ -795,8 +929,6 @@
       >
 
 
-        <!-- LOADING STATE -->
-
         <div class="empty-state">
 
 
@@ -811,7 +943,8 @@
 
 
           <p>
-            Please wait while we load your submitted tasks.
+            Please wait while we load
+            your submitted tasks.
           </p>
 
 
@@ -833,21 +966,23 @@
 
 
       <strong>
-        How task approval works
+        Managing your tasks
       </strong>
 
 
       <p>
-        Tasks submitted by users are reviewed by
-        the EarnGig administration before becoming
-        available to participants.
+
+        You can view the current status
+        of every task you have submitted.
+
       </p>
 
 
       <p>
-        You can check the status of your task here.
-        Approved tasks may become active after
-        administrative review.
+
+        Tasks with no participant activity
+        can be removed using the Delete button.
+
       </p>
 
 
@@ -870,9 +1005,8 @@
 
   <div class="container copy">
 
-
-    © 2026 EarnGig. All rights reserved.
-
+    © 2026 EarnGig.
+    All rights reserved.
 
   </div>
 
@@ -887,7 +1021,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-
 <script src="supabase.js"></script>
 
 
@@ -900,6 +1033,13 @@
 ======================================== */
 
 let allPostedTasks = [];
+
+
+let currentUser = null;
+
+
+let currentUserName =
+  "EarnGig Member";
 
 
 
@@ -919,7 +1059,6 @@ async function getCurrentUser() {
     error
 
   } =
-
   await supabaseClient
     .auth
     .getUser();
@@ -942,7 +1081,6 @@ async function getCurrentUser() {
   }
 
 
-
   return user;
 
 
@@ -951,22 +1089,54 @@ async function getCurrentUser() {
 
 
 /* ========================================
-   FORMAT MONEY
+   LOAD USER PROFILE
 ======================================== */
 
-function formatMoney(amount) {
+async function loadUserProfile(
+  userId
+) {
 
 
-  return `₦${
+  const {
 
-    Number(
-      amount || 0
+    data: profile,
+
+    error
+
+  } =
+  await supabaseClient
+
+
+    .from("profiles")
+
+
+    .select(
+      "full_name"
     )
-    .toLocaleString(
-      "en-NG"
+
+
+    .eq(
+      "id",
+      userId
     )
 
-  }`;
+
+    .maybeSingle();
+
+
+
+  if (
+    !error &&
+    profile &&
+    profile.full_name
+  ) {
+
+
+    currentUserName =
+      profile.full_name;
+
+
+  }
 
 
 }
@@ -985,33 +1155,54 @@ function escapeHtml(value) {
   )
 
 
-  .replaceAll(
-    "&",
-    "&amp;"
-  )
+    .replaceAll(
+      "&",
+      "&amp;"
+    )
 
 
-  .replaceAll(
-    "<",
-    "&lt;"
-  )
+    .replaceAll(
+      "<",
+      "&lt;"
+    )
 
 
-  .replaceAll(
-    ">",
-    "&gt;"
-  )
+    .replaceAll(
+      ">",
+      "&gt;"
+    )
 
 
-  .replaceAll(
-    '"',
-    "&quot;"
-  )
+    .replaceAll(
+      '"',
+      "&quot;"
+    )
 
 
-  .replaceAll(
-    "'",
-    "&#039;"
+    .replaceAll(
+      "'",
+      "&#039;"
+    );
+
+
+}
+
+
+
+/* ========================================
+   FORMAT MONEY
+======================================== */
+
+function formatMoney(amount) {
+
+
+  return (
+    "₦" +
+    Number(
+      amount || 0
+    ).toLocaleString(
+      "en-NG"
+    )
   );
 
 
@@ -1027,18 +1218,17 @@ function getStatusClass(status) {
 
 
   const cleanStatus =
-
     String(
       status || "pending"
     )
-    .toLowerCase()
-    .trim();
+      .toLowerCase()
+      .trim();
 
 
 
   if (
-    cleanStatus === "active" ||
-    cleanStatus === "approved"
+    cleanStatus ===
+    "active"
   ) {
 
 
@@ -1050,7 +1240,21 @@ function getStatusClass(status) {
 
 
   if (
-    cleanStatus === "rejected"
+    cleanStatus ===
+    "approved"
+  ) {
+
+
+    return "status-active";
+
+
+  }
+
+
+
+  if (
+    cleanStatus ===
+    "rejected"
   ) {
 
 
@@ -1062,7 +1266,8 @@ function getStatusClass(status) {
 
 
   if (
-    cleanStatus === "paused"
+    cleanStatus ===
+    "paused"
   ) {
 
 
@@ -1074,7 +1279,8 @@ function getStatusClass(status) {
 
 
   if (
-    cleanStatus === "completed"
+    cleanStatus ===
+    "completed"
   ) {
 
 
@@ -1082,7 +1288,6 @@ function getStatusClass(status) {
 
 
   }
-
 
 
   return "status-pending";
@@ -1100,17 +1305,17 @@ function formatStatus(status) {
 
 
   const cleanStatus =
-
     String(
       status || "pending"
     )
-    .toLowerCase()
-    .trim();
+      .toLowerCase()
+      .trim();
 
 
 
   if (
-    cleanStatus === "pending"
+    cleanStatus ===
+    "pending"
   ) {
 
 
@@ -1122,7 +1327,8 @@ function formatStatus(status) {
 
 
   if (
-    cleanStatus === "active"
+    cleanStatus ===
+    "active"
   ) {
 
 
@@ -1134,7 +1340,8 @@ function formatStatus(status) {
 
 
   if (
-    cleanStatus === "approved"
+    cleanStatus ===
+    "approved"
   ) {
 
 
@@ -1146,7 +1353,8 @@ function formatStatus(status) {
 
 
   if (
-    cleanStatus === "paused"
+    cleanStatus ===
+    "paused"
   ) {
 
 
@@ -1158,7 +1366,8 @@ function formatStatus(status) {
 
 
   if (
-    cleanStatus === "completed"
+    cleanStatus ===
+    "completed"
   ) {
 
 
@@ -1170,7 +1379,8 @@ function formatStatus(status) {
 
 
   if (
-    cleanStatus === "rejected"
+    cleanStatus ===
+    "rejected"
   ) {
 
 
@@ -1180,9 +1390,9 @@ function formatStatus(status) {
   }
 
 
-
-  return escapeHtml(
-    status
+  return (
+    status ||
+    "Pending Approval"
   );
 
 
@@ -1191,104 +1401,59 @@ function formatStatus(status) {
 
 
 /* ========================================
-   GET PARTICIPANTS
+   FORMAT DATE
 ======================================== */
 
-function getParticipants(task) {
+function formatDate(dateValue) {
 
 
-  return Number(
-
-    task.max_participants ||
-
-    task.participant_count ||
-
-    0
-
-  );
+  if (!dateValue) {
 
 
-}
-
-
-
-/* ========================================
-   GET PLATFORM FEE
-======================================== */
-
-function getPlatformFee(
-  task,
-  taskBudget
-) {
-
-
-  const storedFee =
-
-    Number(
-      task.platform_fee
-    );
-
-
-
-  if (
-    storedFee > 0
-  ) {
-
-
-    return storedFee;
+    return "Unknown";
 
 
   }
 
 
 
-  return (
-    taskBudget * 0.20
-  );
+  try {
 
 
-}
+    return new Date(
+      dateValue
+    )
+      .toLocaleDateString(
+        "en-NG",
+        {
 
 
-
-/* ========================================
-   GET TOTAL PAYMENT
-======================================== */
-
-function getTotalPayment(
-  task,
-  taskBudget,
-  platformFee
-) {
+          year:
+            "numeric",
 
 
-  const storedTotal =
-
-    Number(
-      task.total_amount
-    );
+          month:
+            "short",
 
 
-
-  if (
-    storedTotal > 0
-  ) {
+          day:
+            "numeric"
 
 
-    return storedTotal;
+        }
+      );
 
 
   }
 
 
+  catch (error) {
 
-  return (
 
-    taskBudget +
+    return "Unknown";
 
-    platformFee
 
-  );
+  }
 
 
 }
@@ -1303,26 +1468,50 @@ async function loadPostedTasks() {
 
 
   const taskList =
-
     document.getElementById(
       "posted-task-list"
     );
 
 
 
+  taskList.innerHTML = `
+
+
+    <div class="empty-state">
+
+
+      <div class="empty-icon">
+        ⏳
+      </div>
+
+
+      <h3>
+        Loading your tasks...
+      </h3>
+
+
+      <p>
+        Please wait while your tasks are loaded.
+      </p>
+
+
+    </div>
+
+
+  `;
+
+
+
   /* --------------------------------------
      GET USER
-  --------------------------------------- */
+  -------------------------------------- */
 
   const user =
-
     await getCurrentUser();
 
 
 
-  if (
-    !user
-  ) {
+  if (!user) {
 
 
     return;
@@ -1332,9 +1521,24 @@ async function loadPostedTasks() {
 
 
 
+  currentUser =
+    user;
+
+
+
   /* --------------------------------------
-     LOAD USER TASKS
-  --------------------------------------- */
+     LOAD PROFILE NAME
+  -------------------------------------- */
+
+  await loadUserProfile(
+    user.id
+  );
+
+
+
+  /* --------------------------------------
+     LOAD TASKS
+  -------------------------------------- */
 
   const {
 
@@ -1343,17 +1547,20 @@ async function loadPostedTasks() {
     error
 
   } =
-
   await supabaseClient
+
 
     .from("tasks")
 
+
     .select("*")
+
 
     .eq(
       "user_id",
       user.id
     )
+
 
     .order(
       "created_at",
@@ -1365,12 +1572,10 @@ async function loadPostedTasks() {
 
 
   /* --------------------------------------
-     DATABASE ERROR
-  --------------------------------------- */
+     HANDLE ERROR
+  -------------------------------------- */
 
-  if (
-    error
-  ) {
+  if (error) {
 
 
     console.error(
@@ -1397,15 +1602,18 @@ async function loadPostedTasks() {
 
 
         <p>
+
           ${escapeHtml(
-            error.message
+            error.message ||
+            "Please try again."
           )}
+
         </p>
 
 
         <button
-          class="btn primary"
           type="button"
+          class="btn primary"
           onclick="loadPostedTasks()"
         >
 
@@ -1429,17 +1637,16 @@ async function loadPostedTasks() {
 
   /* --------------------------------------
      STORE TASKS
-  --------------------------------------- */
+  -------------------------------------- */
 
   allPostedTasks =
-
     tasks || [];
 
 
 
   /* --------------------------------------
      UPDATE STATISTICS
-  --------------------------------------- */
+  -------------------------------------- */
 
   updateStatistics(
     allPostedTasks
@@ -1449,7 +1656,7 @@ async function loadPostedTasks() {
 
   /* --------------------------------------
      RENDER TASKS
-  --------------------------------------- */
+  -------------------------------------- */
 
   renderPostedTasks(
     allPostedTasks
@@ -1467,88 +1674,74 @@ async function loadPostedTasks() {
 function updateStatistics(tasks) {
 
 
-  /* --------------------------------------
-     TOTAL TASKS
-  --------------------------------------- */
-
   const totalTasks =
-
     tasks.length;
 
 
 
-  /* --------------------------------------
-     PENDING TASKS
-  --------------------------------------- */
-
   const pendingTasks =
-
     tasks.filter(
       function(task) {
 
 
-        const status =
-
+        return (
           String(
             task.status || ""
           )
-          .toLowerCase()
-          .trim();
-
-
-
-        return (
-          status === "pending"
+            .toLowerCase()
+            .trim() ===
+          "pending"
         );
 
 
       }
     )
-    .length;
+      .length;
 
 
-
-  /* --------------------------------------
-     ACTIVE TASKS
-  --------------------------------------- */
 
   const activeTasks =
-
     tasks.filter(
       function(task) {
 
 
         const status =
-
           String(
             task.status || ""
           )
-          .toLowerCase()
-          .trim();
+            .toLowerCase()
+            .trim();
 
 
 
         return (
 
-          status === "active" ||
 
-          status === "approved"
+          status ===
+          "active"
+
+
+          ||
+
+
+          status ===
+          "approved"
+
 
         );
 
 
       }
     )
-    .length;
+      .length;
 
 
 
   /* --------------------------------------
-     TOTAL PAID
-  --------------------------------------- */
+     CALCULATE TOTAL PAID
+  -------------------------------------- */
 
   const totalPaid =
-
     tasks.reduce(
       function(
         total,
@@ -1557,69 +1750,101 @@ function updateStatistics(tasks) {
 
 
         const participants =
+          Number(
 
-          getParticipants(
-            task
+
+            task.max_participants
+
+
+            ||
+
+
+            task.participant_count
+
+
+            ||
+
+
+            0
+
+
           );
 
 
 
         const reward =
-
           Number(
-            task.reward_amount || 0
+            task.reward_amount ||
+            0
           );
 
 
 
         const taskBudget =
-
           participants *
           reward;
 
 
 
         const platformFee =
+          task.platform_fee !==
+          undefined
 
-          getPlatformFee(
-            task,
-            taskBudget
+
+            ?
+
+            Number(
+              task.platform_fee ||
+              0
+            )
+
+
+            :
+
+            taskBudget *
+            0.20;
+
+
+
+        let payment =
+          Number(
+            task.total_amount ||
+            0
           );
 
 
 
-        const totalPayment =
+        if (
+          payment <= 0
+        ) {
 
-          getTotalPayment(
-            task,
-            taskBudget,
-            platformFee
-          );
+
+          payment =
+            taskBudget +
+            platformFee;
+
+
+        }
 
 
 
         return (
-
           total +
-          totalPayment
-
+          payment
         );
 
 
       },
+
+
       0
     );
 
 
 
-  /* --------------------------------------
-     UPDATE PAGE
-  --------------------------------------- */
-
   document.getElementById(
     "total-tasks"
   ).textContent =
-
     totalTasks;
 
 
@@ -1627,7 +1852,6 @@ function updateStatistics(tasks) {
   document.getElementById(
     "pending-tasks"
   ).textContent =
-
     pendingTasks;
 
 
@@ -1635,7 +1859,6 @@ function updateStatistics(tasks) {
   document.getElementById(
     "active-tasks"
   ).textContent =
-
     activeTasks;
 
 
@@ -1643,7 +1866,6 @@ function updateStatistics(tasks) {
   document.getElementById(
     "total-paid"
   ).textContent =
-
     formatMoney(
       totalPaid
     );
@@ -1661,7 +1883,6 @@ function renderPostedTasks(tasks) {
 
 
   const taskList =
-
     document.getElementById(
       "posted-task-list"
     );
@@ -1670,14 +1891,11 @@ function renderPostedTasks(tasks) {
 
   /* --------------------------------------
      NO TASKS
-  --------------------------------------- */
+  -------------------------------------- */
 
   if (
-
     !tasks ||
-
     tasks.length === 0
-
   ) {
 
 
@@ -1698,9 +1916,10 @@ function renderPostedTasks(tasks) {
 
 
         <p>
-          You haven't submitted any tasks yet.
-          Create a task and submit it for
-          EarnGig approval.
+
+          You haven't submitted
+          any tasks yet.
+
         </p>
 
 
@@ -1731,364 +1950,849 @@ function renderPostedTasks(tasks) {
 
 
   /* --------------------------------------
-     RENDER TASK CARDS
-  --------------------------------------- */
+     RENDER CARDS
+  -------------------------------------- */
 
   taskList.innerHTML =
-
-    tasks.map(
-      function(task) {
+    tasks
 
 
-        /* ------------------------------
-           PARTICIPANTS
-        ------------------------------ */
-
-        const participants =
-
-          getParticipants(
-            task
-          );
+      .map(
+        function(task) {
 
 
+          /* -------------------------------
+             PARTICIPANTS
+          -------------------------------- */
 
-        /* ------------------------------
-           REWARD
-        ------------------------------ */
-
-        const reward =
-
-          Number(
-            task.reward_amount || 0
-          );
+          const participants =
+            Number(
 
 
+              task.max_participants
 
-        /* ------------------------------
-           TASK BUDGET
-        ------------------------------ */
 
-        const taskBudget =
+              ||
 
-          participants *
-          reward;
+
+              task.participant_count
+
+
+              ||
+
+
+              0
+
+
+            );
 
 
 
-        /* ------------------------------
-           PLATFORM FEE
-        ------------------------------ */
+          /* -------------------------------
+             REWARD
+          -------------------------------- */
 
-        const platformFee =
-
-          getPlatformFee(
-            task,
-            taskBudget
-          );
-
-
-
-        /* ------------------------------
-           TOTAL PAYMENT
-        ------------------------------ */
-
-        const totalPayment =
-
-          getTotalPayment(
-            task,
-            taskBudget,
-            platformFee
-          );
+          const reward =
+            Number(
+              task.reward_amount ||
+              0
+            );
 
 
 
-        /* ------------------------------
-           SUBMITTED DATE
-        ------------------------------ */
+          /* -------------------------------
+             BUDGET
+          -------------------------------- */
 
-        const submittedDate =
+          const taskBudget =
+            participants *
+            reward;
 
-          task.created_at
 
-            ?
 
-            new Date(
+          /* -------------------------------
+             PLATFORM FEE
+          -------------------------------- */
+
+          let platformFee =
+            Number(
+              task.platform_fee ||
+              0
+            );
+
+
+
+          if (
+            platformFee <= 0
+          ) {
+
+
+            platformFee =
+              taskBudget *
+              0.20;
+
+
+          }
+
+
+
+          /* -------------------------------
+             TOTAL PAYMENT
+          -------------------------------- */
+
+          let totalPayment =
+            Number(
+              task.total_amount ||
+              0
+            );
+
+
+
+          if (
+            totalPayment <= 0
+          ) {
+
+
+            totalPayment =
+              taskBudget +
+              platformFee;
+
+
+          }
+
+
+
+          /* -------------------------------
+             SAFE VALUES
+          -------------------------------- */
+
+          const title =
+            escapeHtml(
+              task.title ||
+              "Untitled Task"
+            );
+
+
+
+          const description =
+            escapeHtml(
+              task.description ||
+              "No task description provided."
+            );
+
+
+
+          const category =
+            escapeHtml(
+              task.category ||
+              "TASK"
+            );
+
+
+
+          const status =
+            escapeHtml(
+              formatStatus(
+                task.status
+              )
+            );
+
+
+
+          const statusClass =
+            getStatusClass(
+              task.status
+            );
+
+
+
+          const submittedDate =
+            formatDate(
               task.created_at
-            )
-            .toLocaleDateString(
-              "en-NG",
-              {
-
-                day:
-                  "numeric",
-
-                month:
-                  "short",
-
-                year:
-                  "numeric"
-
-              }
-            )
-
-            :
-
-            "Unknown";
+            );
 
 
 
-        /* ------------------------------
-           SAFE DATA
-        ------------------------------ */
-
-        const category =
-
-          escapeHtml(
-            task.category || "TASK"
-          );
+          const posterName =
+            escapeHtml(
+              currentUserName
+            );
 
 
 
-        const title =
-
-          escapeHtml(
-            task.title ||
-            "Untitled Task"
-          );
-
-
-
-        const description =
-
-          escapeHtml(
-            task.description ||
-            "No task description provided."
-          );
+          const taskLink =
+            task.task_link
+              ? String(
+                  task.task_link
+                )
+              : "";
 
 
 
-        /* ------------------------------
-           CARD
-        ------------------------------ */
-
-        return `
+          return `
 
 
-          <article
-            class="
-              task-card
-              posted-task-card
-              compact-task-card
-            "
-          >
-
-
-            <!-- ==========================
-                 TOP ROW
-            =========================== -->
-
-            <div
-              class="compact-task-top"
+            <article
+              class="task-card posted-task-card"
             >
 
 
-              <span class="eyebrow">
-
-                ${category}
-
-              </span>
-
-
-
-              <span
-                class="
-                  task-status
-                  ${getStatusClass(
-                    task.status
-                  )}
-                "
+              <div
+                class="task-card-content"
               >
 
-                ${formatStatus(
-                  task.status
-                )}
 
-              </span>
+                <!-- TASK HEADER -->
 
+                <div
+                  class="posted-task-header"
+                >
 
-            </div>
 
+                  <div
+                    class="posted-task-title-area"
+                  >
 
 
-            <!-- ==========================
-                 TASK TITLE
-            =========================== -->
+                    <!-- CATEGORY -->
 
-            <h3>
+                    <span class="eyebrow">
 
-              ${title}
+                      ${category}
 
-            </h3>
+                    </span>
 
 
 
-            <!-- ==========================
-                 DESCRIPTION
-            =========================== -->
+                    <!-- TITLE -->
 
-            <p
-              class="compact-description"
-            >
+                    <h3>
 
-              ${description}
+                      ${title}
 
-            </p>
+                    </h3>
 
 
+                  </div>
 
-            <!-- ==========================
-                 QUICK DETAILS
-            =========================== -->
 
-            <div
-              class="compact-task-details"
-            >
 
+                  <!-- STATUS -->
 
-              <!-- PARTICIPANTS -->
+                  <strong
+                    class="
+                      task-status
+                      ${statusClass}
+                    "
+                  >
 
-              <div>
+                    ${status}
 
+                  </strong>
 
-                <span>
-                  👥 Participants
-                </span>
 
+                </div>
 
-                <strong>
 
-                  ${participants}
 
-                </strong>
+                <!-- DESCRIPTION -->
 
+                <p
+                  class="
+                    posted-task-description
+                  "
+                >
 
-              </div>
+                  ${description}
 
+                </p>
 
 
-              <!-- REWARD -->
 
-              <div>
+                <!-- POSTED BY -->
 
+                <div
+                  class="posted-by"
+                >
 
-                <span>
-                  💰 Reward
-                </span>
+                  👤
 
+                  <span>
+                    Posted by:
+                  </span>
 
-                <strong>
 
-                  ${formatMoney(
-                    reward
-                  )}
+                  <strong>
 
-                </strong>
+                    ${posterName}
 
+                  </strong>
 
-              </div>
 
+                </div>
 
 
-              <!-- TOTAL -->
 
-              <div>
+                <!-- DETAILS -->
 
+                <div
+                  class="
+                    posted-task-details
+                  "
+                >
 
-                <span>
-                  💳 Total
-                </span>
 
+                  <!-- PARTICIPANTS -->
 
-                <strong>
+                  <div
+                    class="task-detail"
+                  >
 
-                  ${formatMoney(
-                    totalPayment
-                  )}
+                    <span>
+                      Participants
+                    </span>
 
-                </strong>
 
+                    <strong>
 
-              </div>
+                      ${participants}
 
+                    </strong>
 
-            </div>
 
+                  </div>
 
 
-            <!-- ==========================
-                 FOOTER
-            =========================== -->
 
-            <div
-              class="compact-task-footer"
-            >
+                  <!-- REWARD -->
 
+                  <div
+                    class="task-detail"
+                  >
 
-              <!-- DATE -->
+                    <span>
+                      Reward / Person
+                    </span>
 
-              <small>
 
-                Submitted:
+                    <strong>
 
-                ${submittedDate}
+                      ${formatMoney(
+                        reward
+                      )}
 
-              </small>
+                    </strong>
 
 
+                  </div>
 
-              <!-- TASK LINK -->
 
-              ${
-                task.task_link
 
-                  ?
+                  <!-- BUDGET -->
 
-                  `
+                  <div
+                    class="task-detail"
+                  >
 
-                    <a
-                      href="${escapeHtml(
-                        task.task_link
-                      )}"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="compact-link"
+                    <span>
+                      Task Budget
+                    </span>
+
+
+                    <strong>
+
+                      ${formatMoney(
+                        taskBudget
+                      )}
+
+                    </strong>
+
+
+                  </div>
+
+
+
+                  <!-- FEE -->
+
+                  <div
+                    class="task-detail"
+                  >
+
+                    <span>
+                      Platform Fee
+                    </span>
+
+
+                    <strong>
+
+                      ${formatMoney(
+                        platformFee
+                      )}
+
+                    </strong>
+
+
+                  </div>
+
+
+
+                  <!-- TOTAL -->
+
+                  <div
+                    class="task-detail"
+                  >
+
+                    <span>
+                      Total Paid
+                    </span>
+
+
+                    <strong
+                      class="total-payment"
                     >
 
-                      Open Task →
+                      ${formatMoney(
+                        totalPayment
+                      )}
 
-                    </a>
-
-                  `
-
-                  :
-
-                  ""
-
-              }
+                    </strong>
 
 
-            </div>
+                  </div>
 
 
-          </article>
+                </div>
 
 
-        `;
+
+              </div>
 
 
-      }
+
+              <!-- FOOTER -->
+
+              <div
+                class="posted-task-footer"
+              >
+
+
+                <!-- DATE -->
+
+                <small>
+
+                  Submitted:
+
+                  ${submittedDate}
+
+                </small>
+
+
+
+                <!-- ACTIONS -->
+
+                <div
+                  class="
+                    posted-task-actions
+                  "
+                >
+
+
+                  <!-- TASK LINK -->
+
+                  ${
+                    taskLink
+
+
+                      ? `
+
+                        <a
+                          href="${escapeHtml(
+                            taskLink
+                          )}"
+                          target="_blank"
+                          rel="
+                            noopener
+                            noreferrer
+                          "
+                          class="
+                            task-action-btn
+                            open-task-btn
+                          "
+                        >
+
+                          🔗 Open
+
+                        </a>
+
+                      `
+
+
+                      : ""
+
+                  }
+
+
+
+                  <!-- DELETE -->
+
+                  <button
+                    type="button"
+                    class="
+                      task-action-btn
+                      delete-task-btn
+                    "
+                    onclick="
+                      deleteTask(
+                        '${task.id}'
+                      )
+                    "
+                  >
+
+                    🗑 Delete
+
+                  </button>
+
+
+                </div>
+
+
+              </div>
+
+
+            </article>
+
+
+          `;
+
+
+        }
+      )
+
+
+      .join("");
+
+
+}
+
+
+
+/* ========================================
+   DELETE TASK
+======================================== */
+
+async function deleteTask(taskId) {
+
+
+  /* --------------------------------------
+     CONFIRM
+  -------------------------------------- */
+
+  const confirmed =
+    confirm(
+
+
+      "Are you sure you want to delete this task?\n\n" +
+
+
+      "This action cannot be undone.\n\n" +
+
+
+      "Tasks with participant activity cannot be deleted."
+
+
+    );
+
+
+
+  if (!confirmed) {
+
+
+    return;
+
+
+  }
+
+
+
+  /* --------------------------------------
+     GET USER
+  -------------------------------------- */
+
+  const user =
+    currentUser ||
+    await getCurrentUser();
+
+
+
+  if (!user) {
+
+
+    return;
+
+
+  }
+
+
+
+  /* --------------------------------------
+     FIND TASK
+  -------------------------------------- */
+
+  const {
+
+    data: task,
+
+    error: taskError
+
+  } =
+  await supabaseClient
+
+
+    .from("tasks")
+
+
+    .select(
+      "id, user_id, status"
     )
-    .join("");
+
+
+    .eq(
+      "id",
+      taskId
+    )
+
+
+    .eq(
+      "user_id",
+      user.id
+    )
+
+
+    .maybeSingle();
+
+
+
+  if (
+    taskError ||
+    !task
+  ) {
+
+
+    console.error(
+      "Task verification error:",
+      taskError
+    );
+
+
+
+    alert(
+      "Unable to find this task."
+    );
+
+
+    return;
+
+
+  }
+
+
+
+  /* --------------------------------------
+     CHECK PARTICIPANT ACTIVITY
+
+     A task should not be deleted
+     if someone has already started,
+     submitted or completed it.
+  -------------------------------------- */
+
+  const {
+
+    data: attempts,
+
+    error: attemptsError
+
+  } =
+  await supabaseClient
+
+
+    .from("task_attempts")
+
+
+    .select(
+      "id, status"
+    )
+
+
+    .eq(
+      "task_id",
+      taskId
+    )
+
+
+    .limit(
+      1
+    );
+
+
+
+  if (
+    attemptsError
+  ) {
+
+
+    console.error(
+      "Attempt check error:",
+      attemptsError
+    );
+
+
+
+    alert(
+      "Unable to verify participant activity. Please try again."
+    );
+
+
+    return;
+
+
+  }
+
+
+
+  /* --------------------------------------
+     PREVENT DELETE IF PARTICIPANTS EXIST
+  -------------------------------------- */
+
+  if (
+    attempts &&
+    attempts.length > 0
+  ) {
+
+
+    alert(
+
+
+      "This task cannot be deleted because participant activity already exists.\n\n" +
+
+
+      "You should pause the task instead."
+
+
+    );
+
+
+    return;
+
+
+  }
+
+
+
+  /* --------------------------------------
+     FINAL CONFIRMATION
+  -------------------------------------- */
+
+  const finalConfirmation =
+    confirm(
+
+
+      "Final confirmation:\n\n" +
+
+
+      "Delete this task permanently?"
+
+
+    );
+
+
+
+  if (!finalConfirmation) {
+
+
+    return;
+
+
+  }
+
+
+
+  /* --------------------------------------
+     DELETE TASK
+  -------------------------------------- */
+
+  const {
+
+    error: deleteError
+
+  } =
+  await supabaseClient
+
+
+    .from("tasks")
+
+
+    .delete()
+
+
+    .eq(
+      "id",
+      taskId
+    )
+
+
+    .eq(
+      "user_id",
+      user.id
+    );
+
+
+
+  if (
+    deleteError
+  ) {
+
+
+    console.error(
+      "Delete task error:",
+      deleteError
+    );
+
+
+
+    alert(
+
+
+      "Unable to delete this task:\n\n" +
+
+
+      deleteError.message
+
+
+    );
+
+
+    return;
+
+
+  }
+
+
+
+  /* --------------------------------------
+     SUCCESS
+  -------------------------------------- */
+
+  alert(
+    "Task deleted successfully."
+  );
+
+
+
+  /* --------------------------------------
+     RELOAD
+  -------------------------------------- */
+
+  await loadPostedTasks();
 
 
 }
@@ -2101,9 +2805,11 @@ function renderPostedTasks(tasks) {
 
 document
 
+
   .getElementById(
     "task-status-filter"
   )
+
 
   .addEventListener(
     "change",
@@ -2111,21 +2817,22 @@ document
 
 
       const selectedStatus =
-
         String(
-          this.value || "all"
+          this.value ||
+          "all"
         )
-        .toLowerCase()
-        .trim();
+          .toLowerCase()
+          .trim();
 
 
 
       /* ----------------------------------
-         ALL TASKS
+         ALL
       ----------------------------------- */
 
       if (
-        selectedStatus === "all"
+        selectedStatus ===
+        "all"
       ) {
 
 
@@ -2142,58 +2849,68 @@ document
 
 
       /* ----------------------------------
-         FILTER TASKS
+         FILTER
       ----------------------------------- */
 
       const filteredTasks =
-
-        allPostedTasks.filter(
-          function(task) {
+        allPostedTasks
 
 
-            const taskStatus =
-
-              String(
-                task.status || ""
-              )
-              .toLowerCase()
-              .trim();
+          .filter(
+            function(task) {
 
 
+              const taskStatus =
+                String(
+                  task.status ||
+                  "pending"
+                )
+                  .toLowerCase()
+                  .trim();
 
-            /*
-             * APPROVED TASKS SHOULD
-             * ALSO APPEAR UNDER ACTIVE
-             */
 
-            if (
-              selectedStatus === "active"
-            ) {
+
+              /*
+               * APPROVED AND ACTIVE
+               * are treated as active
+               * in the Active filter.
+              */
+
+              if (
+                selectedStatus ===
+                "active"
+              ) {
+
+
+                return (
+
+
+                  taskStatus ===
+                  "active"
+
+
+                  ||
+
+
+                  taskStatus ===
+                  "approved"
+
+
+                );
+
+
+              }
+
 
 
               return (
-
-                taskStatus === "active" ||
-
-                taskStatus === "approved"
-
+                taskStatus ===
+                selectedStatus
               );
 
 
             }
-
-
-
-            return (
-
-              taskStatus ===
-              selectedStatus
-
-            );
-
-
-          }
-        );
+          );
 
 
 
