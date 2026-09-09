@@ -8512,3 +8512,30 @@ body {
     transform: translateY(-2px);
     opacity: 0.9;
 }
+/* ========================================
+   TASK MANAGEMENT CARDS
+======================================== */
+
+.task-management-card {
+  background: #ffffff;
+  color: #1f2937;
+}
+
+
+.task-management-card h3 {
+  color: #111827 !important;
+  opacity: 1 !important;
+  font-weight: 700;
+}
+
+
+.task-management-card p {
+  color: #6b7280 !important;
+  opacity: 1 !important;
+}
+
+
+.task-management-card small {
+  color: #6b7280 !important;
+  opacity: 1 !important;
+}
