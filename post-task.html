@@ -12,10 +12,16 @@
 
   <title>Post a Task | EarnGig</title>
 
+
+  <!-- MAIN STYLES -->
+
   <link
     rel="stylesheet"
     href="styles.css?v=2"
   >
+
+
+  <!-- SUPABASE -->
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -97,13 +103,22 @@
 
       width: 100%;
       padding: 14px;
+
       border: 1px solid #d1d5db;
+
       border-radius: 10px;
+
       font-size: 16px;
+
       font-family: inherit;
+
       outline: none;
+
       background: white;
+
       color: #1f2937;
+
+      box-sizing: border-box;
 
     }
 
@@ -148,9 +163,13 @@
     .proof-box {
 
       margin-top: 25px;
+
       padding: 18px;
+
       border-radius: 14px;
+
       background: #f8f7ff;
+
       border: 1px solid #e4ddff;
 
     }
@@ -159,8 +178,11 @@
     .proof-option {
 
       display: flex;
+
       align-items: flex-start;
+
       gap: 12px;
+
       cursor: pointer;
 
     }
@@ -169,10 +191,16 @@
     .proof-option input {
 
       width: 20px;
+
       height: 20px;
+
       margin-top: 2px;
+
       accent-color: #6d4aff;
+
       cursor: pointer;
+
+      flex-shrink: 0;
 
     }
 
@@ -180,6 +208,7 @@
     .proof-option strong {
 
       display: block;
+
       margin-bottom: 5px;
 
     }
@@ -188,8 +217,11 @@
     .proof-option p {
 
       margin: 0;
+
       color: #6b7280;
+
       line-height: 1.5;
+
       font-size: 14px;
 
     }
@@ -202,7 +234,9 @@
     .payment-summary {
 
       margin-top: 25px;
+
       padding: 22px;
+
       border-radius: 15px;
 
       background:
@@ -220,9 +254,13 @@
     .payment-summary-header {
 
       display: flex;
+
       align-items: center;
+
       justify-content: space-between;
+
       gap: 15px;
+
       margin-bottom: 18px;
 
     }
@@ -231,6 +269,7 @@
     .payment-summary-header h3 {
 
       margin: 0;
+
       font-size: 18px;
 
     }
@@ -239,7 +278,9 @@
     .payment-summary-header span {
 
       font-size: 13px;
+
       color: #6d4aff;
+
       font-weight: 700;
 
     }
@@ -248,8 +289,11 @@
     .payment-row {
 
       display: flex;
+
       align-items: center;
+
       justify-content: space-between;
+
       gap: 20px;
 
       padding: 13px 0;
@@ -265,6 +309,7 @@
     .payment-row strong {
 
       color: #1f2937;
+
       font-size: 17px;
 
     }
@@ -273,10 +318,15 @@
     .payment-row.total {
 
       margin-top: 5px;
+
       padding-top: 18px;
+
       border-bottom: none;
+
       color: #1f2937;
+
       font-size: 17px;
+
       font-weight: 700;
 
     }
@@ -285,6 +335,7 @@
     .payment-row.total strong {
 
       font-size: 24px;
+
       color: #6d4aff;
 
     }
@@ -293,9 +344,12 @@
     .fee-note {
 
       margin: 15px 0 0;
+
       font-size: 13px;
+
       color: #6b7280;
-      line-height: 1.5;
+
+      line-height: 1.6;
 
     }
 
@@ -307,10 +361,13 @@
     .submit-task-button {
 
       width: 100%;
+
       margin-top: 25px;
+
       padding: 16px;
 
       border: none;
+
       border-radius: 11px;
 
       background:
@@ -323,6 +380,7 @@
       color: white;
 
       font-size: 16px;
+
       font-weight: 700;
 
       cursor: pointer;
@@ -344,14 +402,16 @@
     .submit-task-button:disabled {
 
       opacity: .65;
+
       cursor: not-allowed;
+
       transform: none;
 
     }
 
 
     /* =========================================
-       MESSAGE
+       FORM MESSAGE
     ========================================= */
 
     .form-message {
@@ -359,9 +419,11 @@
       display: none;
 
       margin-top: 18px;
+
       padding: 15px;
 
       border-radius: 10px;
+
       line-height: 1.5;
 
     }
@@ -372,7 +434,9 @@
       display: block;
 
       background: #ecfdf3;
+
       border: 1px solid #a7f3c5;
+
       color: #166534;
 
     }
@@ -383,24 +447,28 @@
       display: block;
 
       background: #fff5f5;
+
       border: 1px solid #fecaca;
+
       color: #991b1b;
 
     }
 
 
     /* =========================================
-       RULES
+       TASK RULES
     ========================================= */
 
     .task-rules {
 
       margin-top: 25px;
+
       padding: 20px;
 
       border-radius: 14px;
 
       background: #f9fafb;
+
       border: 1px solid #e5e7eb;
 
     }
@@ -409,6 +477,7 @@
     .task-rules h3 {
 
       margin: 0 0 12px;
+
       font-size: 17px;
 
     }
@@ -433,21 +502,36 @@
 
     @media (max-width: 650px) {
 
+
       .post-task-card {
+
         padding: 20px;
+
       }
 
 
       .task-form-grid {
 
         grid-template-columns: 1fr;
+
         gap: 0;
 
       }
 
 
+      .payment-summary-header {
+
+        align-items: flex-start;
+
+        flex-direction: column;
+
+      }
+
+
       .payment-row.total strong {
+
         font-size: 21px;
+
       }
 
     }
@@ -515,7 +599,9 @@
       <section class="post-task-card">
 
 
-        <!-- HEADER -->
+        <!-- =====================================
+             HEADER
+        ====================================== -->
 
         <div class="post-task-header">
 
@@ -531,10 +617,12 @@
 
 
           <p>
+
             Need people to follow, like, comment,
             subscribe, visit a website or complete
             another activity? Submit your task for
             EarnGig approval.
+
           </p>
 
 
@@ -542,14 +630,16 @@
 
 
 
-        <!-- =========================================
-             FORM
-        ========================================= -->
+        <!-- =====================================
+             POST TASK FORM
+        ====================================== -->
 
         <form id="postTaskForm">
 
 
-          <!-- TASK TITLE -->
+          <!-- =====================================
+               TASK TITLE
+          ====================================== -->
 
           <div class="task-form-group">
 
@@ -572,7 +662,9 @@
 
 
 
-          <!-- CATEGORY -->
+          <!-- =====================================
+               CATEGORY
+          ====================================== -->
 
           <div class="task-form-group">
 
@@ -587,41 +679,51 @@
               required
             >
 
+
               <option value="">
                 Select a category
               </option>
+
 
               <option value="Social Media">
                 Social Media
               </option>
 
+
               <option value="TikTok">
                 TikTok
               </option>
+
 
               <option value="Instagram">
                 Instagram
               </option>
 
+
               <option value="YouTube">
                 YouTube
               </option>
+
 
               <option value="Website">
                 Website Visit
               </option>
 
+
               <option value="App">
                 App Download
               </option>
+
 
               <option value="Survey">
                 Survey
               </option>
 
+
               <option value="Other">
                 Other
               </option>
+
 
             </select>
 
@@ -630,7 +732,9 @@
 
 
 
-          <!-- INSTRUCTIONS -->
+          <!-- =====================================
+               TASK DESCRIPTION
+          ====================================== -->
 
           <div class="task-form-group">
 
@@ -649,8 +753,11 @@
 
 
             <small>
-              Be clear and specific. Tasks with
-              confusing instructions may be rejected.
+
+              Be clear and specific.
+              Tasks with confusing instructions
+              may be rejected.
+
             </small>
 
 
@@ -658,7 +765,9 @@
 
 
 
-          <!-- TASK LINK -->
+          <!-- =====================================
+               TASK LINK
+          ====================================== -->
 
           <div class="task-form-group">
 
@@ -676,8 +785,10 @@
 
 
             <small>
+
               Add the link participants should visit
               to complete your task.
+
             </small>
 
 
@@ -685,10 +796,14 @@
 
 
 
-          <!-- PARTICIPANTS + REWARD -->
+          <!-- =====================================
+               PARTICIPANTS + REWARD
+          ====================================== -->
 
           <div class="task-form-grid">
 
+
+            <!-- PARTICIPANTS -->
 
             <div class="task-form-group">
 
@@ -709,14 +824,18 @@
 
 
               <small>
+
                 The number of people you want
                 to complete this task.
+
               </small>
 
 
             </div>
 
 
+
+            <!-- REWARD -->
 
             <div class="task-form-group">
 
@@ -737,8 +856,12 @@
 
 
               <small>
+
                 Minimum reward:
-                <strong>₦10 per participant.</strong>
+                <strong>
+                  ₦10 per participant.
+                </strong>
+
               </small>
 
 
@@ -749,7 +872,9 @@
 
 
 
-          <!-- PROOF -->
+          <!-- =====================================
+               REQUIRE PROOF
+          ====================================== -->
 
           <div class="proof-box">
 
@@ -773,9 +898,11 @@
 
 
                 <p>
+
                   Participants may need to submit
                   evidence such as a screenshot or
                   other proof when completing this task.
+
                 </p>
 
 
@@ -789,9 +916,9 @@
 
 
 
-          <!-- =========================================
+          <!-- =====================================
                PAYMENT SUMMARY
-          ========================================= -->
+          ====================================== -->
 
           <div class="payment-summary">
 
@@ -813,6 +940,8 @@
 
 
 
+            <!-- PARTICIPANTS -->
+
             <div class="payment-row">
 
 
@@ -829,6 +958,8 @@
             </div>
 
 
+
+            <!-- REWARD -->
 
             <div class="payment-row">
 
@@ -847,6 +978,8 @@
 
 
 
+            <!-- REWARD BUDGET -->
+
             <div class="payment-row">
 
 
@@ -864,6 +997,8 @@
 
 
 
+            <!-- PLATFORM FEE -->
+
             <div class="payment-row">
 
 
@@ -880,6 +1015,8 @@
             </div>
 
 
+
+            <!-- TOTAL -->
 
             <div class="payment-row total">
 
@@ -904,8 +1041,8 @@
               immediately from your EarnGig wallet.
 
               If your task is rejected by an
-              administrator, the amount will be
-              refunded to your wallet.
+              administrator, the deducted amount will
+              be refunded to your wallet.
 
             </p>
 
@@ -914,7 +1051,9 @@
 
 
 
-          <!-- SUBMIT -->
+          <!-- =====================================
+               SUBMIT BUTTON
+          ====================================== -->
 
           <button
             type="submit"
@@ -928,7 +1067,9 @@
 
 
 
-          <!-- MESSAGE -->
+          <!-- =====================================
+               FORM MESSAGE
+          ====================================== -->
 
           <div
             id="formMessage"
@@ -940,7 +1081,9 @@
 
 
 
-        <!-- RULES -->
+        <!-- =====================================
+             TASK RULES
+        ====================================== -->
 
         <div class="task-rules">
 
@@ -952,37 +1095,45 @@
 
           <ul>
 
+
             <li>
               Your task must contain clear instructions.
             </li>
+
 
             <li>
               The minimum reward is ₦10 per participant.
             </li>
 
+
             <li>
               EarnGig charges a 20% platform fee.
             </li>
 
+
             <li>
-              The total payment is deducted when you
-              submit your task.
+              The total payment is deducted immediately
+              when you submit your task.
             </li>
+
 
             <li>
               All submitted tasks must be approved
               before becoming available.
             </li>
 
+
             <li>
               If an administrator rejects your task,
               the deducted amount will be refunded.
             </li>
 
+
             <li>
               Fraudulent, misleading or prohibited
               tasks may be rejected.
             </li>
+
 
           </ul>
 
@@ -1109,7 +1260,7 @@ function formatNaira(amount) {
 
 
   const value =
-    Number(amount || 0);
+    Number(amount);
 
 
   if (
@@ -1130,8 +1281,11 @@ function formatNaira(amount) {
       "en-NG",
 
       {
+
         minimumFractionDigits: 0,
+
         maximumFractionDigits: 2
+
       }
 
     )
@@ -1153,33 +1307,29 @@ async function getCurrentUser() {
 
 
     const {
+
       data,
+
       error
+
     } =
+
       await supabaseClient
         .auth
         .getUser();
 
 
-    if (error) {
+    if (
+      error ||
+      !data ||
+      !data.user
+    ) {
 
 
       console.error(
         "Authentication error:",
         error
       );
-
-
-      window.location.href =
-        "login.html";
-
-
-      return null;
-
-    }
-
-
-    if (!data.user) {
 
 
       window.location.href =
@@ -1200,7 +1350,7 @@ async function getCurrentUser() {
 
 
     console.error(
-      "Unable to get user:",
+      "Unable to get current user:",
       error
     );
 
@@ -1236,9 +1386,13 @@ function calculateTaskPayment() {
     );
 
 
+  /* PARTICIPANTS */
+
   if (
 
-    !Number.isFinite(participants) ||
+    !Number.isFinite(
+      participants
+    ) ||
 
     participants < 1
 
@@ -1251,12 +1405,18 @@ function calculateTaskPayment() {
 
 
   participants =
-    Math.floor(participants);
+    Math.floor(
+      participants
+    );
 
+
+  /* REWARD */
 
   if (
 
-    !Number.isFinite(reward) ||
+    !Number.isFinite(
+      reward
+    ) ||
 
     reward < MINIMUM_REWARD
 
@@ -1269,18 +1429,29 @@ function calculateTaskPayment() {
   }
 
 
-  const rewardBudget =
-    participants * reward;
+  /* REWARD BUDGET */
 
+  const rewardBudget =
+
+    participants *
+    reward;
+
+
+  /* PLATFORM FEE */
 
   const platformFee =
+
     rewardBudget *
+
     (
       PLATFORM_FEE_PERCENT / 100
     );
 
 
+  /* TOTAL PAYMENT */
+
   const totalPayment =
+
     rewardBudget +
     platformFee;
 
@@ -1390,6 +1561,7 @@ participantsInput.addEventListener(
 
 
     let participants =
+
       Number(
         participantsInput.value
       );
@@ -1453,6 +1625,7 @@ rewardInput.addEventListener(
 
 
     let reward =
+
       Number(
         rewardInput.value
       );
@@ -1598,7 +1771,7 @@ postTaskForm.addEventListener(
 
 
     /* =====================================
-       CHECK CURRENT USER
+       GET CURRENT USER
     ===================================== */
 
     const user =
@@ -1619,7 +1792,9 @@ postTaskForm.addEventListener(
     const title =
 
       document
-        .getElementById("taskTitle")
+        .getElementById(
+          "taskTitle"
+        )
         .value
         .trim();
 
@@ -1627,14 +1802,18 @@ postTaskForm.addEventListener(
     const category =
 
       document
-        .getElementById("taskCategory")
+        .getElementById(
+          "taskCategory"
+        )
         .value;
 
 
     const description =
 
       document
-        .getElementById("taskDescription")
+        .getElementById(
+          "taskDescription"
+        )
         .value
         .trim();
 
@@ -1642,9 +1821,20 @@ postTaskForm.addEventListener(
     const taskLink =
 
       document
-        .getElementById("taskLink")
+        .getElementById(
+          "taskLink"
+        )
         .value
         .trim();
+
+
+    const requireProof =
+
+      document
+        .getElementById(
+          "requireProof"
+        )
+        .checked;
 
 
     const payment =
@@ -1720,6 +1910,10 @@ postTaskForm.addEventListener(
 
     if (
 
+      !Number.isInteger(
+        payment.participants
+      ) ||
+
       payment.participants < 1
 
     ) {
@@ -1727,7 +1921,7 @@ postTaskForm.addEventListener(
 
       showMessage(
 
-        "Please enter at least one participant.",
+        "Please enter a valid number of participants.",
 
         "error"
 
@@ -1766,7 +1960,7 @@ postTaskForm.addEventListener(
 
 
     /* =====================================
-       VALIDATE URL
+       VALIDATE LINK
     ===================================== */
 
     if (
@@ -1874,23 +2068,28 @@ postTaskForm.addEventListener(
 
 
       /* =====================================
-       CALL DATABASE FUNCTION
+       POST TASK AND DEDUCT PAYMENT
 
-       The Supabase function:
+       The PostgreSQL RPC function should:
 
-       1. Checks wallet balance
-       2. Locks wallet row
-       3. Deducts total amount
-       4. Creates pending task
-       5. Creates transaction record
+       1. Get auth.uid()
+       2. Lock the user's wallet row
+       3. Check wallet balance
+       4. Deduct total payment
+       5. Create pending task
 
-       If one operation fails,
-       PostgreSQL rolls everything back.
+       All operations happen in one transaction.
+
+       If anything fails, PostgreSQL rolls
+       everything back.
       ===================================== */
 
       const {
+
         data,
+
         error
+
       } =
 
         await supabaseClient.rpc(
@@ -1929,7 +2128,11 @@ postTaskForm.addEventListener(
 
 
             p_total_amount:
-              payment.totalPayment
+              payment.totalPayment,
+
+
+            p_require_proof:
+              requireProof
 
 
           }
@@ -1938,7 +2141,7 @@ postTaskForm.addEventListener(
 
 
       /* =====================================
-       CHECK DATABASE ERROR
+       CHECK ERROR
       ===================================== */
 
       if (error) {
@@ -1946,7 +2149,7 @@ postTaskForm.addEventListener(
 
         console.error(
 
-          "Task payment error:",
+          "Post task RPC error:",
 
           error
 
@@ -1960,7 +2163,7 @@ postTaskForm.addEventListener(
 
       console.log(
 
-        "Task successfully created:",
+        "Task created successfully:",
 
         data
 
@@ -1968,7 +2171,7 @@ postTaskForm.addEventListener(
 
 
       /* =====================================
-       SUCCESS MESSAGE
+       SUCCESS
       ===================================== */
 
       showMessage(
@@ -1985,10 +2188,10 @@ postTaskForm.addEventListener(
         " has been deducted from your wallet. " +
 
 
-        "Your task is now awaiting administrator approval. " +
+        "Your task is awaiting administrator approval. " +
 
 
-        "If your task is rejected, the deducted amount will be refunded.",
+        "If the task is rejected, the deducted amount will be refunded to your wallet.",
 
 
         "success"
@@ -2057,23 +2260,31 @@ postTaskForm.addEventListener(
 
       let message =
 
-        error.message ||
+        error?.message ||
 
-        "Unable to post task.";
+        "Unable to post task. Please try again.";
+
+
+      const lowerMessage =
+
+        String(
+          message
+        ).toLowerCase();
 
 
       /* =====================================
-       FRIENDLY ERROR:
        INSUFFICIENT BALANCE
       ===================================== */
 
       if (
 
-        message
-          .toLowerCase()
-          .includes(
-            "insufficient wallet balance"
-          )
+        lowerMessage.includes(
+          "insufficient wallet balance"
+        ) ||
+
+        lowerMessage.includes(
+          "insufficient balance"
+        )
 
       ) {
 
@@ -2084,7 +2295,7 @@ postTaskForm.addEventListener(
           "Insufficient wallet balance. " +
 
 
-          "You need " +
+          "You need at least " +
 
 
           formatNaira(
@@ -2099,17 +2310,14 @@ postTaskForm.addEventListener(
 
 
       /* =====================================
-       FRIENDLY ERROR:
        WALLET NOT FOUND
       ===================================== */
 
-      if (
+      else if (
 
-        message
-          .toLowerCase()
-          .includes(
-            "wallet not found"
-          )
+        lowerMessage.includes(
+          "wallet not found"
+        )
 
       ) {
 
@@ -2119,6 +2327,54 @@ postTaskForm.addEventListener(
           "Your wallet could not be found. " +
 
           "Please contact support.";
+
+
+      }
+
+
+      /* =====================================
+       NOT AUTHENTICATED
+      ===================================== */
+
+      else if (
+
+        lowerMessage.includes(
+          "not authenticated"
+        ) ||
+
+        lowerMessage.includes(
+          "authentication"
+        )
+
+      ) {
+
+
+        message =
+
+          "Your session has expired. Please log in again.";
+
+
+      }
+
+
+      /* =====================================
+       FUNCTION NOT FOUND
+      ===================================== */
+
+      else if (
+
+        lowerMessage.includes(
+          "post_task_with_payment"
+        )
+
+      ) {
+
+
+        message =
+
+          "The payment system is not configured yet. " +
+
+          "The Supabase post_task_with_payment function needs to be created.";
 
 
       }
@@ -2163,7 +2419,7 @@ postTaskForm.addEventListener(
 
 
 /* =========================================
-   INITIALIZE
+   INITIALIZE PAYMENT SUMMARY
 ========================================= */
 
 updatePaymentSummary();
