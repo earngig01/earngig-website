@@ -2,175 +2,1543 @@
 <html lang="en">
 
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>Transactions | EarnGig</title>
 
-  <link rel="stylesheet" href="styles.css">
+  <link
+    rel="stylesheet"
+    href="styles.css"
+  >
+
 </head>
+
 
 <body>
 
+
+<!-- =========================================
+     HEADER
+========================================= -->
+
 <header>
+
   <div class="container nav">
 
-    <a class="logo" href="index.html">
-      <span class="logo-mark">E</span>
+
+    <a
+      class="logo"
+      href="index.html"
+    >
+
+      <span class="logo-mark">
+        E
+      </span>
+
       Earn<span>Gig</span>
+
     </a>
 
-    <a class="btn outline" href="wallet.html">
+
+    <a
+      class="btn outline"
+      href="wallet.html"
+    >
+
       ← Wallet
+
     </a>
+
 
   </div>
+
 </header>
 
 
+
+<!-- =========================================
+     MAIN
+========================================= -->
+
 <main class="dashboard-page">
+
 
   <div class="container">
 
+
+    <!-- =====================================
+         PAGE HEADER
+    ====================================== -->
+
     <div class="dashboard-heading">
+
 
       <div>
 
-        <span class="eyebrow">WALLET</span>
 
-        <h1>Transaction History</h1>
+        <span class="eyebrow">
+
+          WALLET
+
+        </span>
+
+
+        <h1>
+
+          Transaction History
+
+        </h1>
+
 
         <p>
+
           View your earnings, payments and withdrawals.
+
         </p>
 
+
       </div>
+
 
     </div>
 
 
-    <!-- SUMMARY -->
+
+    <!-- =====================================
+         SUMMARY
+    ====================================== -->
 
     <div class="dashboard-stats">
 
-      <div class="dashboard-stat">
-        <small>Total Earned</small>
-        <strong>₦0</strong>
-      </div>
+
+      <!-- TOTAL EARNED -->
 
       <div class="dashboard-stat">
-        <small>Total Withdrawn</small>
-        <strong>₦0</strong>
+
+
+        <small>
+
+          Total Earned
+
+        </small>
+
+
+        <strong id="totalEarned">
+
+          ₦0
+
+        </strong>
+
+
       </div>
 
-      <div class="dashboard-stat">
-        <small>This Month</small>
-        <strong>₦0</strong>
-      </div>
+
+
+      <!-- TOTAL WITHDRAWN -->
 
       <div class="dashboard-stat">
-        <small>Transactions</small>
-        <strong>0</strong>
+
+
+        <small>
+
+          Total Withdrawn
+
+        </small>
+
+
+        <strong id="totalWithdrawn">
+
+          ₦0
+
+        </strong>
+
+
       </div>
+
+
+
+      <!-- THIS MONTH -->
+
+      <div class="dashboard-stat">
+
+
+        <small>
+
+          This Month
+
+        </small>
+
+
+        <strong id="thisMonth">
+
+          ₦0
+
+        </strong>
+
+
+      </div>
+
+
+
+      <!-- TRANSACTION COUNT -->
+
+      <div class="dashboard-stat">
+
+
+        <small>
+
+          Transactions
+
+        </small>
+
+
+        <strong id="transactionCount">
+
+          0
+
+        </strong>
+
+
+      </div>
+
 
     </div>
 
 
-    <!-- FILTER -->
+
+    <!-- =====================================
+         TRANSACTIONS
+    ====================================== -->
 
     <section class="dashboard-section">
 
+
       <div class="section-title">
+
 
         <div>
 
+
           <span class="eyebrow">
+
             TRANSACTIONS
+
           </span>
 
-          <h2>All activity</h2>
+
+          <h2>
+
+            All activity
+
+          </h2>
+
 
         </div>
 
-        <select class="task-filter">
 
-          <option>All transactions</option>
-          <option>Earnings</option>
-          <option>Withdrawals</option>
-          <option>Payments</option>
-          <option>Referrals</option>
+
+        <!-- FILTER -->
+
+        <select
+          id="transactionFilter"
+          class="task-filter"
+        >
+
+
+          <option value="all">
+
+            All transactions
+
+          </option>
+
+
+          <option value="earnings">
+
+            Earnings
+
+          </option>
+
+
+          <option value="withdrawals">
+
+            Withdrawals
+
+          </option>
+
+
+          <option value="payments">
+
+            Payments
+
+          </option>
+
+
+          <option value="referrals">
+
+            Referrals
+
+          </option>
+
 
         </select>
 
+
       </div>
 
 
-      <!-- TRANSACTION LIST -->
 
-      <div class="transaction-list">
+      <!-- ===================================
+           TRANSACTION LIST
+      ==================================== -->
 
+      <div
+        id="transactionList"
+        class="transaction-list"
+      >
+
+
+        <!-- Loading State -->
 
         <div class="empty-state">
 
+
           <div class="empty-icon">
+
             ₦
+
           </div>
 
-          <h3>No transactions yet</h3>
 
-          <p>
-            Once you start earning or making wallet
-            transactions, they will appear here.
-          </p>
+          <h3>
 
-          <a
-            href="dashboard.html"
-            class="btn primary"
-          >
-            Start Earning
-          </a>
+            Loading transactions...
+
+          </h3>
+
 
         </div>
 
 
       </div>
 
+
     </section>
 
 
-    <!-- INFORMATION -->
+
+    <!-- =====================================
+         INFORMATION
+    ====================================== -->
 
     <section class="assessment-notice">
 
+
       <strong>
+
         About your transaction history
+
       </strong>
 
-      <p>
-        Approved earnings, payments and withdrawals are
-        recorded in your EarnGig transaction history.
-      </p>
 
       <p>
+
+        Approved earnings, payments and withdrawals are
+        recorded in your EarnGig transaction history.
+
+      </p>
+
+
+      <p>
+
         Your transaction history helps you keep track of
         where your wallet balance came from and where
         money was withdrawn.
+
       </p>
+
 
     </section>
 
+
   </div>
+
 
 </main>
 
 
+
+<!-- =========================================
+     FOOTER
+========================================= -->
+
 <footer>
 
+
   <div class="container copy">
+
     © 2026 EarnGig. All rights reserved.
+
   </div>
+
 
 </footer>
 
+
+
+<!-- =========================================
+     SUPABASE
+========================================= -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="supabase.js"></script>
+
+
+
+<!-- =========================================
+     JAVASCRIPT
+========================================= -->
+
+<script>
+
+
+/* =========================================
+   DOM ELEMENTS
+========================================= */
+
+const totalEarnedElement =
+  document.getElementById(
+    "totalEarned"
+  );
+
+
+const totalWithdrawnElement =
+  document.getElementById(
+    "totalWithdrawn"
+  );
+
+
+const thisMonthElement =
+  document.getElementById(
+    "thisMonth"
+  );
+
+
+const transactionCountElement =
+  document.getElementById(
+    "transactionCount"
+  );
+
+
+const transactionListElement =
+  document.getElementById(
+    "transactionList"
+  );
+
+
+const transactionFilter =
+  document.getElementById(
+    "transactionFilter"
+  );
+
+
+
+/* =========================================
+   STATE
+========================================= */
+
+let allTransactions = [];
+
+
+
+/* =========================================
+   FORMAT NAIRA
+========================================= */
+
+function formatNaira(
+  amount
+) {
+
+
+  const value =
+    Number(
+      amount ?? 0
+    );
+
+
+  if (
+    !Number.isFinite(
+      value
+    )
+  ) {
+
+    return "₦0";
+
+  }
+
+
+  return (
+
+    "₦" +
+
+    value.toLocaleString(
+      "en-NG",
+      {
+
+        minimumFractionDigits:
+          0,
+
+        maximumFractionDigits:
+          2
+
+      }
+    )
+
+  );
+
+
+}
+
+
+
+/* =========================================
+   FORMAT DATE
+========================================= */
+
+function formatDate(
+  date
+) {
+
+
+  if (!date) {
+
+    return "";
+
+  }
+
+
+  try {
+
+
+    return new Date(
+      date
+    ).toLocaleString(
+      "en-NG",
+      {
+
+        day:
+          "numeric",
+
+        month:
+          "short",
+
+        year:
+          "numeric",
+
+        hour:
+          "numeric",
+
+        minute:
+          "2-digit"
+
+      }
+    );
+
+
+  }
+
+  catch (error) {
+
+
+    return "";
+
+  }
+
+
+}
+
+
+
+/* =========================================
+   ESCAPE HTML
+========================================= */
+
+function escapeHtml(
+  value
+) {
+
+
+  const div =
+    document.createElement(
+      "div"
+    );
+
+
+  div.textContent =
+    value ?? "";
+
+
+  return div.innerHTML;
+
+
+}
+
+
+
+/* =========================================
+   GET CURRENT USER
+========================================= */
+
+async function getCurrentUser() {
+
+
+  try {
+
+
+    const {
+
+      data: {
+        user
+      },
+
+      error
+
+    } =
+
+      await supabaseClient
+        .auth
+        .getUser();
+
+
+
+    if (
+      error ||
+      !user
+    ) {
+
+
+      window.location.href =
+        "login.html";
+
+
+      return null;
+
+    }
+
+
+    return user;
+
+
+  }
+
+  catch (error) {
+
+
+    console.error(
+      "Authentication error:",
+      error
+    );
+
+
+    window.location.href =
+      "login.html";
+
+
+    return null;
+
+  }
+
+
+}
+
+
+
+/* =========================================
+   GET TRANSACTION CATEGORY
+========================================= */
+
+function getTransactionCategory(
+  transaction
+) {
+
+
+  const type =
+
+    String(
+      transaction.type ?? ""
+    ).toLowerCase();
+
+
+  const description =
+
+    String(
+      transaction.description ?? ""
+    ).toLowerCase();
+
+
+
+  /* WITHDRAWAL */
+
+  if (
+
+    type.includes("withdraw") ||
+
+    description.includes("withdraw")
+
+  ) {
+
+    return "withdrawals";
+
+  }
+
+
+
+  /* REFERRAL */
+
+  if (
+
+    type.includes("referral") ||
+
+    description.includes("referral")
+
+  ) {
+
+    return "referrals";
+
+  }
+
+
+
+  /* PAYMENT */
+
+  if (
+
+    type.includes("payment") ||
+
+    description.includes("payment")
+
+  ) {
+
+    return "payments";
+
+  }
+
+
+
+  /* EARNINGS */
+
+  return "earnings";
+
+
+}
+
+
+
+/* =========================================
+   GET TRANSACTION DATE
+========================================= */
+
+function getTransactionDate(
+  transaction
+) {
+
+
+  return (
+
+    transaction.created_at ||
+
+    transaction.processed_at ||
+
+    null
+
+  );
+
+
+}
+
+
+
+/* =========================================
+   LOAD TRANSACTIONS
+========================================= */
+
+async function loadTransactions() {
+
+
+  const user =
+    await getCurrentUser();
+
+
+  if (!user) {
+
+    return;
+
+  }
+
+
+  try {
+
+
+    const {
+
+      data,
+
+      error
+
+    } =
+
+      await supabaseClient
+
+        .from("transactions")
+
+        .select(
+          `
+          id,
+          type,
+          amount,
+          status,
+          description,
+          reference,
+          metadata,
+          balance_after,
+          processed_at,
+          created_at
+          `
+        )
+
+        .eq(
+          "user_id",
+          user.id
+        )
+
+        .order(
+          "created_at",
+          {
+
+            ascending:
+              false
+
+          }
+        );
+
+
+
+    if (error) {
+
+
+      console.error(
+        "Transaction loading error:",
+        error
+      );
+
+
+      throw error;
+
+    }
+
+
+
+    allTransactions =
+      data || [];
+
+
+
+    updateSummary();
+
+
+    renderTransactions();
+
+
+  }
+
+  catch (error) {
+
+
+    console.error(
+      "Unable to load transactions:",
+      error
+    );
+
+
+    transactionListElement.innerHTML =
+
+      `
+
+      <div class="empty-state">
+
+        <div class="empty-icon">
+
+          !
+
+        </div>
+
+
+        <h3>
+
+          Unable to load transactions
+
+        </h3>
+
+
+        <p>
+
+          ${escapeHtml(
+            error.message ||
+            "Please try again later."
+          )}
+
+        </p>
+
+
+      </div>
+
+      `;
+
+
+  }
+
+
+}
+
+
+
+/* =========================================
+   UPDATE SUMMARY
+========================================= */
+
+function updateSummary() {
+
+
+  let totalEarned = 0;
+
+
+  let totalWithdrawn = 0;
+
+
+  let thisMonth = 0;
+
+
+
+  const now =
+    new Date();
+
+
+  const currentMonth =
+    now.getMonth();
+
+
+  const currentYear =
+    now.getFullYear();
+
+
+
+  allTransactions.forEach(
+    transaction => {
+
+
+      const amount =
+        Number(
+          transaction.amount ?? 0
+        );
+
+
+      const category =
+        getTransactionCategory(
+          transaction
+        );
+
+
+      const date =
+        getTransactionDate(
+          transaction
+        );
+
+
+
+      /* ===============================
+         TOTAL EARNED
+      =============================== */
+
+      if (
+
+        category === "earnings" ||
+
+        category === "referrals"
+
+      ) {
+
+
+        totalEarned +=
+          amount;
+
+      }
+
+
+
+      /* ===============================
+         TOTAL WITHDRAWN
+      =============================== */
+
+      if (
+        category === "withdrawals"
+      ) {
+
+
+        totalWithdrawn +=
+          Math.abs(
+            amount
+          );
+
+      }
+
+
+
+      /* ===============================
+         THIS MONTH
+      =============================== */
+
+      if (date) {
+
+
+        const transactionDate =
+          new Date(
+            date
+          );
+
+
+        if (
+
+          transactionDate.getMonth() ===
+            currentMonth &&
+
+          transactionDate.getFullYear() ===
+            currentYear
+
+        ) {
+
+
+          /*
+           * Earnings increase this month's total.
+           * Withdrawals and payments reduce it.
+           */
+
+          if (
+
+            category === "earnings" ||
+
+            category === "referrals"
+
+          ) {
+
+
+            thisMonth +=
+              amount;
+
+          }
+
+
+          else {
+
+
+            thisMonth -=
+              Math.abs(
+                amount
+              );
+
+          }
+
+
+        }
+
+
+      }
+
+
+    }
+
+  );
+
+
+
+  /* ===============================
+     UPDATE DOM
+  =============================== */
+
+  totalEarnedElement.textContent =
+
+    formatNaira(
+      totalEarned
+    );
+
+
+  totalWithdrawnElement.textContent =
+
+    formatNaira(
+      totalWithdrawn
+    );
+
+
+  thisMonthElement.textContent =
+
+    formatNaira(
+      thisMonth
+    );
+
+
+  transactionCountElement.textContent =
+
+    allTransactions.length
+      .toLocaleString(
+        "en-NG"
+      );
+
+
+}
+
+
+
+/* =========================================
+   FILTER TRANSACTIONS
+========================================= */
+
+function getFilteredTransactions() {
+
+
+  const filter =
+    transactionFilter.value;
+
+
+
+  if (
+    filter === "all"
+  ) {
+
+
+    return allTransactions;
+
+  }
+
+
+
+  return allTransactions.filter(
+
+    transaction =>
+
+      getTransactionCategory(
+        transaction
+      ) === filter
+
+  );
+
+
+}
+
+
+
+/* =========================================
+   GET TRANSACTION ICON
+========================================= */
+
+function getTransactionIcon(
+  category
+) {
+
+
+  if (
+    category === "withdrawals"
+  ) {
+
+    return "↑";
+
+  }
+
+
+  if (
+    category === "referrals"
+  ) {
+
+    return "👥";
+
+  }
+
+
+  if (
+    category === "payments"
+  ) {
+
+    return "↓";
+
+  }
+
+
+  return "₦";
+
+
+}
+
+
+
+/* =========================================
+   GET DISPLAY TITLE
+========================================= */
+
+function getTransactionTitle(
+  transaction
+) {
+
+
+  if (
+    transaction.description
+  ) {
+
+
+    return transaction.description;
+
+  }
+
+
+  if (
+    transaction.type
+  ) {
+
+
+    return transaction.type;
+
+  }
+
+
+  return "Wallet transaction";
+
+
+}
+
+
+
+/* =========================================
+   RENDER TRANSACTIONS
+========================================= */
+
+function renderTransactions() {
+
+
+  const transactions =
+    getFilteredTransactions();
+
+
+
+  /* ===============================
+     EMPTY STATE
+  =============================== */
+
+  if (
+    transactions.length === 0
+  ) {
+
+
+    const filter =
+      transactionFilter.value;
+
+
+    let title =
+      "No transactions yet";
+
+
+    let message =
+
+      "Once you start earning or making wallet " +
+
+      "transactions, they will appear here.";
+
+
+
+    if (
+      filter !== "all"
+    ) {
+
+
+      title =
+        "No matching transactions";
+
+
+      message =
+
+        "There are no transactions in this category yet.";
+
+    }
+
+
+
+    transactionListElement.innerHTML =
+
+      `
+
+      <div class="empty-state">
+
+
+        <div class="empty-icon">
+
+          ₦
+
+        </div>
+
+
+        <h3>
+
+          ${title}
+
+        </h3>
+
+
+        <p>
+
+          ${message}
+
+        </p>
+
+
+        <a
+          href="dashboard.html"
+          class="btn primary"
+        >
+
+          Start Earning
+
+        </a>
+
+
+      </div>
+
+      `;
+
+
+    return;
+
+  }
+
+
+
+  /* ===============================
+     TRANSACTION LIST
+  =============================== */
+
+  transactionListElement.innerHTML =
+
+    transactions
+
+      .map(
+
+        transaction => {
+
+
+          const category =
+
+            getTransactionCategory(
+              transaction
+            );
+
+
+          const amount =
+            Number(
+              transaction.amount ?? 0
+            );
+
+
+          const date =
+
+            getTransactionDate(
+              transaction
+            );
+
+
+          const title =
+
+            getTransactionTitle(
+              transaction
+            );
+
+
+          const icon =
+
+            getTransactionIcon(
+              category
+            );
+
+
+          const status =
+
+            transaction.status ||
+            "completed";
+
+
+          /*
+           * Withdrawals and payments
+           * are displayed as negative.
+           */
+
+          const isDebit =
+
+            category === "withdrawals" ||
+
+            category === "payments";
+
+
+          const amountPrefix =
+
+            isDebit
+              ? "-"
+              : "+";
+
+
+
+          return `
+
+            <div class="transaction-item">
+
+
+              <div class="transaction-left">
+
+
+                <div class="transaction-icon">
+
+                  ${icon}
+
+                </div>
+
+
+                <div>
+
+
+                  <strong>
+
+                    ${escapeHtml(
+                      title
+                    )}
+
+                  </strong>
+
+
+                  <small>
+
+                    ${formatDate(
+                      date
+                    )}
+
+                  </small>
+
+
+                  ${
+
+                    transaction.reference
+
+                      ?
+
+                      `
+
+                      <small>
+
+                        Ref:
+                        ${escapeHtml(
+                          transaction.reference
+                        )}
+
+                      </small>
+
+                      `
+
+                      :
+
+                      ""
+
+                  }
+
+
+                </div>
+
+
+              </div>
+
+
+
+              <div class="transaction-right">
+
+
+                <strong>
+
+                  ${amountPrefix}
+
+                  ${formatNaira(
+                    Math.abs(
+                      amount
+                    )
+                  )}
+
+                </strong>
+
+
+                <small>
+
+                  ${escapeHtml(
+                    status
+                  )}
+
+                </small>
+
+
+              </div>
+
+
+            </div>
+
+          `;
+
+
+        }
+
+      )
+
+      .join("");
+
+
+}
+
+
+
+/* =========================================
+   FILTER CHANGE
+========================================= */
+
+transactionFilter.addEventListener(
+
+  "change",
+
+  function() {
+
+
+    renderTransactions();
+
+
+  }
+
+);
+
+
+
+/* =========================================
+   INITIALIZE
+========================================= */
+
+loadTransactions();
+
+
+</script>
+
+
 </body>
+
 </html>
