@@ -13,11 +13,11 @@
   <title>My Posted Tasks | EarnGig</title>
 
 
-  <!-- MAIN STYLES -->
+  <!-- MAIN WEBSITE STYLES -->
 
   <link
     rel="stylesheet"
-    href="styles.css?v=3"
+    href="styles.css?v=2"
   >
 
 
@@ -28,117 +28,164 @@
   <script src="supabase.js"></script>
 
 
+  <!-- =====================================
+       PAGE-SPECIFIC STYLES
+       These override the old dark card style.
+  ====================================== -->
+
   <style>
 
 
-    /* =========================================
-       PAGE
-    ========================================= */
+    /* =====================================
+       PAGE BACKGROUND
+    ====================================== */
 
     .dashboard-page {
 
-      padding:
-        30px 0
-        60px;
+      min-height: 100vh;
+
+      background:
+        linear-gradient(
+          180deg,
+          #10183a 0%,
+          #111936 50%,
+          #0d1430 100%
+        );
+
+      padding: 35px 0 60px;
 
     }
 
 
-    /* =========================================
-       HEADING
-    ========================================= */
+
+    /* =====================================
+       PAGE HEADING
+    ====================================== */
 
     .dashboard-heading {
 
-      margin-bottom:
-        25px;
+      margin-bottom: 22px;
 
     }
 
 
     .dashboard-heading h1 {
 
+      color: #ffffff;
+
       margin:
-        5px 0 8px;
+        6px 0 8px;
 
     }
 
 
     .dashboard-heading p {
 
-      margin: 0;
+      color: #aebbd8;
 
-      max-width:
-        600px;
+      margin: 0;
 
     }
 
 
-    /* =========================================
-       STATISTICS
-    ========================================= */
 
-    .dashboard-stats {
+    /* =====================================
+       EYEBROW
+    ====================================== */
+
+    .dashboard-page .eyebrow {
+
+      color: #9e9cff;
+
+      font-size: 11px;
+
+      font-weight: 700;
+
+      letter-spacing: 2px;
+
+      text-transform: uppercase;
+
+    }
+
+
+
+    /* =====================================
+       STATISTICS
+    ====================================== */
+
+    .task-stats {
 
       display: grid;
 
       grid-template-columns:
         repeat(
           4,
-          1fr
+          minmax(0, 1fr)
         );
 
       gap: 12px;
 
-      margin-bottom:
-        28px;
+      margin-bottom: 25px;
 
     }
 
 
-    .dashboard-stat {
+    .task-stat {
 
-      padding:
-        14px 16px;
+      background:
+        linear-gradient(
+          135deg,
+          #263c72,
+          #1d315f
+        ) !important;
 
-      border-radius:
-        12px;
+      border:
+        1px solid
+        rgba(126, 167, 255, 0.22);
 
-      min-height:
-        auto;
+      border-radius: 12px;
+
+      padding: 14px 16px;
+
+      min-height: auto;
+
+      box-shadow:
+        0 8px 22px
+        rgba(0, 0, 0, 0.14);
 
     }
 
 
-    .dashboard-stat small {
+    .task-stat small {
 
       display: block;
 
-      margin-bottom:
-        5px;
+      color: #aebddd;
 
-      font-size:
-        12px;
+      font-size: 12px;
 
-    }
-
-
-    .dashboard-stat strong {
-
-      font-size:
-        21px;
+      margin-bottom: 5px;
 
     }
 
 
-    /* =========================================
+    .task-stat strong {
+
+      color: #ffffff;
+
+      font-size: 22px;
+
+    }
+
+
+
+    /* =====================================
        SECTION
-    ========================================= */
+    ====================================== */
 
     .dashboard-section {
 
-      margin-top:
-        10px;
+      margin-top: 10px;
 
     }
 
@@ -147,22 +194,20 @@
 
       display: flex;
 
-      align-items:
-        center;
+      align-items: end;
 
-      justify-content:
-        space-between;
+      justify-content: space-between;
 
-      gap:
-        15px;
+      gap: 15px;
 
-      margin-bottom:
-        16px;
+      margin-bottom: 15px;
 
     }
 
 
     .section-title h2 {
+
+      color: #ffffff;
 
       margin:
         5px 0 0;
@@ -170,473 +215,619 @@
     }
 
 
-    /* =========================================
+
+    /* =====================================
        FILTER
-    ========================================= */
+    ====================================== */
 
     .task-filter {
 
-      padding:
-        9px 12px;
+      background: #eaf1ff;
 
-      border-radius:
-        8px;
+      color: #17213e;
 
-      cursor:
-        pointer;
+      border:
+        1px solid #aabce0;
+
+      border-radius: 8px;
+
+      padding: 9px 12px;
+
+      font-size: 14px;
+
+      outline: none;
+
+      min-width: 160px;
 
     }
 
 
-    /* =========================================
+
+    /* =====================================
        TASK GRID
 
-       SMALLER COLUMNS
-    ========================================= */
+       IMPORTANT:
+       Compact single-column list.
+       Much better for many tasks.
+    ====================================== */
 
     .task-grid {
 
       display: grid;
 
       grid-template-columns:
-        repeat(
-          auto-fill,
-          minmax(290px, 1fr)
-        );
+        1fr;
 
-      gap:
-        14px;
-
-      align-items:
-        start;
+      gap: 12px;
 
     }
 
 
-    /* =========================================
-       COMPACT TASK CARD
-    ========================================= */
+
+    /* =====================================
+       POSTED TASK CARD
+
+       LIGHT BLUE GRADIENT
+       NOT DARK NAVY
+       COMPACT HEIGHT
+    ====================================== */
 
     .posted-task-card {
 
-      margin: 0;
+      position: relative;
 
-      min-height:
-        auto;
+      overflow: hidden;
 
-      border-radius:
-        14px;
+      margin: 0 !important;
 
-      overflow:
-        hidden;
+      padding: 0 !important;
+
+      border-radius: 14px !important;
+
+      background:
+        linear-gradient(
+          135deg,
+          #456aa8 0%,
+          #365a93 45%,
+          #29497c 100%
+        ) !important;
+
+      border:
+        1px solid
+        rgba(158, 196, 255, 0.42) !important;
+
+      box-shadow:
+        0 8px 22px
+        rgba(0, 0, 0, 0.18) !important;
+
+      color: #ffffff !important;
+
+      min-height: 0 !important;
+
+      transition:
+        transform .2s ease,
+        box-shadow .2s ease;
 
     }
 
 
+    /* TOP ACCENT */
+
+    .posted-task-card::before {
+
+      content: "";
+
+      position: absolute;
+
+      top: 0;
+
+      left: 0;
+
+      width: 100%;
+
+      height: 3px;
+
+      background:
+        linear-gradient(
+          90deg,
+          #a58bff,
+          #6cb8ff,
+          #9dd8ff
+        );
+
+    }
+
+
+    .posted-task-card:hover {
+
+      transform:
+        translateY(-2px);
+
+      box-shadow:
+        0 12px 28px
+        rgba(0, 0, 0, 0.25) !important;
+
+    }
+
+
+
+    /* =====================================
+       CARD CONTENT
+    ====================================== */
+
+    .posted-task-card
     .task-card-content {
 
       padding:
-        18px;
+        18px 20px 12px !important;
 
     }
 
 
-    /* =========================================
+
+    /* =====================================
        CATEGORY
-    ========================================= */
+    ====================================== */
 
     .posted-task-card
     .eyebrow {
 
-      display:
-        block;
+      display: block;
 
-      margin-bottom:
-        6px;
+      margin-bottom: 6px;
 
-      font-size:
-        10px;
+      color: #d3dcff !important;
 
-      letter-spacing:
-        1.5px;
+      font-size: 10px;
+
+      letter-spacing: 2px;
 
     }
 
 
-    /* =========================================
-       TITLE
-    ========================================= */
+
+    /* =====================================
+       TASK TITLE
+    ====================================== */
 
     .posted-task-card h3 {
 
+      color: #ffffff !important;
+
       margin:
-        0 0 7px;
+        0 0 5px !important;
 
-      font-size:
-        19px;
+      font-size: 20px !important;
 
-      line-height:
-        1.3;
+      line-height: 1.25;
 
     }
 
 
-    /* =========================================
-       DESCRIPTION
 
-       LIMIT HEIGHT
-    ========================================= */
+    /* =====================================
+       DESCRIPTION
+    ====================================== */
 
     .posted-task-card
-    .task-description {
+    .task-card-content > p {
+
+      color: #dbe7ff !important;
 
       margin:
-        0 0 12px;
+        0 0 10px !important;
 
-      font-size:
-        14px;
+      font-size: 14px;
 
-      line-height:
-        1.5;
-
-      display:
-        -webkit-box;
-
-      -webkit-line-clamp:
-        2;
-
-      -webkit-box-orient:
-        vertical;
-
-      overflow:
-        hidden;
+      line-height: 1.4;
 
     }
 
 
-    /* =========================================
+
+    /* =====================================
        STATUS ROW
-    ========================================= */
+    ====================================== */
 
     .posted-task-status {
 
       display: flex;
 
-      align-items:
-        center;
+      align-items: center;
 
-      justify-content:
-        space-between;
+      gap: 8px;
 
-      gap:
-        10px;
+      margin:
+        8px 0 10px;
 
-      padding:
-        9px 0;
-
-      margin-bottom:
-        10px;
+      padding-bottom: 10px;
 
       border-bottom:
         1px solid
-        rgba(
-          255,
-          255,
-          255,
-          0.10
-        );
+        rgba(255, 255, 255, 0.15);
 
-      font-size:
-        13px;
+      font-size: 13px;
 
     }
 
 
     .posted-task-status > span {
 
-      opacity:
-        0.7;
+      color: #c7d5ef;
 
     }
 
-
-    /* =========================================
-       STATUS BADGES
-    ========================================= */
 
     .task-status {
 
-      display:
-        inline-flex;
+      display: inline-flex;
 
-      align-items:
-        center;
+      align-items: center;
 
       padding:
-        5px 9px;
+        5px 10px;
 
-      border-radius:
-        20px;
+      border-radius: 20px;
 
-      font-size:
-        11px;
+      font-size: 12px;
 
-      white-space:
-        nowrap;
+      white-space: nowrap;
 
     }
 
 
+
+    /* =====================================
+       STATUS COLORS
+    ====================================== */
+
     .status-pending {
 
-      color:
-        #f2c66d;
+      color: #ffe1a0 !important;
+
+      background:
+        rgba(165, 111, 10, 0.28);
+
+      border:
+        1px solid
+        rgba(255, 204, 102, 0.35);
 
     }
 
 
     .status-active {
 
-      color:
-        #65d9a1;
+      color: #bff5d3 !important;
 
-    }
+      background:
+        rgba(30, 140, 85, 0.28);
 
-
-    .status-rejected {
-
-      color:
-        #ff7b88;
+      border:
+        1px solid
+        rgba(112, 235, 159, 0.30);
 
     }
 
 
     .status-paused {
 
-      color:
-        #f0b35e;
+      color: #d7d9ff !important;
+
+      background:
+        rgba(109, 92, 190, 0.28);
+
+      border:
+        1px solid
+        rgba(170, 155, 255, 0.30);
 
     }
 
 
     .status-completed {
 
-      color:
-        #65b7ff;
+      color: #bfefff !important;
+
+      background:
+        rgba(25, 128, 165, 0.30);
+
+      border:
+        1px solid
+        rgba(100, 220, 255, 0.30);
 
     }
 
 
-    /* =========================================
-       TASK DETAILS
+    .status-rejected {
 
-       SMALL 2 COLUMN GRID
-    ========================================= */
+      color: #ffc6c6 !important;
+
+      background:
+        rgba(160, 45, 45, 0.30);
+
+      border:
+        1px solid
+        rgba(255, 125, 125, 0.30);
+
+    }
+
+
+
+    /* =====================================
+       COMPACT TASK DETAILS
+
+       This is the important part.
+
+       Instead of:
+       Participants
+       Reward
+       Budget
+       Fee
+       Total
+
+       being displayed vertically,
+       they are displayed in a compact grid.
+    ====================================== */
 
     .posted-task-details {
 
-      display: grid;
+      display: grid !important;
 
       grid-template-columns:
         repeat(
-          2,
-          1fr
-        );
+          5,
+          minmax(0, 1fr)
+        ) !important;
 
-      gap:
-        8px;
+      gap: 8px !important;
 
-      margin-top:
-        10px;
+      margin:
+        10px 0 12px !important;
 
     }
 
 
     .posted-task-details div {
 
+      min-width: 0;
+
       padding:
-        9px 10px;
+        9px 10px !important;
 
-      border-radius:
-        9px;
+      border-radius: 8px;
 
-      min-width:
-        0;
+      background:
+        rgba(255, 255, 255, 0.10);
+
+      border:
+        1px solid
+        rgba(255, 255, 255, 0.10);
 
     }
 
 
     .posted-task-details span {
 
-      display:
-        block;
+      display: block;
 
-      margin-bottom:
-        4px;
+      color: #bfcde5 !important;
 
-      font-size:
-        10px;
+      font-size: 10px;
 
-      opacity:
-        0.7;
+      margin-bottom: 4px;
+
+      white-space: nowrap;
+
+      overflow: hidden;
+
+      text-overflow: ellipsis;
 
     }
 
 
     .posted-task-details strong {
 
-      display:
-        block;
+      display: block;
 
-      font-size:
-        14px;
+      color: #ffffff !important;
 
-      overflow:
-        hidden;
+      font-size: 14px;
 
-      text-overflow:
-        ellipsis;
+      white-space: nowrap;
 
-      white-space:
-        nowrap;
+      overflow: hidden;
+
+      text-overflow: ellipsis;
 
     }
 
-
-    /* =========================================
-       TOTAL PAID
-
-       SMALLER
-    ========================================= */
 
     .posted-task-details
-    .payment-box {
-
-      grid-column:
-        1 / -1;
-
-    }
-
-
     .total-payment {
 
-      font-size:
-        16px !important;
+      color: #b8d8ff !important;
 
     }
 
 
-    /* =========================================
-       ACTION BUTTON
-    ========================================= */
 
-    .task-link-button {
+    /* =====================================
+       OPEN TASK BUTTON
+    ====================================== */
 
-      display:
-        block;
+    .posted-task-card .btn.outline {
 
-      width:
-        100%;
+      display: inline-flex;
 
-      margin-top:
-        12px;
+      align-items: center;
+
+      justify-content: center;
+
+      width: auto !important;
+
+      min-width: 150px;
 
       padding:
-        9px 12px;
+        8px 14px !important;
 
-      text-align:
-        center;
+      font-size: 13px;
 
-      font-size:
-        13px;
+      color: #eef5ff !important;
+
+      background:
+        rgba(255, 255, 255, 0.08) !important;
+
+      border:
+        1px solid
+        rgba(190, 215, 255, 0.35) !important;
+
+      border-radius: 8px !important;
+
+      text-decoration: none;
 
     }
 
 
-    /* =========================================
-       FOOTER
-    ========================================= */
+    .posted-task-card
+    .btn.outline:hover {
+
+      background:
+        rgba(255, 255, 255, 0.16) !important;
+
+    }
+
+
+
+    /* =====================================
+       CARD FOOTER
+
+       SMALL
+       COMPACT
+    ====================================== */
 
     .posted-task-footer {
 
       padding:
-        10px 18px;
-
-      font-size:
-        11px;
+        9px 20px !important;
 
       border-top:
         1px solid
-        rgba(
-          255,
-          255,
-          255,
-          0.08
-        );
+        rgba(255, 255, 255, 0.12);
+
+      background:
+        rgba(0, 0, 0, 0.08);
 
     }
 
 
-    /* =========================================
+    .posted-task-footer small {
+
+      color: #c5d3eb !important;
+
+      font-size: 11px;
+
+    }
+
+
+
+    /* =====================================
        EMPTY STATE
-    ========================================= */
+    ====================================== */
 
     .empty-state {
 
-      grid-column:
-        1 / -1;
+      padding: 35px 20px !important;
 
-      padding:
-        40px 20px;
+      text-align: center;
 
-      text-align:
-        center;
+      border-radius: 14px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #314e83,
+          #294573
+        ) !important;
+
+      border:
+        1px solid
+        rgba(150, 190, 255, 0.25);
+
+      color: #ffffff;
 
     }
 
 
-    /* =========================================
-       INFORMATION BOX
-    ========================================= */
+    .empty-state h3 {
+
+      color: #ffffff !important;
+
+    }
+
+
+    .empty-state p {
+
+      color: #cbd9f0 !important;
+
+    }
+
+
+
+    /* =====================================
+       INFORMATION NOTICE
+    ====================================== */
 
     .assessment-notice {
 
-      margin-top:
-        30px;
+      margin-top: 25px;
 
-      padding:
-        18px;
+      padding: 16px 18px;
 
-      border-radius:
-        12px;
+      border-radius: 12px;
+
+      background:
+        rgba(76, 109, 172, 0.20);
+
+      border:
+        1px solid
+        rgba(145, 181, 255, 0.20);
+
+      color: #d7e5ff;
+
+    }
+
+
+    .assessment-notice strong {
+
+      color: #ffffff;
 
     }
 
 
     .assessment-notice p {
 
+      color: #bfcde5;
+
+      font-size: 13px;
+
+      line-height: 1.5;
+
       margin:
-        8px 0;
-
-      font-size:
-        14px;
-
-      line-height:
-        1.5;
+        7px 0 0;
 
     }
 
 
-    /* =========================================
+
+    /* =====================================
        TABLET
-    ========================================= */
+    ====================================== */
 
     @media (
-      max-width: 850px
+      max-width: 950px
     ) {
 
 
-      .dashboard-stats {
+      .task-stats {
 
         grid-template-columns:
           repeat(
@@ -647,28 +838,54 @@
       }
 
 
+      .posted-task-details {
+
+        grid-template-columns:
+          repeat(
+            3,
+            1fr
+          ) !important;
+
+      }
+
     }
 
 
-    /* =========================================
+
+    /* =====================================
        MOBILE
-    ========================================= */
+    ====================================== */
 
     @media (
-      max-width: 600px
+      max-width: 650px
     ) {
 
 
       .dashboard-page {
 
         padding:
-          20px 0
-          40px;
+          25px 0 40px;
 
       }
 
 
-      .dashboard-stats {
+      .section-title {
+
+        align-items: stretch;
+
+        flex-direction: column;
+
+      }
+
+
+      .task-filter {
+
+        width: 100%;
+
+      }
+
+
+      .task-stats {
 
         grid-template-columns:
           repeat(
@@ -676,62 +893,75 @@
             1fr
           );
 
-        gap:
-          9px;
+        gap: 8px;
 
       }
 
 
-      .dashboard-stat {
+      .task-stat {
 
-        padding:
-          12px;
-
-      }
-
-
-      .dashboard-stat strong {
-
-        font-size:
-          18px;
+        padding: 12px;
 
       }
 
 
-      .section-title {
+      .task-stat strong {
 
-        align-items:
-          flex-start;
-
-        flex-direction:
-          column;
+        font-size: 18px;
 
       }
 
 
-      .task-filter {
-
-        width:
-          100%;
-
-      }
-
-
-      .task-grid {
-
-        grid-template-columns:
-          1fr;
-
-      }
-
-
+      .posted-task-card
       .task-card-content {
 
         padding:
-          15px;
+          16px 14px 10px !important;
 
       }
 
+
+      .posted-task-card h3 {
+
+        font-size: 18px !important;
+
+      }
+
+
+      .posted-task-details {
+
+        grid-template-columns:
+          repeat(
+            2,
+            1fr
+          ) !important;
+
+        gap: 7px !important;
+
+      }
+
+
+      .posted-task-details div {
+
+        padding:
+          8px !important;
+
+      }
+
+
+      .posted-task-footer {
+
+        padding:
+          8px 14px !important;
+
+      }
+
+
+      .posted-task-card .btn.outline {
+
+        width: 100% !important;
+
+      }
 
     }
 
@@ -742,19 +972,18 @@
 </head>
 
 
+
 <body>
 
 
-<!-- =========================================
+
+<!-- =====================================
      HEADER
-========================================= -->
+===================================== -->
 
 <header>
 
-
-  <div
-    class="container nav"
-  >
+  <div class="container nav">
 
 
     <a
@@ -762,18 +991,11 @@
       href="index.html"
     >
 
-
-      <span
-        class="logo-mark"
-      >
+      <span class="logo-mark">
         E
       </span>
 
-
-      Earn<span>
-        Gig
-      </span>
-
+      Earn<span>Gig</span>
 
     </a>
 
@@ -791,23 +1013,18 @@
 
   </div>
 
-
 </header>
 
 
 
-<!-- =========================================
-     MAIN PAGE
-========================================= -->
+<!-- =====================================
+     MAIN
+===================================== -->
 
-<main
-  class="dashboard-page"
->
+<main class="dashboard-page">
 
 
-  <div
-    class="container"
-  >
+  <div class="container">
 
 
 
@@ -815,37 +1032,24 @@
          PAGE HEADING
     ====================================== -->
 
-    <div
-      class="dashboard-heading"
-    >
+    <div class="dashboard-heading">
 
 
       <div>
 
 
-        <span
-          class="eyebrow"
-        >
-
+        <span class="eyebrow">
           TASK MANAGEMENT
-
         </span>
 
 
-
         <h1>
-
           My Posted Tasks
-
         </h1>
 
 
-
         <p>
-
-          View tasks you submitted and check
-          their approval status and activity.
-
+          View your submitted tasks and check their approval status.
         </p>
 
 
@@ -865,8 +1069,6 @@
     >
 
 
-      <!-- TOTAL -->
-
       <div
         class="dashboard-stat task-stat"
       >
@@ -876,17 +1078,13 @@
         </small>
 
 
-        <strong
-          id="total-tasks"
-        >
+        <strong id="total-tasks">
           0
         </strong>
 
       </div>
 
 
-
-      <!-- PENDING -->
 
       <div
         class="dashboard-stat task-stat"
@@ -897,17 +1095,13 @@
         </small>
 
 
-        <strong
-          id="pending-tasks"
-        >
+        <strong id="pending-tasks">
           0
         </strong>
 
       </div>
 
 
-
-      <!-- ACTIVE -->
 
       <div
         class="dashboard-stat task-stat"
@@ -918,17 +1112,13 @@
         </small>
 
 
-        <strong
-          id="active-tasks"
-        >
+        <strong id="active-tasks">
           0
         </strong>
 
       </div>
 
 
-
-      <!-- PAID -->
 
       <div
         class="dashboard-stat task-stat"
@@ -939,9 +1129,7 @@
         </small>
 
 
-        <strong
-          id="total-paid"
-        >
+        <strong id="total-paid">
           ₦0
         </strong>
 
@@ -956,37 +1144,22 @@
          TASK SECTION
     ====================================== -->
 
-    <section
-      class="dashboard-section"
-    >
+    <section class="dashboard-section">
 
 
-      <!-- ===================================
-           TITLE + FILTER
-      ==================================== -->
-
-      <div
-        class="section-title"
-      >
+      <div class="section-title">
 
 
         <div>
 
 
-          <span
-            class="eyebrow"
-          >
-
+          <span class="eyebrow">
             YOUR SUBMISSIONS
-
           </span>
 
 
-
           <h2>
-
             Submitted Tasks
-
           </h2>
 
 
@@ -994,7 +1167,7 @@
 
 
 
-        <!-- FILTER -->
+        <!-- STATUS FILTER -->
 
         <select
           id="task-status-filter"
@@ -1002,62 +1175,33 @@
         >
 
 
-          <option
-            value="all"
-          >
-
+          <option value="all">
             All Tasks
-
           </option>
 
 
-
-          <option
-            value="pending"
-          >
-
+          <option value="pending">
             Pending Approval
-
           </option>
 
 
-
-          <option
-            value="active"
-          >
-
+          <option value="active">
             Active
-
           </option>
 
 
-
-          <option
-            value="paused"
-          >
-
+          <option value="paused">
             Paused
-
           </option>
 
 
-
-          <option
-            value="completed"
-          >
-
+          <option value="completed">
             Completed
-
           </option>
 
 
-
-          <option
-            value="rejected"
-          >
-
+          <option value="rejected">
             Rejected
-
           </option>
 
 
@@ -1068,9 +1212,9 @@
 
 
 
-      <!-- ===================================
+      <!-- =====================================
            TASK LIST
-      ==================================== -->
+      ====================================== -->
 
       <div
         class="task-grid"
@@ -1078,30 +1222,21 @@
       >
 
 
-        <div
-          class="empty-state"
-        >
+        <div class="empty-state">
 
 
-          <div
-            class="empty-icon"
-          >
+          <div class="empty-icon">
             ⏳
           </div>
 
 
           <h3>
-
             Loading your tasks...
-
           </h3>
 
 
           <p>
-
-            Please wait while we load
-            your submitted tasks.
-
+            Please wait while we load your submitted tasks.
           </p>
 
 
@@ -1119,34 +1254,22 @@
          INFORMATION
     ====================================== -->
 
-    <section
-      class="assessment-notice"
-    >
+    <section class="assessment-notice">
 
 
       <strong>
-
         How task approval works
-
       </strong>
 
 
-
       <p>
-
-        Tasks submitted by users are reviewed
-        by the EarnGig administration before
-        becoming available to participants.
-
+        Tasks submitted by users are reviewed by the EarnGig
+        administration before becoming available to participants.
       </p>
 
 
-
       <p>
-
-        You can check the status of your task
-        here after submitting it.
-
+        You can check the current status of your submitted task here.
       </p>
 
 
@@ -1160,30 +1283,21 @@
 
 
 
-<!-- =========================================
+<!-- =====================================
      FOOTER
-========================================= -->
+===================================== -->
 
 <footer>
 
+  <div class="container copy">
 
-  <div
-    class="container copy"
-  >
-
-    © 2026 EarnGig.
-    All rights reserved.
+    © 2026 EarnGig. All rights reserved.
 
   </div>
-
 
 </footer>
 
 
-
-<!-- =========================================
-     JAVASCRIPT
-========================================= -->
 
 <script>
 
@@ -1193,6 +1307,7 @@
 ======================================== */
 
 let allPostedTasks = [];
+
 
 
 /* ========================================
@@ -1232,6 +1347,7 @@ async function getCurrentUser() {
   }
 
 
+
   return user;
 
 
@@ -1243,16 +1359,12 @@ async function getCurrentUser() {
    FORMAT MONEY
 ======================================== */
 
-function formatMoney(
-  amount
-) {
+function formatMoney(amount) {
 
 
   return `₦${Number(
     amount || 0
-  ).toLocaleString(
-    "en-NG"
-  )}`;
+  ).toLocaleString("en-NG")}`;
 
 
 }
@@ -1260,19 +1372,57 @@ function formatMoney(
 
 
 /* ========================================
-   STATUS CLASS
+   ESCAPE HTML
 ======================================== */
 
-function getStatusClass(
-  status
-) {
+function escapeHtml(value) {
+
+
+  return String(
+    value ?? ""
+  )
+
+    .replaceAll(
+      "&",
+      "&amp;"
+    )
+
+    .replaceAll(
+      "<",
+      "&lt;"
+    )
+
+    .replaceAll(
+      ">",
+      "&gt;"
+    )
+
+    .replaceAll(
+      '"',
+      "&quot;"
+    )
+
+    .replaceAll(
+      "'",
+      "&#039;"
+    );
+
+
+}
+
+
+
+/* ========================================
+   GET STATUS CLASS
+======================================== */
+
+function getStatusClass(status) {
 
 
   const cleanStatus =
     String(
       status || "pending"
-    )
-    .toLowerCase();
+    ).toLowerCase();
 
 
 
@@ -1316,6 +1466,7 @@ function getStatusClass(
   }
 
 
+
   return "status-pending";
 
 
@@ -1327,16 +1478,13 @@ function getStatusClass(
    FORMAT STATUS
 ======================================== */
 
-function formatStatus(
-  status
-) {
+function formatStatus(status) {
 
 
   const cleanStatus =
     String(
       status || "pending"
-    )
-    .toLowerCase();
+    ).toLowerCase();
 
 
 
@@ -1399,111 +1547,8 @@ function formatStatus(
   }
 
 
-  return status;
 
-
-}
-
-
-
-/* ========================================
-   GET TASK PAYMENT
-
-   Calculates:
-
-   Participants × Reward
-   +
-   20% Fee
-
-======================================== */
-
-function getTaskPayment(
-  task
-) {
-
-
-  const participants =
-    Number(
-      task.max_participants ||
-      task.participant_count ||
-      0
-    );
-
-
-
-  const reward =
-    Number(
-      task.reward_amount ||
-      0
-    );
-
-
-
-  const taskBudget =
-    participants *
-    reward;
-
-
-
-  const platformFee =
-
-    task.platform_fee !==
-    undefined &&
-
-    task.platform_fee !==
-    null
-
-      ?
-
-      Number(
-        task.platform_fee || 0
-      )
-
-      :
-
-      taskBudget *
-      0.20;
-
-
-
-  const totalPayment =
-
-    task.total_amount !==
-    undefined &&
-
-    task.total_amount !==
-    null &&
-
-    Number(
-      task.total_amount
-    ) > 0
-
-      ?
-
-      Number(
-        task.total_amount
-      )
-
-      :
-
-      taskBudget +
-      platformFee;
-
-
-
-  return {
-
-    participants,
-
-    reward,
-
-    taskBudget,
-
-    platformFee,
-
-    totalPayment
-
-  };
+  return escapeHtml(status);
 
 
 }
@@ -1529,9 +1574,7 @@ async function loadPostedTasks() {
 
 
 
-  if (
-    !user
-  ) {
+  if (!user) {
 
     return;
 
@@ -1539,10 +1582,23 @@ async function loadPostedTasks() {
 
 
 
-  /*
-   * LOAD ONLY TASKS
-   * CREATED BY CURRENT USER
-   */
+  taskList.innerHTML = `
+
+    <div class="empty-state">
+
+      <div class="empty-icon">
+        ⏳
+      </div>
+
+      <h3>
+        Loading your tasks...
+      </h3>
+
+    </div>
+
+  `;
+
+
 
   const {
 
@@ -1552,12 +1608,16 @@ async function loadPostedTasks() {
 
   } =
   await supabaseClient
+
     .from("tasks")
+
     .select("*")
+
     .eq(
       "user_id",
       user.id
     )
+
     .order(
       "created_at",
       {
@@ -1567,11 +1627,11 @@ async function loadPostedTasks() {
 
 
 
-  /* ERROR */
+  /* ========================================
+     HANDLE ERROR
+  ======================================== */
 
-  if (
-    error
-  ) {
+  if (error) {
 
 
     console.error(
@@ -1583,31 +1643,23 @@ async function loadPostedTasks() {
 
     taskList.innerHTML = `
 
-      <div
-        class="empty-state"
-      >
+      <div class="empty-state">
 
 
-        <div
-          class="empty-icon"
-        >
-          !
+        <div class="empty-icon">
+          ⚠️
         </div>
 
 
         <h3>
-
           Unable to load your tasks
-
         </h3>
 
 
         <p>
-
           ${escapeHtml(
             error.message
           )}
-
         </p>
 
 
@@ -1622,18 +1674,18 @@ async function loadPostedTasks() {
 
 
 
-  /*
-   * STORE TASKS
-   */
+  /* ========================================
+     STORE TASKS
+  ======================================== */
 
   allPostedTasks =
     tasks || [];
 
 
 
-  /*
-   * UPDATE STATISTICS
-   */
+  /* ========================================
+     UPDATE STATISTICS
+  ======================================== */
 
   updateStatistics(
     allPostedTasks
@@ -1641,9 +1693,9 @@ async function loadPostedTasks() {
 
 
 
-  /*
-   * RENDER TASKS
-   */
+  /* ========================================
+     RENDER TASKS
+  ======================================== */
 
   renderPostedTasks(
     allPostedTasks
@@ -1658,9 +1710,7 @@ async function loadPostedTasks() {
    UPDATE STATISTICS
 ======================================== */
 
-function updateStatistics(
-  tasks
-) {
+function updateStatistics(tasks) {
 
 
   const totalTasks =
@@ -1670,37 +1720,30 @@ function updateStatistics(
 
   const pendingTasks =
     tasks.filter(
-      function (
-        task
-      ) {
+      function(task) {
 
 
         return String(
           task.status || ""
-        )
-        .toLowerCase()
+        ).toLowerCase()
         ===
         "pending";
 
 
       }
-    )
-    .length;
+    ).length;
 
 
 
   const activeTasks =
     tasks.filter(
-      function (
-        task
-      ) {
+      function(task) {
 
 
         const status =
           String(
             task.status || ""
-          )
-          .toLowerCase();
+          ).toLowerCase();
 
 
 
@@ -1714,77 +1757,123 @@ function updateStatistics(
 
 
       }
-    )
-    .length;
+    ).length;
 
 
 
-  /*
-   * TOTAL PAID
-   */
+  /* ========================================
+     TOTAL PAID
+  ======================================== */
 
   const totalPaid =
     tasks.reduce(
-      function (
+
+      function(
         total,
         task
       ) {
 
 
-        const payment =
-          getTaskPayment(
-            task
+        const participants =
+          Number(
+
+            task.max_participants ||
+
+            task.participant_count ||
+
+            0
+
           );
 
 
 
+        const reward =
+          Number(
+            task.reward_amount || 0
+          );
+
+
+
+        const taskBudget =
+          participants *
+          reward;
+
+
+
+        let platformFee =
+
+          task.platform_fee !==
+          undefined
+
+            ?
+
+            Number(
+              task.platform_fee || 0
+            )
+
+            :
+
+            taskBudget *
+            0.20;
+
+
+
+        let payment =
+
+          task.total_amount !==
+          undefined
+
+            ?
+
+            Number(
+              task.total_amount || 0
+            )
+
+            :
+
+            taskBudget +
+            platformFee;
+
+
+
         return (
-
           total +
-
-          payment.totalPayment
-
+          payment
         );
 
 
       },
+
       0
+
     );
 
 
 
-  document
-    .getElementById(
-      "total-tasks"
-    )
-    .textContent =
+  document.getElementById(
+    "total-tasks"
+  ).textContent =
     totalTasks;
 
 
 
-  document
-    .getElementById(
-      "pending-tasks"
-    )
-    .textContent =
+  document.getElementById(
+    "pending-tasks"
+  ).textContent =
     pendingTasks;
 
 
 
-  document
-    .getElementById(
-      "active-tasks"
-    )
-    .textContent =
+  document.getElementById(
+    "active-tasks"
+  ).textContent =
     activeTasks;
 
 
 
-  document
-    .getElementById(
-      "total-paid"
-    )
-    .textContent =
+  document.getElementById(
+    "total-paid"
+  ).textContent =
     formatMoney(
       totalPaid
     );
@@ -1798,9 +1887,7 @@ function updateStatistics(
    RENDER POSTED TASKS
 ======================================== */
 
-function renderPostedTasks(
-  tasks
-) {
+function renderPostedTasks(tasks) {
 
 
   const taskList =
@@ -1810,41 +1897,37 @@ function renderPostedTasks(
 
 
 
-  /* =====================================
+  /* ========================================
      NO TASKS
-  ===================================== */
+  ======================================== */
 
   if (
+
     !tasks ||
+
     tasks.length === 0
+
   ) {
 
 
     taskList.innerHTML = `
 
-      <div
-        class="empty-state"
-      >
+      <div class="empty-state">
 
 
-        <div
-          class="empty-icon"
-        >
+        <div class="empty-icon">
           📋
         </div>
 
 
         <h3>
-
           No tasks submitted yet
-
         </h3>
 
 
         <p>
-
           You haven't submitted any tasks yet.
-
+          Create a task and submit it for approval.
         </p>
 
 
@@ -1872,35 +1955,120 @@ function renderPostedTasks(
 
 
 
-  /* =====================================
-     RENDER TASKS
-  ===================================== */
+  /* ========================================
+     RENDER TASK CARDS
+  ======================================== */
 
   taskList.innerHTML =
+
     tasks.map(
-      function (
-        task
-      ) {
+      function(task) {
 
 
-        const payment =
-          getTaskPayment(
-            task
+
+        /* ========================================
+           PARTICIPANTS
+        ======================================== */
+
+        const participants =
+          Number(
+
+            task.max_participants ||
+
+            task.participant_count ||
+
+            0
+
           );
 
 
 
-        const submittedDate =
+        /* ========================================
+           REWARD
+        ======================================== */
 
-          task.created_at
+        const reward =
+          Number(
+            task.reward_amount || 0
+          );
+
+
+
+        /* ========================================
+           TASK BUDGET
+        ======================================== */
+
+        const taskBudget =
+          participants *
+          reward;
+
+
+
+        /* ========================================
+           PLATFORM FEE
+        ======================================== */
+
+        const platformFee =
+
+          task.platform_fee !==
+          undefined
 
             ?
 
+            Number(
+              task.platform_fee || 0
+            )
+
+            :
+
+            taskBudget *
+            0.20;
+
+
+
+        /* ========================================
+           TOTAL PAYMENT
+        ======================================== */
+
+        const totalPayment =
+
+          task.total_amount !==
+          undefined
+
+            ?
+
+            Number(
+              task.total_amount || 0
+            )
+
+            :
+
+            taskBudget +
+            platformFee;
+
+
+
+        /* ========================================
+           DATE
+        ======================================== */
+
+        let submittedDate =
+          "Unknown";
+
+
+
+        if (
+          task.created_at
+        ) {
+
+
+          submittedDate =
             new Date(
               task.created_at
-            )
-            .toLocaleDateString(
+            ).toLocaleDateString(
+
               "en-NG",
+
               {
 
                 year:
@@ -1913,22 +2081,38 @@ function renderPostedTasks(
                   "numeric"
 
               }
+
+            );
+
+
+        }
+
+
+
+        /* ========================================
+           TASK LINK
+        ======================================== */
+
+        const taskLink =
+          task.task_link
+            ?
+            escapeHtml(
+              task.task_link
             )
-
             :
-
-            "Unknown";
+            "";
 
 
 
         return `
 
 
+          <!-- ================================
+               TASK CARD
+          ================================ -->
+
           <article
-            class="
-              task-card
-              posted-task-card
-            "
+            class="task-card posted-task-card"
           >
 
 
@@ -1937,15 +2121,17 @@ function renderPostedTasks(
             >
 
 
+
               <!-- CATEGORY -->
 
-              <span
-                class="eyebrow"
-              >
+              <span class="eyebrow">
 
                 ${escapeHtml(
+
                   task.category ||
+
                   "TASK"
+
                 )}
 
               </span>
@@ -1957,8 +2143,11 @@ function renderPostedTasks(
               <h3>
 
                 ${escapeHtml(
+
                   task.title ||
+
                   "Untitled Task"
+
                 )}
 
               </h3>
@@ -1967,13 +2156,14 @@ function renderPostedTasks(
 
               <!-- DESCRIPTION -->
 
-              <p
-                class="task-description"
-              >
+              <p>
 
                 ${escapeHtml(
+
                   task.description ||
+
                   "No task description provided."
+
                 )}
 
               </p>
@@ -1983,33 +2173,29 @@ function renderPostedTasks(
               <!-- STATUS -->
 
               <div
-                class="
-                  posted-task-status
-                "
+                class="posted-task-status"
               >
 
 
                 <span>
-
                   Status
-
                 </span>
 
 
 
                 <strong
+
                   class="
                     task-status
                     ${getStatusClass(
                       task.status
                     )}
                   "
+
                 >
 
-                  ${escapeHtml(
-                    formatStatus(
-                      task.status
-                    )
+                  ${formatStatus(
+                    task.status
                   )}
 
                 </strong>
@@ -2019,30 +2205,28 @@ function renderPostedTasks(
 
 
 
-              <!-- DETAILS -->
+              <!-- ================================
+                   COMPACT TASK DETAILS
+              ================================ -->
 
               <div
-                class="
-                  posted-task-details
-                "
+                class="posted-task-details"
               >
+
 
 
                 <!-- PARTICIPANTS -->
 
                 <div>
 
-
                   <span>
-
                     Participants
-
                   </span>
 
 
                   <strong>
 
-                    ${payment.participants}
+                    ${participants}
 
                   </strong>
 
@@ -2055,18 +2239,15 @@ function renderPostedTasks(
 
                 <div>
 
-
                   <span>
-
                     Reward
-
                   </span>
 
 
                   <strong>
 
                     ${formatMoney(
-                      payment.reward
+                      reward
                     )}
 
                   </strong>
@@ -2080,18 +2261,15 @@ function renderPostedTasks(
 
                 <div>
 
-
                   <span>
-
-                    Task Budget
-
+                    Budget
                   </span>
 
 
                   <strong>
 
                     ${formatMoney(
-                      payment.taskBudget
+                      taskBudget
                     )}
 
                   </strong>
@@ -2105,18 +2283,15 @@ function renderPostedTasks(
 
                 <div>
 
-
                   <span>
-
-                    EarnGig Fee
-
+                    Fee
                   </span>
 
 
                   <strong>
 
                     ${formatMoney(
-                      payment.platformFee
+                      platformFee
                     )}
 
                   </strong>
@@ -2126,30 +2301,21 @@ function renderPostedTasks(
 
 
 
-                <!-- TOTAL PAID -->
+                <!-- TOTAL -->
 
-                <div
-                  class="
-                    payment-box
-                  "
-                >
-
+                <div>
 
                   <span>
-
                     Total Paid
-
                   </span>
 
 
                   <strong
-                    class="
-                      total-payment
-                    "
+                    class="total-payment"
                   >
 
                     ${formatMoney(
-                      payment.totalPayment
+                      totalPayment
                     )}
 
                   </strong>
@@ -2162,27 +2328,27 @@ function renderPostedTasks(
 
 
 
-              <!-- TASK LINK -->
+              <!-- ================================
+                   OPEN TASK LINK
+              ================================ -->
 
               ${
-
-                task.task_link
+                taskLink
 
                   ?
 
                   `
 
                     <a
-                      href="${escapeAttribute(
-                        task.task_link
-                      )}"
+
+                      href="${taskLink}"
+
                       target="_blank"
+
                       rel="noopener noreferrer"
-                      class="
-                        btn
-                        outline
-                        task-link-button
-                      "
+
+                      class="btn outline"
+
                     >
 
                       🔗 Open Task
@@ -2202,19 +2368,18 @@ function renderPostedTasks(
 
 
 
-            <!-- FOOTER -->
+            <!-- ================================
+                 FOOTER
+            ================================ -->
 
             <div
-              class="
-                posted-task-footer
-              "
+              class="posted-task-footer"
             >
 
 
               <small>
 
                 Submitted:
-
                 ${submittedDate}
 
               </small>
@@ -2230,8 +2395,8 @@ function renderPostedTasks(
 
 
       }
-    )
-    .join("");
+
+    ).join("");
 
 
 }
@@ -2243,12 +2408,16 @@ function renderPostedTasks(
 ======================================== */
 
 document
+
   .getElementById(
     "task-status-filter"
   )
+
   .addEventListener(
+
     "change",
-    function () {
+
+    function() {
 
 
       const selectedStatus =
@@ -2256,11 +2425,12 @@ document
 
 
 
-      /* ALL */
+      /* ========================================
+         ALL TASKS
+      ======================================== */
 
       if (
-        selectedStatus ===
-        "all"
+        selectedStatus === "all"
       ) {
 
 
@@ -2275,27 +2445,25 @@ document
 
 
 
-      /* APPROVED = ACTIVE */
+      /* ========================================
+         ACTIVE FILTER
+      ======================================== */
 
-      const filteredTasks =
-        allPostedTasks.filter(
-          function (
-            task
-          ) {
-
-
-            const status =
-              String(
-                task.status || ""
-              )
-              .toLowerCase();
+      if (
+        selectedStatus === "active"
+      ) {
 
 
+        const activeTasks =
+          allPostedTasks.filter(
+            function(task) {
 
-            if (
-              selectedStatus ===
-              "active"
-            ) {
+
+              const status =
+                String(
+                  task.status || ""
+                ).toLowerCase();
+
 
 
               return (
@@ -2308,12 +2476,40 @@ document
 
 
             }
+          );
 
+
+
+        renderPostedTasks(
+          activeTasks
+        );
+
+
+        return;
+
+      }
+
+
+
+      /* ========================================
+         NORMAL FILTER
+      ======================================== */
+
+      const filteredTasks =
+        allPostedTasks.filter(
+          function(task) {
 
 
             return (
-              status ===
+
+              String(
+                task.status || ""
+              ).toLowerCase()
+
+              ===
+
               selectedStatus
+
             );
 
 
@@ -2328,79 +2524,20 @@ document
 
 
     }
+
   );
 
 
 
 /* ========================================
-   ESCAPE HTML
-======================================== */
-
-function escapeHtml(
-  value
-) {
-
-
-  return String(
-    value ?? ""
-  )
-
-    .replaceAll(
-      "&",
-      "&amp;"
-    )
-
-    .replaceAll(
-      "<",
-      "&lt;"
-    )
-
-    .replaceAll(
-      ">",
-      "&gt;"
-    )
-
-    .replaceAll(
-      '"',
-      "&quot;"
-    )
-
-    .replaceAll(
-      "'",
-      "&#039;"
-    );
-
-
-}
-
-
-
-/* ========================================
-   ESCAPE ATTRIBUTE
-======================================== */
-
-function escapeAttribute(
-  value
-) {
-
-
-  return escapeHtml(
-    value
-  );
-
-
-}
-
-
-
-/* ========================================
-   START PAGE
+   LOAD PAGE
 ======================================== */
 
 loadPostedTasks();
 
 
 </script>
+
 
 
 </body>
