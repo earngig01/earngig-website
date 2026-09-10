@@ -1,97 +1,185 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>Dashboard | EarnGig</title>
 
-  <link rel="stylesheet" href="styles.css">
+  <link
+    rel="stylesheet"
+    href="styles.css"
+  >
+
 </head>
+
 
 <body>
 
+
+<!-- =========================================
+     HEADER
+========================================= -->
+
 <header>
+
   <div class="container nav">
 
-    <a class="logo" href="index.html">
+    <a
+      class="logo"
+      href="index.html"
+    >
       <span class="logo-mark">E</span>
       Earn<span>Gig</span>
     </a>
 
+
     <nav>
-  <a href="#earn">Earn</a>
-  <a href="#read">Read & Earn</a>
-  <a href="#create">Create & Earn</a>
-  <a href="#referrals">Referrals</a>
-  <a href="#marketplace">Marketplace</a>
+
+      <a href="#earn">
+        Earn
+      </a>
+
+      <a href="#read">
+        Read & Earn
+      </a>
+
+      <a href="#create">
+        Create & Earn
+      </a>
+
+      <a href="#referrals">
+        Referrals
+      </a>
+
+      <a href="#marketplace">
+        Marketplace
+      </a>
+
     </nav>
-<a
-  class="btn outline"
-  href="profile.html"
->
-  My Profile
-</a>
-   
-  <button
-  id="logout-button"
-  class="btn outline"
-  type="button"
->
-  Log Out
-  </button>
+
+
+    <a
+      class="btn outline"
+      href="profile.html"
+    >
+      My Profile
+    </a>
+
+
+    <button
+      id="logout-button"
+      class="btn outline"
+      type="button"
+    >
+      Log Out
+    </button>
 
   </div>
+
 </header>
 
+
+
+<!-- =========================================
+     MAIN DASHBOARD
+========================================= -->
 
 <main class="dashboard-page">
 
   <div class="container">
 
-    <!-- WELCOME -->
+
+    <!-- =========================================
+         WELCOME
+    ========================================= -->
 
     <div class="dashboard-heading">
 
       <div>
-        <span class="eyebrow">MEMBER DASHBOARD</span>
 
-        <h1>Welcome back, <span id="user-name">Member</span>!</h1>
+        <span class="eyebrow">
+          MEMBER DASHBOARD
+        </span>
+
+
+        <h1>
+
+          Welcome back,
+          <span id="user-name">
+            Member
+          </span>!
+
+        </h1>
+
 
         <p>
-          Explore available activities and keep track of your
-          EarnGig earnings.
+
+          Explore available activities and keep track
+          of your EarnGig earnings.
+
         </p>
+
       </div>
 
-      <a class="btn primary" href="#earn">
+
+      <a
+        class="btn primary"
+        href="#earn"
+      >
         Start Earning
       </a>
 
     </div>
 
 
-    <!-- WALLET -->
 
-<section class="member-wallet">
+    <!-- =========================================
+         WALLET
+    ========================================= -->
 
-  <div>
-    <small>Available Balance</small>
+    <section class="member-wallet">
 
-    <strong id="wallet-balance">₦0.00</strong>
+      <div>
 
-    <p>
-      Minimum withdrawal: ₦15,000
-    </p>
-  </div>
-    
+        <small>
+          Available Balance
+        </small>
+
+
+        <strong id="wallet-balance">
+          ₦0.00
+        </strong>
+
+
+        <p>
+          Minimum withdrawal: ₦15,000
+        </p>
+
+      </div>
+
+
+
       <div class="wallet-actions">
 
-        <a class="btn primary" href="withdraw.html">
+        <a
+          class="btn primary"
+          href="withdraw.html"
+        >
           Withdraw
         </a>
 
-        <a class="btn light" href="#transactions">
+
+        <a
+          class="btn light"
+          href="#transactions"
+        >
           Transactions
         </a>
 
@@ -100,82 +188,164 @@
     </section>
 
 
-    <!-- STATS -->
 
-<div class="dashboard-stats">
+    <!-- =========================================
+         DASHBOARD STATS
+    ========================================= -->
 
-  <div class="dashboard-stat">
-    <small>Today's Earnings</small>
-    <strong id="today-earnings">₦0</strong>
-  </div>
-
-  <div class="dashboard-stat">
-    <small>Total Earned</small>
-    <strong id="total-earned">₦0</strong>
-  </div>
-
-  <div class="dashboard-stat">
-    <small>Referral Earnings</small>
-    <strong id="referral-earnings">₦0</strong>
-  </div>
-
-  <div class="dashboard-stat">
-    <small>Completed Activities</small>
-    <strong id="completed-activities">0</strong>
-  </div>
-
-</div>
+    <div class="dashboard-stats">
 
 
-    <!-- EARNING OPTIONS -->
+      <div class="dashboard-stat">
 
-    <section id="earn" class="dashboard-section">
+        <small>
+          Today's Earnings
+        </small>
+
+        <strong id="today-earnings">
+          ₦0
+        </strong>
+
+      </div>
+
+
+
+      <div class="dashboard-stat">
+
+        <small>
+          Total Earned
+        </small>
+
+        <strong id="total-earned">
+          ₦0
+        </strong>
+
+      </div>
+
+
+
+      <div class="dashboard-stat">
+
+        <small>
+          Referral Earnings
+        </small>
+
+        <strong id="referral-earnings">
+          ₦0
+        </strong>
+
+      </div>
+
+
+
+      <div class="dashboard-stat">
+
+        <small>
+          Completed Activities
+        </small>
+
+        <strong id="completed-activities">
+          0
+        </strong>
+
+      </div>
+
+
+    </div>
+
+
+
+    <!-- =========================================
+         EARNING OPTIONS
+    ========================================= -->
+
+    <section
+      id="earn"
+      class="dashboard-section"
+    >
+
 
       <div class="section-title">
 
         <div>
-          <span class="eyebrow">EARN</span>
 
-          <h2>Choose how you want to earn</h2>
+          <span class="eyebrow">
+            EARN
+          </span>
+
+
+          <h2>
+            Choose how you want to earn
+          </h2>
+
         </div>
 
       </div>
+
 
 
       <div class="member-earning-grid">
 
 
-        <a href="tasks.html" class="member-earning-card">
+        <a
+          href="tasks.html"
+          class="member-earning-card"
+        >
 
-          <div class="member-card-icon blue">✓</div>
+          <div class="member-card-icon blue">
+            ✓
+          </div>
 
-          <h3>Tasks</h3>
+
+          <h3>
+            Tasks
+          </h3>
+
 
           <p>
+
             Complete available tasks and earn the reward
             assigned to each approved task.
+
           </p>
 
-          <strong>View tasks →</strong>
 
-        </a> 
+          <strong>
+            View tasks →
+          </strong>
+
+        </a>
 
 
-        
-          <a href="membership.html" class="member-earning-card">
 
-  <div class="member-card-icon blue">★</div>
+        <a
+          href="membership.html"
+          class="member-earning-card"
+        >
 
-  <h3>Premium</h3
-        
-  <p>
-    Manage your Premium membership and view available
-    Premium activities.
-  </p>
+          <div class="member-card-icon blue">
+            ★
+          </div>
 
-  <strong>View Premium →</strong>
 
-          </a>
+          <h3>
+            Premium
+          </h3>
+
+
+          <p>
+
+            Manage your Premium membership and view
+            available Premium activities.
+
+          </p>
+
+
+          <strong>
+            View Premium →
+          </strong>
+
+        </a>
 
 
       </div>
@@ -183,84 +353,145 @@
     </section>
 
 
-    <!-- READ & EARN -->
 
-    <section id="read" class="dashboard-section">
+    <!-- =========================================
+         READ AND EARN
+    ========================================= -->
+
+    <section
+      id="read"
+      class="dashboard-section"
+    >
+
 
       <div class="section-title">
 
         <div>
-          <span class="eyebrow">READ & EARN</span>
 
-          <h2>Available novels</h2>
+          <span class="eyebrow">
+            READ & EARN
+          </span>
+
+
+          <h2>
+            Available novels
+          </h2>
+
         </div>
 
-        <a href="read-and-earn.html" class="text-link">
+
+        <a
+          href="read-and-earn.html"
+          class="text-link"
+        >
           View all →
         </a>
 
       </div>
 
 
+
       <div class="novel-preview">
+
 
         <div class="novel-preview-icon">
           📖
         </div>
 
+
         <div>
-          <h3>Discover approved novels</h3>
+
+          <h3>
+            Discover approved novels
+          </h3>
+
 
           <p>
+
             Complete the required reading and quiz
             to qualify for a verified reading reward.
+
           </p>
+
         </div>
 
-        <a href="read-and-earn.html" class="btn primary">
+
+        <a
+          href="read-and-earn.html"
+          class="btn primary"
+        >
           Browse Novels
         </a>
+
 
       </div>
 
     </section>
 
-    <!-- CREATE & EARN -->
 
-    <section id="create" class="dashboard-section">
+
+    <!-- =========================================
+         CREATE AND EARN
+    ========================================= -->
+
+    <section
+      id="create"
+      class="dashboard-section"
+    >
+
 
       <div class="section-title">
 
         <div>
-          <span class="eyebrow">CREATE & EARN</span>
 
-          <h2>Create and earn from your content</h2>
+          <span class="eyebrow">
+            CREATE & EARN
+          </span>
+
+
+          <h2>
+            Create and earn from your content
+          </h2>
+
         </div>
 
-        <a href="create-and-earn.html" class="text-link">
+
+        <a
+          href="create-and-earn.html"
+          class="text-link"
+        >
           View all →
         </a>
 
       </div>
 
 
+
       <div class="novel-preview">
+
 
         <div class="novel-preview-icon">
           ✍️
         </div>
 
+
         <div>
 
-          <h3>Publish your own novel</h3>
+          <h3>
+            Publish your own novel
+          </h3>
+
 
           <p>
+
             Create and submit your novel for approval.
             Approved creators can earn when readers
             complete eligible reading assignments.
+
           </p>
 
         </div>
+
 
         <a
           href="create-and-earn.html"
@@ -269,1108 +500,2678 @@
           Create & Earn
         </a>
 
+
       </div>
 
     </section>
-    
-    <!-- REFERRALS -->
 
-    <section id="referrals" class="dashboard-section">
+
+
+    <!-- =========================================
+         REFERRALS
+    ========================================= -->
+
+    <section
+      id="referrals"
+      class="dashboard-section"
+    >
+
 
       <div class="section-title">
 
         <div>
-          <span class="eyebrow">REFERRALS</span>
 
-          <h2>Your referral program</h2>
+          <span class="eyebrow">
+            REFERRALS
+          </span>
+
+
+          <h2>
+            Your referral program
+          </h2>
+
         </div>
 
       </div>
+
 
 
       <div class="referral-box">
 
-        <div>
-          <small>Your referral code</small>
 
-        <strong id="dashboard-referral-code">Loading...</strong>
+        <div>
+
+          <small>
+            Your referral code
+          </small>
+
+
+          <strong id="dashboard-referral-code">
+            Loading...
+          </strong>
+
 
           <p>
             Share your code with eligible new members.
           </p>
+
         </div>
 
-        
 
       </div>
-<button
-  id="copy-referral-button"
-  class="btn primary"
-  type="button"
->
-  Copy Code
-</button>
+
+
+
+      <button
+        id="copy-referral-button"
+        class="btn primary"
+        type="button"
+      >
+        Copy Code
+      </button>
+
+
 
       <div class="earning-box">
 
-      <div>
-  <small>Successful referrals</small>
-  <strong id="successful-referrals">0</strong>
-</div>
 
-<div>
-  <small>Referral earnings</small>
-  <strong id="dashboard-referral-earnings">₦0</strong>
-</div>
+        <div>
 
-<div>
-  <small>Active referrals</small>
-  <strong id="active-referrals">0</strong>
-</div>  
+          <small>
+            Successful referrals
+          </small>
+
+          <strong id="successful-referrals">
+            0
+          </strong>
+
+        </div>
+
+
+
+        <div>
+
+          <small>
+            Referral earnings
+          </small>
+
+          <strong id="dashboard-referral-earnings">
+            ₦0
+          </strong>
+
+        </div>
+
+
+
+        <div>
+
+          <small>
+            Active referrals
+          </small>
+
+          <strong id="active-referrals">
+            0
+          </strong>
+
+        </div>
+
 
       </div>
-<div class="referral-history">
 
-  <div class="section-title">
-    <div>
-      <span class="eyebrow">REFERRAL HISTORY</span>
-      <h3>Your referrals</h3>
-    </div>
-  </div>
 
-  <div id="referral-history-list">
 
-    <div class="empty-state">
-      <h3>Loading referrals...</h3>
-      <p>Your referral activity will appear here.</p>
-    </div>
+      <!-- REFERRAL HISTORY -->
 
-  </div>
+      <div class="referral-history">
 
-</div>
+
+        <div class="section-title">
+
+          <div>
+
+            <span class="eyebrow">
+              REFERRAL HISTORY
+            </span>
+
+
+            <h3>
+              Your referrals
+            </h3>
+
+          </div>
+
+        </div>
+
+
+
+        <div id="referral-history-list">
+
+
+          <div class="empty-state">
+
+            <h3>
+              Loading referrals...
+            </h3>
+
+            <p>
+              Your referral activity will appear here.
+            </p>
+
+          </div>
+
+
+        </div>
+
+
+      </div>
+
+
     </section>
 
 
-    <!-- MARKETPLACE -->
 
-    <section id="marketplace" class="dashboard-section">
+    <!-- =========================================
+         MARKETPLACE
+    ========================================= -->
+
+    <section
+      id="marketplace"
+      class="dashboard-section"
+    >
+
 
       <div class="section-title">
 
         <div>
-          <span class="eyebrow">MARKETPLACE</span>
 
-          <h2>Discover what's available</h2>
+          <span class="eyebrow">
+            MARKETPLACE
+          </span>
+
+
+          <h2>
+            Discover what's available
+          </h2>
+
         </div>
 
-        <a href="marketplace.html" class="text-link">
+
+        <a
+          href="marketplace.html"
+          class="text-link"
+        >
           Open marketplace →
         </a>
 
       </div>
 
 
+
       <div class="marketplace-preview">
 
+
         <div>
-          <span>SHOP</span>
-          <h3>Products & Services</h3>
+
+          <span>
+            SHOP
+          </span>
+
+
+          <h3>
+            Products & Services
+          </h3>
+
+
           <p>
+
             Browse participating sellers and discover
             available offers.
+
           </p>
+
         </div>
 
-        <a href="marketplace.html" class="btn primary">
+
+        <a
+          href="marketplace.html"
+          class="btn primary"
+        >
           Browse
         </a>
+
 
       </div>
 
     </section>
 
 
-    <!-- TRANSACTIONS -->
 
-    <section id="transactions" class="dashboard-section">
+    <!-- =========================================
+         TRANSACTIONS
+    ========================================= -->
+
+    <section
+      id="transactions"
+      class="dashboard-section"
+    >
+
 
       <div class="section-title">
 
         <div>
-          <span class="eyebrow">WALLET</span>
 
-          <h2>Recent transactions</h2>
+          <span class="eyebrow">
+            WALLET
+          </span>
+
+
+          <h2>
+            Recent transactions
+          </h2>
+
         </div>
 
       </div>
 
 
-<div id="transaction-list" class="transaction-list">
 
-  <div class="empty-state">
-    <div class="empty-icon">₦</div>
+      <div
+        id="transaction-list"
+        class="transaction-list"
+      >
 
-    <h3>Loading transactions...</h3>
 
-    <p>
-      Your wallet transactions will appear here.
-    </p>
-  </div>
+        <div class="empty-state">
 
-</div>  
+          <div class="empty-icon">
+            ₦
+          </div>
+
+
+          <h3>
+            Loading transactions...
+          </h3>
+
+
+          <p>
+            Your wallet transactions will appear here.
+          </p>
+
+        </div>
+
+
+      </div>
+
 
     </section>
+
 
   </div>
 
 </main>
 
 
+
+<!-- =========================================
+     FOOTER
+========================================= -->
+
 <footer>
 
   <div class="container copy">
+
     © 2026 EarnGig. All rights reserved.
+
   </div>
 
 </footer>
-  
 
-<script
-  src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+<!-- =========================================
+     SUPABASE
+========================================= -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script src="supabase.js"></script>
 
+
+
+<!-- =========================================
+     DASHBOARD JAVASCRIPT
+========================================= -->
+
 <script>
-async function checkMembershipAccess() {
 
-  const {
-    data: { user },
-    error: userError
-  } = await supabaseClient.auth.getUser();
 
-  if (userError || !user) {
-    window.location.href = "login.html";
+/* =========================================
+   TRANSACTION TYPE CONFIGURATION
+
+   IMPORTANT:
+
+   ONLY these transaction types represent
+   genuine user earnings.
+
+   task_payment:
+   User pays to post a task.
+   NOT an earning.
+
+   task_refund:
+   Money returned after task rejection.
+   NOT an earning.
+
+   withdrawal:
+   User withdraws money.
+   NOT an earning.
+========================================= */
+
+
+const EARNING_TRANSACTION_TYPES = [
+
+  "task_earning",
+
+  "task_completion",
+
+  "referral_bonus"
+
+];
+
+
+
+/* =========================================
+   DEBIT TRANSACTION TYPES
+
+   These transactions remove money from
+   the wallet.
+
+   IMPORTANT:
+
+   task_payment is included here because
+   your database currently stores the amount
+   as a POSITIVE number.
+
+   Example:
+
+   amount = 1200
+   type = task_payment
+
+   This MUST display as:
+
+   −₦1,200
+========================================= */
+
+
+const DEBIT_TRANSACTION_TYPES = [
+
+  "task_payment",
+
+  "withdrawal",
+
+  "debit"
+
+];
+
+
+
+/* =========================================
+   CREDIT TRANSACTION TYPES
+
+   These add money to the wallet.
+
+   IMPORTANT:
+
+   task_refund is a CREDIT because rejected
+   task money is returned to the wallet.
+
+   However, it is NOT an earning.
+========================================= */
+
+
+const CREDIT_TRANSACTION_TYPES = [
+
+  "task_refund",
+
+  "task_earning",
+
+  "task_completion",
+
+  "referral_bonus",
+
+  "credit"
+
+];
+
+
+
+/* =========================================
+   FORMAT NIGERIAN CURRENCY
+========================================= */
+
+
+function formatNaira(amount, decimals = false) {
+
+  const number = Number(amount || 0);
+
+  return `₦${number.toLocaleString(
+
+    "en-NG",
+
+    {
+
+      minimumFractionDigits:
+        decimals ? 2 : 0,
+
+      maximumFractionDigits:
+        decimals ? 2 : 0
+
+    }
+
+  )}`;
+
+}
+
+
+
+/* =========================================
+   ESCAPE HTML
+
+   Prevents transaction descriptions from
+   breaking the dashboard HTML.
+========================================= */
+
+
+function escapeHtml(value) {
+
+  if (
+    value === null ||
+    value === undefined
+  ) {
+    return "";
+  }
+
+
+  return String(value)
+
+    .replace(/&/g, "&amp;")
+
+    .replace(/</g, "&lt;")
+
+    .replace(/>/g, "&gt;")
+
+    .replace(/"/g, "&quot;")
+
+    .replace(/'/g, "&#039;");
+
+}
+
+
+
+/* =========================================
+   CHECK IF TRANSACTION IS AN EARNING
+
+   This is the most important function.
+
+   We DO NOT check whether amount is positive.
+
+   A task_payment may be stored as:
+
+   amount = 1200
+
+   but it is still NOT an earning.
+
+   We check the transaction TYPE instead.
+========================================= */
+
+
+function isEarningTransaction(transaction) {
+
+  if (!transaction) {
     return false;
   }
 
-  /*
-   * Check the user's actual membership period.
-   *
-   * An active membership remains valid until
-   * current_period_end.
-   */
-  const {
-    data: membership,
-    error: membershipError
-  } = await supabaseClient
-    .from("memberships")
-    .select(`
-      status,
-      current_period_start,
-      current_period_end,
-      next_payment_at
-    `)
-    .eq("user_id", user.id)
-    .maybeSingle();
 
-  if (membershipError) {
+  return EARNING_TRANSACTION_TYPES.includes(
+    transaction.type
+  );
 
-    console.error(
-      "Membership verification error:",
-      membershipError
-    );
+}
 
-    alert(
-      "Unable to verify your membership. Please try again."
-    );
 
-    await supabaseClient.auth.signOut();
 
-    window.location.href = "login.html";
+/* =========================================
+   CHECK IF TRANSACTION IS A DEBIT
+========================================= */
 
+
+function isDebitTransaction(transaction) {
+
+  if (!transaction) {
     return false;
   }
 
+
   /*
-   * No membership record.
+   * Transaction type takes priority.
    *
-   * This means the user has not completed
-   * the initial membership payment.
+   * This is necessary because task_payment
+   * can be stored as a positive amount
+   * while actually being a debit.
    */
-  if (!membership) {
 
-    alert(
-      "₦9,000 membership payment required before you can access your dashboard."
-    );
-
-    window.location.href = "membership.html";
-
-    return false;
-  }
-
-  /*
-   * Check whether the membership is currently active.
-   */
-  const periodEnd =
-    membership.current_period_end
-      ? new Date(membership.current_period_end)
-      : null;
-
-  const membershipIsActive =
-    membership.status === "active" &&
-    periodEnd &&
-    periodEnd.getTime() > Date.now();
-
-  /*
-   * ACTIVE MEMBERSHIP
-   *
-   * The user has full dashboard access.
-   * Do NOT ask for another ₦9,000 payment.
-   */
-  if (membershipIsActive) {
+  if (
+    DEBIT_TRANSACTION_TYPES.includes(
+      transaction.type
+    )
+  ) {
     return true;
   }
 
+
   /*
-   * Membership has expired.
-   *
-   * At this point the user should renew,
-   * rather than paying the initial ₦9,000 again.
+   * If the database stores a negative amount,
+   * it is naturally a debit.
    */
-  alert(
-    "Your membership has expired. Please renew your membership to continue."
+
+  if (
+    Number(transaction.amount || 0) < 0
+  ) {
+    return true;
+  }
+
+
+  return false;
+
+}
+
+
+
+/* =========================================
+   CHECK IF TRANSACTION IS A CREDIT
+========================================= */
+
+
+function isCreditTransaction(transaction) {
+
+  if (!transaction) {
+    return false;
+  }
+
+
+  if (
+    CREDIT_TRANSACTION_TYPES.includes(
+      transaction.type
+    )
+  ) {
+    return true;
+  }
+
+
+  return (
+    !isDebitTransaction(transaction) &&
+    Number(transaction.amount || 0) > 0
   );
+
+}
+
+
+
+/* =========================================
+   CHECK IF DATE IS TODAY
+
+   Uses the user's local calendar day.
+========================================= */
+
+
+function isToday(dateValue) {
+
+  if (!dateValue) {
+    return false;
+  }
+
+
+  const transactionDate =
+    new Date(dateValue);
+
+
+  const today =
+    new Date();
+
+
+  return (
+
+    transactionDate.getFullYear() ===
+      today.getFullYear()
+
+    &&
+
+    transactionDate.getMonth() ===
+      today.getMonth()
+
+    &&
+
+    transactionDate.getDate() ===
+      today.getDate()
+
+  );
+
+}
+
+
+
+/* =========================================
+   CHECK MEMBERSHIP ACCESS
+========================================= */
+
+
+async function checkMembershipAccess() {
+
+
+  const {
+
+    data: {
+      user
+    },
+
+    error: userError
+
+  } = await supabaseClient
+    .auth
+    .getUser();
+
+
+
+  if (
+    userError ||
+    !user
+  ) {
+
+    window.location.href =
+      "login.html";
+
+    return false;
+
+  }
+
+
+
+  /* =========================================
+     LOAD MEMBERSHIP
+  ========================================= */
+
+
+  const {
+
+    data: membership,
+
+    error: membershipError
+
+  } = await supabaseClient
+
+    .from("memberships")
+
+    .select(`
+
+      status,
+
+      current_period_start,
+
+      current_period_end,
+
+      next_payment_at
+
+    `)
+
+    .eq(
+      "user_id",
+      user.id
+    )
+
+    .maybeSingle();
+
+
+
+  if (membershipError) {
+
+
+    console.error(
+
+      "Membership verification error:",
+
+      membershipError
+
+    );
+
+
+    alert(
+
+      "Unable to verify your membership. Please try again."
+
+    );
+
+
+    await supabaseClient
+      .auth
+      .signOut();
+
+
+    window.location.href =
+      "login.html";
+
+
+    return false;
+
+  }
+
+
+
+  /* =========================================
+     NO MEMBERSHIP
+  ========================================= */
+
+
+  if (!membership) {
+
+
+    alert(
+
+      "₦9,000 membership payment required before you can access your dashboard."
+
+    );
+
+
+    window.location.href =
+      "membership.html";
+
+
+    return false;
+
+  }
+
+
+
+  /* =========================================
+     CHECK MEMBERSHIP PERIOD
+  ========================================= */
+
+
+  const periodEnd =
+
+    membership.current_period_end
+
+      ? new Date(
+          membership.current_period_end
+        )
+
+      : null;
+
+
+
+  const membershipIsActive =
+
+    membership.status === "active"
+
+    &&
+
+    periodEnd
+
+    &&
+
+    periodEnd.getTime() > Date.now();
+
+
+
+  /* =========================================
+     ACTIVE
+  ========================================= */
+
+
+  if (membershipIsActive) {
+
+    return true;
+
+  }
+
+
+
+  /* =========================================
+     EXPIRED
+  ========================================= */
+
+
+  alert(
+
+    "Your membership has expired. Please renew your membership to continue."
+
+  );
+
 
   window.location.href =
     "membership.html";
 
+
   return false;
+
 }
-    
+
+
+
+/* =========================================
+   LOAD DASHBOARD
+========================================= */
+
+
 async function loadDashboard() {
+
 
   try {
 
-    /*
-     * Get the currently logged-in user
-     */
+
+    /* =========================================
+       GET CURRENT USER
+    ========================================= */
+
+
     const {
-      data: { user },
+
+      data: {
+        user
+      },
+
       error: userError
-    } = await supabaseClient.auth.getUser();
 
-    if (userError || !user) {
-      window.location.href = "login.html";
-      return;
-    }
-
-
-    /*
-     * Load profile
-     */
-    const {
-      data: profile,
-      error: profileError
     } = await supabaseClient
-      .from("profiles")
-      .select("full_name")
-      .eq("id", user.id)
-      .single();
+      .auth
+      .getUser();
 
-    if (profileError) {
-      console.error("Unable to load profile:", profileError);
-    }
 
-    const nameElement =
-      document.getElementById("user-name");
 
-    if (nameElement) {
-      nameElement.textContent =
-        profile?.full_name || "Member";
-    }
-    
-/*
- * LOAD WALLET
- */
-
-const {
-  data: wallet,
-  error: walletError
-} = await supabaseClient
-  .from("wallets")
-  .select(
-    "balance, total_earned, referral_earned"
-  )
-  .eq("user_id", user.id)
-  .maybeSingle();
-
-
-if (walletError) {
-
-  console.error(
-    "Unable to load wallet:",
-    walletError
-  );
-
-} else if (wallet) {
-
-  document.getElementById(
-    "wallet-balance"
-  ).textContent =
-    `₦${Number(wallet.balance || 0).toLocaleString(
-      "en-NG",
-      {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      }
-    )}`;
-
-  document.getElementById(
-    "total-earned"
-  ).textContent =
-    `₦${Number(wallet.total_earned || 0).toLocaleString(
-      "en-NG"
-    )}`;
-
-document.getElementById(
-  "referral-earnings"
-).textContent =
-  `₦${Number(wallet.referral_earned || 0).toLocaleString("en-NG")}`;
-  
-  document.getElementById(
-  "dashboard-referral-earnings"
-).textContent =
-  `₦${Number(wallet.referral_earned || 0).toLocaleString("en-NG")}`;
-
-} else {
-
-  /*
-   * New users may not have a wallet yet.
-   * Do NOT allow this to block the referral section.
-   */
-
-  document.getElementById(
-    "wallet-balance"
-  ).textContent = "₦0.00";
-
-  document.getElementById(
-    "total-earned"
-  ).textContent = "₦0";
-
-  document.getElementById(
-    "referral-earnings"
-  ).textContent = "₦0";
-
-}
-
-
-/*
- * LOAD REFERRAL INFORMATION
- *
- * IMPORTANT:
- * This is deliberately OUTSIDE the wallet block.
- * A user does not need a wallet just to have a
- * referral code.
- */
-
-const {
-  data: referralProfile,
-  error: referralProfileError
-} = await supabaseClient
-  .from("profiles")
-  .select("referral_code")
-  .eq("id", user.id)
-  .maybeSingle();
-
-
-const referralCodeElement =
-  document.getElementById(
-    "dashboard-referral-code"
-  );
-
-
-if (referralProfileError) {
-
-  console.error(
-    "Unable to load referral code:",
-    referralProfileError
-  );
-
-  if (referralCodeElement) {
-    referralCodeElement.textContent =
-      "Unable to load";
-  }
-
-} else if (referralProfile?.referral_code) {
-
-  if (referralCodeElement) {
-    referralCodeElement.textContent =
-      referralProfile.referral_code;
-  }
-
-} else {
-
-  if (referralCodeElement) {
-    referralCodeElement.textContent =
-      "Not available";
-  }
-
-}
-
-/*
- * LOAD REFERRAL COUNTERS
- *
- * Referral relationships are stored in profiles.referred_by,
- * not public.referrals.
- */
-
-const {
-  data: referredMembers,
-  error: referredMembersError
-} = await supabaseClient
-  .from("profiles")
-  .select("id")
-  .eq("referred_by", user.id);
-
-if (referredMembersError) {
-
-  console.error(
-    "Unable to load referral counters:",
-    referredMembersError
-  );
-
-} else {
-
-  const members =
-    referredMembers || [];
-
-  /*
-   * Every real member connected through
-   * profiles.referred_by counts as a successful referral.
-   */
-
-  document.getElementById(
-    "successful-referrals"
-  ).textContent = members.length;
-
-  /*
-   * Active referrals will be handled separately
-   * from the members' actual membership status.
-   */
-
-  const {
-  data: activeReferralCount,
-  error: activeReferralError
-} = await supabaseClient
-  .rpc("get_active_referral_count");
-
-if (activeReferralError) {
-
-  console.error(
-    "Unable to load active referral count:",
-    activeReferralError
-  );
-
-  document.getElementById(
-    "active-referrals"
-  ).textContent = "0";
-
-} else {
-
-  document.getElementById(
-    "active-referrals"
-  ).textContent =
-    Number(activeReferralCount || 0);
-
-}
-
-}
-
-
-    /*
-     * Load this user's task attempts.
-     */
-    const {
-      data: attempts,
-      error: attemptsError
-    } = await supabaseClient
-      .from("task_attempts")
-      .select(
-        "status, reward_amount, reward_status, created_at"
-      )
-      .eq("user_id", user.id);
-
-
-    if (attemptsError) {
-
-      console.error(
-        "Unable to load task attempts:",
-        attemptsError
-      );
-
-      return;
-    }
-
-
-    /*
-     * Count completed/approved activities.
-     *
-     * An approved reward has been successfully reviewed.
-     */
-    const completedCount =
-      (attempts || []).filter(function (attempt) {
-
-        return (
-          attempt.status === "completed" ||
-          attempt.status === "approved"
-        );
-
-      }).length;
-
-
-    document.getElementById(
-      "completed-activities"
-    ).textContent = completedCount;
-  
-
-    /*
- * CALCULATE TODAY'S EARNINGS
- *
- * The transactions table is the central wallet ledger.
- *
- * Any earning feature that credits money to the user's wallet
- * should create a completed transaction for that user.
- *
- * This automatically supports:
- * - Tasks
- * - Read & Earn
- * - Create & Earn
- * - Watch & Earn
- * - Marketplace seller earnings
- * - Future earning features
- */
-
-const startOfToday = new Date();
-
-startOfToday.setHours(0, 0, 0, 0);
-
-const {
-  data: todayTransactions,
-  error: todayTransactionsError
-} = await supabaseClient
-  .from("transactions")
-  .select("amount, type, status, created_at")
-  .eq("user_id", user.id)
-  .eq("status", "completed")
-  .gte("created_at", startOfToday.toISOString());
-
-if (todayTransactionsError) {
-
-  console.error(
-    "Unable to load today's earnings:",
-    todayTransactionsError
-  );
-
-  document.getElementById(
-    "today-earnings"
-  ).textContent = "₦0";
-
-} else {
-
-  const todayEarnings =
-    (todayTransactions || [])
-      .filter(function (transaction) {
-
-        /*
-         * Only positive transactions are earnings.
-         *
-         * This prevents withdrawals or other debits
-         * from reducing today's earnings.
-         */
-        return Number(transaction.amount || 0) > 0;
-
-      })
-      .reduce(function (total, transaction) {
-
-        return total +
-          Number(transaction.amount || 0);
-
-      }, 0);
-
-  document.getElementById(
-    "today-earnings"
-  ).textContent =
-    `₦${todayEarnings.toLocaleString(
-      "en-NG"
-    )}`;
-}
-  } catch (error) {
-
-    console.error(
-      "Dashboard loading error:",
-      error
-    );
-
-  }
-
-}
-
-
-/*
- * Logout
- */
-document
-  .getElementById("logout-button")
-  .addEventListener(
-    "click",
-    async function () {
-
-      const {
-        error
-      } = await supabaseClient.auth.signOut();
-
-      if (error) {
-
-        console.error(
-          "Logout error:",
-          error
-        );
-
-        alert(
-          "Unable to log out right now."
-        );
-
-        return;
-      }
+    if (
+      userError ||
+      !user
+    ) {
 
       window.location.href =
         "login.html";
 
+      return;
+
     }
-  );
 
 
-/*
- * Load the dashboard.
- */
+
+    /* =========================================
+       LOAD PROFILE
+    ========================================= */
+
+
+    const {
+
+      data: profile,
+
+      error: profileError
+
+    } = await supabaseClient
+
+      .from("profiles")
+
+      .select(`
+
+        full_name,
+
+        referral_code
+
+      `)
+
+      .eq(
+        "id",
+        user.id
+      )
+
+      .maybeSingle();
+
+
+
+    if (profileError) {
+
+      console.error(
+
+        "Unable to load profile:",
+
+        profileError
+
+      );
+
+    }
+
+
+
+    /* =========================================
+       DISPLAY USER NAME
+    ========================================= */
+
+
+    const nameElement =
+
+      document.getElementById(
+        "user-name"
+      );
+
+
+
+    if (nameElement) {
+
+      nameElement.textContent =
+
+        profile?.full_name ||
+        "Member";
+
+    }
+
+
+
+    /* =========================================
+       DISPLAY REFERRAL CODE
+    ========================================= */
+
+
+    const referralCodeElement =
+
+      document.getElementById(
+        "dashboard-referral-code"
+      );
+
+
+
+    if (referralCodeElement) {
+
+
+      if (profile?.referral_code) {
+
+        referralCodeElement.textContent =
+
+          profile.referral_code;
+
+      }
+
+      else {
+
+        referralCodeElement.textContent =
+
+          "Not available";
+
+      }
+
+    }
+
+
+
+    /* =========================================
+       LOAD WALLET
+
+       IMPORTANT:
+
+       Wallet balance is still loaded directly
+       from the wallets table.
+
+       Total Earned is NOT taken from
+       wallet.total_earned because older logic
+       may have incorrectly added task payments.
+
+       Instead, Total Earned is calculated from
+       genuine earning transaction types.
+    ========================================= */
+
+
+    const {
+
+      data: wallet,
+
+      error: walletError
+
+    } = await supabaseClient
+
+      .from("wallets")
+
+      .select(`
+
+        balance,
+
+        referral_earned
+
+      `)
+
+      .eq(
+        "user_id",
+        user.id
+      )
+
+      .maybeSingle();
+
+
+
+    if (walletError) {
+
+
+      console.error(
+
+        "Unable to load wallet:",
+
+        walletError
+
+      );
+
+
+      document.getElementById(
+        "wallet-balance"
+      ).textContent =
+
+        "₦0.00";
+
+
+      document.getElementById(
+        "referral-earnings"
+      ).textContent =
+
+        "₦0";
+
+
+      document.getElementById(
+        "dashboard-referral-earnings"
+      ).textContent =
+
+        "₦0";
+
+    }
+
+
+    else {
+
+
+      const balance =
+
+        Number(
+          wallet?.balance || 0
+        );
+
+
+      const referralEarned =
+
+        Number(
+          wallet?.referral_earned || 0
+        );
+
+
+
+      document.getElementById(
+        "wallet-balance"
+      ).textContent =
+
+        formatNaira(
+          balance,
+          true
+        );
+
+
+
+      document.getElementById(
+        "referral-earnings"
+      ).textContent =
+
+        formatNaira(
+          referralEarned
+        );
+
+
+
+      document.getElementById(
+        "dashboard-referral-earnings"
+      ).textContent =
+
+        formatNaira(
+          referralEarned
+        );
+
+    }
+
+
+
+    /* =========================================
+       LOAD ALL TRANSACTIONS
+
+       We load transactions ONCE and use them
+       for:
+
+       - Today's Earnings
+       - Total Earned
+
+       This is important because we filter by
+       transaction TYPE.
+    ========================================= */
+
+
+    const {
+
+      data: transactions,
+
+      error: transactionsError
+
+    } = await supabaseClient
+
+      .from("transactions")
+
+      .select(`
+
+        id,
+
+        type,
+
+        amount,
+
+        status,
+
+        created_at
+
+      `)
+
+      .eq(
+        "user_id",
+        user.id
+      )
+
+      .eq(
+        "status",
+        "completed"
+      );
+
+
+
+    if (transactionsError) {
+
+
+      console.error(
+
+        "Unable to load earning transactions:",
+
+        transactionsError
+
+      );
+
+
+      document.getElementById(
+        "today-earnings"
+      ).textContent =
+
+        "₦0";
+
+
+      document.getElementById(
+        "total-earned"
+      ).textContent =
+
+        "₦0";
+
+    }
+
+
+    else {
+
+
+      const completedTransactions =
+
+        transactions || [];
+
+
+
+      /* =========================================
+         TOTAL EARNED
+
+         ONLY genuine earning transaction types.
+
+         task_payment is EXCLUDED.
+
+         task_refund is EXCLUDED.
+
+         withdrawal is EXCLUDED.
+      ========================================= */
+
+
+      const totalEarned =
+
+        completedTransactions
+
+          .filter(function(transaction) {
+
+
+            return isEarningTransaction(
+              transaction
+            );
+
+
+          })
+
+          .reduce(
+
+            function(total, transaction) {
+
+
+              return (
+
+                total +
+
+                Math.abs(
+                  Number(
+                    transaction.amount || 0
+                  )
+                )
+
+              );
+
+
+            },
+
+            0
+
+          );
+
+
+
+      document.getElementById(
+        "total-earned"
+      ).textContent =
+
+        formatNaira(
+          totalEarned
+        );
+
+
+
+      /* =========================================
+         TODAY'S EARNINGS
+
+         TWO CONDITIONS:
+
+         1. Transaction happened today.
+         2. Transaction type is a genuine earning.
+
+         This means:
+
+         task_payment
+         ❌ NOT INCLUDED
+
+         task_refund
+         ❌ NOT INCLUDED
+
+         withdrawal
+         ❌ NOT INCLUDED
+
+         task_earning
+         ✅ INCLUDED
+
+         task_completion
+         ✅ INCLUDED
+
+         referral_bonus
+         ✅ INCLUDED
+      ========================================= */
+
+
+      const todayEarnings =
+
+        completedTransactions
+
+          .filter(function(transaction) {
+
+
+            return (
+
+              isToday(
+                transaction.created_at
+              )
+
+              &&
+
+              isEarningTransaction(
+                transaction
+              )
+
+            );
+
+
+          })
+
+          .reduce(
+
+            function(total, transaction) {
+
+
+              return (
+
+                total +
+
+                Math.abs(
+                  Number(
+                    transaction.amount || 0
+                  )
+                )
+
+              );
+
+
+            },
+
+            0
+
+          );
+
+
+
+      document.getElementById(
+        "today-earnings"
+      ).textContent =
+
+        formatNaira(
+          todayEarnings
+        );
+
+    }
+
+
+
+    /* =========================================
+       LOAD TASK ATTEMPTS
+
+       COMPLETED ACTIVITIES
+    ========================================= */
+
+
+    const {
+
+      data: attempts,
+
+      error: attemptsError
+
+    } = await supabaseClient
+
+      .from("task_attempts")
+
+      .select(`
+
+        status,
+
+        reward_amount,
+
+        reward_status,
+
+        created_at
+
+      `)
+
+      .eq(
+        "user_id",
+        user.id
+      );
+
+
+
+    if (attemptsError) {
+
+
+      console.error(
+
+        "Unable to load task attempts:",
+
+        attemptsError
+
+      );
+
+    }
+
+
+    else {
+
+
+      const completedCount =
+
+        (attempts || [])
+
+          .filter(function(attempt) {
+
+
+            return (
+
+              attempt.status ===
+                "completed"
+
+              ||
+
+              attempt.status ===
+                "approved"
+
+            );
+
+
+          })
+
+          .length;
+
+
+
+      document.getElementById(
+        "completed-activities"
+      ).textContent =
+
+        completedCount;
+
+    }
+
+
+
+    /* =========================================
+       LOAD REFERRAL COUNTERS
+    ========================================= */
+
+
+    const {
+
+      data: referredMembers,
+
+      error: referredMembersError
+
+    } = await supabaseClient
+
+      .from("profiles")
+
+      .select("id")
+
+      .eq(
+        "referred_by",
+        user.id
+      );
+
+
+
+    if (referredMembersError) {
+
+
+      console.error(
+
+        "Unable to load referral counters:",
+
+        referredMembersError
+
+      );
+
+
+      document.getElementById(
+        "successful-referrals"
+      ).textContent =
+
+        "0";
+
+    }
+
+
+    else {
+
+
+      const members =
+
+        referredMembers || [];
+
+
+
+      document.getElementById(
+        "successful-referrals"
+      ).textContent =
+
+        members.length;
+
+    }
+
+
+
+    /* =========================================
+       LOAD ACTIVE REFERRALS
+    ========================================= */
+
+
+    const {
+
+      data: activeReferralCount,
+
+      error: activeReferralError
+
+    } = await supabaseClient
+
+      .rpc(
+        "get_active_referral_count"
+      );
+
+
+
+    if (activeReferralError) {
+
+
+      console.error(
+
+        "Unable to load active referral count:",
+
+        activeReferralError
+
+      );
+
+
+      document.getElementById(
+        "active-referrals"
+      ).textContent =
+
+        "0";
+
+    }
+
+
+    else {
+
+
+      document.getElementById(
+        "active-referrals"
+      ).textContent =
+
+        Number(
+          activeReferralCount || 0
+        );
+
+    }
+
+
+  }
+
+
+  catch (error) {
+
+
+    console.error(
+
+      "Dashboard loading error:",
+
+      error
+
+    );
+
+
+  }
+
+
+}
+
+
+
+/* =========================================
+   LOAD TRANSACTIONS
+
+   There is ONLY ONE loadTransactions()
+   function in this replacement.
+
+   Your old code had TWO versions.
+========================================= */
+
 
 async function loadTransactions() {
 
+
   const transactionList =
-    document.getElementById("transaction-list");
 
-  if (!transactionList) {
-    return;
-  }
-
-  const {
-    data: { user },
-    error: userError
-  } = await supabaseClient.auth.getUser();
-
-  if (userError || !user) {
-    return;
-  }
-
-  const {
-    data: transactions,
-    error
-  } = await supabaseClient
-    .from("transactions")
-    .select("*")
-    .eq("user_id", user.id)
-    .order("created_at", {
-      ascending: false
-    })
-    .limit(20);
-
-  if (error) {
-
-    console.error(
-      "Unable to load transactions:",
-      error
+    document.getElementById(
+      "transaction-list"
     );
 
-    transactionList.innerHTML = `
-      <div class="empty-state">
-        <h3>Unable to load transactions</h3>
-        <p>Please try again later.</p>
-      </div>
-    `;
 
-    return;
-  }
-
-  if (!transactions || transactions.length === 0) {
-
-    transactionList.innerHTML = `
-      <div id="transaction-list">
-
-  <div class="empty-state">
-    <div class="empty-icon">₦</div>
-
-    <h3>Loading transactions...</h3>
-
-    <p>
-      Your wallet activity will appear here.
-    </p>
-  </div>
-
-</div>
-    `;
-
-    return;
-  }
-
-  transactionList.innerHTML =
-    transactions.map(function(transaction) {
-
-      const amount =
-        Number(transaction.amount || 0);
-
-      const isDebit =
-        transaction.type === "debit" ||
-        transaction.type === "withdrawal" ||
-        amount < 0;
-
-      const displayAmount =
-        Math.abs(amount);
-
-      const sign =
-        isDebit ? "−" : "+";
-
-      const date =
-        transaction.created_at
-          ? new Date(transaction.created_at)
-              .toLocaleDateString("en-NG")
-          : "";
-
-      return `
-        <div class="transaction-row">
-
-          <div class="transaction-info">
-
-            <strong>
-              ${transaction.description || "Wallet transaction"}
-            </strong>
-
-            <small>
-              ${transaction.status || "completed"}
-              ${date ? " • " + date : ""}
-            </small>
-
-          </div>
-
-          <strong class="transaction-amount ${
-            isDebit ? "debit" : "credit"
-          }">
-            ${sign}₦${displayAmount.toLocaleString("en-NG")}
-          </strong>
-
-        </div>
-      `;
-
-    }).join("");
-}
-  
-(async function () {
-
-  const hasAccess =
-    await checkMembershipAccess();
-
-  if (!hasAccess) {
-    return;
-  }
-
-  await loadDashboard();
-await loadTransactions();
-await loadReferralHistory();
-
-})();
-document
-  .getElementById("copy-referral-button")
-  .addEventListener("click", async function () {
-
-    const code =
-      document
-        .getElementById("dashboard-referral-code")
-        .textContent
-        .trim();
-
-    if (!code || code === "Loading..." || code === "Not available") {
-      alert("Your referral code is not available yet.");
-      return;
-    }
-
-    const referralLink =
-      window.location.origin +
-      "/earngig-website/register.html?ref=" +
-      encodeURIComponent(code);
-
-    try {
-
-      await navigator.clipboard.writeText(
-        referralLink
-      );
-
-      alert(
-        "Referral link copied!\n\n" +
-        referralLink
-      );
-
-    } catch (error) {
-
-      prompt(
-        "Copy your referral link:",
-        referralLink
-      );
-
-    }
-
-  });
-  async function loadTransactions() {
-
-  const transactionList =
-    document.getElementById("transaction-list");
 
   if (!transactionList) {
+
     return;
+
   }
 
+
+
+  /* =========================================
+     GET USER
+  ========================================= */
+
+
   const {
-    data: { user },
+
+    data: {
+      user
+    },
+
     error: userError
-  } = await supabaseClient.auth.getUser();
 
-  if (userError || !user) {
-    window.location.href = "login.html";
+  } = await supabaseClient
+
+    .auth
+
+    .getUser();
+
+
+
+  if (
+    userError ||
+    !user
+  ) {
+
+    window.location.href =
+      "login.html";
+
     return;
+
   }
 
+
+
+  /* =========================================
+     LOAD TRANSACTIONS
+  ========================================= */
+
+
   const {
+
     data: transactions,
+
     error
+
   } = await supabaseClient
+
     .from("transactions")
+
     .select(`
+
       id,
+
+      user_id,
+
       type,
+
       amount,
+
       status,
+
       description,
+
       reference,
+
       balance_after,
+
+      processed_at,
+
       created_at
+
     `)
-    .eq("user_id", user.id)
-    .order("created_at", {
-      ascending: false
-    });
+
+    .eq(
+      "user_id",
+      user.id
+    )
+
+    .order(
+      "created_at",
+      {
+        ascending: false
+      }
+    )
+
+    .limit(50);
+
+
+
+  /* =========================================
+     ERROR
+  ========================================= */
+
 
   if (error) {
 
+
     console.error(
+
       "Unable to load transactions:",
+
       error
+
     );
 
+
     transactionList.innerHTML = `
+
       <div class="empty-state">
-        <h3>Unable to load transactions</h3>
+
+        <h3>
+          Unable to load transactions
+        </h3>
+
         <p>
           There was a problem loading your wallet activity.
         </p>
+
       </div>
+
     `;
 
+
     return;
+
   }
 
-  if (!transactions || transactions.length === 0) {
+
+
+  /* =========================================
+     NO TRANSACTIONS
+  ========================================= */
+
+
+  if (
+    !transactions ||
+    transactions.length === 0
+  ) {
+
 
     transactionList.innerHTML = `
-      <div class="empty-state">
-        <div class="empty-icon">₦</div>
 
-        <h3>No transactions yet</h3>
+      <div class="empty-state">
+
+        <div class="empty-icon">
+          ₦
+        </div>
+
+
+        <h3>
+          No transactions yet
+        </h3>
+
 
         <p>
           Your wallet activity will appear here.
         </p>
+
       </div>
+
     `;
 
+
     return;
+
   }
+
+
+
+  /* =========================================
+     DISPLAY TRANSACTIONS
+
+     IMPORTANT:
+
+     We DO NOT determine debit/credit simply
+     from the amount.
+
+     task_payment can have:
+
+     amount = 1200
+
+     but it is a DEBIT.
+
+     Therefore transaction TYPE is checked.
+  ========================================= */
+
 
   transactionList.innerHTML =
-    transactions.map(function(transaction) {
 
-      const amount =
-        Number(transaction.amount || 0);
+    transactions
 
-      const isCredit =
-        amount > 0;
+      .map(function(transaction) {
 
-      const amountClass =
-        isCredit
-          ? "transaction-credit"
-          : "transaction-debit";
 
-      const sign =
-        isCredit ? "+" : "";
+        const amount =
 
-      const date =
-        new Date(
+          Number(
+            transaction.amount || 0
+          );
+
+
+
+        const displayAmount =
+
+          Math.abs(
+            amount
+          );
+
+
+
+        /* =========================================
+           DETERMINE WALLET EFFECT
+        ========================================= */
+
+
+        const isDebit =
+
+          isDebitTransaction(
+            transaction
+          );
+
+
+
+        const isCredit =
+
+          !isDebit &&
+          isCreditTransaction(
+            transaction
+          );
+
+
+
+        /* =========================================
+           DISPLAY SIGN
+        ========================================= */
+
+
+        let sign = "+";
+
+
+        if (isDebit) {
+
+          sign = "−";
+
+        }
+
+
+        else if (!isCredit) {
+
+          /*
+           * Fallback for unknown transaction types.
+           */
+
+          sign =
+            amount < 0
+              ? "−"
+              : "+";
+
+        }
+
+
+
+        /* =========================================
+           CSS CLASS
+        ========================================= */
+
+
+        const amountClass =
+
+          isDebit
+
+            ? "transaction-debit"
+
+            : "transaction-credit";
+
+
+
+        /* =========================================
+           FORMAT DATE
+        ========================================= */
+
+
+        const date =
+
           transaction.created_at
-        ).toLocaleString("en-NG");
 
-      return `
-        <article class="transaction-item">
+            ? new Date(
+                transaction.created_at
+              ).toLocaleString(
+                "en-NG"
+              )
 
-          <div class="transaction-info">
+            : "";
 
-            <strong>
-              ${transaction.description || transaction.type}
-            </strong>
 
-            <small>
-              ${date}
-            </small>
 
-            ${
-              transaction.status
-                ? `
-                  <small>
-                    Status: ${transaction.status}
-                  </small>
-                `
-                : ""
-            }
+        /* =========================================
+           TRANSACTION DESCRIPTION
+        ========================================= */
 
-          </div>
 
-          <div class="transaction-amount ${amountClass}">
-            ${sign}₦${Math.abs(amount).toLocaleString("en-NG")}
-          </div>
+        const description =
 
-        </article>
-      `;
+          escapeHtml(
 
-    }).join("");
+            transaction.description
+
+            ||
+
+            transaction.type
+
+            ||
+
+            "Wallet transaction"
+
+          );
+
+
+
+        const transactionStatus =
+
+          transaction.status
+
+            ? escapeHtml(
+                transaction.status
+              )
+
+            : "completed";
+
+
+
+        /* =========================================
+           RETURN HTML
+        ========================================= */
+
+
+        return `
+
+          <article class="transaction-item">
+
+
+            <div class="transaction-info">
+
+
+              <strong>
+
+                ${description}
+
+              </strong>
+
+
+
+              <small>
+
+                ${date}
+
+              </small>
+
+
+
+              <small>
+
+                Status: ${transactionStatus}
+
+              </small>
+
+
+            </div>
+
+
+
+            <div
+              class="transaction-amount ${amountClass}"
+            >
+
+              ${sign}${formatNaira(
+                displayAmount
+              )}
+
+            </div>
+
+
+          </article>
+
+        `;
+
+
+      })
+
+      .join("");
+
+
+
+}
+
+
+
+/* =========================================
+   LOAD REFERRAL HISTORY
+========================================= */
+
+
+async function loadReferralHistory() {
+
+
+  const list =
+
+    document.getElementById(
+      "referral-history-list"
+    );
+
+
+
+  if (!list) {
+
+    return;
+
   }
- async function loadReferralHistory() {
 
-  const list = document.getElementById("referral-history-list");
 
-  if (!list) return;
+
+  /* =========================================
+     GET CURRENT USER
+  ========================================= */
+
 
   const {
-    data: { user },
+
+    data: {
+      user
+    },
+
     error: userError
-  } = await supabaseClient.auth.getUser();
 
-  if (userError || !user) return;
-
-  // Get the real people referred by this user
-  const {
-    data: referredUsers,
-    error: profileError
   } = await supabaseClient
+
+    .auth
+
+    .getUser();
+
+
+
+  if (
+    userError ||
+    !user
+  ) {
+
+    return;
+
+  }
+
+
+
+  /* =========================================
+     LOAD REFERRED USERS
+  ========================================= */
+
+
+  const {
+
+    data: referredUsers,
+
+    error: profileError
+
+  } = await supabaseClient
+
     .from("profiles")
-    .select("id, full_name, created_at")
-    .eq("referred_by", user.id)
-    .order("created_at", { ascending: false });
+
+    .select(`
+
+      id,
+
+      full_name,
+
+      created_at
+
+    `)
+
+    .eq(
+      "referred_by",
+      user.id
+    )
+
+    .order(
+      "created_at",
+      {
+        ascending: false
+      }
+    );
+
+
+
+  /* =========================================
+     ERROR
+  ========================================= */
+
 
   if (profileError) {
-    console.error("Unable to load referral history:", profileError);
+
+
+    console.error(
+
+      "Unable to load referral history:",
+
+      profileError
+
+    );
+
 
     list.innerHTML = `
+
       <div class="empty-state">
-        <h3>Unable to load referrals</h3>
-        <p>Please try again later.</p>
+
+        <h3>
+          Unable to load referrals
+        </h3>
+
+        <p>
+          Please try again later.
+        </p>
+
       </div>
+
     `;
 
+
     return;
+
   }
 
-  if (!referredUsers || referredUsers.length === 0) {
+
+
+  /* =========================================
+     NO REFERRALS
+  ========================================= */
+
+
+  if (
+    !referredUsers ||
+    referredUsers.length === 0
+  ) {
+
 
     list.innerHTML = `
+
       <div class="empty-state">
-        <div class="empty-icon">👥</div>
-        <h3>No referrals yet</h3>
-        <p>Share your referral code to start earning.</p>
+
+        <div class="empty-icon">
+          👥
+        </div>
+
+
+        <h3>
+          No referrals yet
+        </h3>
+
+
+        <p>
+          Share your referral code to start earning.
+        </p>
+
       </div>
+
     `;
 
+
     return;
+
   }
 
-  const ids = referredUsers.map(function(referral) {
-    return referral.id;
-  });
 
-  // Get the real referral bonuses
+
+  /* =========================================
+     GET REFERRED USER IDS
+  ========================================= */
+
+
+  const ids =
+
+    referredUsers.map(
+      function(referral) {
+
+        return referral.id;
+
+      }
+    );
+
+
+
+  /* =========================================
+     LOAD REFERRAL BONUSES
+  ========================================= */
+
+
   const {
+
     data: bonuses,
+
     error: bonusError
+
   } = await supabaseClient
+
     .from("referral_bonus_ledger")
-    .select("referred_user_id, bonus_amount, bonus_type")
-    .in("referred_user_id", ids);
+
+    .select(`
+
+      referred_user_id,
+
+      bonus_amount,
+
+      bonus_type
+
+    `)
+
+    .in(
+      "referred_user_id",
+      ids
+    );
+
+
 
   if (bonusError) {
-    console.error("Unable to load referral bonuses:", bonusError);
+
+    console.error(
+
+      "Unable to load referral bonuses:",
+
+      bonusError
+
+    );
+
   }
 
-  const bonusRows = bonuses || [];
 
-  list.innerHTML = referredUsers.map(function(referral) {
 
-    const userBonuses = bonusRows.filter(function(bonus) {
-      return bonus.referred_user_id === referral.id;
-    });
+  const bonusRows =
 
-    const totalBonus = userBonuses.reduce(function(total, bonus) {
-      return total + Number(bonus.bonus_amount || 0);
-    }, 0);
+    bonuses || [];
 
-    const bonusCount = userBonuses.length;
 
-    const date = referral.created_at
-      ? new Date(referral.created_at).toLocaleDateString("en-NG")
-      : "";
 
-    return `
-      <div class="referral-history-row">
+  /* =========================================
+     DISPLAY REFERRAL HISTORY
+  ========================================= */
 
-        <div>
-          <strong>
-            ${referral.full_name || "EarnGig Member"}
-          </strong>
 
-          <small>
-            Joined ${date}
-          </small>
-        </div>
+  list.innerHTML =
 
-        <div>
-          <strong>
-            ₦${totalBonus.toLocaleString("en-NG")}
-          </strong>
+    referredUsers
 
-          <small>
-            ${bonusCount} bonus payment${bonusCount === 1 ? "" : "s"}
-          </small>
-        </div>
+      .map(function(referral) {
 
-      </div>
-    `;
 
-  }).join("");
- } 
+        const userBonuses =
+
+          bonusRows.filter(
+            function(bonus) {
+
+              return (
+
+                bonus.referred_user_id ===
+                referral.id
+
+              );
+
+            }
+          );
+
+
+
+        const totalBonus =
+
+          userBonuses.reduce(
+
+            function(total, bonus) {
+
+
+              return (
+
+                total +
+
+                Number(
+                  bonus.bonus_amount || 0
+                )
+
+              );
+
+
+            },
+
+            0
+
+          );
+
+
+
+        const bonusCount =
+
+          userBonuses.length;
+
+
+
+        const date =
+
+          referral.created_at
+
+            ? new Date(
+                referral.created_at
+              ).toLocaleDateString(
+                "en-NG"
+              )
+
+            : "";
+
+
+
+        const referralName =
+
+          escapeHtml(
+
+            referral.full_name
+
+            ||
+
+            "EarnGig Member"
+
+          );
+
+
+
+        return `
+
+          <div class="referral-history-row">
+
+
+            <div>
+
+
+              <strong>
+
+                ${referralName}
+
+              </strong>
+
+
+
+              <small>
+
+                Joined ${date}
+
+              </small>
+
+
+            </div>
+
+
+
+            <div>
+
+
+              <strong>
+
+                ${formatNaira(
+                  totalBonus
+                )}
+
+              </strong>
+
+
+
+              <small>
+
+                ${bonusCount}
+                bonus payment${
+
+                  bonusCount === 1
+
+                    ? ""
+
+                    : "s"
+
+                }
+
+              </small>
+
+
+            </div>
+
+
+          </div>
+
+        `;
+
+
+      })
+
+      .join("");
+
+
+
+}
+
+
+
+/* =========================================
+   COPY REFERRAL LINK
+========================================= */
+
+
+document
+
+  .getElementById(
+    "copy-referral-button"
+  )
+
+  .addEventListener(
+
+    "click",
+
+    async function() {
+
+
+      const code =
+
+        document
+
+          .getElementById(
+            "dashboard-referral-code"
+          )
+
+          .textContent
+
+          .trim();
+
+
+
+      if (
+
+        !code
+
+        ||
+
+        code === "Loading..."
+
+        ||
+
+        code === "Not available"
+
+      ) {
+
+
+        alert(
+
+          "Your referral code is not available yet."
+
+        );
+
+
+        return;
+
+      }
+
+
+
+      /*
+       * Build referral link.
+       *
+       * This keeps your existing GitHub Pages
+       * project structure.
+       */
+
+
+      const referralLink =
+
+        window.location.origin +
+
+        "/earngig-website/register.html?ref=" +
+
+        encodeURIComponent(
+          code
+        );
+
+
+
+      try {
+
+
+        await navigator.clipboard
+
+          .writeText(
+            referralLink
+          );
+
+
+
+        alert(
+
+          "Referral link copied!\n\n" +
+
+          referralLink
+
+        );
+
+
+      }
+
+
+      catch (error) {
+
+
+        prompt(
+
+          "Copy your referral link:",
+
+          referralLink
+
+        );
+
+
+      }
+
+
+    }
+
+  );
+
+
+
+/* =========================================
+   LOGOUT
+========================================= */
+
+
+document
+
+  .getElementById(
+    "logout-button"
+  )
+
+  .addEventListener(
+
+    "click",
+
+    async function() {
+
+
+      const {
+
+        error
+
+      } = await supabaseClient
+
+        .auth
+
+        .signOut();
+
+
+
+      if (error) {
+
+
+        console.error(
+
+          "Logout error:",
+
+          error
+
+        );
+
+
+        alert(
+
+          "Unable to log out right now."
+
+        );
+
+
+        return;
+
+      }
+
+
+
+      window.location.href =
+        "login.html";
+
+
+    }
+
+  );
+
+
+
+/* =========================================
+   INITIALIZE DASHBOARD
+========================================= */
+
+
+(async function() {
+
+
+  const hasAccess =
+
+    await checkMembershipAccess();
+
+
+
+  if (!hasAccess) {
+
+    return;
+
+  }
+
+
+
+  /* =========================================
+     LOAD ALL DASHBOARD DATA
+  ========================================= */
+
+
+  await loadDashboard();
+
+
+  await loadTransactions();
+
+
+  await loadReferralHistory();
+
+
+})();
+
+
 </script>
-    
+
+
 </body>
+
 </html>
