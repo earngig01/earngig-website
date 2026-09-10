@@ -17,284 +17,6 @@
     href="styles.css"
   >
 
-
-  <style>
-
-
-    /* =========================================
-       WALLET DYNAMIC CONTENT
-    ========================================= */
-
-    .wallet-loading {
-
-      padding: 30px;
-
-      text-align: center;
-
-      color: #6b7280;
-
-    }
-
-
-    .transaction-list,
-    .withdrawal-list {
-
-      display: flex;
-
-      flex-direction: column;
-
-      gap: 12px;
-
-    }
-
-
-    .wallet-transaction,
-    .wallet-withdrawal {
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: space-between;
-
-      gap: 20px;
-
-      padding: 18px;
-
-      background: white;
-
-      border: 1px solid #e5e7eb;
-
-      border-radius: 12px;
-
-    }
-
-
-    .transaction-left,
-    .withdrawal-left {
-
-      display: flex;
-
-      align-items: center;
-
-      gap: 14px;
-
-      min-width: 0;
-
-    }
-
-
-    .transaction-icon,
-    .withdrawal-icon {
-
-      width: 42px;
-
-      height: 42px;
-
-      flex-shrink: 0;
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: center;
-
-      border-radius: 50%;
-
-      background: #f3f0ff;
-
-      color: #6d4aff;
-
-      font-weight: 800;
-
-      font-size: 18px;
-
-    }
-
-
-    .transaction-info,
-    .withdrawal-info {
-
-      min-width: 0;
-
-    }
-
-
-    .transaction-info strong,
-    .withdrawal-info strong {
-
-      display: block;
-
-      color: #1f2937;
-
-      margin-bottom: 4px;
-
-    }
-
-
-    .transaction-info small,
-    .withdrawal-info small {
-
-      color: #6b7280;
-
-      line-height: 1.5;
-
-    }
-
-
-    .transaction-right,
-    .withdrawal-right {
-
-      text-align: right;
-
-      flex-shrink: 0;
-
-    }
-
-
-    .transaction-amount,
-    .withdrawal-amount {
-
-      display: block;
-
-      font-weight: 800;
-
-      font-size: 16px;
-
-      color: #1f2937;
-
-      margin-bottom: 5px;
-
-    }
-
-
-    .amount-credit {
-
-      color: #16a34a;
-
-    }
-
-
-    .amount-debit {
-
-      color: #dc2626;
-
-    }
-
-
-    .status-badge {
-
-      display: inline-block;
-
-      padding: 5px 10px;
-
-      border-radius: 20px;
-
-      font-size: 12px;
-
-      font-weight: 700;
-
-      text-transform: capitalize;
-
-    }
-
-
-    .status-pending {
-
-      background: #fff7ed;
-
-      color: #c2410c;
-
-    }
-
-
-    .status-completed {
-
-      background: #ecfdf3;
-
-      color: #15803d;
-
-    }
-
-
-    .status-approved {
-
-      background: #eff6ff;
-
-      color: #2563eb;
-
-    }
-
-
-    .status-paid {
-
-      background: #ecfdf3;
-
-      color: #15803d;
-
-    }
-
-
-    .status-processing {
-
-      background: #eff6ff;
-
-      color: #2563eb;
-
-    }
-
-
-    .status-rejected,
-    .status-failed {
-
-      background: #fff1f2;
-
-      color: #dc2626;
-
-    }
-
-
-    .wallet-error {
-
-      padding: 15px;
-
-      margin-bottom: 20px;
-
-      border-radius: 10px;
-
-      background: #fff5f5;
-
-      border: 1px solid #fecaca;
-
-      color: #991b1b;
-
-    }
-
-
-    @media (max-width: 600px) {
-
-
-      .wallet-transaction,
-      .wallet-withdrawal {
-
-        align-items: flex-start;
-
-      }
-
-
-      .transaction-right,
-      .withdrawal-right {
-
-        font-size: 13px;
-
-      }
-
-
-    }
-
-
-  </style>
-
 </head>
 
 
@@ -307,9 +29,7 @@
 
 <header>
 
-
   <div class="container nav">
-
 
     <a
       class="logo"
@@ -334,9 +54,7 @@
 
     </a>
 
-
   </div>
-
 
 </header>
 
@@ -353,19 +71,7 @@
 
 
     <!-- =====================================
-         ERROR MESSAGE
-    ====================================== -->
-
-    <div
-      id="walletError"
-      class="wallet-error"
-      style="display:none;"
-    ></div>
-
-
-
-    <!-- =====================================
-         HEADING
+         PAGE HEADER
     ====================================== -->
 
     <div class="dashboard-heading">
@@ -375,22 +81,29 @@
 
 
         <span class="eyebrow">
+
           MY WALLET
+
         </span>
 
 
         <h1>
+
           Your Earnings
+
         </h1>
 
 
         <p>
+
           View your available balance, earnings and
           withdrawal activity.
+
         </p>
 
 
       </div>
+
 
 
       <div>
@@ -434,7 +147,9 @@
 
 
         <small>
+
           Available Balance
+
         </small>
 
 
@@ -447,8 +162,7 @@
 
         <p>
 
-          Minimum withdrawal:
-          ₦15,000
+          Minimum withdrawal: ₦15,000
 
         </p>
 
@@ -490,7 +204,9 @@
 
 
         <small>
+
           Total Earned
+
         </small>
 
 
@@ -511,7 +227,9 @@
 
 
         <small>
+
           Total Withdrawn
+
         </small>
 
 
@@ -526,13 +244,15 @@
 
 
 
-      <!-- PENDING WITHDRAWALS -->
+      <!-- PENDING -->
 
       <div class="dashboard-stat">
 
 
         <small>
+
           Pending Withdrawals
+
         </small>
 
 
@@ -547,17 +267,19 @@
 
 
 
-      <!-- REFERRAL EARNINGS -->
+      <!-- REFERRALS -->
 
       <div class="dashboard-stat">
 
 
         <small>
+
           Referral Earnings
+
         </small>
 
 
-        <strong id="referralEarnings">
+        <strong id="referralEarned">
 
           ₦0
 
@@ -592,7 +314,9 @@
 
 
           <h2>
+
             Where your earnings came from
+
           </h2>
 
 
@@ -606,13 +330,13 @@
       <div class="earning-box">
 
 
-        <!-- TASKS -->
-
         <div>
 
 
           <small>
+
             Tasks
+
           </small>
 
 
@@ -627,13 +351,13 @@
 
 
 
-        <!-- READ & EARN -->
-
         <div>
 
 
           <small>
+
             Read & Earn
+
           </small>
 
 
@@ -648,13 +372,13 @@
 
 
 
-        <!-- WATCH & EARN -->
-
         <div>
 
 
           <small>
+
             Watch & Earn
+
           </small>
 
 
@@ -669,17 +393,17 @@
 
 
 
-        <!-- REFERRALS -->
-
         <div>
 
 
           <small>
+
             Referrals
+
           </small>
 
 
-          <strong id="referralEarningsSource">
+          <strong id="referralEarnings">
 
             ₦0
 
@@ -712,18 +436,16 @@
 
       <p>
 
-        You must have at least ₦15,000 available
-        in your wallet before you can submit a
-        withdrawal request.
+        You must have at least ₦15,000 available in your
+        wallet before you can submit a withdrawal request.
 
       </p>
 
 
       <p>
 
-        Withdrawal requests are reviewed and
-        processed according to EarnGig's
-        payment procedures.
+        Withdrawal requests are reviewed and processed
+        according to EarnGig's payment procedures.
 
       </p>
 
@@ -753,7 +475,9 @@
 
 
           <h2>
+
             Recent wallet activity
+
           </h2>
 
 
@@ -774,56 +498,29 @@
 
 
 
-      <!-- LOADING -->
-
       <div
-        id="transactionsLoading"
-        class="wallet-loading"
-      >
-
-        Loading transactions...
-
-      </div>
-
-
-
-      <!-- TRANSACTIONS -->
-
-      <div
-        id="transactionsList"
-        class="transaction-list"
-        style="display:none;"
-      ></div>
-
-
-
-      <!-- EMPTY STATE -->
-
-      <div
-        id="transactionsEmpty"
-        class="empty-state"
-        style="display:none;"
+        id="transactionsContainer"
       >
 
 
-        <div class="empty-icon">
+        <div class="empty-state">
 
-          ₦
+
+          <div class="empty-icon">
+
+            ₦
+
+          </div>
+
+
+          <h3>
+
+            Loading transactions...
+
+          </h3>
+
 
         </div>
-
-
-        <h3>
-          No transactions yet
-        </h3>
-
-
-        <p>
-
-          Your approved earnings and wallet
-          transactions will appear here.
-
-        </p>
 
 
       </div>
@@ -834,7 +531,7 @@
 
 
     <!-- =====================================
-         WITHDRAWAL HISTORY
+         WITHDRAWALS
     ====================================== -->
 
     <section class="dashboard-section">
@@ -854,11 +551,14 @@
 
 
           <h2>
+
             Withdrawal history
+
           </h2>
 
 
         </div>
+
 
 
         <a
@@ -875,56 +575,29 @@
 
 
 
-      <!-- LOADING -->
-
       <div
-        id="withdrawalsLoading"
-        class="wallet-loading"
-      >
-
-        Loading withdrawals...
-
-      </div>
-
-
-
-      <!-- WITHDRAWALS -->
-
-      <div
-        id="withdrawalsList"
-        class="withdrawal-list"
-        style="display:none;"
-      ></div>
-
-
-
-      <!-- EMPTY -->
-
-      <div
-        id="withdrawalsEmpty"
-        class="empty-state"
-        style="display:none;"
+        id="withdrawalsContainer"
       >
 
 
-        <div class="empty-icon">
+        <div class="empty-state">
 
-          ↑
+
+          <div class="empty-icon">
+
+            ↑
+
+          </div>
+
+
+          <h3>
+
+            Loading withdrawals...
+
+          </h3>
+
 
         </div>
-
-
-        <h3>
-          No withdrawals yet
-        </h3>
-
-
-        <p>
-
-          Your withdrawal requests and their
-          processing status will appear here.
-
-        </p>
 
 
       </div>
@@ -962,10 +635,7 @@
      SUPABASE
 ========================================= -->
 
-<script
-  src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
-></script>
-
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script src="supabase.js"></script>
 
@@ -978,16 +648,9 @@
 <script>
 
 
-/* ==========================================
-   CONSTANTS
-========================================== */
-
-const MINIMUM_WITHDRAWAL = 15000;
-
-
-/* ==========================================
+/* =========================================
    DOM ELEMENTS
-========================================== */
+========================================= */
 
 const availableBalanceElement =
   document.getElementById(
@@ -1013,9 +676,9 @@ const pendingWithdrawalsElement =
   );
 
 
-const referralEarningsElement =
+const referralEarnedElement =
   document.getElementById(
-    "referralEarnings"
+    "referralEarned"
   );
 
 
@@ -1037,57 +700,28 @@ const watchEarningsElement =
   );
 
 
-const referralEarningsSourceElement =
+const referralEarningsElement =
   document.getElementById(
-    "referralEarningsSource"
+    "referralEarnings"
   );
 
 
-const transactionsLoading =
+const transactionsContainer =
   document.getElementById(
-    "transactionsLoading"
+    "transactionsContainer"
   );
 
 
-const transactionsList =
+const withdrawalsContainer =
   document.getElementById(
-    "transactionsList"
+    "withdrawalsContainer"
   );
 
 
-const transactionsEmpty =
-  document.getElementById(
-    "transactionsEmpty"
-  );
 
-
-const withdrawalsLoading =
-  document.getElementById(
-    "withdrawalsLoading"
-  );
-
-
-const withdrawalsList =
-  document.getElementById(
-    "withdrawalsList"
-  );
-
-
-const withdrawalsEmpty =
-  document.getElementById(
-    "withdrawalsEmpty"
-  );
-
-
-const walletError =
-  document.getElementById(
-    "walletError"
-  );
-
-
-/* ==========================================
+/* =========================================
    FORMAT NAIRA
-========================================== */
+========================================= */
 
 function formatNaira(
   amount
@@ -1096,58 +730,6 @@ function formatNaira(
 
   const value =
     Number(amount ?? 0);
-
-
-  if (
-    !Number.isFinite(value)
-  ) {
-
-    return "₦0.00";
-
-  }
-
-
-  return (
-
-    "₦" +
-
-    value.toLocaleString(
-      "en-NG",
-      {
-
-        minimumFractionDigits: 2,
-
-        maximumFractionDigits: 2
-
-      }
-    )
-
-  );
-
-
-}
-
-
-/* ==========================================
-   FORMAT NAIRA WITHOUT DECIMALS
-========================================== */
-
-function formatNairaSimple(
-  amount
-) {
-
-
-  const value =
-    Number(amount ?? 0);
-
-
-  if (
-    !Number.isFinite(value)
-  ) {
-
-    return "₦0";
-
-  }
 
 
   return (
@@ -1171,82 +753,61 @@ function formatNairaSimple(
 }
 
 
-/* ==========================================
+
+/* =========================================
    FORMAT DATE
-========================================== */
+========================================= */
 
 function formatDate(
-  dateValue
+  date
 ) {
 
 
-  if (!dateValue) {
+  if (!date) {
 
     return "";
 
   }
 
 
-  const date =
-    new Date(dateValue);
+  try {
 
 
-  if (
-    Number.isNaN(
-      date.getTime()
-    )
-  ) {
+    return new Date(
+      date
+    ).toLocaleDateString(
+      "en-NG",
+      {
+
+        day: "numeric",
+
+        month: "short",
+
+        year: "numeric"
+
+      }
+    );
+
+
+  }
+
+  catch (error) {
+
 
     return "";
 
   }
 
 
-  return date.toLocaleDateString(
-    "en-NG",
-    {
-
-      day:
-        "numeric",
-
-      month:
-        "short",
-
-      year:
-        "numeric"
-
-    }
-  );
-
-
 }
 
 
-/* ==========================================
-   SHOW ERROR
-========================================== */
 
-function showError(
-  message
-) {
-
-
-  walletError.textContent =
-    message;
-
-
-  walletError.style.display =
-    "block";
-
-
-}
-
-
-/* ==========================================
+/* =========================================
    ESCAPE HTML
-========================================== */
+========================================= */
 
-function escapeHTML(
+function escapeHtml(
   value
 ) {
 
@@ -1258,7 +819,7 @@ function escapeHTML(
 
 
   div.textContent =
-    String(value ?? "");
+    value ?? "";
 
 
   return div.innerHTML;
@@ -1267,207 +828,24 @@ function escapeHTML(
 }
 
 
-/* ==========================================
-   GET STATUS CLASS
-========================================== */
 
-function getStatusClass(
-  status
-) {
-
-
-  const value =
-    String(
-      status || ""
-    )
-    .toLowerCase();
-
-
-  if (
-    value === "completed"
-  ) {
-
-    return "status-completed";
-
-  }
-
-
-  if (
-    value === "paid"
-  ) {
-
-    return "status-paid";
-
-  }
-
-
-  if (
-    value === "approved"
-  ) {
-
-    return "status-approved";
-
-  }
-
-
-  if (
-    value === "processing"
-  ) {
-
-    return "status-processing";
-
-  }
-
-
-  if (
-    value === "failed"
-  ) {
-
-    return "status-failed";
-
-  }
-
-
-  if (
-    value === "rejected"
-  ) {
-
-    return "status-rejected";
-
-  }
-
-
-  return "status-pending";
-
-
-}
-
-
-/* ==========================================
-   GET TRANSACTION ICON
-========================================== */
-
-function getTransactionIcon(
-  type
-) {
-
-
-  const value =
-    String(
-      type || ""
-    )
-    .toLowerCase();
-
-
-  if (
-    value.includes("withdraw")
-  ) {
-
-    return "↑";
-
-  }
-
-
-  if (
-    value.includes("refer")
-  ) {
-
-    return "★";
-
-  }
-
-
-  if (
-    value.includes("task")
-  ) {
-
-    return "✓";
-
-  }
-
-
-  if (
-    value.includes("read")
-  ) {
-
-    return "📖";
-
-  }
-
-
-  if (
-    value.includes("watch")
-  ) {
-
-    return "▶";
-
-  }
-
-
-  return "₦";
-
-
-}
-
-
-/* ==========================================
-   GET TRANSACTION TITLE
-========================================== */
-
-function getTransactionTitle(
-  transaction
-) {
-
-
-  if (
-    transaction.description
-  ) {
-
-    return transaction.description;
-
-  }
-
-
-  if (
-    transaction.type
-  ) {
-
-    return String(
-      transaction.type
-    )
-      .replace(
-        /_/g,
-        " "
-      )
-      .replace(
-        /\b\w/g,
-        function(letter) {
-
-          return letter.toUpperCase();
-
-        }
-      );
-
-  }
-
-
-  return "Wallet Transaction";
-
-
-}
-
-
-/* ==========================================
+/* =========================================
    GET CURRENT USER
-========================================== */
+========================================= */
 
 async function getCurrentUser() {
 
 
   const {
-    data,
+
+    data: {
+      user
+    },
+
     error
+
   } =
+
     await supabaseClient
       .auth
       .getUser();
@@ -1475,8 +853,9 @@ async function getCurrentUser() {
 
   if (
     error ||
-    !data.user
+    !user
   ) {
+
 
     window.location.href =
       "login.html";
@@ -1487,850 +866,125 @@ async function getCurrentUser() {
   }
 
 
-  return data.user;
+  return user;
 
 
 }
 
 
-/* ==========================================
+
+/* =========================================
    LOAD WALLET
-========================================== */
+========================================= */
 
 async function loadWallet(
-  userId
+  user
 ) {
-
-
-  const {
-    data: wallet,
-    error
-  } =
-    await supabaseClient
-      .from("wallets")
-      .select(
-        `
-        balance,
-        total_earned,
-        referral_earned
-        `
-      )
-      .eq(
-        "user_id",
-        userId
-      )
-      .maybeSingle();
-
-
-  if (error) {
-
-    console.error(
-      "Wallet error:",
-      error
-    );
-
-
-    throw error;
-
-  }
-
-
-  /*
-   * If the wallet does not exist,
-   * display zero values.
-   */
-
-  const balance =
-    Number(
-      wallet?.balance ?? 0
-    );
-
-
-  const totalEarned =
-    Number(
-      wallet?.total_earned ?? 0
-    );
-
-
-  const referralEarned =
-    Number(
-      wallet?.referral_earned ?? 0
-    );
-
-
-  availableBalanceElement.textContent =
-    formatNaira(balance);
-
-
-  totalEarnedElement.textContent =
-    formatNairaSimple(
-      totalEarned
-    );
-
-
-  referralEarningsElement.textContent =
-    formatNairaSimple(
-      referralEarned
-    );
-
-
-  referralEarningsSourceElement.textContent =
-    formatNairaSimple(
-      referralEarned
-    );
-
-
-}
-
-
-/* ==========================================
-   LOAD TRANSACTIONS
-========================================== */
-
-async function loadTransactions(
-  userId
-) {
-
-
-  const {
-    data: transactions,
-    error
-  } =
-    await supabaseClient
-      .from("transactions")
-      .select(
-        `
-        id,
-        type,
-        amount,
-        status,
-        description,
-        reference,
-        created_at,
-        processed_at
-        `
-      )
-      .eq(
-        "user_id",
-        userId
-      )
-      .order(
-        "created_at",
-        {
-
-          ascending:
-            false
-
-        }
-      );
-
-
-  if (error) {
-
-    console.error(
-      "Transactions error:",
-      error
-    );
-
-
-    throw error;
-
-  }
-
-
-  /*
-   * Calculate earning sources.
-   */
-
-  let taskTotal = 0;
-
-  let readTotal = 0;
-
-  let watchTotal = 0;
-
-  let referralTotal = 0;
-
-
-  (
-    transactions || []
-  )
-  .forEach(
-    function(transaction) {
-
-
-      const type =
-        String(
-          transaction.type || ""
-        )
-        .toLowerCase();
-
-
-      const amount =
-        Number(
-          transaction.amount ?? 0
-        );
-
-
-      /*
-       * Only count positive
-       * transaction amounts.
-       */
-
-      if (
-        amount <= 0
-      ) {
-
-        return;
-
-      }
-
-
-      if (
-        type.includes("task")
-      ) {
-
-        taskTotal += amount;
-
-      }
-
-
-      else if (
-        type.includes("read")
-      ) {
-
-        readTotal += amount;
-
-      }
-
-
-      else if (
-        type.includes("watch")
-      ) {
-
-        watchTotal += amount;
-
-      }
-
-
-      else if (
-        type.includes("refer")
-      ) {
-
-        referralTotal += amount;
-
-      }
-
-
-    }
-  );
-
-
-  taskEarningsElement.textContent =
-    formatNairaSimple(
-      taskTotal
-    );
-
-
-  readEarningsElement.textContent =
-    formatNairaSimple(
-      readTotal
-    );
-
-
-  watchEarningsElement.textContent =
-    formatNairaSimple(
-      watchTotal
-    );
-
-
-  /*
-   * If referral transactions exist,
-   * use them for the earnings source.
-   *
-   * Otherwise the wallet value remains.
-   */
-
-  if (
-    referralTotal > 0
-  ) {
-
-    referralEarningsSourceElement.textContent =
-      formatNairaSimple(
-        referralTotal
-      );
-
-  }
-
-
-  /*
-   * Hide loading.
-   */
-
-  transactionsLoading.style.display =
-    "none";
-
-
-  /*
-   * No transactions.
-   */
-
-  if (
-    !transactions ||
-    transactions.length === 0
-  ) {
-
-    transactionsEmpty.style.display =
-      "block";
-
-
-    return;
-
-  }
-
-
-  /*
-   * Show only the latest
-   * 5 transactions.
-   */
-
-  const recentTransactions =
-    transactions.slice(
-      0,
-      5
-    );
-
-
-  transactionsList.innerHTML =
-    "";
-
-
-  recentTransactions.forEach(
-    function(transaction) {
-
-
-      const amount =
-        Number(
-          transaction.amount ?? 0
-        );
-
-
-      const type =
-        String(
-          transaction.type || ""
-        )
-        .toLowerCase();
-
-
-      /*
-       * Detect debit transactions.
-       */
-
-      const isDebit =
-        type.includes("withdraw") ||
-        amount < 0;
-
-
-      const amountClass =
-        isDebit
-          ? "amount-debit"
-          : "amount-credit";
-
-
-      const amountPrefix =
-        isDebit
-          ? "-"
-          : "+";
-
-
-      const transactionDate =
-        formatDate(
-          transaction.created_at
-        );
-
-
-      const title =
-        getTransactionTitle(
-          transaction
-        );
-
-
-      const status =
-        transaction.status ||
-        "completed";
-
-
-      const item =
-        document.createElement(
-          "div"
-        );
-
-
-      item.className =
-        "wallet-transaction";
-
-
-      item.innerHTML =
-
-        `
-        <div class="transaction-left">
-
-          <div class="transaction-icon">
-
-            ${getTransactionIcon(
-              transaction.type
-            )}
-
-          </div>
-
-
-          <div class="transaction-info">
-
-            <strong>
-
-              ${escapeHTML(
-                title
-              )}
-
-            </strong>
-
-
-            <small>
-
-              ${escapeHTML(
-                transactionDate
-              )}
-
-            </small>
-
-          </div>
-
-        </div>
-
-
-        <div class="transaction-right">
-
-          <span
-            class="
-              transaction-amount
-              ${amountClass}
-            "
-          >
-
-            ${amountPrefix}
-            ${formatNaira(
-              Math.abs(amount)
-            )}
-
-          </span>
-
-
-          <span
-            class="
-              status-badge
-              ${getStatusClass(
-                status
-              )}
-            "
-          >
-
-            ${escapeHTML(
-              status
-            )}
-
-          </span>
-
-        </div>
-        `;
-
-
-      transactionsList.appendChild(
-        item
-      );
-
-
-    }
-  );
-
-
-  transactionsList.style.display =
-    "flex";
-
-
-}
-
-
-/* ==========================================
-   LOAD WITHDRAWALS
-========================================== */
-
-async function loadWithdrawals(
-  userId
-) {
-
-
-  const {
-    data: withdrawals,
-    error
-  } =
-    await supabaseClient
-      .from("withdrawals")
-      .select(
-        `
-        id,
-        amount,
-        fee,
-        net_amount,
-        bank_name,
-        account_number,
-        account_name,
-        status,
-        requested_at,
-        processed_at
-        `
-      )
-      .eq(
-        "user_id",
-        userId
-      )
-      .order(
-        "requested_at",
-        {
-
-          ascending:
-            false
-
-        }
-      );
-
-
-  if (error) {
-
-    console.error(
-      "Withdrawals error:",
-      error
-    );
-
-
-    throw error;
-
-  }
-
-
-  /*
-   * Calculate withdrawal totals.
-   */
-
-  let totalWithdrawn = 0;
-
-  let pendingTotal = 0;
-
-
-  (
-    withdrawals || []
-  )
-  .forEach(
-    function(withdrawal) {
-
-
-      const amount =
-        Number(
-          withdrawal.amount ?? 0
-        );
-
-
-      const status =
-        String(
-          withdrawal.status || ""
-        )
-        .toLowerCase();
-
-
-      /*
-       * Successful withdrawals.
-       */
-
-      if (
-
-        status === "completed" ||
-
-        status === "paid" ||
-
-        status === "processed"
-
-      ) {
-
-        totalWithdrawn += amount;
-
-      }
-
-
-      /*
-       * Pending withdrawals.
-       */
-
-      if (
-
-        status === "pending" ||
-
-        status === "processing" ||
-
-        status === "approved"
-
-      ) {
-
-        pendingTotal += amount;
-
-      }
-
-
-    }
-  );
-
-
-  totalWithdrawnElement.textContent =
-    formatNairaSimple(
-      totalWithdrawn
-    );
-
-
-  pendingWithdrawalsElement.textContent =
-    formatNairaSimple(
-      pendingTotal
-    );
-
-
-  withdrawalsLoading.style.display =
-    "none";
-
-
-  /*
-   * No withdrawals.
-   */
-
-  if (
-    !withdrawals ||
-    withdrawals.length === 0
-  ) {
-
-    withdrawalsEmpty.style.display =
-      "block";
-
-
-    return;
-
-  }
-
-
-  /*
-   * Show the latest 5 withdrawals.
-   */
-
-  const recentWithdrawals =
-    withdrawals.slice(
-      0,
-      5
-    );
-
-
-  withdrawalsList.innerHTML =
-    "";
-
-
-  recentWithdrawals.forEach(
-    function(withdrawal) {
-
-
-      const amount =
-        Number(
-          withdrawal.amount ?? 0
-        );
-
-
-      const status =
-        withdrawal.status ||
-        "pending";
-
-
-      const date =
-        formatDate(
-          withdrawal.requested_at
-        );
-
-
-      const bankName =
-        withdrawal.bank_name ||
-        "Bank Account";
-
-
-      const item =
-        document.createElement(
-          "div"
-        );
-
-
-      item.className =
-        "wallet-withdrawal";
-
-
-      item.innerHTML =
-
-        `
-        <div class="withdrawal-left">
-
-          <div class="withdrawal-icon">
-
-            ↑
-
-          </div>
-
-
-          <div class="withdrawal-info">
-
-            <strong>
-
-              ${escapeHTML(
-                bankName
-              )}
-
-            </strong>
-
-
-            <small>
-
-              Withdrawal request
-              •
-              ${escapeHTML(
-                date
-              )}
-
-            </small>
-
-          </div>
-
-        </div>
-
-
-        <div class="withdrawal-right">
-
-          <span class="withdrawal-amount">
-
-            ${formatNaira(
-              amount
-            )}
-
-          </span>
-
-
-          <span
-            class="
-              status-badge
-              ${getStatusClass(
-                status
-              )}
-            "
-          >
-
-            ${escapeHTML(
-              status
-            )}
-
-          </span>
-
-        </div>
-        `;
-
-
-      withdrawalsList.appendChild(
-        item
-      );
-
-
-    }
-  );
-
-
-  withdrawalsList.style.display =
-    "flex";
-
-
-}
-
-
-/* ==========================================
-   LOAD WALLET PAGE
-========================================== */
-
-async function loadWalletPage() {
 
 
   try {
 
 
-    /*
-     * Get logged-in user.
-     */
+    const {
 
-    const user =
-      await getCurrentUser();
+      data: wallet,
+
+      error
+
+    } =
+
+      await supabaseClient
+
+        .from("wallets")
+
+        .select(
+          `
+          balance,
+          total_earned,
+          referral_earned
+          `
+        )
+
+        .eq(
+          "user_id",
+          user.id
+        )
+
+        .maybeSingle();
 
 
-    if (!user) {
+
+    if (error) {
+
+
+      console.error(
+        "Wallet error:",
+        error
+      );
+
 
       return;
 
     }
 
 
-    /*
-     * Load everything.
-     */
 
-    await Promise.all([
+    const balance =
+      Number(
+        wallet?.balance ?? 0
+      );
 
-      loadWallet(
-        user.id
-      ),
 
-      loadTransactions(
-        user.id
-      ),
+    const totalEarned =
+      Number(
+        wallet?.total_earned ?? 0
+      );
 
-      loadWithdrawals(
-        user.id
-      )
 
-    ]);
+    const referralEarned =
+      Number(
+        wallet?.referral_earned ?? 0
+      );
+
+
+
+    availableBalanceElement.textContent =
+
+      formatNaira(
+        balance
+      );
+
+
+    totalEarnedElement.textContent =
+
+      formatNaira(
+        totalEarned
+      );
+
+
+    referralEarnedElement.textContent =
+
+      formatNaira(
+        referralEarned
+      );
+
+
+    referralEarningsElement.textContent =
+
+      formatNaira(
+        referralEarned
+      );
 
 
   }
-
 
   catch (error) {
 
 
     console.error(
-      "Wallet loading error:",
+      "Unable to load wallet:",
       error
     );
-
-
-    transactionsLoading.style.display =
-      "none";
-
-
-    withdrawalsLoading.style.display =
-      "none";
-
-
-    const message =
-      error.message ||
-      "Unable to load your wallet information.";
-
-
-    showError(
-      message
-    );
-
 
   }
 
@@ -2338,11 +992,720 @@ async function loadWalletPage() {
 }
 
 
-/* ==========================================
-   START
-========================================== */
 
-loadWalletPage();
+/* =========================================
+   LOAD WITHDRAWALS
+========================================= */
+
+async function loadWithdrawals(
+  user
+) {
+
+
+  try {
+
+
+    const {
+
+      data: withdrawals,
+
+      error
+
+    } =
+
+      await supabaseClient
+
+        .from("withdrawals")
+
+        .select(
+          `
+          id,
+          amount,
+          fee,
+          net_amount,
+          bank_name,
+          account_name,
+          status,
+          requested_at,
+          processed_at
+          `
+        )
+
+        .eq(
+          "user_id",
+          user.id
+        )
+
+        .order(
+          "requested_at",
+          {
+
+            ascending:
+              false
+
+          }
+        );
+
+
+    if (error) {
+
+
+      console.error(
+        "Withdrawal loading error:",
+        error
+      );
+
+
+      return;
+
+    }
+
+
+
+    const withdrawalList =
+      withdrawals || [];
+
+
+
+    /* ===============================
+       TOTAL WITHDRAWN
+    =============================== */
+
+    const totalWithdrawn =
+
+      withdrawalList
+
+        .filter(
+
+          withdrawal =>
+
+            withdrawal.status ===
+              "completed" ||
+
+            withdrawal.status ===
+              "processed"
+
+        )
+
+        .reduce(
+
+          (
+            total,
+            withdrawal
+          ) =>
+
+            total +
+
+            Number(
+              withdrawal.amount ?? 0
+            ),
+
+          0
+
+        );
+
+
+
+    /* ===============================
+       PENDING WITHDRAWALS
+    =============================== */
+
+    const pendingAmount =
+
+      withdrawalList
+
+        .filter(
+
+          withdrawal =>
+
+            withdrawal.status ===
+              "pending"
+
+        )
+
+        .reduce(
+
+          (
+            total,
+            withdrawal
+          ) =>
+
+            total +
+
+            Number(
+              withdrawal.amount ?? 0
+            ),
+
+          0
+
+        );
+
+
+
+    totalWithdrawnElement.textContent =
+
+      formatNaira(
+        totalWithdrawn
+      );
+
+
+    pendingWithdrawalsElement.textContent =
+
+      formatNaira(
+        pendingAmount
+      );
+
+
+
+    /* ===============================
+       EMPTY STATE
+    =============================== */
+
+    if (
+      withdrawalList.length === 0
+    ) {
+
+
+      withdrawalsContainer.innerHTML =
+
+        `
+
+        <div class="empty-state">
+
+          <div class="empty-icon">
+            ↑
+          </div>
+
+          <h3>
+            No withdrawals yet
+          </h3>
+
+          <p>
+            Your withdrawal requests and their
+            processing status will appear here.
+          </p>
+
+        </div>
+
+        `;
+
+
+      return;
+
+    }
+
+
+
+    /* ===============================
+       SHOW RECENT WITHDRAWALS
+    =============================== */
+
+    const recentWithdrawals =
+
+      withdrawalList.slice(
+        0,
+        5
+      );
+
+
+
+    withdrawalsContainer.innerHTML =
+
+      recentWithdrawals
+
+        .map(
+
+          withdrawal => {
+
+            const status =
+              withdrawal.status ||
+              "pending";
+
+
+            return `
+
+              <div class="transaction-item">
+
+                <div>
+
+                  <strong>
+                    Withdrawal Request
+                  </strong>
+
+                  <small>
+
+                    ${escapeHtml(
+                      withdrawal.bank_name ||
+                      "Bank withdrawal"
+                    )}
+
+                    •
+
+                    ${formatDate(
+                      withdrawal.requested_at
+                    )}
+
+                  </small>
+
+                </div>
+
+
+                <div>
+
+                  <strong>
+
+                    ${formatNaira(
+                      withdrawal.amount
+                    )}
+
+                  </strong>
+
+
+                  <small>
+
+                    ${escapeHtml(
+                      status
+                    )}
+
+                  </small>
+
+                </div>
+
+              </div>
+
+            `;
+
+          }
+
+        )
+
+        .join("");
+
+
+  }
+
+  catch (error) {
+
+
+    console.error(
+      "Unable to load withdrawals:",
+      error
+    );
+
+  }
+
+
+}
+
+
+
+/* =========================================
+   LOAD TRANSACTIONS
+========================================= */
+
+async function loadTransactions(
+  user
+) {
+
+
+  try {
+
+
+    const {
+
+      data: transactions,
+
+      error
+
+    } =
+
+      await supabaseClient
+
+        .from("transactions")
+
+        .select(
+          `
+          id,
+          type,
+          amount,
+          status,
+          description,
+          reference,
+          metadata,
+          balance_after,
+          processed_at,
+          created_at
+          `
+        )
+
+        .eq(
+          "user_id",
+          user.id
+        )
+
+        .order(
+          "created_at",
+          {
+
+            ascending:
+              false
+
+          }
+        );
+
+
+    if (error) {
+
+
+      console.error(
+        "Transaction loading error:",
+        error
+      );
+
+
+      return;
+
+    }
+
+
+
+    const transactionList =
+      transactions || [];
+
+
+
+    /* ===============================
+       EARNING TOTALS
+    =============================== */
+
+    let taskEarnings = 0;
+
+    let readEarnings = 0;
+
+    let watchEarnings = 0;
+
+
+
+    transactionList.forEach(
+      transaction => {
+
+
+        const amount =
+          Number(
+            transaction.amount ?? 0
+          );
+
+
+        const type =
+          String(
+            transaction.type ?? ""
+          ).toLowerCase();
+
+
+        const description =
+          String(
+            transaction.description ?? ""
+          ).toLowerCase();
+
+
+
+        /* ===========================
+           TASK EARNINGS
+        ============================ */
+
+        if (
+
+          type.includes("task") ||
+
+          description.includes("task")
+
+        ) {
+
+
+          taskEarnings +=
+            amount;
+
+
+        }
+
+
+
+        /* ===========================
+           READ & EARN
+        ============================ */
+
+        else if (
+
+          type.includes("read") ||
+
+          description.includes("read")
+
+        ) {
+
+
+          readEarnings +=
+            amount;
+
+
+        }
+
+
+
+        /* ===========================
+           WATCH & EARN
+        ============================ */
+
+        else if (
+
+          type.includes("watch") ||
+
+          description.includes("watch")
+
+        ) {
+
+
+          watchEarnings +=
+            amount;
+
+
+        }
+
+
+      }
+
+    );
+
+
+
+    taskEarningsElement.textContent =
+
+      formatNaira(
+        taskEarnings
+      );
+
+
+    readEarningsElement.textContent =
+
+      formatNaira(
+        readEarnings
+      );
+
+
+    watchEarningsElement.textContent =
+
+      formatNaira(
+        watchEarnings
+      );
+
+
+
+    /* ===============================
+       EMPTY STATE
+    =============================== */
+
+    if (
+      transactionList.length === 0
+    ) {
+
+
+      transactionsContainer.innerHTML =
+
+        `
+
+        <div class="empty-state">
+
+          <div class="empty-icon">
+            ₦
+          </div>
+
+          <h3>
+            No transactions yet
+          </h3>
+
+          <p>
+            Your approved earnings and wallet
+            transactions will appear here.
+          </p>
+
+        </div>
+
+        `;
+
+
+      return;
+
+    }
+
+
+
+    /* ===============================
+       SHOW RECENT TRANSACTIONS
+    =============================== */
+
+    const recentTransactions =
+
+      transactionList.slice(
+        0,
+        5
+      );
+
+
+
+    transactionsContainer.innerHTML =
+
+      recentTransactions
+
+        .map(
+
+          transaction => {
+
+
+            const description =
+
+              transaction.description ||
+
+              transaction.type ||
+
+              "Wallet transaction";
+
+
+
+            const date =
+
+              transaction.created_at ||
+
+              transaction.processed_at;
+
+
+
+            return `
+
+              <div class="transaction-item">
+
+                <div>
+
+                  <strong>
+
+                    ${escapeHtml(
+                      description
+                    )}
+
+                  </strong>
+
+
+                  <small>
+
+                    ${formatDate(
+                      date
+                    )}
+
+                  </small>
+
+                </div>
+
+
+
+                <div>
+
+                  <strong>
+
+                    ${formatNaira(
+                      transaction.amount
+                    )}
+
+                  </strong>
+
+
+                  <small>
+
+                    ${escapeHtml(
+                      transaction.status ||
+                      ""
+                    )}
+
+                  </small>
+
+                </div>
+
+
+              </div>
+
+            `;
+
+
+          }
+
+        )
+
+        .join("");
+
+
+  }
+
+  catch (error) {
+
+
+    console.error(
+      "Unable to load transactions:",
+      error
+    );
+
+  }
+
+
+}
+
+
+
+/* =========================================
+   INITIALIZE WALLET
+========================================= */
+
+async function initializeWallet() {
+
+
+  const user =
+    await getCurrentUser();
+
+
+  if (!user) {
+
+    return;
+
+  }
+
+
+
+  await Promise.all(
+
+    [
+
+      loadWallet(
+        user
+      ),
+
+      loadTransactions(
+        user
+      ),
+
+      loadWithdrawals(
+        user
+      )
+
+    ]
+
+  );
+
+
+}
+
+
+
+/* =========================================
+   START
+========================================= */
+
+initializeWallet();
 
 
 </script>
