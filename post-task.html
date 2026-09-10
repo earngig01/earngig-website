@@ -17,7 +17,7 @@
 
   <link
     rel="stylesheet"
-    href="styles.css?v=2"
+    href="styles.css?v=3"
   >
 
 
@@ -502,36 +502,25 @@
 
     @media (max-width: 650px) {
 
-
       .post-task-card {
-
         padding: 20px;
-
       }
 
 
       .task-form-grid {
-
         grid-template-columns: 1fr;
-
         gap: 0;
-
       }
 
 
       .payment-summary-header {
-
         align-items: flex-start;
-
         flex-direction: column;
-
       }
 
 
       .payment-row.total strong {
-
         font-size: 21px;
-
       }
 
     }
@@ -599,10 +588,6 @@
       <section class="post-task-card">
 
 
-        <!-- =====================================
-             HEADER
-        ====================================== -->
-
         <div class="post-task-header">
 
 
@@ -637,9 +622,7 @@
         <form id="postTaskForm">
 
 
-          <!-- =====================================
-               TASK TITLE
-          ====================================== -->
+          <!-- TASK TITLE -->
 
           <div class="task-form-group">
 
@@ -662,9 +645,7 @@
 
 
 
-          <!-- =====================================
-               CATEGORY
-          ====================================== -->
+          <!-- CATEGORY -->
 
           <div class="task-form-group">
 
@@ -732,9 +713,7 @@
 
 
 
-          <!-- =====================================
-               TASK DESCRIPTION
-          ====================================== -->
+          <!-- DESCRIPTION -->
 
           <div class="task-form-group">
 
@@ -765,9 +744,7 @@
 
 
 
-          <!-- =====================================
-               TASK LINK
-          ====================================== -->
+          <!-- TASK LINK -->
 
           <div class="task-form-group">
 
@@ -796,14 +773,10 @@
 
 
 
-          <!-- =====================================
-               PARTICIPANTS + REWARD
-          ====================================== -->
+          <!-- PARTICIPANTS + REWARD -->
 
           <div class="task-form-grid">
 
-
-            <!-- PARTICIPANTS -->
 
             <div class="task-form-group">
 
@@ -834,8 +807,6 @@
             </div>
 
 
-
-            <!-- REWARD -->
 
             <div class="task-form-group">
 
@@ -872,9 +843,7 @@
 
 
 
-          <!-- =====================================
-               REQUIRE PROOF
-          ====================================== -->
+          <!-- REQUIRE PROOF -->
 
           <div class="proof-box">
 
@@ -916,9 +885,7 @@
 
 
 
-          <!-- =====================================
-               PAYMENT SUMMARY
-          ====================================== -->
+          <!-- PAYMENT SUMMARY -->
 
           <div class="payment-summary">
 
@@ -940,96 +907,71 @@
 
 
 
-            <!-- PARTICIPANTS -->
-
             <div class="payment-row">
-
 
               <span>
                 Participants
               </span>
 
-
               <strong id="summaryParticipants">
                 1
               </strong>
-
 
             </div>
 
 
 
-            <!-- REWARD -->
-
             <div class="payment-row">
-
 
               <span>
                 Reward per participant
               </span>
 
-
               <strong id="summaryReward">
                 ₦10
               </strong>
-
 
             </div>
 
 
 
-            <!-- REWARD BUDGET -->
-
             <div class="payment-row">
-
 
               <span>
                 Total reward budget
               </span>
 
-
               <strong id="summaryBudget">
                 ₦10
               </strong>
-
 
             </div>
 
 
 
-            <!-- PLATFORM FEE -->
-
             <div class="payment-row">
-
 
               <span>
                 EarnGig platform fee (20%)
               </span>
 
-
               <strong id="summaryFee">
                 ₦2
               </strong>
-
 
             </div>
 
 
 
-            <!-- TOTAL -->
-
             <div class="payment-row total">
-
 
               <span>
                 Total Payment
               </span>
 
-
               <strong id="summaryTotal">
                 ₦12
               </strong>
-
 
             </div>
 
@@ -1051,9 +993,7 @@
 
 
 
-          <!-- =====================================
-               SUBMIT BUTTON
-          ====================================== -->
+          <!-- SUBMIT -->
 
           <button
             type="submit"
@@ -1067,9 +1007,7 @@
 
 
 
-          <!-- =====================================
-               FORM MESSAGE
-          ====================================== -->
+          <!-- MESSAGE -->
 
           <div
             id="formMessage"
@@ -1081,9 +1019,7 @@
 
 
 
-        <!-- =====================================
-             TASK RULES
-        ====================================== -->
+        <!-- TASK RULES -->
 
         <div class="task-rules">
 
@@ -1095,45 +1031,37 @@
 
           <ul>
 
-
             <li>
               Your task must contain clear instructions.
             </li>
-
 
             <li>
               The minimum reward is ₦10 per participant.
             </li>
 
-
             <li>
               EarnGig charges a 20% platform fee.
             </li>
-
 
             <li>
               The total payment is deducted immediately
               when you submit your task.
             </li>
 
-
             <li>
               All submitted tasks must be approved
               before becoming available.
             </li>
-
 
             <li>
               If an administrator rejects your task,
               the deducted amount will be refunded.
             </li>
 
-
             <li>
               Fraudulent, misleading or prohibited
               tasks may be rejected.
             </li>
-
 
           </ul>
 
@@ -1160,13 +1088,11 @@
 
 <footer>
 
-
   <div class="container copy">
 
     © 2026 EarnGig. All rights reserved.
 
   </div>
-
 
 </footer>
 
@@ -1186,6 +1112,22 @@
 const PLATFORM_FEE_PERCENT = 20;
 
 const MINIMUM_REWARD = 10;
+
+
+/* =========================================
+   CHECK SUPABASE
+========================================= */
+
+if (
+  typeof supabaseClient === "undefined" ||
+  !supabaseClient
+) {
+
+  console.error(
+    "supabaseClient is not available. Check supabase.js."
+  );
+
+}
 
 
 /* =========================================
@@ -1281,11 +1223,8 @@ function formatNaira(amount) {
       "en-NG",
 
       {
-
         minimumFractionDigits: 0,
-
         maximumFractionDigits: 2
-
       }
 
     )
@@ -1297,10 +1236,78 @@ function formatNaira(amount) {
 
 
 /* =========================================
+   SHOW MESSAGE
+========================================= */
+
+function showMessage(
+  message,
+  type
+) {
+
+
+  formMessage.textContent =
+    message;
+
+
+  formMessage.className =
+    "form-message " + type;
+
+
+  formMessage.scrollIntoView({
+
+    behavior: "smooth",
+
+    block: "nearest"
+
+  });
+
+
+}
+
+
+/* =========================================
+   CLEAR MESSAGE
+========================================= */
+
+function clearMessage() {
+
+
+  formMessage.textContent =
+    "";
+
+
+  formMessage.className =
+    "form-message";
+
+
+}
+
+
+/* =========================================
    GET CURRENT USER
 ========================================= */
 
 async function getCurrentUser() {
+
+
+  if (
+    typeof supabaseClient === "undefined" ||
+    !supabaseClient
+  ) {
+
+
+    showMessage(
+
+      "Supabase is not configured correctly. Please check supabase.js.",
+
+      "error"
+
+    );
+
+
+    return null;
+
+  }
 
 
   try {
@@ -1319,11 +1326,7 @@ async function getCurrentUser() {
         .getUser();
 
 
-    if (
-      error ||
-      !data ||
-      !data.user
-    ) {
+    if (error) {
 
 
       console.error(
@@ -1332,8 +1335,15 @@ async function getCurrentUser() {
       );
 
 
-      window.location.href =
-        "login.html";
+      return null;
+
+    }
+
+
+    if (
+      !data ||
+      !data.user
+    ) {
 
 
       return null;
@@ -1353,10 +1363,6 @@ async function getCurrentUser() {
       "Unable to get current user:",
       error
     );
-
-
-    window.location.href =
-      "login.html";
 
 
     return null;
@@ -1429,6 +1435,12 @@ function calculateTaskPayment() {
   }
 
 
+  reward =
+    Math.round(
+      reward * 100
+    ) / 100;
+
+
   /* REWARD BUDGET */
 
   const rewardBudget =
@@ -1441,19 +1453,33 @@ function calculateTaskPayment() {
 
   const platformFee =
 
-    rewardBudget *
+    Math.round(
 
-    (
-      PLATFORM_FEE_PERCENT / 100
-    );
+      rewardBudget *
+
+      (
+        PLATFORM_FEE_PERCENT / 100
+      ) *
+
+      100
+
+    ) / 100;
 
 
   /* TOTAL PAYMENT */
 
   const totalPayment =
 
-    rewardBudget +
-    platformFee;
+    Math.round(
+
+      (
+        rewardBudget +
+        platformFee
+      ) *
+
+      100
+
+    ) / 100;
 
 
   return {
@@ -1561,7 +1587,6 @@ participantsInput.addEventListener(
 
 
     let participants =
-
       Number(
         participantsInput.value
       );
@@ -1625,7 +1650,6 @@ rewardInput.addEventListener(
 
 
     let reward =
-
       Number(
         rewardInput.value
       );
@@ -1667,47 +1691,6 @@ rewardInput.addEventListener(
   }
 
 );
-
-
-/* =========================================
-   SHOW MESSAGE
-========================================= */
-
-function showMessage(
-  message,
-  type
-) {
-
-
-  formMessage.textContent =
-    message;
-
-
-  formMessage.className =
-
-    "form-message " +
-    type;
-
-
-}
-
-
-/* =========================================
-   CLEAR MESSAGE
-========================================= */
-
-function clearMessage() {
-
-
-  formMessage.textContent =
-    "";
-
-
-  formMessage.className =
-    "form-message";
-
-
-}
 
 
 /* =========================================
@@ -1754,6 +1737,142 @@ function validateUrl(value) {
 
 
 /* =========================================
+   GET ERROR MESSAGE
+========================================= */
+
+function getErrorMessage(error) {
+
+
+  if (!error) {
+
+    return "Unknown error.";
+
+  }
+
+
+  if (
+    typeof error === "string"
+  ) {
+
+    return error;
+
+  }
+
+
+  if (error.message) {
+
+    return String(
+      error.message
+    );
+
+  }
+
+
+  if (error.details) {
+
+    return String(
+      error.details
+    );
+
+  }
+
+
+  return String(error);
+
+
+}
+
+
+/* =========================================
+   CHECK RPC RESPONSE
+========================================= */
+
+function checkRpcResponse(data) {
+
+
+  if (
+    data === null ||
+    data === undefined
+  ) {
+
+    return;
+
+  }
+
+
+  if (
+    typeof data === "object"
+  ) {
+
+
+    if (
+      data.success === false
+    ) {
+
+
+      throw new Error(
+
+        data.message ||
+
+        data.error ||
+
+        "Unable to post task."
+
+      );
+
+
+    }
+
+
+    if (data.error) {
+
+
+      throw new Error(
+        data.error
+      );
+
+
+    }
+
+
+  }
+
+
+}
+
+
+/* =========================================
+   RESET FORM
+========================================= */
+
+function resetTaskForm() {
+
+
+  postTaskForm.reset();
+
+
+  participantsInput.value =
+    1;
+
+
+  rewardInput.value =
+    MINIMUM_REWARD;
+
+
+  document
+    .getElementById(
+      "requireProof"
+    )
+    .checked = true;
+
+
+  updatePaymentSummary();
+
+
+}
+
+
+/* =========================================
    SUBMIT TASK
 ========================================= */
 
@@ -1768,21 +1887,6 @@ postTaskForm.addEventListener(
 
 
     clearMessage();
-
-
-    /* =====================================
-       GET CURRENT USER
-    ===================================== */
-
-    const user =
-      await getCurrentUser();
-
-
-    if (!user) {
-
-      return;
-
-    }
 
 
     /* =====================================
@@ -1987,6 +2091,47 @@ postTaskForm.addEventListener(
 
 
     /* =====================================
+       GET CURRENT USER
+    ===================================== */
+
+    const user =
+      await getCurrentUser();
+
+
+    if (!user) {
+
+
+      showMessage(
+
+        "Your session has expired. Please log in again.",
+
+        "error"
+
+      );
+
+
+      setTimeout(
+
+        function() {
+
+
+          window.location.href =
+            "login.html";
+
+
+        },
+
+        1500
+
+      );
+
+
+      return;
+
+    }
+
+
+    /* =====================================
        CONFIRM PAYMENT
     ===================================== */
 
@@ -2068,20 +2213,23 @@ postTaskForm.addEventListener(
 
 
       /* =====================================
-       POST TASK AND DEDUCT PAYMENT
+         POST TASK AND DEDUCT PAYMENT
 
-       The PostgreSQL RPC function should:
+         The Supabase PostgreSQL function:
 
-       1. Get auth.uid()
-       2. Lock the user's wallet row
-       3. Check wallet balance
-       4. Deduct total payment
-       5. Create pending task
+         post_task_with_payment
 
-       All operations happen in one transaction.
+         should:
 
-       If anything fails, PostgreSQL rolls
-       everything back.
+         1. Get auth.uid()
+         2. Find the user's wallet
+         3. Lock the wallet row
+         4. Check the balance
+         5. Deduct payment
+         6. Create the pending task
+
+         All operations should happen in
+         one PostgreSQL transaction.
       ===================================== */
 
       const {
@@ -2141,7 +2289,7 @@ postTaskForm.addEventListener(
 
 
       /* =====================================
-       CHECK ERROR
+         CHECK SUPABASE ERROR
       ===================================== */
 
       if (error) {
@@ -2161,6 +2309,15 @@ postTaskForm.addEventListener(
       }
 
 
+      /* =====================================
+         CHECK RPC RESPONSE
+      ===================================== */
+
+      checkRpcResponse(
+        data
+      );
+
+
       console.log(
 
         "Task created successfully:",
@@ -2171,7 +2328,7 @@ postTaskForm.addEventListener(
 
 
       /* =====================================
-       SUCCESS
+         SUCCESS
       ===================================== */
 
       showMessage(
@@ -2188,10 +2345,7 @@ postTaskForm.addEventListener(
         " has been deducted from your wallet. " +
 
 
-        "Your task is awaiting administrator approval. " +
-
-
-        "If the task is rejected, the deducted amount will be refunded to your wallet.",
+        "Your task is now awaiting administrator approval.",
 
 
         "success"
@@ -2200,32 +2354,14 @@ postTaskForm.addEventListener(
 
 
       /* =====================================
-       RESET FORM
+         RESET FORM ONLY AFTER SUCCESS
       ===================================== */
 
-      postTaskForm.reset();
-
-
-      participantsInput.value =
-        1;
-
-
-      rewardInput.value =
-        MINIMUM_REWARD;
-
-
-      document
-        .getElementById(
-          "requireProof"
-        )
-        .checked = true;
-
-
-      updatePaymentSummary();
+      resetTaskForm();
 
 
       /* =====================================
-       REDIRECT
+         REDIRECT
       ===================================== */
 
       setTimeout(
@@ -2260,9 +2396,9 @@ postTaskForm.addEventListener(
 
       let message =
 
-        error?.message ||
-
-        "Unable to post task. Please try again.";
+        getErrorMessage(
+          error
+        );
 
 
       const lowerMessage =
@@ -2273,7 +2409,7 @@ postTaskForm.addEventListener(
 
 
       /* =====================================
-       INSUFFICIENT BALANCE
+         INSUFFICIENT BALANCE
       ===================================== */
 
       if (
@@ -2310,13 +2446,21 @@ postTaskForm.addEventListener(
 
 
       /* =====================================
-       WALLET NOT FOUND
+         WALLET NOT FOUND
       ===================================== */
 
       else if (
 
         lowerMessage.includes(
           "wallet not found"
+        ) ||
+
+        lowerMessage.includes(
+          "wallet does not exist"
+        ) ||
+
+        lowerMessage.includes(
+          "no wallet"
         )
 
       ) {
@@ -2326,14 +2470,14 @@ postTaskForm.addEventListener(
 
           "Your wallet could not be found. " +
 
-          "Please contact support.";
+          "Please create or initialize a wallet for this account before posting a task.";
 
 
       }
 
 
       /* =====================================
-       NOT AUTHENTICATED
+         NOT AUTHENTICATED
       ===================================== */
 
       else if (
@@ -2344,6 +2488,10 @@ postTaskForm.addEventListener(
 
         lowerMessage.includes(
           "authentication"
+        ) ||
+
+        lowerMessage.includes(
+          "auth.uid"
         )
 
       ) {
@@ -2358,13 +2506,29 @@ postTaskForm.addEventListener(
 
 
       /* =====================================
-       FUNCTION NOT FOUND
+         RPC FUNCTION NOT FOUND
       ===================================== */
 
       else if (
 
         lowerMessage.includes(
           "post_task_with_payment"
+        ) &&
+
+        (
+
+          lowerMessage.includes(
+            "does not exist"
+          ) ||
+
+          lowerMessage.includes(
+            "not found"
+          ) ||
+
+          lowerMessage.includes(
+            "function"
+          )
+
         )
 
       ) {
@@ -2372,7 +2536,7 @@ postTaskForm.addEventListener(
 
         message =
 
-          "The payment system is not configured yet. " +
+          "The payment system is not configured correctly. " +
 
           "The Supabase post_task_with_payment function needs to be created.";
 
@@ -2381,7 +2545,38 @@ postTaskForm.addEventListener(
 
 
       /* =====================================
-       SHOW ERROR
+         PERMISSION ERROR
+      ===================================== */
+
+      else if (
+
+        lowerMessage.includes(
+          "permission denied"
+        ) ||
+
+        lowerMessage.includes(
+          "row-level security"
+        ) ||
+
+        lowerMessage.includes(
+          "policy"
+        )
+
+      ) {
+
+
+        message =
+
+          "Permission was denied by the database. " +
+
+          "Please check your Supabase RLS policies and the post_task_with_payment function.";
+
+
+      }
+
+
+      /* =====================================
+         SHOW ERROR
       ===================================== */
 
       showMessage(
@@ -2399,7 +2594,7 @@ postTaskForm.addEventListener(
 
 
       /* =====================================
-       ENABLE BUTTON
+         ENABLE BUTTON
       ===================================== */
 
       submitTaskButton.disabled =
@@ -2419,7 +2614,7 @@ postTaskForm.addEventListener(
 
 
 /* =========================================
-   INITIALIZE PAYMENT SUMMARY
+   INITIALIZE
 ========================================= */
 
 updatePaymentSummary();
