@@ -74,7 +74,9 @@
   <div class="container">
 
 
-    <!-- WELCOME -->
+    <!-- =================================================
+         WELCOME
+    ================================================== -->
 
     <div class="dashboard-heading">
 
@@ -108,7 +110,9 @@
 
 
 
-    <!-- WALLET -->
+    <!-- =================================================
+         WALLET
+    ================================================== -->
 
     <section class="member-wallet">
 
@@ -152,7 +156,9 @@
 
 
 
-    <!-- STATS -->
+    <!-- =================================================
+         STATS
+    ================================================== -->
 
     <div class="dashboard-stats">
 
@@ -216,7 +222,9 @@
 
 
 
-    <!-- EARNING OPTIONS -->
+    <!-- =================================================
+         EARNING OPTIONS
+    ================================================== -->
 
     <section
       id="earn"
@@ -244,6 +252,8 @@
       <div class="member-earning-grid">
 
 
+        <!-- TASKS -->
+
         <a
           href="tasks.html"
           class="member-earning-card"
@@ -270,6 +280,8 @@
 
 
 
+        <!-- PREMIUM -->
+
         <a
           href="membership.html"
           class="member-earning-card"
@@ -295,13 +307,170 @@
         </a>
 
 
+
+        <!-- WATCH ADS -->
+
+        <a
+          href="watch-ads.html"
+          class="member-earning-card"
+        >
+
+          <div class="member-card-icon blue">
+            ▶️
+          </div>
+
+          <h3>
+            Watch Ads
+          </h3>
+
+          <p>
+            Watch available adverts and earn eligible
+            rewards when you complete the required viewing.
+          </p>
+
+          <strong>
+            Watch ads →
+          </strong>
+
+        </a>
+
+
       </div>
 
     </section>
 
 
 
-    <!-- READ & EARN -->
+    <!-- =================================================
+         MORE OPTIONS
+    ================================================== -->
+
+    <section
+      id="more-options"
+      class="dashboard-section"
+    >
+
+      <div class="section-title">
+
+        <div>
+
+          <span class="eyebrow">
+            MORE OPTIONS
+          </span>
+
+          <h2>
+            Explore more opportunities
+          </h2>
+
+        </div>
+
+      </div>
+
+
+
+      <div class="member-earning-grid">
+
+
+        <!-- =============================================
+             COMPETITIONS & AWARDS
+        ============================================== -->
+
+        <a
+          href="competitions.html"
+          class="member-earning-card"
+        >
+
+          <div class="member-card-icon blue">
+            🏆
+          </div>
+
+          <h3>
+            Competitions & Awards
+          </h3>
+
+          <p>
+            Discover sports competitions, contests,
+            awards and other opportunities to participate
+            and showcase your talent.
+          </p>
+
+          <strong>
+            View competitions →
+          </strong>
+
+        </a>
+
+
+
+        <!-- =============================================
+             COMPLAINTS & ISSUES
+        ============================================== -->
+
+        <a
+          href="mailto:ahruhenterprises@gmail.com?subject=EarnGig%20Complaint%20%2F%20Issue"
+          class="member-earning-card"
+        >
+
+          <div class="member-card-icon blue">
+            📩
+          </div>
+
+          <h3>
+            Complaints & Issues
+          </h3>
+
+          <p>
+            Having a problem with EarnGig?
+            Contact our support team directly by email
+            and tell us what happened.
+          </p>
+
+          <strong>
+            Contact Support →
+          </strong>
+
+        </a>
+
+
+
+        <!-- =============================================
+             RUN AN ADVERT
+        ============================================== -->
+
+        <a
+          href="run-advert.html"
+          class="member-earning-card"
+        >
+
+          <div class="member-card-icon blue">
+            📣
+          </div>
+
+          <h3>
+            Run an Advert
+          </h3>
+
+          <p>
+            Promote your business, product, service or
+            opportunity to the EarnGig community.
+          </p>
+
+          <strong>
+            Run an advert →
+          </strong>
+
+        </a>
+
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         READ & EARN
+    ================================================== -->
 
     <section
       id="read"
@@ -370,7 +539,9 @@
 
 
 
-    <!-- CREATE & EARN -->
+    <!-- =================================================
+         CREATE & EARN
+    ================================================== -->
 
     <section
       id="create"
@@ -440,7 +611,9 @@
 
 
 
-    <!-- REFERRALS -->
+    <!-- =================================================
+         REFERRALS
+    ================================================== -->
 
     <section
       id="referrals"
@@ -597,7 +770,9 @@
 
 
 
-    <!-- MARKETPLACE -->
+    <!-- =================================================
+         MARKETPLACE
+    ================================================== -->
 
     <section
       id="marketplace"
@@ -666,7 +841,9 @@
 
 
 
-    <!-- TRANSACTIONS -->
+    <!-- =================================================
+         TRANSACTIONS
+    ================================================== -->
 
     <section
       id="transactions"
@@ -737,6 +914,10 @@
 </footer>
 
 
+
+<!-- =====================================================
+     SUPABASE
+====================================================== -->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -911,33 +1092,9 @@ function formatNaira(
    CHECK IF TRANSACTION IS A REAL EARNING
 ===================================================== */
 
-/*
-   IMPORTANT ACCOUNTING RULE
-
-   These transactions affect the wallet
-   but MUST NEVER be counted as earnings:
-
-   task_payment
-   withdrawal
-   task_refund
-   debit
-   membership_payment
-   membership_fee
-   listing_fee
-
-
-   A task payment is money used to pay for
-   a task. It is NOT income.
-
-   A task refund returns money to the wallet.
-   It is NOT income.
-
-   A withdrawal removes money from the wallet.
-   It is NOT income.
-*/
-
-
-function isRealEarning(transaction) {
+function isRealEarning(
+  transaction
+) {
 
 
   const amount =
@@ -945,10 +1102,6 @@ function isRealEarning(transaction) {
       transaction.amount || 0
     );
 
-
-  /*
-     Earnings must be positive.
-  */
 
   if (amount <= 0) {
 
@@ -975,12 +1128,6 @@ function isRealEarning(transaction) {
       .toLowerCase();
 
 
-
-  /*
-     EXCLUDED TRANSACTION TYPES
-
-     These are NEVER earnings.
-  */
 
   const excludedTypes = [
 
@@ -1019,13 +1166,6 @@ function isRealEarning(transaction) {
   }
 
 
-
-  /*
-     EXCLUDED DESCRIPTIONS
-
-     This protects the dashboard even if
-     transaction.type is inconsistent.
-  */
 
   const excludedDescriptionWords = [
 
@@ -1073,22 +1213,6 @@ function isRealEarning(transaction) {
   }
 
 
-
-  /*
-     If it is positive and is NOT one of
-     the excluded wallet movements,
-     it is treated as genuine earnings.
-
-     This allows existing transaction types
-     already in your database to work,
-     including:
-
-     - Novel reading rewards
-     - Writer earnings
-     - Referral bonuses
-     - Task earnings
-     - Future earning features
-  */
 
   return true;
 
@@ -1439,13 +1563,6 @@ async function loadDashboard() {
 
     /* -----------------------------------------------
        LOAD ALL COMPLETED TRANSACTIONS
-
-       This is used for:
-
-       1. Total Earned
-       2. Today's Earnings
-
-       We load once and calculate both values.
     ----------------------------------------------- */
 
     const {
@@ -1823,11 +1940,6 @@ async function loadTransactions() {
 
 
 
-          /*
-             Determine whether this transaction
-             removes money from the wallet.
-          */
-
           const isDebit =
 
             amount < 0
@@ -1955,7 +2067,6 @@ async function loadTransactions() {
                 ${sign}${formatNaira(displayAmount)}
 
               </div>
-
 
             </article>
 
