@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="styles.css">
 
   <style>
+
     :root {
       --eg-navy: #07133f;
       --eg-navy-2: #0b1950;
@@ -69,11 +70,12 @@
     }
 
     .btn.primary {
-      background: linear-gradient(
-        135deg,
-        #5b46ef,
-        #8147f5
-      ) !important;
+      background:
+        linear-gradient(
+          135deg,
+          #5b46ef,
+          #8147f5
+        ) !important;
 
       color: #ffffff !important;
       border: none !important;
@@ -128,7 +130,8 @@
           rgba(11, 25, 76, 0.98)
         ) !important;
 
-      border: 1px solid rgba(255,255,255,0.10) !important;
+      border:
+        1px solid rgba(255,255,255,0.10) !important;
 
       box-shadow:
         0 25px 60px rgba(0,0,0,0.25) !important;
@@ -148,22 +151,81 @@
       color: #ffffff !important;
     }
 
+    /*
+      =========================================================
+      WALLET STAT BOX FIX
+      =========================================================
+    */
+
+    .wallet .stats {
+      display: grid !important;
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      gap: 18px !important;
+      margin: 22px 0 !important;
+    }
+
+    .wallet .stats > div {
+      background:
+        rgba(255,255,255,0.075) !important;
+
+      border:
+        1px solid rgba(255,255,255,0.10) !important;
+
+      border-radius: 16px !important;
+
+      padding: 18px !important;
+
+      box-shadow:
+        none !important;
+    }
+
+    .wallet .stats > div small {
+      display: block !important;
+
+      color:
+        #aeb9d7 !important;
+
+      font-size: 13px !important;
+
+      margin-bottom: 7px !important;
+    }
+
+    .wallet .stats > div b {
+      display: block !important;
+
+      color:
+        #ffffff !important;
+
+      font-size: 21px !important;
+
+      font-weight: 700 !important;
+
+      opacity: 1 !important;
+    }
+
     .bar {
-      background: rgba(255,255,255,0.10) !important;
+      background:
+        rgba(255,255,255,0.10) !important;
     }
 
     .bar span {
-      background: linear-gradient(
-        90deg,
-        #5b46ef,
-        #8b5cff
-      ) !important;
+      background:
+        linear-gradient(
+          90deg,
+          #5b46ef,
+          #8b5cff
+        ) !important;
     }
 
     .trust {
-      background: rgba(255,255,255,0.035) !important;
-      border-top: 1px solid rgba(255,255,255,0.06);
-      border-bottom: 1px solid rgba(255,255,255,0.06);
+      background:
+        rgba(255,255,255,0.035) !important;
+
+      border-top:
+        1px solid rgba(255,255,255,0.06);
+
+      border-bottom:
+        1px solid rgba(255,255,255,0.06);
     }
 
     .trust b {
@@ -179,7 +241,8 @@
     }
 
     .section.soft {
-      background: rgba(255,255,255,0.025) !important;
+      background:
+        rgba(255,255,255,0.025) !important;
     }
 
     .heading span {
@@ -206,8 +269,11 @@
           rgba(11, 27, 76, 0.98)
         ) !important;
 
-      border: 1px solid rgba(255,255,255,0.09) !important;
-      border-radius: 22px !important;
+      border:
+        1px solid rgba(255,255,255,0.09) !important;
+
+      border-radius:
+        22px !important;
 
       box-shadow:
         0 18px 45px rgba(0,0,0,0.18) !important;
@@ -216,8 +282,11 @@
     }
 
     .cards article:hover {
-      border-color: rgba(126, 101, 255, 0.42) !important;
-      transform: translateY(-3px);
+      border-color:
+        rgba(126, 101, 255, 0.42) !important;
+
+      transform:
+        translateY(-3px);
 
       box-shadow:
         0 22px 55px rgba(0,0,0,0.24) !important;
@@ -240,211 +309,313 @@
     }
 
     .ico {
-      border-radius: 14px !important;
-      color: #ffffff !important;
-      border: 1px solid rgba(255,255,255,0.08);
+      border-radius:
+        14px !important;
+
+      color:
+        #ffffff !important;
+
+      border:
+        1px solid rgba(255,255,255,0.08);
     }
 
     .ico.blue {
-      background: rgba(76,108,255,0.18) !important;
-      color: #8ca0ff !important;
+      background:
+        rgba(76,108,255,0.18) !important;
+
+      color:
+        #8ca0ff !important;
     }
 
     .ico.purple {
-      background: rgba(126,82,255,0.18) !important;
-      color: #a994ff !important;
+      background:
+        rgba(126,82,255,0.18) !important;
+
+      color:
+        #a994ff !important;
     }
 
     .ico.green {
-      background: rgba(54,205,145,0.14) !important;
-      color: #6fe6b4 !important;
+      background:
+        rgba(54,205,145,0.14) !important;
+
+      color:
+        #6fe6b4 !important;
     }
 
     .ico.orange {
-      background: rgba(255,170,79,0.14) !important;
-      color: #ffc071 !important;
+      background:
+        rgba(255,170,79,0.14) !important;
+
+      color:
+        #ffc071 !important;
     }
 
     .ico.pink {
-      background: rgba(239,113,170,0.14) !important;
-      color: #f58bbd !important;
+      background:
+        rgba(239,113,170,0.14) !important;
+
+      color:
+        #f58bbd !important;
     }
 
     .ico.cyan {
-      background: rgba(65,204,232,0.14) !important;
-      color: #6ee3f5 !important;
+      background:
+        rgba(65,204,232,0.14) !important;
+
+      color:
+        #6ee3f5 !important;
     }
 
     .steps > div {
       background:
-        rgba(16, 31, 91, 0.82) !important;
+        rgba(16,31,91,0.82) !important;
 
       border:
         1px solid rgba(255,255,255,0.08) !important;
 
-      border-radius: 20px !important;
+      border-radius:
+        20px !important;
 
       box-shadow:
         0 15px 35px rgba(0,0,0,0.14) !important;
     }
 
     .steps em {
-      color: #8778ff !important;
+      color:
+        #8778ff !important;
     }
 
     .steps h3 {
-      color: #ffffff !important;
+      color:
+        #ffffff !important;
     }
 
     .steps p {
-      color: #aeb9d7 !important;
+      color:
+        #aeb9d7 !important;
     }
 
     .business-section,
     .legal-section,
     .signup-notice {
-      background: transparent !important;
+      background:
+        transparent !important;
     }
 
     .business-section .cards article,
     .legal-section .cards article {
-      min-height: 250px;
+      min-height:
+        250px;
     }
 
     .business-section strong,
     .legal-section strong {
-      color: #ffffff !important;
+      color:
+        #ffffff !important;
     }
 
     .business-section a,
     .legal-section a {
-      color: #9d90ff !important;
-      text-decoration: none;
+      color:
+        #9d90ff !important;
+
+      text-decoration:
+        none;
     }
 
     .business-section a:hover,
     .legal-section a:hover {
-      color: #ffffff !important;
-      text-decoration: underline;
+      color:
+        #ffffff !important;
+
+      text-decoration:
+        underline;
     }
 
     .signup-notice {
-      padding-top: 50px;
-      padding-bottom: 70px;
+      padding-top:
+        50px;
+
+      padding-bottom:
+        70px;
     }
 
     .signup-notice .heading {
       background:
         linear-gradient(
           145deg,
-          rgba(20, 36, 98, 0.95),
-          rgba(11, 26, 75, 0.95)
+          rgba(20,36,98,0.95),
+          rgba(11,26,75,0.95)
         );
 
       border:
         1px solid rgba(255,255,255,0.09);
 
-      border-radius: 26px;
+      border-radius:
+        26px;
 
-      padding: 55px 25px;
+      padding:
+        55px 25px;
 
       box-shadow:
         0 25px 60px rgba(0,0,0,0.20);
     }
 
     footer {
-      background: #050e2d !important;
+      background:
+        #050e2d !important;
 
       border-top:
         1px solid rgba(255,255,255,0.08) !important;
 
-      color: #ffffff !important;
+      color:
+        #ffffff !important;
     }
 
     footer .logo,
     footer .logo span {
-      color: #ffffff !important;
+      color:
+        #ffffff !important;
     }
 
     footer p {
-      color: #9eabd0 !important;
+      color:
+        #9eabd0 !important;
     }
 
     footer h4 {
-      color: #ffffff !important;
+      color:
+        #ffffff !important;
     }
 
     footer a,
     footer span {
-      color: #aeb9d7 !important;
+      color:
+        #aeb9d7 !important;
     }
 
     footer a:hover {
-      color: #ffffff !important;
+      color:
+        #ffffff !important;
     }
 
     .footer-bottom {
       border-top:
         1px solid rgba(255,255,255,0.08) !important;
 
-      color: #8996bb !important;
+      color:
+        #8996bb !important;
     }
 
     @media (max-width: 768px) {
 
       .hero {
-        padding-top: 45px;
+        padding-top:
+          45px;
       }
 
       .hero-grid {
-        gap: 35px;
+        gap:
+          35px;
       }
 
       .wallet {
-        margin-top: 10px;
+        margin-top:
+          10px;
+      }
+
+      .wallet .stats {
+        grid-template-columns:
+          repeat(2, minmax(0, 1fr)) !important;
+
+        gap:
+          12px !important;
+      }
+
+      .wallet .stats > div {
+        padding:
+          15px !important;
+      }
+
+      .wallet .stats > div b {
+        font-size:
+          18px !important;
       }
 
       .cards article {
-        border-radius: 20px !important;
+        border-radius:
+          20px !important;
       }
 
       .business-section .cards article,
       .legal-section .cards article {
-        min-height: auto;
+        min-height:
+          auto;
       }
 
       .signup-notice .heading {
-        padding: 40px 20px;
+        padding:
+          40px 20px;
       }
 
       .footer-main {
-        gap: 35px;
+        gap:
+          35px;
       }
+
     }
+
   </style>
 </head>
 
 <body>
+
 
 <header>
 
   <div class="container nav">
 
     <a class="logo" href="index.html">
+
       <span class="logo-mark">E</span>
+
       Earn<span>Gig</span>
+
     </a>
 
+
     <nav>
-      <a href="#how">How It Works</a>
-      <a href="#earn">Ways to Earn</a>
-      <a href="#marketplace">Marketplace</a>
-      <a href="#faq">FAQ</a>
+
+      <a href="#how">
+        How It Works
+      </a>
+
+      <a href="#earn">
+        Ways to Earn
+      </a>
+
+      <a href="#marketplace">
+        Marketplace
+      </a>
+
+      <a href="#faq">
+        FAQ
+      </a>
+
     </nav>
 
+
     <div class="actions">
-      <a class="btn outline" href="login.html">Log In</a>
-      <a class="btn primary" href="register.html">Get Started</a>
+
+      <a class="btn outline" href="login.html">
+        Log In
+      </a>
+
+      <a class="btn primary" href="register.html">
+        Get Started
+      </a>
+
     </div>
 
   </div>
@@ -462,16 +633,26 @@
         ● YOUR EVERYDAY EARNING PLATFORM
       </span>
 
+
       <h1>
+
         Turn your time into
-        <span>opportunity.</span>
+
+        <span>
+          opportunity.
+        </span>
+
       </h1>
 
+
       <p>
+
         Complete eligible tasks, read and answer quizzes,
         refer friends, create content and discover marketplace
         opportunities — all from one EarnGig account.
+
       </p>
+
 
       <div class="hero-actions">
 
@@ -485,6 +666,7 @@
 
       </div>
 
+
       <small class="note">
         ✓ One account · Multiple earning activities
       </small>
@@ -494,33 +676,63 @@
 
     <div class="wallet">
 
-      <small>EarnGig Wallet</small>
+      <small>
+        EarnGig Wallet
+      </small>
 
-      <h2>₦12,850</h2>
+
+      <h2>
+        ₦12,850
+      </h2>
+
 
       <div class="stats">
 
         <div>
-          <small>Today's earnings</small>
-          <b>₦2,150</b>
+
+          <small>
+            Today's earnings
+          </small>
+
+          <b>
+            ₦2,150
+          </b>
+
         </div>
 
+
         <div>
-          <small>Referral earnings</small>
-          <b>₦1,000</b>
+
+          <small>
+            Referral earnings
+          </small>
+
+          <b>
+            ₦1,000
+          </b>
+
         </div>
 
       </div>
 
-      <small>Monthly activity</small>
+
+      <small>
+        Monthly activity
+      </small>
+
 
       <div class="bar">
         <span></span>
       </div>
 
-      <small>Withdrawal availability</small>
 
-      <b>Withdrawals anytime</b>
+      <small>
+        Withdrawal availability
+      </small>
+
+      <b>
+        Withdrawals anytime
+      </b>
 
     </div>
 
@@ -535,22 +747,30 @@
 
     <div>
       <b>Tasks</b>
-      <small>Complete eligible activities</small>
+      <small>
+        Complete eligible activities
+      </small>
     </div>
 
     <div>
       <b>Read & Earn</b>
-      <small>Read, learn and pass quizzes</small>
+      <small>
+        Read, learn and pass quizzes
+      </small>
     </div>
 
     <div>
       <b>Create</b>
-      <small>Publish eligible content</small>
+      <small>
+        Publish eligible content
+      </small>
     </div>
 
     <div>
       <b>Refer</b>
-      <small>Grow your network</small>
+      <small>
+        Grow your network
+      </small>
     </div>
 
   </div>
@@ -564,9 +784,13 @@
 
     <div class="heading">
 
-      <span>WAYS TO EARN</span>
+      <span>
+        WAYS TO EARN
+      </span>
 
-      <h2>More than one way to participate.</h2>
+      <h2>
+        More than one way to participate.
+      </h2>
 
       <p>
         EarnGig brings different activities together so members
@@ -578,85 +802,135 @@
 
     <div class="cards">
 
-      <article>
-        <div class="ico blue">✓</div>
 
-        <h3>Micro Tasks</h3>
+      <article>
+
+        <div class="ico blue">
+          ✓
+        </div>
+
+        <h3>
+          Micro Tasks
+        </h3>
 
         <p>
           Complete eligible online activities and receive
           approved rewards.
         </p>
 
-        <a href="register.html">Join to explore →</a>
+        <a href="register.html">
+          Join to explore →
+        </a>
+
       </article>
 
 
       <article>
-        <div class="ico purple">▤</div>
 
-        <h3>Read & Earn</h3>
+        <div class="ico purple">
+          ▤
+        </div>
+
+        <h3>
+          Read & Earn
+        </h3>
 
         <p>
           Read selected novels or learning materials and
           answer quizzes.
         </p>
 
-        <a href="register.html">Join to explore →</a>
+        <a href="register.html">
+          Join to explore →
+        </a>
+
       </article>
 
 
       <article>
-        <div class="ico green">✎</div>
 
-        <h3>Create & Earn</h3>
+        <div class="ico green">
+          ✎
+        </div>
+
+        <h3>
+          Create & Earn
+        </h3>
 
         <p>
           Eligible creators can publish novels and other
           materials.
         </p>
 
-        <a href="register.html">Become a creator →</a>
+        <a href="register.html">
+          Become a creator →
+        </a>
+
       </article>
 
 
       <article>
-        <div class="ico orange">↗</div>
 
-        <h3>Referrals</h3>
+        <div class="ico orange">
+          ↗
+        </div>
+
+        <h3>
+          Referrals
+        </h3>
 
         <p>
           Invite eligible new members and earn referral rewards.
         </p>
 
-        <a href="register.html">Start referring →</a>
+        <a href="register.html">
+          Start referring →
+        </a>
+
       </article>
 
 
       <article>
-        <div class="ico pink">▣</div>
 
-        <h3>Marketplace</h3>
+        <div class="ico pink">
+          ▣
+        </div>
+
+        <h3>
+          Marketplace
+        </h3>
 
         <p>
           Discover products and services from participating vendors.
         </p>
 
-        <a href="#marketplace">View marketplace →</a>
+        <a href="#marketplace">
+          View marketplace →
+        </a>
+
       </article>
 
 
       <article>
-        <div class="ico cyan">★</div>
 
-        <h3>Premium Activities</h3>
+        <div class="ico cyan">
+          ★
+        </div>
+
+        <h3>
+          Premium Activities
+        </h3>
 
         <p>
           Premium membership can unlock additional activities.
         </p>
 
-        <a href="register.html">See membership →</a>
+        <a href="register.html">
+          See membership →
+        </a>
+
       </article>
+
 
     </div>
 
@@ -671,38 +945,87 @@
 
     <div class="heading center">
 
-      <span>HOW IT WORKS</span>
+      <span>
+        HOW IT WORKS
+      </span>
 
-      <h2>Start in four simple steps.</h2>
+      <h2>
+        Start in four simple steps.
+      </h2>
 
     </div>
 
 
     <div class="steps">
 
-      <div>
-        <em>01</em>
-        <h3>Register</h3>
-        <p>Create your EarnGig account.</p>
-      </div>
 
       <div>
-        <em>02</em>
-        <h3>Choose</h3>
-        <p>Explore available activities.</p>
+
+        <em>
+          01
+        </em>
+
+        <h3>
+          Register
+        </h3>
+
+        <p>
+          Create your EarnGig account.
+        </p>
+
       </div>
 
-      <div>
-        <em>03</em>
-        <h3>Participate</h3>
-        <p>Complete eligible activities.</p>
-      </div>
 
       <div>
-        <em>04</em>
-        <h3>Track</h3>
-        <p>Track your approved rewards and account activity.</p>
+
+        <em>
+          02
+        </em>
+
+        <h3>
+          Choose
+        </h3>
+
+        <p>
+          Explore available activities.
+        </p>
+
       </div>
+
+
+      <div>
+
+        <em>
+          03
+        </em>
+
+        <h3>
+          Participate
+        </h3>
+
+        <p>
+          Complete eligible activities.
+        </p>
+
+      </div>
+
+
+      <div>
+
+        <em>
+          04
+        </em>
+
+        <h3>
+          Track
+        </h3>
+
+        <p>
+          Track your approved rewards and account activity.
+        </p>
+
+      </div>
+
 
     </div>
 
@@ -717,9 +1040,13 @@
 
     <div class="heading">
 
-      <span>MARKETPLACE</span>
+      <span>
+        MARKETPLACE
+      </span>
 
-      <h2>Discover participating vendors.</h2>
+      <h2>
+        Discover participating vendors.
+      </h2>
 
       <p>
         Explore products and services made available by
@@ -731,38 +1058,58 @@
 
     <div class="cards">
 
-      <article>
-        <div class="ico blue">▣</div>
 
-        <h3>Products</h3>
+      <article>
+
+        <div class="ico blue">
+          ▣
+        </div>
+
+        <h3>
+          Products
+        </h3>
 
         <p>
           Discover products offered by participating vendors.
         </p>
+
       </article>
 
 
       <article>
-        <div class="ico purple">◆</div>
 
-        <h3>Services</h3>
+        <div class="ico purple">
+          ◆
+        </div>
+
+        <h3>
+          Services
+        </h3>
 
         <p>
           Find services available through participating vendors.
         </p>
+
       </article>
 
 
       <article>
-        <div class="ico green">↗</div>
 
-        <h3>Vendor Opportunities</h3>
+        <div class="ico green">
+          ↗
+        </div>
+
+        <h3>
+          Vendor Opportunities
+        </h3>
 
         <p>
           Participating vendors can showcase eligible products
           and services.
         </p>
+
       </article>
+
 
     </div>
 
@@ -777,55 +1124,77 @@
 
     <div class="heading center">
 
-      <span>FAQ</span>
+      <span>
+        FAQ
+      </span>
 
-      <h2>Frequently asked questions.</h2>
+      <h2>
+        Frequently asked questions.
+      </h2>
 
     </div>
 
 
     <div class="cards">
 
+
       <article>
-        <h3>What is EarnGig?</h3>
+
+        <h3>
+          What is EarnGig?
+        </h3>
 
         <p>
           EarnGig is an online platform where members can
           participate in eligible activities such as tasks,
           reading activities, content creation and referrals.
         </p>
+
       </article>
 
 
       <article>
-        <h3>How do I join?</h3>
+
+        <h3>
+          How do I join?
+        </h3>
 
         <p>
           Select "Get Started" or "Create Your Account" and
           complete the registration process.
         </p>
+
       </article>
 
 
       <article>
-        <h3>How do rewards work?</h3>
+
+        <h3>
+          How do rewards work?
+        </h3>
 
         <p>
           Rewards depend on the eligible activity and are
           subject to the applicable activity requirements,
           review and approval.
         </p>
+
       </article>
 
 
       <article>
-        <h3>How can I contact support?</h3>
+
+        <h3>
+          How can I contact support?
+        </h3>
 
         <p>
           For account issues, payment concerns, complaints
           or disputes, contact our support emails listed below.
         </p>
+
       </article>
+
 
     </div>
 
@@ -840,9 +1209,13 @@
 
     <div class="heading center">
 
-      <span>ABOUT EARNGIG</span>
+      <span>
+        ABOUT EARNGIG
+      </span>
 
-      <h2>EarnGig is operated by AHRUH ENTERPRISES.</h2>
+      <h2>
+        EarnGig is operated by AHRUH ENTERPRISES.
+      </h2>
 
       <p>
         EarnGig is an online earning platform operated by
@@ -855,28 +1228,42 @@
 
     <div class="cards">
 
+
       <article>
 
-        <div class="ico blue">◆</div>
+        <div class="ico blue">
+          ◆
+        </div>
 
-        <h3>AHRUH ENTERPRISES</h3>
+        <h3>
+          AHRUH ENTERPRISES
+        </h3>
 
         <p>
           Registered business operating the EarnGig platform.
         </p>
 
         <p>
-          <strong>Location:</strong>
+          <strong>
+            Location:
+          </strong>
+
           Lagos, Nigeria
         </p>
 
         <p>
-          <strong>Status:</strong>
+          <strong>
+            Status:
+          </strong>
+
           CAC Registered
         </p>
 
         <p>
-          <strong>Email:</strong>
+          <strong>
+            Email:
+          </strong>
+
           <a href="mailto:ahruhenterprises@gmail.com">
             ahruhenterprises@gmail.com
           </a>
@@ -887,9 +1274,13 @@
 
       <article>
 
-        <div class="ico purple">?</div>
+        <div class="ico purple">
+          ?
+        </div>
 
-        <h3>Customer Support & Complaints</h3>
+        <h3>
+          Customer Support & Complaints
+        </h3>
 
         <p>
           For account issues, payment concerns, complaints,
@@ -918,9 +1309,13 @@
 
       <article>
 
-        <div class="ico green">↩</div>
+        <div class="ico green">
+          ↩
+        </div>
 
-        <h3>Refund Requests</h3>
+        <h3>
+          Refund Requests
+        </h3>
 
         <p>
           Refund requests should be submitted by email.
@@ -940,6 +1335,7 @@
 
       </article>
 
+
     </div>
 
   </div>
@@ -953,9 +1349,13 @@
 
     <div class="heading center">
 
-      <span>IMPORTANT INFORMATION</span>
+      <span>
+        IMPORTANT INFORMATION
+      </span>
 
-      <h2>Policies & customer information.</h2>
+      <h2>
+        Policies & customer information.
+      </h2>
 
       <p>
         Please review the policies that govern your use of
@@ -967,11 +1367,16 @@
 
     <div class="cards">
 
+
       <article>
 
-        <div class="ico blue">⌕</div>
+        <div class="ico blue">
+          ⌕
+        </div>
 
-        <h3>Privacy Policy</h3>
+        <h3>
+          Privacy Policy
+        </h3>
 
         <p>
           Learn how EarnGig handles information provided by
@@ -987,9 +1392,13 @@
 
       <article>
 
-        <div class="ico purple">§</div>
+        <div class="ico purple">
+          §
+        </div>
 
-        <h3>Terms & Conditions</h3>
+        <h3>
+          Terms & Conditions
+        </h3>
 
         <p>
           Review the rules and conditions that apply when
@@ -1005,9 +1414,13 @@
 
       <article>
 
-        <div class="ico green">↩</div>
+        <div class="ico green">
+          ↩
+        </div>
 
-        <h3>Refund Policy</h3>
+        <h3>
+          Refund Policy
+        </h3>
 
         <p>
           Review how refund requests and payment-related
@@ -1019,6 +1432,7 @@
         </a>
 
       </article>
+
 
     </div>
 
@@ -1033,14 +1447,19 @@
 
     <div class="heading center">
 
-      <span>READY TO GET STARTED?</span>
+      <span>
+        READY TO GET STARTED?
+      </span>
 
-      <h2>Create your EarnGig account.</h2>
+      <h2>
+        Create your EarnGig account.
+      </h2>
 
       <p>
         By creating an account, you agree to review and follow
         the EarnGig Terms & Conditions and Privacy Policy.
       </p>
+
 
       <div class="hero-actions">
 
@@ -1067,20 +1486,30 @@
 
     <div class="footer-main">
 
+
       <div>
 
         <a class="logo" href="index.html">
-          <span class="logo-mark">E</span>
+
+          <span class="logo-mark">
+            E
+          </span>
+
           Earn<span>Gig</span>
+
         </a>
+
 
         <p>
           Read. Create. Complete. Earn.
         </p>
 
+
         <p>
           EarnGig is operated by
-          <strong>AHRUH ENTERPRISES</strong>.
+          <strong>
+            AHRUH ENTERPRISES
+          </strong>.
         </p>
 
       </div>
@@ -1088,19 +1517,34 @@
 
       <div>
 
-        <h4>Platform</h4>
+        <h4>
+          Platform
+        </h4>
 
-        <a href="#how">How It Works</a>
-        <a href="#earn">Ways to Earn</a>
-        <a href="#marketplace">Marketplace</a>
-        <a href="#faq">FAQ</a>
+        <a href="#how">
+          How It Works
+        </a>
+
+        <a href="#earn">
+          Ways to Earn
+        </a>
+
+        <a href="#marketplace">
+          Marketplace
+        </a>
+
+        <a href="#faq">
+          FAQ
+        </a>
 
       </div>
 
 
       <div>
 
-        <h4>Legal</h4>
+        <h4>
+          Legal
+        </h4>
 
         <a href="privacy-policy.html">
           Privacy Policy
@@ -1119,7 +1563,9 @@
 
       <div>
 
-        <h4>Contact</h4>
+        <h4>
+          Contact
+        </h4>
 
         <a href="mailto:ahruhenterprises@gmail.com">
           ahruhenterprises@gmail.com
@@ -1134,6 +1580,7 @@
         </span>
 
       </div>
+
 
     </div>
 
@@ -1153,6 +1600,7 @@
   </div>
 
 </footer>
+
 
 </body>
 </html>
