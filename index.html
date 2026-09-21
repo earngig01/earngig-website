@@ -8,15 +8,426 @@
 
   <meta
     name="description"
-    content="EarnGig is an online earning platform operated by AHRUH ENTERPRISES. Complete eligible activities, read, create, refer and discover marketplace opportunities."
+    content="EarnGig is an online earning platform operated by AHRUH ENTERPRISES."
   >
 
   <link rel="stylesheet" href="styles.css">
+
+  <style>
+    :root {
+      --eg-navy: #07133f;
+      --eg-navy-2: #0b1950;
+      --eg-card: #101f5b;
+      --eg-purple: #6747f5;
+      --eg-purple-2: #815cff;
+      --eg-white: #ffffff;
+      --eg-text: #e9edff;
+      --eg-muted: #aab5d6;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background:
+        radial-gradient(
+          circle at 80% 10%,
+          rgba(103, 71, 245, 0.16),
+          transparent 30%
+        ),
+        linear-gradient(
+          180deg,
+          #07133f 0%,
+          #081541 45%,
+          #07123a 100%
+        ) !important;
+
+      color: var(--eg-text) !important;
+    }
+
+    header {
+      background: rgba(5, 14, 48, 0.97) !important;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    header .logo,
+    header .logo span {
+      color: #ffffff !important;
+    }
+
+    header .logo > span:last-child {
+      color: #6d63ff !important;
+    }
+
+    header nav a {
+      color: #cbd3ef !important;
+    }
+
+    header nav a:hover {
+      color: #ffffff !important;
+    }
+
+    .btn.primary {
+      background: linear-gradient(
+        135deg,
+        #5b46ef,
+        #8147f5
+      ) !important;
+
+      color: #ffffff !important;
+      border: none !important;
+
+      box-shadow:
+        0 10px 25px rgba(103, 71, 245, 0.25);
+    }
+
+    .btn.outline {
+      color: #ffffff !important;
+      border-color: rgba(255,255,255,0.20) !important;
+      background: rgba(255,255,255,0.04) !important;
+    }
+
+    .btn.light {
+      background: rgba(255,255,255,0.08) !important;
+      color: #ffffff !important;
+      border: 1px solid rgba(255,255,255,0.12) !important;
+    }
+
+    .hero {
+      background: transparent !important;
+    }
+
+    .hero h1,
+    .hero h2,
+    .hero h3 {
+      color: #ffffff !important;
+    }
+
+    .hero h1 span {
+      color: #7767ff !important;
+    }
+
+    .hero p {
+      color: #b8c2df !important;
+    }
+
+    .eyebrow {
+      color: #9a8cff !important;
+    }
+
+    .note {
+      color: #aeb9d7 !important;
+    }
+
+    .wallet {
+      background:
+        linear-gradient(
+          145deg,
+          rgba(19, 35, 94, 0.98),
+          rgba(11, 25, 76, 0.98)
+        ) !important;
+
+      border: 1px solid rgba(255,255,255,0.10) !important;
+
+      box-shadow:
+        0 25px 60px rgba(0,0,0,0.25) !important;
+
+      color: #ffffff !important;
+    }
+
+    .wallet h2 {
+      color: #ffffff !important;
+    }
+
+    .wallet small {
+      color: #aeb9d7 !important;
+    }
+
+    .wallet b {
+      color: #ffffff !important;
+    }
+
+    .bar {
+      background: rgba(255,255,255,0.10) !important;
+    }
+
+    .bar span {
+      background: linear-gradient(
+        90deg,
+        #5b46ef,
+        #8b5cff
+      ) !important;
+    }
+
+    .trust {
+      background: rgba(255,255,255,0.035) !important;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .trust b {
+      color: #ffffff !important;
+    }
+
+    .trust small {
+      color: #aeb9d7 !important;
+    }
+
+    .section {
+      background: transparent !important;
+    }
+
+    .section.soft {
+      background: rgba(255,255,255,0.025) !important;
+    }
+
+    .heading span {
+      color: #897cff !important;
+    }
+
+    .heading h2 {
+      color: #ffffff !important;
+    }
+
+    .heading p {
+      color: #aeb9d7 !important;
+    }
+
+    .cards {
+      gap: 22px;
+    }
+
+    .cards article {
+      background:
+        linear-gradient(
+          145deg,
+          rgba(17, 34, 91, 0.98),
+          rgba(11, 27, 76, 0.98)
+        ) !important;
+
+      border: 1px solid rgba(255,255,255,0.09) !important;
+      border-radius: 22px !important;
+
+      box-shadow:
+        0 18px 45px rgba(0,0,0,0.18) !important;
+
+      color: #ffffff !important;
+    }
+
+    .cards article:hover {
+      border-color: rgba(126, 101, 255, 0.42) !important;
+      transform: translateY(-3px);
+
+      box-shadow:
+        0 22px 55px rgba(0,0,0,0.24) !important;
+    }
+
+    .cards article h3 {
+      color: #ffffff !important;
+    }
+
+    .cards article p {
+      color: #aeb9d7 !important;
+    }
+
+    .cards article a {
+      color: #9b8dff !important;
+    }
+
+    .cards article a:hover {
+      color: #ffffff !important;
+    }
+
+    .ico {
+      border-radius: 14px !important;
+      color: #ffffff !important;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .ico.blue {
+      background: rgba(76,108,255,0.18) !important;
+      color: #8ca0ff !important;
+    }
+
+    .ico.purple {
+      background: rgba(126,82,255,0.18) !important;
+      color: #a994ff !important;
+    }
+
+    .ico.green {
+      background: rgba(54,205,145,0.14) !important;
+      color: #6fe6b4 !important;
+    }
+
+    .ico.orange {
+      background: rgba(255,170,79,0.14) !important;
+      color: #ffc071 !important;
+    }
+
+    .ico.pink {
+      background: rgba(239,113,170,0.14) !important;
+      color: #f58bbd !important;
+    }
+
+    .ico.cyan {
+      background: rgba(65,204,232,0.14) !important;
+      color: #6ee3f5 !important;
+    }
+
+    .steps > div {
+      background:
+        rgba(16, 31, 91, 0.82) !important;
+
+      border:
+        1px solid rgba(255,255,255,0.08) !important;
+
+      border-radius: 20px !important;
+
+      box-shadow:
+        0 15px 35px rgba(0,0,0,0.14) !important;
+    }
+
+    .steps em {
+      color: #8778ff !important;
+    }
+
+    .steps h3 {
+      color: #ffffff !important;
+    }
+
+    .steps p {
+      color: #aeb9d7 !important;
+    }
+
+    .business-section,
+    .legal-section,
+    .signup-notice {
+      background: transparent !important;
+    }
+
+    .business-section .cards article,
+    .legal-section .cards article {
+      min-height: 250px;
+    }
+
+    .business-section strong,
+    .legal-section strong {
+      color: #ffffff !important;
+    }
+
+    .business-section a,
+    .legal-section a {
+      color: #9d90ff !important;
+      text-decoration: none;
+    }
+
+    .business-section a:hover,
+    .legal-section a:hover {
+      color: #ffffff !important;
+      text-decoration: underline;
+    }
+
+    .signup-notice {
+      padding-top: 50px;
+      padding-bottom: 70px;
+    }
+
+    .signup-notice .heading {
+      background:
+        linear-gradient(
+          145deg,
+          rgba(20, 36, 98, 0.95),
+          rgba(11, 26, 75, 0.95)
+        );
+
+      border:
+        1px solid rgba(255,255,255,0.09);
+
+      border-radius: 26px;
+
+      padding: 55px 25px;
+
+      box-shadow:
+        0 25px 60px rgba(0,0,0,0.20);
+    }
+
+    footer {
+      background: #050e2d !important;
+
+      border-top:
+        1px solid rgba(255,255,255,0.08) !important;
+
+      color: #ffffff !important;
+    }
+
+    footer .logo,
+    footer .logo span {
+      color: #ffffff !important;
+    }
+
+    footer p {
+      color: #9eabd0 !important;
+    }
+
+    footer h4 {
+      color: #ffffff !important;
+    }
+
+    footer a,
+    footer span {
+      color: #aeb9d7 !important;
+    }
+
+    footer a:hover {
+      color: #ffffff !important;
+    }
+
+    .footer-bottom {
+      border-top:
+        1px solid rgba(255,255,255,0.08) !important;
+
+      color: #8996bb !important;
+    }
+
+    @media (max-width: 768px) {
+
+      .hero {
+        padding-top: 45px;
+      }
+
+      .hero-grid {
+        gap: 35px;
+      }
+
+      .wallet {
+        margin-top: 10px;
+      }
+
+      .cards article {
+        border-radius: 20px !important;
+      }
+
+      .business-section .cards article,
+      .legal-section .cards article {
+        min-height: auto;
+      }
+
+      .signup-notice .heading {
+        padding: 40px 20px;
+      }
+
+      .footer-main {
+        gap: 35px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
 <header>
+
   <div class="container nav">
 
     <a class="logo" href="index.html">
@@ -37,10 +448,9 @@
     </div>
 
   </div>
+
 </header>
 
-
-<!-- HERO -->
 
 <section class="hero">
 
@@ -108,9 +518,9 @@
         <span></span>
       </div>
 
-      <small>Next withdrawal window</small>
+      <small>Withdrawal availability</small>
 
-      <b>Available soon</b>
+      <b>Withdrawals anytime</b>
 
     </div>
 
@@ -118,8 +528,6 @@
 
 </section>
 
-
-<!-- TRUST -->
 
 <section class="trust">
 
@@ -150,8 +558,6 @@
 </section>
 
 
-<!-- WAYS TO EARN -->
-
 <section id="earn" class="section">
 
   <div class="container">
@@ -173,7 +579,6 @@
     <div class="cards">
 
       <article>
-
         <div class="ico blue">✓</div>
 
         <h3>Micro Tasks</h3>
@@ -183,15 +588,11 @@
           approved rewards.
         </p>
 
-        <a href="register.html">
-          Join to explore →
-        </a>
-
+        <a href="register.html">Join to explore →</a>
       </article>
 
 
       <article>
-
         <div class="ico purple">▤</div>
 
         <h3>Read & Earn</h3>
@@ -201,15 +602,11 @@
           answer quizzes.
         </p>
 
-        <a href="register.html">
-          Join to explore →
-        </a>
-
+        <a href="register.html">Join to explore →</a>
       </article>
 
 
       <article>
-
         <div class="ico green">✎</div>
 
         <h3>Create & Earn</h3>
@@ -219,15 +616,11 @@
           materials.
         </p>
 
-        <a href="register.html">
-          Become a creator →
-        </a>
-
+        <a href="register.html">Become a creator →</a>
       </article>
 
 
       <article>
-
         <div class="ico orange">↗</div>
 
         <h3>Referrals</h3>
@@ -236,15 +629,11 @@
           Invite eligible new members and earn referral rewards.
         </p>
 
-        <a href="register.html">
-          Start referring →
-        </a>
-
+        <a href="register.html">Start referring →</a>
       </article>
 
 
       <article>
-
         <div class="ico pink">▣</div>
 
         <h3>Marketplace</h3>
@@ -253,15 +642,11 @@
           Discover products and services from participating vendors.
         </p>
 
-        <a href="#marketplace">
-          View marketplace →
-        </a>
-
+        <a href="#marketplace">View marketplace →</a>
       </article>
 
 
       <article>
-
         <div class="ico cyan">★</div>
 
         <h3>Premium Activities</h3>
@@ -270,10 +655,7 @@
           Premium membership can unlock additional activities.
         </p>
 
-        <a href="register.html">
-          See membership →
-        </a>
-
+        <a href="register.html">See membership →</a>
       </article>
 
     </div>
@@ -282,8 +664,6 @@
 
 </section>
 
-
-<!-- HOW IT WORKS -->
 
 <section id="how" class="section soft">
 
@@ -301,54 +681,27 @@
     <div class="steps">
 
       <div>
-
         <em>01</em>
-
         <h3>Register</h3>
-
-        <p>
-          Create your EarnGig account.
-        </p>
-
+        <p>Create your EarnGig account.</p>
       </div>
 
-
       <div>
-
         <em>02</em>
-
         <h3>Choose</h3>
-
-        <p>
-          Explore available activities.
-        </p>
-
+        <p>Explore available activities.</p>
       </div>
 
-
       <div>
-
         <em>03</em>
-
         <h3>Participate</h3>
-
-        <p>
-          Complete eligible activities.
-        </p>
-
+        <p>Complete eligible activities.</p>
       </div>
 
-
       <div>
-
         <em>04</em>
-
         <h3>Track</h3>
-
-        <p>
-          Track your approved rewards and account activity.
-        </p>
-
+        <p>Track your approved rewards and account activity.</p>
       </div>
 
     </div>
@@ -357,8 +710,6 @@
 
 </section>
 
-
-<!-- MARKETPLACE -->
 
 <section id="marketplace" class="section">
 
@@ -381,7 +732,6 @@
     <div class="cards">
 
       <article>
-
         <div class="ico blue">▣</div>
 
         <h3>Products</h3>
@@ -389,12 +739,10 @@
         <p>
           Discover products offered by participating vendors.
         </p>
-
       </article>
 
 
       <article>
-
         <div class="ico purple">◆</div>
 
         <h3>Services</h3>
@@ -402,12 +750,10 @@
         <p>
           Find services available through participating vendors.
         </p>
-
       </article>
 
 
       <article>
-
         <div class="ico green">↗</div>
 
         <h3>Vendor Opportunities</h3>
@@ -416,7 +762,6 @@
           Participating vendors can showcase eligible products
           and services.
         </p>
-
       </article>
 
     </div>
@@ -425,8 +770,6 @@
 
 </section>
 
-
-<!-- FAQ -->
 
 <section id="faq" class="section soft">
 
@@ -444,7 +787,6 @@
     <div class="cards">
 
       <article>
-
         <h3>What is EarnGig?</h3>
 
         <p>
@@ -452,24 +794,20 @@
           participate in eligible activities such as tasks,
           reading activities, content creation and referrals.
         </p>
-
       </article>
 
 
       <article>
-
         <h3>How do I join?</h3>
 
         <p>
           Select "Get Started" or "Create Your Account" and
           complete the registration process.
         </p>
-
       </article>
 
 
       <article>
-
         <h3>How do rewards work?</h3>
 
         <p>
@@ -477,19 +815,16 @@
           subject to the applicable activity requirements,
           review and approval.
         </p>
-
       </article>
 
 
       <article>
-
         <h3>How can I contact support?</h3>
 
         <p>
           For account issues, payment concerns, complaints
           or disputes, contact our support emails listed below.
         </p>
-
       </article>
 
     </div>
@@ -498,8 +833,6 @@
 
 </section>
 
-
-<!-- BUSINESS INFORMATION -->
 
 <section class="section business-section">
 
@@ -533,11 +866,13 @@
         </p>
 
         <p>
-          <strong>Location:</strong> Lagos, Nigeria
+          <strong>Location:</strong>
+          Lagos, Nigeria
         </p>
 
         <p>
-          <strong>Status:</strong> CAC Registered
+          <strong>Status:</strong>
+          CAC Registered
         </p>
 
         <p>
@@ -611,8 +946,6 @@
 
 </section>
 
-
-<!-- LEGAL INFORMATION -->
 
 <section class="section legal-section">
 
@@ -694,8 +1027,6 @@
 </section>
 
 
-<!-- SIGN-UP NOTICE -->
-
 <section class="section signup-notice">
 
   <div class="container">
@@ -729,8 +1060,6 @@
 
 </section>
 
-
-<!-- FOOTER -->
 
 <footer>
 
