@@ -1,0 +1,1656 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>My Cart | EarnGig Marketplace</title>
+
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+
+    body {
+      background:
+        radial-gradient(
+          circle at top right,
+          rgba(92, 60, 180, 0.12),
+          transparent 35%
+        ),
+        #070b2b;
+    }
+
+    .cart-page {
+      padding: 25px 0 70px;
+    }
+
+    .cart-header {
+      margin-bottom: 22px;
+    }
+
+    .cart-header h1 {
+      margin: 7px 0;
+      font-size: 28px;
+    }
+
+    .cart-header p {
+      color: #9ca3c7;
+      margin: 0;
+    }
+
+    .cart-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 340px;
+      gap: 20px;
+      align-items: start;
+    }
+
+    .cart-section,
+    .summary-card {
+      background: rgba(14, 19, 57, 0.96);
+      border: 1px solid rgba(122, 105, 220, 0.22);
+      border-radius: 18px;
+    }
+
+    .cart-section {
+      overflow: hidden;
+    }
+
+    .vendor-group {
+      border-bottom: 1px solid #292f53;
+    }
+
+    .vendor-group:last-child {
+      border-bottom: 0;
+    }
+
+    .vendor-header {
+      padding: 16px 18px;
+      background: rgba(25, 31, 69, 0.55);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .vendor-name {
+      color: #fff;
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .vendor-link {
+      color: #a99cff;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .cart-item {
+      display: grid;
+      grid-template-columns: 85px minmax(0, 1fr) auto;
+      gap: 15px;
+      padding: 17px 18px;
+      border-top: 1px solid rgba(42, 48, 82, 0.7);
+    }
+
+    .cart-image {
+      width: 85px;
+      height: 85px;
+      object-fit: cover;
+      border-radius: 11px;
+      background: #090d31;
+    }
+
+    .item-title {
+      color: #fff;
+      font-size: 15px;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .item-category {
+      color: #8f98b5;
+      font-size: 11px;
+      margin-bottom: 8px;
+    }
+
+    .item-price {
+      color: #a78bfa;
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    .item-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 11px;
+    }
+
+    .qty-button {
+      width: 29px;
+      height: 29px;
+      border: 1px solid #353c68;
+      background: #111738;
+      color: #fff;
+      border-radius: 7px;
+      cursor: pointer;
+      font-weight: 800;
+    }
+
+    .qty-value {
+      min-width: 25px;
+      text-align: center;
+      font-size: 13px;
+      color: #fff;
+    }
+
+    .remove-button {
+      border: 0;
+      background: transparent;
+      color: #e8919b;
+      cursor: pointer;
+      font-size: 11px;
+      margin-left: 5px;
+    }
+
+    .item-total {
+      text-align: right;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .summary-card {
+      padding: 20px;
+      position: sticky;
+      top: 15px;
+    }
+
+    .summary-card h2 {
+      margin: 0 0 18px;
+      font-size: 18px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      color: #aeb5d0;
+      font-size: 13px;
+      padding: 8px 0;
+    }
+
+    .summary-row strong {
+      color: #fff;
+    }
+
+    .summary-total {
+      border-top: 1px solid #30365b;
+      margin-top: 8px;
+      padding-top: 15px;
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      font-size: 17px;
+      font-weight: 900;
+    }
+
+    .summary-total strong {
+      color: #a78bfa;
+    }
+
+    .checkout-btn {
+      width: 100%;
+      border: 0;
+      background: linear-gradient(
+        135deg,
+        #7c3aed,
+        #9333ea
+      );
+      color: #fff;
+      padding: 14px;
+      border-radius: 10px;
+      margin-top: 18px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .checkout-btn:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+    }
+
+    .continue-btn {
+      display: block;
+      text-align: center;
+      margin-top: 11px;
+      padding: 11px;
+      border-radius: 9px;
+      background: #171d3b;
+      color: #cdd2e7;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .empty-cart {
+      background: rgba(14, 19, 57, 0.96);
+      border: 1px solid rgba(122, 105, 220, 0.22);
+      border-radius: 18px;
+      padding: 55px 20px;
+      text-align: center;
+    }
+
+    .empty-icon {
+      font-size: 42px;
+      margin-bottom: 12px;
+    }
+
+    .empty-cart h2 {
+      margin: 0 0 8px;
+    }
+
+    .empty-cart p {
+      color: #9ca3c7;
+      margin: 0 0 20px;
+    }
+
+    .message {
+      margin-bottom: 15px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .message.error {
+      background: rgba(190, 60, 70, 0.1);
+      border: 1px solid rgba(210, 70, 80, 0.3);
+      color: #f0aaaa;
+    }
+
+    .message.success {
+      background: rgba(35, 150, 100, 0.1);
+      border: 1px solid rgba(35, 150, 100, 0.3);
+      color: #9ee0c1;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 800px) {
+
+      .cart-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .summary-card {
+        position: static;
+      }
+
+    }
+
+    @media (max-width: 550px) {
+
+      .cart-page {
+        padding: 18px 0 50px;
+      }
+
+      .cart-item {
+        grid-template-columns: 65px minmax(0, 1fr);
+        gap: 11px;
+        padding: 14px;
+      }
+
+      .cart-image {
+        width: 65px;
+        height: 65px;
+      }
+
+      .item-total {
+        grid-column: 2;
+        text-align: left;
+      }
+
+      .vendor-header {
+        padding: 13px 14px;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+<header>
+
+  <div class="container nav">
+
+    <a class="logo" href="index.html">
+
+      <span class="logo-mark">E</span>
+
+      Earn<span>Gig</span>
+
+    </a>
+
+
+    <nav>
+
+      <a href="dashboard.html">
+        Dashboard
+      </a>
+
+      <a href="marketplace.html">
+        Marketplace
+      </a>
+
+    </nav>
+
+
+    <a
+      class="btn outline"
+      href="marketplace.html"
+    >
+      Continue Shopping
+    </a>
+
+  </div>
+
+</header>
+
+
+<main class="dashboard-page cart-page">
+
+  <div class="container">
+
+    <div class="cart-header">
+
+      <span class="eyebrow">
+        EARNGIG MARKETPLACE
+      </span>
+
+      <h1>
+        My Cart
+      </h1>
+
+      <p>
+        Review your products before checkout.
+      </p>
+
+    </div>
+
+
+    <div
+      id="message"
+      class="message hidden"
+    ></div>
+
+
+    <div
+      id="loading"
+      class="empty-cart"
+    >
+
+      <div class="empty-icon">
+        🛒
+      </div>
+
+      <h2>
+        Loading your cart...
+      </h2>
+
+      <p>
+        Please wait.
+      </p>
+
+    </div>
+
+
+    <div
+      id="empty-cart"
+      class="empty-cart hidden"
+    >
+
+      <div class="empty-icon">
+        🛒
+      </div>
+
+      <h2>
+        Your cart is empty
+      </h2>
+
+      <p>
+        Browse the marketplace and add products from your favourite stores.
+      </p>
+
+      <a
+        href="marketplace.html"
+        class="btn primary"
+      >
+        Browse Marketplace
+      </a>
+
+    </div>
+
+
+    <div
+      id="cart-layout"
+      class="cart-layout hidden"
+    >
+
+
+      <!-- CART ITEMS -->
+
+      <div
+        id="cart-section"
+        class="cart-section"
+      ></div>
+
+
+      <!-- SUMMARY -->
+
+      <aside class="summary-card">
+
+        <h2>
+          Order Summary
+        </h2>
+
+
+        <div class="summary-row">
+
+          <span>
+            Items
+          </span>
+
+          <strong id="item-count">
+            0
+          </strong>
+
+        </div>
+
+
+        <div class="summary-row">
+
+          <span>
+            Product subtotal
+          </span>
+
+          <strong id="subtotal">
+            ₦0
+          </strong>
+
+        </div>
+
+
+        <div class="summary-row">
+
+          <span>
+            Delivery
+          </span>
+
+          <strong>
+            Calculated at checkout
+          </strong>
+
+        </div>
+
+
+        <div class="summary-total">
+
+          <span>
+            Products Total
+          </span>
+
+          <strong id="grand-total">
+            ₦0
+          </strong>
+
+        </div>
+
+
+        <button
+          id="checkout-button"
+          class="checkout-btn"
+          type="button"
+        >
+          Proceed to Checkout
+        </button>
+
+
+        <a
+          href="marketplace.html"
+          class="continue-btn"
+        >
+          Continue Shopping
+        </a>
+
+      </aside>
+
+    </div>
+
+  </div>
+
+</main>
+
+
+<footer>
+
+  <div class="container copy">
+    © 2026 EarnGig. All rights reserved.
+  </div>
+
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+
+
+<script>
+
+let currentUser = null;
+let cart = null;
+let cartItems = [];
+let storesByVendor = {};
+let productsById = {};
+
+
+/* ==========================================================
+   HELPERS
+========================================================== */
+
+function formatNaira(amount) {
+
+  return "₦" +
+    Number(amount || 0).toLocaleString(
+      "en-NG",
+      {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+      }
+    );
+
+}
+
+
+function escapeHtml(value) {
+
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+
+}
+
+
+function showMessage(
+  message,
+  type
+) {
+
+  const box =
+    document.getElementById(
+      "message"
+    );
+
+  box.textContent =
+    message;
+
+  box.className =
+    "message " + type;
+
+}
+
+
+function hideMessage() {
+
+  const box =
+    document.getElementById(
+      "message"
+    );
+
+  box.textContent = "";
+
+  box.className =
+    "message hidden";
+
+}
+
+
+/* ==========================================================
+   AUTH
+========================================================== */
+
+async function getCurrentUser() {
+
+  const {
+    data: {
+      user
+    },
+    error
+  } =
+    await supabaseClient.auth.getUser();
+
+
+  if (
+    error ||
+    !user
+  ) {
+
+    window.location.href =
+      "login.html?redirect=" +
+      encodeURIComponent(
+        window.location.href
+      );
+
+    return null;
+
+  }
+
+
+  currentUser =
+    user;
+
+
+  return user;
+
+}
+
+
+/* ==========================================================
+   LOAD CART
+========================================================== */
+
+async function loadCart() {
+
+  const user =
+    await getCurrentUser();
+
+
+  if (!user) {
+
+    return;
+
+  }
+
+
+  const {
+    data: cartData,
+    error: cartError
+  } =
+    await supabaseClient
+      .from("marketplace_carts")
+      .select(`
+        id,
+        buyer_id,
+        status,
+        created_at,
+        updated_at
+      `)
+      .eq(
+        "buyer_id",
+        user.id
+      )
+      .eq(
+        "status",
+        "active"
+      )
+      .maybeSingle();
+
+
+  if (cartError) {
+
+    showError(
+      cartError.message
+    );
+
+    return;
+
+  }
+
+
+  if (!cartData) {
+
+    showEmptyCart();
+
+    return;
+
+  }
+
+
+  cart =
+    cartData;
+
+
+  const {
+    data: items,
+    error: itemsError
+  } =
+    await supabaseClient
+      .from("marketplace_cart_items")
+      .select(`
+        id,
+        cart_id,
+        product_id,
+        quantity,
+        created_at,
+        updated_at
+      `)
+      .eq(
+        "cart_id",
+        cart.id
+      )
+      .order(
+        "created_at",
+        {
+          ascending: true
+        }
+      );
+
+
+  if (itemsError) {
+
+    showError(
+      itemsError.message
+    );
+
+    return;
+
+  }
+
+
+  if (!items || !items.length) {
+
+    showEmptyCart();
+
+    return;
+
+  }
+
+
+  cartItems =
+    items;
+
+
+  await loadProducts();
+
+
+  if (!cartItems.length) {
+
+    showEmptyCart();
+
+    return;
+
+  }
+
+
+  await loadStores();
+
+
+  renderCart();
+
+}
+
+
+/* ==========================================================
+   LOAD PRODUCTS
+========================================================== */
+
+async function loadProducts() {
+
+  const productIds =
+    [
+      ...new Set(
+        cartItems
+          .map(
+            item =>
+              item.product_id
+          )
+          .filter(Boolean)
+      )
+    ];
+
+
+  if (!productIds.length) {
+
+    cartItems = [];
+
+    return;
+
+  }
+
+
+  const {
+    data: products,
+    error
+  } =
+    await supabaseClient
+      .from("marketplace_listings")
+      .select(`
+        id,
+        seller_id,
+        title,
+        category,
+        description,
+        price,
+        image_url,
+        status
+      `)
+      .in(
+        "id",
+        productIds
+      );
+
+
+  if (error) {
+
+    throw error;
+
+  }
+
+
+  productsById = {};
+
+
+  (products || []).forEach(
+    function(product) {
+
+      productsById[
+        product.id
+      ] = product;
+
+    }
+  );
+
+
+  /*
+   * Remove cart items whose product
+   * no longer exists or has no image.
+   */
+
+  cartItems =
+    cartItems.filter(
+      function(item) {
+
+        const product =
+          productsById[
+            item.product_id
+          ];
+
+
+        if (!product) {
+
+          return false;
+
+        }
+
+
+        if (!product.image_url) {
+
+          return false;
+
+        }
+
+
+        return true;
+
+      }
+    );
+
+}
+
+
+/* ==========================================================
+   LOAD STORES
+========================================================== */
+
+async function loadStores() {
+
+  const sellerIds =
+    [
+      ...new Set(
+        cartItems
+          .map(
+            function(item) {
+
+              return productsById[
+                item.product_id
+              ]?.seller_id;
+
+            }
+          )
+          .filter(Boolean)
+      )
+    ];
+
+
+  if (!sellerIds.length) {
+
+    return;
+
+  }
+
+
+  const {
+    data: stores,
+    error
+  } =
+    await supabaseClient
+      .from("marketplace_stores")
+      .select(`
+        id,
+        vendor_id,
+        store_name,
+        store_slug,
+        status
+      `)
+      .in(
+        "vendor_id",
+        sellerIds
+      )
+      .eq(
+        "status",
+        "active"
+      );
+
+
+  if (error) {
+
+    console.warn(
+      "Store loading error:",
+      error
+    );
+
+    return;
+
+  }
+
+
+  storesByVendor = {};
+
+
+  (stores || []).forEach(
+    function(store) {
+
+      storesByVendor[
+        store.vendor_id
+      ] = store;
+
+    }
+  );
+
+}
+
+
+/* ==========================================================
+   GROUP CART BY VENDOR
+========================================================== */
+
+function groupItemsByVendor() {
+
+  const groups = {};
+
+
+  cartItems.forEach(
+    function(item) {
+
+      const product =
+        productsById[
+          item.product_id
+        ];
+
+
+      if (!product) {
+
+        return;
+
+      }
+
+
+      const sellerId =
+        product.seller_id ||
+        "unknown";
+
+
+      if (!groups[sellerId]) {
+
+        groups[sellerId] = {
+
+          sellerId:
+            sellerId,
+
+          store:
+            storesByVendor[
+              sellerId
+            ] || null,
+
+          items: []
+
+        };
+
+      }
+
+
+      groups[
+        sellerId
+      ].items.push({
+
+        item:
+          item,
+
+        product:
+          product
+
+      });
+
+    }
+  );
+
+
+  return Object.values(
+    groups
+  );
+
+}
+
+
+/* ==========================================================
+   RENDER CART
+========================================================== */
+
+function renderCart() {
+
+  const groups =
+    groupItemsByVendor();
+
+
+  if (!groups.length) {
+
+    showEmptyCart();
+
+    return;
+
+  }
+
+
+  const container =
+    document.getElementById(
+      "cart-section"
+    );
+
+
+  let totalItems = 0;
+  let subtotal = 0;
+
+
+  container.innerHTML =
+    groups.map(
+      function(group) {
+
+        const store =
+          group.store;
+
+
+        const storeName =
+          store?.store_name ||
+          "EarnGig Vendor";
+
+
+        const storeLink =
+          store?.store_slug
+            ? `store.html?store=${encodeURIComponent(
+                store.store_slug
+              )}`
+            : "marketplace.html";
+
+
+        const itemsHtml =
+          group.items.map(
+            function(entry) {
+
+              const item =
+                entry.item;
+
+              const product =
+                entry.product;
+
+
+              const quantity =
+                Number(
+                  item.quantity || 1
+                );
+
+
+              const price =
+                Number(
+                  product.price || 0
+                );
+
+
+              const itemTotal =
+                price *
+                quantity;
+
+
+              totalItems +=
+                quantity;
+
+
+              subtotal +=
+                itemTotal;
+
+
+              return `
+
+                <div
+                  class="cart-item"
+                  data-item-id="${escapeHtml(
+                    item.id
+                  )}"
+                >
+
+                  <img
+                    src="${escapeHtml(
+                      product.image_url
+                    )}"
+                    alt="${escapeHtml(
+                      product.title
+                    )}"
+                    class="cart-image"
+                  >
+
+
+                  <div>
+
+                    <div class="item-title">
+                      ${escapeHtml(
+                        product.title
+                      )}
+                    </div>
+
+
+                    <div class="item-category">
+                      ${escapeHtml(
+                        product.category ||
+                        "Other"
+                      )}
+                    </div>
+
+
+                    <div class="item-price">
+                      ${formatNaira(
+                        price
+                      )}
+                    </div>
+
+
+                    <div class="item-controls">
+
+                      <button
+                        class="qty-button"
+                        type="button"
+                        onclick="changeQuantity(
+                          '${item.id}',
+                          -1
+                        )"
+                      >
+                        −
+                      </button>
+
+
+                      <span class="qty-value">
+                        ${quantity}
+                      </span>
+
+
+                      <button
+                        class="qty-button"
+                        type="button"
+                        onclick="changeQuantity(
+                          '${item.id}',
+                          1
+                        )"
+                      >
+                        +
+                      </button>
+
+
+                      <button
+                        class="remove-button"
+                        type="button"
+                        onclick="removeItem(
+                          '${item.id}'
+                        )"
+                      >
+                        Remove
+                      </button>
+
+                    </div>
+
+                  </div>
+
+
+                  <div class="item-total">
+
+                    ${formatNaira(
+                      itemTotal
+                    )}
+
+                  </div>
+
+                </div>
+
+              `;
+
+            }
+          ).join("");
+
+
+        return `
+
+          <section class="vendor-group">
+
+            <div class="vendor-header">
+
+              <div>
+
+                <div class="vendor-name">
+                  🏪 ${escapeHtml(
+                    storeName
+                  )}
+                </div>
+
+              </div>
+
+
+              <a
+                href="${storeLink}"
+                class="vendor-link"
+              >
+                View Store →
+              </a>
+
+            </div>
+
+
+            ${itemsHtml}
+
+          </section>
+
+        `;
+
+      }
+    ).join("");
+
+
+  document.getElementById(
+    "item-count"
+  ).textContent =
+    totalItems;
+
+
+  document.getElementById(
+    "subtotal"
+  ).textContent =
+    formatNaira(
+      subtotal
+    );
+
+
+  document.getElementById(
+    "grand-total"
+  ).textContent =
+    formatNaira(
+      subtotal
+    );
+
+
+  document.getElementById(
+    "loading"
+  ).classList.add(
+    "hidden"
+  );
+
+
+  document.getElementById(
+    "empty-cart"
+  ).classList.add(
+    "hidden"
+  );
+
+
+  document.getElementById(
+    "cart-layout"
+  ).classList.remove(
+    "hidden"
+  );
+
+}
+
+
+/* ==========================================================
+   CHANGE QUANTITY
+========================================================== */
+
+async function changeQuantity(
+  itemId,
+  change
+) {
+
+  hideMessage();
+
+
+  const item =
+    cartItems.find(
+      function(row) {
+
+        return row.id === itemId;
+
+      }
+    );
+
+
+  if (!item) {
+
+    return;
+
+  }
+
+
+  const currentQuantity =
+    Number(
+      item.quantity || 1
+    );
+
+
+  const newQuantity =
+    currentQuantity +
+    Number(change);
+
+
+  if (newQuantity <= 0) {
+
+    await removeItem(
+      itemId
+    );
+
+    return;
+
+  }
+
+
+  try {
+
+    const {
+      error
+    } =
+      await supabaseClient
+        .from("marketplace_cart_items")
+        .update({
+          quantity:
+            newQuantity,
+          updated_at:
+            new Date().toISOString()
+        })
+        .eq(
+          "id",
+          itemId
+        )
+        .eq(
+          "cart_id",
+          cart.id
+        );
+
+
+    if (error) {
+
+      throw error;
+
+    }
+
+
+    item.quantity =
+      newQuantity;
+
+
+    renderCart();
+
+  } catch (error) {
+
+    showError(
+      error.message
+    );
+
+  }
+
+}
+
+
+/* ==========================================================
+   REMOVE ITEM
+========================================================== */
+
+async function removeItem(
+  itemId
+) {
+
+  hideMessage();
+
+
+  try {
+
+    const {
+      error
+    } =
+      await supabaseClient
+        .from("marketplace_cart_items")
+        .delete()
+        .eq(
+          "id",
+          itemId
+        )
+        .eq(
+          "cart_id",
+          cart.id
+        );
+
+
+    if (error) {
+
+      throw error;
+
+    }
+
+
+    cartItems =
+      cartItems.filter(
+        function(item) {
+
+          return item.id !== itemId;
+
+        }
+      );
+
+
+    if (!cartItems.length) {
+
+      showEmptyCart();
+
+      return;
+
+    }
+
+
+    await loadProducts();
+
+    await loadStores();
+
+    renderCart();
+
+
+  } catch (error) {
+
+    showError(
+      error.message
+    );
+
+  }
+
+}
+
+
+/* ==========================================================
+   EMPTY CART
+========================================================== */
+
+function showEmptyCart() {
+
+  document.getElementById(
+    "loading"
+  ).classList.add(
+    "hidden"
+  );
+
+
+  document.getElementById(
+    "cart-layout"
+  ).classList.add(
+    "hidden"
+  );
+
+
+  document.getElementById(
+    "empty-cart"
+  ).classList.remove(
+    "hidden"
+  );
+
+}
+
+
+/* ==========================================================
+   ERROR
+========================================================== */
+
+function showError(
+  message
+) {
+
+  document.getElementById(
+    "loading"
+  ).classList.add(
+    "hidden"
+  );
+
+
+  showMessage(
+    message ||
+    "Unable to load your cart.",
+    "error"
+  );
+
+}
+
+
+/* ==========================================================
+   CHECKOUT
+========================================================== */
+
+document
+  .getElementById(
+    "checkout-button"
+  )
+  .addEventListener(
+    "click",
+    async function() {
+
+      const user =
+        await getCurrentUser();
+
+
+      if (!user) {
+
+        return;
+
+      }
+
+
+      if (!cartItems.length) {
+
+        showMessage(
+          "Your cart is empty.",
+          "error"
+        );
+
+        return;
+
+      }
+
+
+      /*
+       * Checkout will collect:
+       *
+       * Full name
+       * Primary phone
+       * Second phone
+       * State
+       * LGA
+       * City/Town
+       * Area
+       * Street/Full address
+       * Landmark
+       * Delivery instructions
+       *
+       * Payment:
+       * Wallet or Paystack
+       *
+       * The checkout page will be responsible
+       * for creating the vendor order records.
+       */
+
+      window.location.href =
+        "checkout.html";
+
+    }
+  );
+
+
+/* ==========================================================
+   START
+========================================================== */
+
+loadCart()
+  .catch(
+    function(error) {
+
+      console.error(
+        "Cart error:",
+        error
+      );
+
+      showError(
+        error.message
+      );
+
+    }
+  );
+
+</script>
+
+</body>
+
+</html>
