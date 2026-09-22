@@ -1,0 +1,2145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Advert Details - EarnGig</title>
+
+  <link
+    rel="stylesheet"
+    href="styles.css"
+  >
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script src="https://js.paystack.co/v2/inline.js"></script>
+
+  <script src="supabase.js"></script>
+
+
+  <style>
+
+    .page-wrap {
+      padding: 30px 0 60px;
+    }
+
+
+    .back-row {
+      margin-bottom: 18px;
+    }
+
+
+    .back-row a {
+      text-decoration: none;
+    }
+
+
+    .detail-card {
+      padding: 22px;
+      border-radius: 18px;
+      border: 1px solid rgba(139, 92, 246, 0.25);
+      background: rgba(15, 23, 42, 0.78);
+      margin-bottom: 18px;
+    }
+
+
+    .detail-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+
+    .detail-header h1 {
+      margin: 0 0 7px;
+      font-size: 25px;
+    }
+
+
+    .detail-header p {
+      margin: 0;
+      opacity: 0.7;
+      line-height: 1.5;
+    }
+
+
+    .status {
+      display: inline-block;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+
+    .status.approved {
+      color: #fbbf24;
+      background: rgba(245, 158, 11, 0.16);
+    }
+
+
+    .status.paid {
+      color: #86efac;
+      background: rgba(34, 197, 94, 0.16);
+    }
+
+
+    .status.active {
+      color: #67e8f9;
+      background: rgba(6, 182, 212, 0.16);
+    }
+
+
+    .status.pending {
+      color: #c4b5fd;
+      background: rgba(139, 92, 246, 0.16);
+    }
+
+
+    .status.rejected {
+      color: #fca5a5;
+      background: rgba(239, 68, 68, 0.16);
+    }
+
+
+    .status.revision {
+      color: #fbbf24;
+      background: rgba(245, 158, 11, 0.16);
+    }
+
+
+    .amount-box {
+      padding: 18px;
+      border-radius: 14px;
+      background:
+        linear-gradient(
+          135deg,
+          rgba(76, 29, 149, 0.25),
+          rgba(15, 23, 42, 0.75)
+        );
+      border: 1px solid rgba(139, 92, 246, 0.25);
+      margin-bottom: 18px;
+    }
+
+
+    .amount-label {
+      font-size: 12px;
+      opacity: 0.65;
+      margin-bottom: 5px;
+    }
+
+
+    .amount {
+      font-size: 30px;
+      font-weight: 800;
+    }
+
+
+    .details-grid {
+      display: grid;
+      grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+
+    .detail-item {
+      padding: 12px;
+      border-radius: 11px;
+      background: rgba(30, 41, 59, 0.55);
+    }
+
+
+    .detail-item.full {
+      grid-column: 1 / -1;
+    }
+
+
+    .detail-item-label {
+      font-size: 11px;
+      opacity: 0.55;
+      margin-bottom: 5px;
+    }
+
+
+    .detail-item-value {
+      font-size: 13px;
+      line-height: 1.5;
+      word-break: break-word;
+    }
+
+
+    .description {
+      white-space: pre-wrap;
+      line-height: 1.7;
+      opacity: 0.8;
+      font-size: 14px;
+    }
+
+
+    .payment-card {
+      display: none;
+      padding: 22px;
+      border-radius: 18px;
+      border: 1px solid rgba(139, 92, 246, 0.42);
+      background:
+        linear-gradient(
+          145deg,
+          rgba(49, 27, 91, 0.75),
+          rgba(15, 23, 42, 0.88)
+        );
+      margin-bottom: 18px;
+    }
+
+
+    .payment-card h2 {
+      margin: 0 0 7px;
+      font-size: 19px;
+    }
+
+
+    .payment-card-intro {
+      margin: 0 0 18px;
+      opacity: 0.72;
+      line-height: 1.6;
+      font-size: 13px;
+    }
+
+
+    .payment-total {
+      font-size: 25px;
+      font-weight: 800;
+      margin-bottom: 17px;
+    }
+
+
+    .wallet-box {
+      padding: 15px;
+      border-radius: 13px;
+      background: rgba(15, 23, 42, 0.72);
+      border: 1px solid rgba(148, 163, 184, 0.15);
+      margin-bottom: 12px;
+    }
+
+
+    .wallet-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 9px;
+    }
+
+
+    .wallet-label {
+      font-size: 12px;
+      opacity: 0.65;
+    }
+
+
+    .wallet-balance {
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+
+    .wallet-warning {
+      display: none;
+      color: #fca5a5;
+      font-size: 12px;
+      line-height: 1.5;
+      margin-bottom: 10px;
+    }
+
+
+    .payment-button {
+      width: 100%;
+      min-height: 48px;
+      border: 0;
+      border-radius: 11px;
+      cursor: pointer;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+
+    .payment-button.wallet {
+      background:
+        linear-gradient(
+          135deg,
+          #7c3aed,
+          #6d28d9
+        );
+    }
+
+
+    .payment-button.paystack {
+      background:
+        linear-gradient(
+          135deg,
+          #2563eb,
+          #0ea5e9
+        );
+      margin-top: 10px;
+    }
+
+
+    .payment-button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+
+    .processing {
+      display: none;
+      text-align: center;
+      margin-top: 12px;
+      font-size: 12px;
+      color: #c4b5fd;
+    }
+
+
+    .success-box {
+      display: none;
+      padding: 15px;
+      border-radius: 13px;
+      color: #bbf7d0;
+      background: rgba(34, 197, 94, 0.11);
+      border: 1px solid rgba(34, 197, 94, 0.28);
+      line-height: 1.55;
+      font-size: 13px;
+      margin-bottom: 18px;
+    }
+
+
+    .review-note {
+      display: none;
+      padding: 15px;
+      border-radius: 13px;
+      background: rgba(245, 158, 11, 0.09);
+      border: 1px solid rgba(245, 158, 11, 0.24);
+      margin-bottom: 18px;
+    }
+
+
+    .review-note strong {
+      display: block;
+      margin-bottom: 7px;
+    }
+
+
+    .review-note p {
+      margin: 0;
+      white-space: pre-wrap;
+      line-height: 1.6;
+      font-size: 13px;
+    }
+
+
+    .destination {
+      color: #a78bfa;
+      text-decoration: none;
+      word-break: break-all;
+    }
+
+
+    .destination:hover {
+      text-decoration: underline;
+    }
+
+
+    .loading {
+      text-align: center;
+      padding: 50px 20px;
+      opacity: 0.7;
+    }
+
+
+    .error-box {
+      display: none;
+      padding: 15px;
+      border-radius: 13px;
+      color: #fecaca;
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.28);
+      line-height: 1.55;
+    }
+
+
+    @media (max-width: 600px) {
+
+      .page-wrap {
+        padding-top: 20px;
+      }
+
+
+      .detail-card,
+      .payment-card {
+        padding: 16px;
+      }
+
+
+      .detail-header {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+
+      .details-grid {
+        grid-template-columns: 1fr;
+      }
+
+
+      .detail-item.full {
+        grid-column: auto;
+      }
+
+
+      .amount {
+        font-size: 27px;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+  <div class="container nav">
+
+    <a
+      class="logo"
+      href="index.html"
+    >
+
+      <span class="logo-mark">E</span>
+
+      Earn<span>Gig</span>
+
+    </a>
+
+
+    <a
+      class="btn outline"
+      href="run-advert.html"
+    >
+      My Adverts
+    </a>
+
+  </div>
+
+</header>
+
+
+<main>
+
+  <div class="container page-wrap">
+
+
+    <div class="back-row">
+
+      <a
+        class="btn outline"
+        href="run-advert.html"
+      >
+        ← My Adverts
+      </a>
+
+    </div>
+
+
+    <div
+      id="loading"
+      class="loading"
+    >
+      Loading advert...
+    </div>
+
+
+    <div
+      id="error-box"
+      class="error-box"
+    ></div>
+
+
+    <div id="page-content" style="display:none;">
+
+
+      <!-- PAYMENT SUCCESS -->
+
+      <div
+        id="success-box"
+        class="success-box"
+      >
+        Payment completed successfully.
+        Your advert payment has been confirmed.
+      </div>
+
+
+      <!-- ADVERT -->
+
+      <section class="detail-card">
+
+        <div class="detail-header">
+
+          <div>
+
+            <h1 id="campaign-name">
+              Advert
+            </h1>
+
+            <p id="campaign-subtitle">
+              Advert details
+            </p>
+
+          </div>
+
+
+          <span
+            id="status"
+            class="status pending"
+          >
+            Loading
+          </span>
+
+        </div>
+
+
+        <div class="amount-box">
+
+          <div class="amount-label">
+            Campaign amount
+          </div>
+
+          <div
+            id="campaign-amount"
+            class="amount"
+          >
+            ₦0
+          </div>
+
+        </div>
+
+
+        <div class="details-grid">
+
+
+          <div class="detail-item">
+
+            <div class="detail-item-label">
+              Advert title
+            </div>
+
+            <div
+              id="advert-title"
+              class="detail-item-value"
+            >
+              —
+            </div>
+
+          </div>
+
+
+          <div class="detail-item">
+
+            <div class="detail-item-label">
+              Placement
+            </div>
+
+            <div
+              id="placement"
+              class="detail-item-value"
+            >
+              —
+            </div>
+
+          </div>
+
+
+          <div class="detail-item">
+
+            <div class="detail-item-label">
+              Payment status
+            </div>
+
+            <div
+              id="payment-status"
+              class="detail-item-value"
+            >
+              —
+            </div>
+
+          </div>
+
+
+          <div class="detail-item">
+
+            <div class="detail-item-label">
+              Approval status
+            </div>
+
+            <div
+              id="approval-status"
+              class="detail-item-value"
+            >
+              —
+            </div>
+
+          </div>
+
+
+          <div class="detail-item full">
+
+            <div class="detail-item-label">
+              Destination
+            </div>
+
+            <div
+              id="destination"
+              class="detail-item-value"
+            >
+              —
+            </div>
+
+          </div>
+
+
+          <div class="detail-item">
+
+            <div class="detail-item-label">
+              Submitted
+            </div>
+
+            <div
+              id="submitted-at"
+              class="detail-item-value"
+            >
+              —
+            </div>
+
+          </div>
+
+
+          <div class="detail-item">
+
+            <div class="detail-item-label">
+              Created
+            </div>
+
+            <div
+              id="created-at"
+              class="detail-item-value"
+            >
+              —
+            </div>
+
+          </div>
+
+
+        </div>
+
+      </section>
+
+
+      <!-- REVIEW NOTE -->
+
+      <div
+        id="review-note"
+        class="review-note"
+      >
+
+        <strong>
+          EarnGig review note
+        </strong>
+
+        <p id="review-note-text"></p>
+
+      </div>
+
+
+      <!-- PAYMENT -->
+
+      <section
+        id="payment-card"
+        class="payment-card"
+      >
+
+        <h2>
+          💳 Pay for your advert
+        </h2>
+
+        <p class="payment-card-intro">
+          Your advert has been approved.
+          Payment is now required before your campaign
+          can proceed.
+        </p>
+
+
+        <div
+          id="payment-total"
+          class="payment-total"
+        >
+          ₦0
+        </div>
+
+
+        <div class="wallet-box">
+
+          <div class="wallet-top">
+
+            <div>
+
+              <div class="wallet-label">
+                EarnGig Wallet Balance
+              </div>
+
+              <div
+                id="wallet-balance"
+                class="wallet-balance"
+              >
+                ₦0
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div
+            id="wallet-warning"
+            class="wallet-warning"
+          >
+            Your wallet balance is not enough
+            to pay for this advert.
+          </div>
+
+
+          <button
+            type="button"
+            id="wallet-button"
+            class="payment-button wallet"
+          >
+            Pay with EarnGig Wallet
+          </button>
+
+        </div>
+
+
+        <button
+          type="button"
+          id="paystack-button"
+          class="payment-button paystack"
+        >
+          Pay with Paystack
+        </button>
+
+
+        <div
+          id="processing"
+          class="processing"
+        >
+          Processing payment. Please wait...
+        </div>
+
+      </section>
+
+
+      <!-- DESCRIPTION -->
+
+      <section class="detail-card">
+
+        <h2>
+          Description
+        </h2>
+
+        <div
+          id="description"
+          class="description"
+        >
+          —
+        </div>
+
+      </section>
+
+
+    </div>
+
+  </div>
+
+</main>
+
+
+<footer>
+
+  <div class="container copy">
+    © 2026 EarnGig. All rights reserved.
+  </div>
+
+</footer>
+
+
+<script>
+
+
+const PAYSTACK_PUBLIC_KEY =
+  "pk_test_aca5cbbbfb6574c4712453be151178c139c74512";
+
+
+const PAYSTACK_FUNCTION =
+  "advert-paystack";
+
+
+let currentUser =
+  null;
+
+
+let currentCampaign =
+  null;
+
+
+let walletBalance =
+  0;
+
+
+let paymentBusy =
+  false;
+
+
+
+const loading =
+  document.getElementById(
+    "loading"
+  );
+
+
+const errorBox =
+  document.getElementById(
+    "error-box"
+  );
+
+
+const pageContent =
+  document.getElementById(
+    "page-content"
+  );
+
+
+const paymentCard =
+  document.getElementById(
+    "payment-card"
+  );
+
+
+const walletButton =
+  document.getElementById(
+    "wallet-button"
+  );
+
+
+const paystackButton =
+  document.getElementById(
+    "paystack-button"
+  );
+
+
+const processing =
+  document.getElementById(
+    "processing"
+  );
+
+
+const successBox =
+  document.getElementById(
+    "success-box"
+  );
+
+
+
+function formatNaira(
+  value
+) {
+
+  return "₦" +
+    Number(
+      value || 0
+    ).toLocaleString(
+      "en-NG"
+    );
+
+}
+
+
+
+function escapeHtml(
+  value
+) {
+
+  return String(
+    value ?? ""
+  )
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+    .replace(
+      /</g,
+      "&lt;"
+    )
+    .replace(
+      />/g,
+      "&gt;"
+    )
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+
+}
+
+
+
+function formatDate(
+  value
+) {
+
+  if (!value) {
+
+    return "—";
+
+  }
+
+
+  const date =
+    new Date(
+      value
+    );
+
+
+  if (
+    Number.isNaN(
+      date.getTime()
+    )
+  ) {
+
+    return "—";
+
+  }
+
+
+  return date.toLocaleString(
+    "en-NG",
+    {
+      dateStyle:
+        "medium",
+      timeStyle:
+        "short"
+    }
+  );
+
+}
+
+
+
+function getCampaignId() {
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+
+  return (
+    params.get("id") ||
+    params.get("campaign_id")
+  );
+
+}
+
+
+
+function getStatus(
+  campaign
+) {
+
+  if (
+    campaign.status ===
+    "active"
+  ) {
+
+    return {
+      text:
+        "Active",
+      className:
+        "active"
+    };
+
+  }
+
+
+  if (
+    campaign.status ===
+    "paid" ||
+    campaign.payment_status ===
+    "paid"
+  ) {
+
+    return {
+      text:
+        "Paid",
+      className:
+        "paid"
+    };
+
+  }
+
+
+  if (
+    campaign.status ===
+    "approved_payment_required"
+  ) {
+
+    return {
+      text:
+        "Approved - Payment Required",
+      className:
+        "approved"
+    };
+
+  }
+
+
+  if (
+    campaign.status ===
+    "revision_required"
+  ) {
+
+    return {
+      text:
+        "Changes Requested",
+      className:
+        "revision"
+    };
+
+  }
+
+
+  if (
+    campaign.status ===
+    "rejected"
+  ) {
+
+    return {
+      text:
+        "Rejected",
+      className:
+        "rejected"
+    };
+
+  }
+
+
+  return {
+    text:
+      "Under Review",
+    className:
+      "pending"
+  };
+
+}
+
+
+
+function placementText(
+  placement
+) {
+
+  if (!placement) {
+
+    return "Not specified";
+
+  }
+
+
+  return String(
+    placement
+  )
+    .split(",")
+    .map(
+      item => {
+
+        const value =
+          item.trim();
+
+
+        if (
+          value ===
+          "watch_and_earn"
+        ) {
+
+          return "EarnGig";
+
+        }
+
+
+        if (
+          value ===
+          "tiktok"
+        ) {
+
+          return "TikTok";
+
+        }
+
+
+        return value;
+
+      }
+    )
+    .join(
+      " + "
+    );
+
+}
+
+
+
+function getDestination(
+  campaign
+) {
+
+  return (
+    campaign.destination_url ||
+    campaign.destination ||
+    campaign.website_url ||
+    campaign.target_url ||
+    ""
+  );
+
+}
+
+
+
+function showError(
+  message
+) {
+
+  loading.style.display =
+    "none";
+
+
+  pageContent.style.display =
+    "none";
+
+
+  errorBox.textContent =
+    message;
+
+
+  errorBox.style.display =
+    "block";
+
+}
+
+
+
+function renderCampaign() {
+
+  const campaign =
+    currentCampaign;
+
+
+  const amount =
+    Number(
+      campaign.campaign_budget ||
+      0
+    );
+
+
+  const status =
+    getStatus(
+      campaign
+    );
+
+
+  document.getElementById(
+    "campaign-name"
+  ).textContent =
+    campaign.campaign_name ||
+    "Advert";
+
+
+  document.getElementById(
+    "campaign-subtitle"
+  ).textContent =
+    campaign.ad_title ||
+    "Advert details";
+
+
+  document.getElementById(
+    "campaign-amount"
+  ).textContent =
+    formatNaira(
+      amount
+    );
+
+
+  document.getElementById(
+    "payment-total"
+  ).textContent =
+    formatNaira(
+      amount
+    );
+
+
+  const statusElement =
+    document.getElementById(
+      "status"
+    );
+
+
+  statusElement.textContent =
+    status.text;
+
+
+  statusElement.className =
+    "status " +
+    status.className;
+
+
+  document.getElementById(
+    "advert-title"
+  ).textContent =
+    campaign.ad_title ||
+    "Advert";
+
+
+  document.getElementById(
+    "placement"
+  ).textContent =
+    placementText(
+      campaign.placement
+    );
+
+
+  document.getElementById(
+    "payment-status"
+  ).textContent =
+    campaign.payment_status ||
+    "unpaid";
+
+
+  document.getElementById(
+    "approval-status"
+  ).textContent =
+    campaign.approval_status ||
+    "pending";
+
+
+  document.getElementById(
+    "submitted-at"
+  ).textContent =
+    formatDate(
+      campaign.submitted_at
+    );
+
+
+  document.getElementById(
+    "created-at"
+  ).textContent =
+    formatDate(
+      campaign.created_at
+    );
+
+
+  document.getElementById(
+    "description"
+  ).textContent =
+    campaign.description ||
+    "No description provided.";
+
+
+  renderDestination(
+    campaign
+  );
+
+
+  renderReviewNote(
+    campaign
+  );
+
+
+  const awaitingPayment =
+    campaign.status ===
+      "approved_payment_required" &&
+    campaign.payment_status !==
+      "paid";
+
+
+  if (
+    awaitingPayment
+  ) {
+
+    paymentCard.style.display =
+      "block";
+
+
+    loadWallet();
+
+  } else {
+
+    paymentCard.style.display =
+      "none";
+
+  }
+
+}
+
+
+
+function renderDestination(
+  campaign
+) {
+
+  const element =
+    document.getElementById(
+      "destination"
+    );
+
+
+  const destination =
+    getDestination(
+      campaign
+    );
+
+
+  if (!destination) {
+
+    element.textContent =
+      "Not provided";
+
+    return;
+
+  }
+
+
+  let href =
+    destination;
+
+
+  if (
+    !/^https?:\/\//i.test(
+      href
+    )
+  ) {
+
+    href =
+      "https://" +
+      href;
+
+  }
+
+
+  element.innerHTML =
+    "";
+
+
+  const link =
+    document.createElement(
+      "a"
+    );
+
+
+  link.href =
+    href;
+
+
+  link.target =
+    "_blank";
+
+
+  link.rel =
+    "noopener noreferrer";
+
+
+  link.className =
+    "destination";
+
+
+  link.textContent =
+    destination;
+
+
+  element.appendChild(
+    link
+  );
+
+}
+
+
+
+function renderReviewNote(
+  campaign
+) {
+
+  const box =
+    document.getElementById(
+      "review-note"
+    );
+
+
+  const text =
+    document.getElementById(
+      "review-note-text"
+    );
+
+
+  if (
+    campaign.admin_review_note
+  ) {
+
+    text.textContent =
+      campaign.admin_review_note;
+
+
+    box.style.display =
+      "block";
+
+  } else {
+
+    box.style.display =
+      "none";
+
+  }
+
+}
+
+
+
+async function loadCampaign() {
+
+  const campaignId =
+    getCampaignId();
+
+
+  if (!campaignId) {
+
+    showError(
+      "No advert ID was provided."
+    );
+
+    return;
+
+  }
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from(
+        "brand_ad_campaigns"
+      )
+      .select("*")
+      .eq(
+        "id",
+        campaignId
+      )
+      .eq(
+        "brand_id",
+        currentUser.id
+      )
+      .maybeSingle();
+
+
+  if (error) {
+
+    console.error(
+      error
+    );
+
+
+    showError(
+      "Unable to load the advert: " +
+      error.message
+    );
+
+
+    return;
+
+  }
+
+
+  if (!data) {
+
+    showError(
+      "Advert not found or you do not have permission to view it."
+    );
+
+
+    return;
+
+  }
+
+
+  currentCampaign =
+    data;
+
+
+  renderCampaign();
+
+
+  loading.style.display =
+    "none";
+
+
+  errorBox.style.display =
+    "none";
+
+
+  pageContent.style.display =
+    "block";
+
+}
+
+
+
+async function loadWallet() {
+
+  if (!currentUser) {
+
+    return;
+
+  }
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from(
+        "wallets"
+      )
+      .select(
+        "balance"
+      )
+      .eq(
+        "user_id",
+        currentUser.id
+      )
+      .maybeSingle();
+
+
+  if (error) {
+
+    console.error(
+      "Wallet error:",
+      error
+    );
+
+
+    walletBalance =
+      0;
+
+  } else {
+
+    walletBalance =
+      Number(
+        data?.balance ||
+        0
+      );
+
+  }
+
+
+  document.getElementById(
+    "wallet-balance"
+  ).textContent =
+    formatNaira(
+      walletBalance
+    );
+
+
+  const amount =
+    Number(
+      currentCampaign?.campaign_budget ||
+      0
+    );
+
+
+  const warning =
+    document.getElementById(
+      "wallet-warning"
+    );
+
+
+  if (
+    walletBalance <
+    amount
+  ) {
+
+    warning.style.display =
+      "block";
+
+
+    walletButton.disabled =
+      true;
+
+  } else {
+
+    warning.style.display =
+      "none";
+
+
+    walletButton.disabled =
+      false;
+
+  }
+
+}
+
+
+
+function setProcessing(
+  value,
+  message
+) {
+
+  paymentBusy =
+    value;
+
+
+  walletButton.disabled =
+    value;
+
+
+  paystackButton.disabled =
+    value;
+
+
+  processing.textContent =
+    message ||
+    "Processing payment. Please wait...";
+
+
+  processing.style.display =
+    value
+      ? "block"
+      : "none";
+
+}
+
+
+
+async function payWithWallet() {
+
+  if (
+    paymentBusy ||
+    !currentCampaign
+  ) {
+
+    return;
+
+  }
+
+
+  const amount =
+    Number(
+      currentCampaign.campaign_budget ||
+      0
+    );
+
+
+  if (
+    walletBalance <
+    amount
+  ) {
+
+    alert(
+      "Your EarnGig Wallet balance is not enough for this payment."
+    );
+
+
+    return;
+
+  }
+
+
+  const confirmed =
+    window.confirm(
+      "Pay " +
+      formatNaira(
+        amount
+      ) +
+      " from your EarnGig Wallet for this advert?"
+    );
+
+
+  if (!confirmed) {
+
+    return;
+
+  }
+
+
+  setProcessing(
+    true,
+    "Processing wallet payment..."
+  );
+
+
+  try {
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .rpc(
+          "pay_for_advert_with_wallet",
+          {
+            p_campaign_id:
+              currentCampaign.id
+          }
+        );
+
+
+    if (error) {
+
+      console.error(
+        error
+      );
+
+
+      throw new Error(
+        error.message ||
+        "Wallet payment failed."
+      );
+
+    }
+
+
+    if (
+      !data ||
+      data.success !== true
+    ) {
+
+      throw new Error(
+        "Wallet payment could not be completed."
+      );
+
+    }
+
+
+    successBox.textContent =
+      "Wallet payment completed successfully. Your advert payment has been confirmed.";
+
+
+    successBox.style.display =
+      "block";
+
+
+    paymentCard.style.display =
+      "none";
+
+
+    setProcessing(
+      false
+    );
+
+
+    await loadCampaign();
+
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+
+  } catch (
+    error
+  ) {
+
+    console.error(
+      error
+    );
+
+
+    alert(
+      error.message ||
+      "Wallet payment failed."
+    );
+
+
+    setProcessing(
+      false
+    );
+
+  }
+
+}
+
+
+
+async function startPaystackPayment() {
+
+  if (
+    paymentBusy ||
+    !currentCampaign
+  ) {
+
+    return;
+
+  }
+
+
+  setProcessing(
+    true,
+    "Preparing Paystack checkout..."
+  );
+
+
+  try {
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .functions
+        .invoke(
+          PAYSTACK_FUNCTION,
+          {
+            body: {
+              action:
+                "initialize",
+
+              campaign_id:
+                currentCampaign.id
+            }
+          }
+        );
+
+
+    if (error) {
+
+      console.error(
+        "Paystack initialize error:",
+        error
+      );
+
+
+      throw new Error(
+        error.message ||
+        "Unable to start Paystack payment."
+      );
+
+    }
+
+
+    if (
+      !data ||
+      data.success !== true
+    ) {
+
+      throw new Error(
+        data?.error ||
+        "Unable to start Paystack payment."
+      );
+
+    }
+
+
+    if (
+      !data.access_code
+    ) {
+
+      throw new Error(
+        "Paystack did not return an access code."
+      );
+
+    }
+
+
+    if (
+      typeof PaystackPop ===
+      "undefined"
+    ) {
+
+      throw new Error(
+        "Paystack checkout did not load. Please refresh the page and try again."
+      );
+
+    }
+
+
+    setProcessing(
+      false
+    );
+
+
+    const popup =
+      new PaystackPop();
+
+
+    popup.resumeTransaction(
+      data.access_code
+    );
+
+
+    await verifyPaystackPayment(
+      data.reference
+    );
+
+  } catch (
+    error
+  ) {
+
+    console.error(
+      error
+    );
+
+
+    setProcessing(
+      false
+    );
+
+
+    alert(
+      error.message ||
+      "Unable to start Paystack payment."
+    );
+
+  }
+
+}
+
+
+
+async function verifyPaystackPayment(
+  reference
+) {
+
+  setProcessing(
+    true,
+    "Waiting for Paystack payment confirmation..."
+  );
+
+
+  const maxAttempts =
+    15;
+
+
+  for (
+    let attempt = 0;
+    attempt < maxAttempts;
+    attempt++
+  ) {
+
+    await new Promise(
+      resolve =>
+        setTimeout(
+          resolve,
+          2000
+        )
+    );
+
+
+    try {
+
+      const {
+        data,
+        error
+      } =
+        await supabaseClient
+          .functions
+          .invoke(
+            PAYSTACK_FUNCTION,
+            {
+              body: {
+                action:
+                  "verify",
+
+                campaign_id:
+                  currentCampaign.id,
+
+                reference:
+                  reference
+              }
+            }
+          );
+
+
+      if (error) {
+
+        console.warn(
+          "Verification request error:",
+          error
+        );
+
+
+        continue;
+
+      }
+
+
+      if (
+        data?.success ===
+          true &&
+        (
+          data.status ===
+            "paid" ||
+          data.already_paid ===
+            true
+        )
+      ) {
+
+        successBox.textContent =
+          "Paystack payment completed successfully. Your advert payment has been confirmed.";
+
+
+        successBox.style.display =
+          "block";
+
+
+        setProcessing(
+          false
+        );
+
+
+        await loadCampaign();
+
+
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth"
+        });
+
+
+        return;
+
+      }
+
+    } catch (
+      error
+    ) {
+
+      console.warn(
+        "Verification error:",
+        error
+      );
+
+    }
+
+  }
+
+
+  setProcessing(
+    false
+  );
+
+
+  alert(
+    "We could not confirm the Paystack payment yet. If your payment was successful, please refresh this page shortly. The advert will only be marked as paid after server-side verification."
+  );
+
+}
+
+
+
+walletButton.addEventListener(
+  "click",
+  payWithWallet
+);
+
+
+paystackButton.addEventListener(
+  "click",
+  startPaystackPayment
+);
+
+
+
+async function init() {
+
+  try {
+
+    const {
+      data: {
+        user
+      },
+      error
+    } =
+      await supabaseClient
+        .auth
+        .getUser();
+
+
+    if (
+      error ||
+      !user
+    ) {
+
+      window.location.href =
+        "login.html";
+
+      return;
+
+    }
+
+
+    currentUser =
+      user;
+
+
+    await loadCampaign();
+
+  } catch (
+    error
+  ) {
+
+    console.error(
+      error
+    );
+
+
+    showError(
+      "Unable to load advert details."
+    );
+
+  }
+
+}
+
+
+
+init();
+
+</script>
+
+
+</body>
+
+</html>
