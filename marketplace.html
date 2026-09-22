@@ -1,725 +1,746 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <title>Marketplace | EarnGig</title>
 
-  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #080d1f;
+      color: #ffffff;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page {
+      max-width: 1200px;
+      margin: auto;
+      padding: 18px;
+    }
+
+    /* HEADER */
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    .brand {
+      font-size: 22px;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .brand span {
+      color: #8b5cf6;
+    }
+
+    .sell-btn {
+      border: 0;
+      background: linear-gradient(135deg, #7c3aed, #9333ea);
+      color: #fff;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    /* HERO */
+
+    .hero {
+      background: linear-gradient(
+        135deg,
+        rgba(124, 58, 237, 0.18),
+        rgba(37, 99, 235, 0.10)
+      );
+      border: 1px solid rgba(139, 92, 246, 0.18);
+      border-radius: 18px;
+      padding: 20px;
+      margin-bottom: 18px;
+    }
+
+    .hero h1 {
+      margin: 0 0 7px;
+      font-size: 25px;
+    }
+
+    .hero p {
+      margin: 0;
+      color: #aeb6ce;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    /* SEARCH AREA */
+
+    .search-area {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .search-box {
+      flex: 1;
+      position: relative;
+    }
+
+    .search-box input,
+    .category-select {
+      width: 100%;
+      height: 46px;
+      border-radius: 11px;
+      border: 1px solid #252d49;
+      background: #11182e;
+      color: #fff;
+      outline: none;
+      padding: 0 14px;
+      font-size: 14px;
+    }
+
+    .search-box input:focus,
+    .category-select:focus {
+      border-color: #7c3aed;
+    }
+
+    .category-wrap {
+      width: 210px;
+    }
+
+    .category-select {
+      appearance: auto;
+    }
+
+    .category-select option {
+      background: #11182e;
+      color: #fff;
+    }
+
+    /* RESULTS HEADER */
+
+    .results-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      gap: 10px;
+    }
+
+    .results-title {
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .result-count {
+      color: #8791ad;
+      font-size: 13px;
+    }
+
+    /* PRODUCTS */
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 15px;
+    }
+
+    .product-card {
+      background: #11182e;
+      border: 1px solid #222b47;
+      border-radius: 15px;
+      overflow: hidden;
+      transition: transform 0.18s ease, border-color 0.18s ease;
+    }
+
+    .product-card:hover {
+      transform: translateY(-2px);
+      border-color: #6543c5;
+    }
+
+    .product-image-link {
+      display: block;
+      background: #171e35;
+    }
+
+    .product-image {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      display: block;
+    }
+
+    .product-content {
+      padding: 13px;
+    }
+
+    .product-title {
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.35;
+      margin-bottom: 8px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .product-price {
+      font-size: 17px;
+      font-weight: 800;
+      color: #a78bfa;
+      margin-bottom: 9px;
+    }
+
+    .product-category {
+      display: inline-block;
+      background: rgba(124, 58, 237, 0.13);
+      color: #b9a2ff;
+      border-radius: 7px;
+      padding: 5px 8px;
+      font-size: 11px;
+      margin-bottom: 10px;
+    }
+
+    .store-link {
+      display: block;
+      color: #c7cede;
+      font-size: 12px;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .store-link:hover {
+      color: #a78bfa;
+    }
+
+    .view-product {
+      display: block;
+      margin-top: 11px;
+      text-align: center;
+      background: #1b2440;
+      border-radius: 9px;
+      padding: 9px;
+      color: #d8dced;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .view-product:hover {
+      background: #263154;
+    }
+
+    /* EMPTY / LOADING */
+
+    .state-box {
+      background: #11182e;
+      border: 1px solid #222b47;
+      border-radius: 15px;
+      padding: 35px 20px;
+      text-align: center;
+      color: #9da7c0;
+      grid-column: 1 / -1;
+    }
+
+    .state-icon {
+      font-size: 34px;
+      margin-bottom: 10px;
+    }
+
+    .state-title {
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .state-text {
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .error-box {
+      border-color: rgba(239, 68, 68, 0.35);
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 900px) {
+      .products-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 650px) {
+      .page {
+        padding: 12px;
+      }
+
+      .topbar {
+        margin-bottom: 16px;
+      }
+
+      .brand {
+        font-size: 20px;
+      }
+
+      .hero {
+        padding: 16px;
+        border-radius: 15px;
+      }
+
+      .hero h1 {
+        font-size: 21px;
+      }
+
+      .search-area {
+        flex-direction: column;
+      }
+
+      .category-wrap {
+        width: 100%;
+      }
+
+      .products-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .product-content {
+        padding: 10px;
+      }
+
+      .product-title {
+        font-size: 13px;
+      }
+
+      .product-price {
+        font-size: 15px;
+      }
+
+      .sell-btn {
+        padding: 9px 11px;
+        font-size: 12px;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .products-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .brand {
+        font-size: 18px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<header>
-  <div class="container nav">
+  <div class="page">
 
-    <a class="logo" href="index.html">
-      <span class="logo-mark">E</span>
-      Earn<span>Gig</span>
-    </a>
+    <!-- HEADER -->
+    <div class="topbar">
+      <a href="index.html" class="brand">
+        Earn<span>Gig</span> Marketplace
+      </a>
 
-    <nav>
-      <a href="dashboard.html">Dashboard</a>
-      <a href="read-and-earn.html">Read & Earn</a>
-      <a href="writer-dashboard.html">Writer</a>
-    </nav>
+      <button
+        class="sell-btn"
+        onclick="window.location.href='seller-dashboard.html'">
+        Sell on EarnGig
+      </button>
+    </div>
 
-    <a class="btn outline" href="dashboard.html">
-      My Account
-    </a>
+    <!-- HERO -->
+    <section class="hero">
+      <h1>Shop from EarnGig vendors</h1>
+      <p>
+        Discover products from different vendors and stores on EarnGig.
+      </p>
+    </section>
 
-  </div>
-</header>
+    <!-- SEARCH + CATEGORY -->
+    <div class="search-area">
 
-
-<main class="dashboard-page">
-
-  <div class="container">
-
-    <div class="marketplace-header">
-
-      <div>
-
-        <span class="eyebrow">EARNGIG MARKETPLACE</span>
-
-        <h1>Discover products & services</h1>
-
-        <p>
-          Browse offers from participating EarnGig sellers
-          and discover useful digital products and services.
-        </p>
-
+      <div class="search-box">
+        <input
+          type="search"
+          id="searchInput"
+          placeholder="Search products..."
+          autocomplete="off"
+        />
       </div>
 
-      <a class="btn primary" href="seller-dashboard.html">
-        Sell on EarnGig
-      </a>
+      <div class="category-wrap">
+        <select id="categorySelect" class="category-select">
+          <option value="">All categories</option>
+          <option value="Fashion & Clothing">Fashion & Clothing</option>
+          <option value="Beauty & Cosmetics">Beauty & Cosmetics</option>
+          <option value="Nails & Nail Accessories">Nails & Nail Accessories</option>
+          <option value="Bags & Accessories">Bags & Accessories</option>
+          <option value="Shoes & Footwear">Shoes & Footwear</option>
+          <option value="Phones & Tablets">Phones & Tablets</option>
+          <option value="Computers & Laptops">Computers & Laptops</option>
+          <option value="Electronics & Gadgets">Electronics & Gadgets</option>
+          <option value="Home & Kitchen">Home & Kitchen</option>
+          <option value="Furniture">Furniture</option>
+          <option value="Baby & Kids">Baby & Kids</option>
+          <option value="Health & Personal Care">Health & Personal Care</option>
+          <option value="Food & Drinks">Food & Drinks</option>
+          <option value="Groceries">Groceries</option>
+          <option value="Auto & Accessories">Auto & Accessories</option>
+          <option value="Tools & Hardware">Tools & Hardware</option>
+          <option value="Gifts & Accessories">Gifts & Accessories</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
 
     </div>
 
+    <!-- RESULTS HEADER -->
+    <div class="results-header">
+      <div class="results-title">Products</div>
+      <div class="result-count" id="resultCount">Loading...</div>
+    </div>
 
-    <!-- SEARCH -->
-
-    <section class="marketplace-search">
-
-      <input
-        type="search"
-        id="search-input"
-        placeholder="Search products or services..."
-      >
-
-      <select id="category-filter">
-
-        <option value="all">
-          All categories
-        </option>
-
-        <option value="Digital Products">
-          Digital Products
-        </option>
-
-        <option value="Design Services">
-          Design Services
-        </option>
-
-        <option value="Writing Services">
-          Writing Services
-        </option>
-
-        <option value="Education">
-          Education
-        </option>
-
-        <option value="Business Services">
-          Business Services
-        </option>
-
-      </select>
-
-      <button
-        class="btn primary"
-        id="search-button"
-        type="button"
-      >
-        Search
-      </button>
-
-    </section>
-
-
-    <!-- CATEGORIES -->
-
-    <section class="dashboard-section">
-
-      <div class="section-title">
-
-        <div>
-          <span class="eyebrow">CATEGORIES</span>
-          <h2>Browse by category</h2>
+    <!-- PRODUCTS -->
+    <div class="products-grid" id="productsGrid">
+      <div class="state-box">
+        <div class="state-icon">🛍️</div>
+        <div class="state-title">Loading marketplace</div>
+        <div class="state-text">
+          Please wait while we load available products.
         </div>
-
       </div>
-
-
-      <div class="marketplace-categories">
-
-        <a href="#" data-category="Digital Products">
-          <span>▣</span>
-          <strong>Digital Products</strong>
-          <small>Templates, guides & more</small>
-        </a>
-
-        <a href="#" data-category="Writing Services">
-          <span>✎</span>
-          <strong>Writing</strong>
-          <small>Writing & editing services</small>
-        </a>
-
-        <a href="#" data-category="Design Services">
-          <span>◇</span>
-          <strong>Design</strong>
-          <small>Creative services</small>
-        </a>
-
-        <a href="#" data-category="Education">
-          <span>★</span>
-          <strong>Education</strong>
-          <small>Learning materials</small>
-        </a>
-
-        <a href="#" data-category="Business Services">
-          <span>↗</span>
-          <strong>Business</strong>
-          <small>Business services</small>
-        </a>
-
-      </div>
-
-    </section>
-
-
-    <!-- LISTINGS -->
-
-    <section class="dashboard-section">
-
-      <div class="section-title">
-
-        <div>
-          <span class="eyebrow">MARKETPLACE</span>
-          <h2>Featured listings</h2>
-        </div>
-
-        <select
-          class="sort-select"
-          id="sort-select"
-        >
-
-          <option value="recommended">
-            Recommended
-          </option>
-
-          <option value="newest">
-            Newest
-          </option>
-
-          <option value="lowest">
-            Lowest price
-          </option>
-
-          <option value="highest">
-            Highest price
-          </option>
-
-        </select>
-
-      </div>
-
-
-      <div
-        class="marketplace-grid"
-        id="marketplace-listings"
-      >
-
-        <div class="empty-state">
-
-          <div class="empty-icon">▣</div>
-
-          <h3>Loading listings...</h3>
-
-          <p>
-            Marketplace listings are being loaded.
-          </p>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- SELLER CTA -->
-
-    <section class="seller-cta">
-
-      <div>
-
-        <span class="eyebrow">BECOME A SELLER</span>
-
-        <h2>Have something valuable to sell?</h2>
-
-        <p>
-          Create a listing, reach EarnGig members and manage
-          your sales from your seller dashboard.
-        </p>
-
-      </div>
-
-      <a
-        class="btn primary"
-        href="seller-dashboard.html"
-      >
-        Start Selling
-      </a>
-
-    </section>
-
+    </div>
 
   </div>
 
-</main>
+  <script>
+    const productsGrid = document.getElementById("productsGrid");
+    const searchInput = document.getElementById("searchInput");
+    const categorySelect = document.getElementById("categorySelect");
+    const resultCount = document.getElementById("resultCount");
 
+    let allProducts = [];
+    let storesByVendor = {};
 
-<footer>
+    function formatNaira(amount) {
+      const value = Number(amount || 0);
 
-  <div class="container copy">
-    © 2026 EarnGig. All rights reserved.
-  </div>
+      return "₦" + value.toLocaleString("en-NG", {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+      });
+    }
 
-</footer>
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
 
+    function getStoreForSeller(sellerId) {
+      return storesByVendor[sellerId] || null;
+    }
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase.js"></script>
+    function renderProducts() {
+      const search = searchInput.value.trim().toLowerCase();
+      const category = categorySelect.value;
 
-<script>
+      const filtered = allProducts.filter(product => {
+        const title = String(product.title || "").toLowerCase();
+        const description = String(product.description || "").toLowerCase();
+        const productCategory = String(product.category || "");
 
-let allListings = [];
+        const matchesSearch =
+          !search ||
+          title.includes(search) ||
+          description.includes(search) ||
+          productCategory.toLowerCase().includes(search);
 
+        const matchesCategory =
+          !category ||
+          productCategory === category;
 
-async function loadMarketplace() {
+        return matchesSearch && matchesCategory;
+      });
 
-  const listingContainer =
-    document.getElementById(
-      "marketplace-listings"
-    );
+      resultCount.textContent =
+        filtered.length +
+        (filtered.length === 1 ? " product" : " products");
 
-
-  const {
-    data: listings,
-    error
-  } = await supabaseClient
-    .from("marketplace_listings")
-    .select(`
-      id,
-      seller_id,
-      title,
-      category,
-      description,
-      price,
-      delivery_type,
-      status,
-      created_at
-    `)
-    .eq("status", "active")
-    .order("created_at", {
-      ascending: false
-    });
-
-
-  if (error) {
-
-    console.error(
-      "Marketplace loading error:",
-      error
-    );
-
-    listingContainer.innerHTML = `
-      <div class="empty-state">
-
-        <h3>Unable to load marketplace</h3>
-
-        <p>
-          ${error.message}
-        </p>
-
-      </div>
-    `;
-
-    return;
-  }
-
-
-  allListings =
-    listings || [];
-
-
-  renderListings(allListings);
-
-}
-
-
-function renderListings(listings) {
-
-  const container =
-    document.getElementById(
-      "marketplace-listings"
-    );
-
-
-  if (!listings.length) {
-
-    container.innerHTML = `
-      <div class="empty-state">
-
-        <div class="empty-icon">▣</div>
-
-        <h3>No listings found</h3>
-
-        <p>
-          There are currently no marketplace listings
-          matching your search.
-        </p>
-
-      </div>
-    `;
-
-    return;
-  }
-
-
-  container.innerHTML =
-    listings.map(function(listing) {
-
-      return `
-
-        <article class="marketplace-card">
-
-          <div class="product-image">
-
-            <span>
-              ${getCategoryLabel(listing.category)}
-            </span>
-
+      if (!filtered.length) {
+        productsGrid.innerHTML = `
+          <div class="state-box">
+            <div class="state-icon">🔎</div>
+            <div class="state-title">No products found</div>
+            <div class="state-text">
+              Try another search term or category.
+            </div>
           </div>
+        `;
+        return;
+      }
 
+      productsGrid.innerHTML = filtered.map(product => {
 
-          <div class="marketplace-card-body">
+        const store = getStoreForSeller(product.seller_id);
 
-            <span class="product-category">
+        const storeName =
+          store?.store_name ||
+          "EarnGig Vendor";
 
-              ${listing.category}
+        const storeSlug =
+          store?.store_slug ||
+          "";
 
-            </span>
+        const storeUrl = storeSlug
+          ? `store.html?store=${encodeURIComponent(storeSlug)}`
+          : "#";
 
+        const productUrl =
+          `product.html?id=${encodeURIComponent(product.id)}`;
 
-            <h3>
-              ${escapeHtml(listing.title)}
-            </h3>
+        return `
+          <article class="product-card">
 
+            <a
+              href="${productUrl}"
+              class="product-image-link"
+              aria-label="View ${escapeHtml(product.title)}">
 
-            <p>
-              ${escapeHtml(listing.description)}
-            </p>
+              <img
+                src="${escapeHtml(product.image_url)}"
+                alt="${escapeHtml(product.title)}"
+                class="product-image"
+                loading="lazy"
+              />
 
+            </a>
 
-            <div class="product-footer">
+            <div class="product-content">
 
-              <strong
-                style="
-                  color:#159661;
-                  font-size:20px;
-                  font-weight:800;
-                "
-              >
-                ₦${Number(
-                  listing.price
-                ).toLocaleString("en-NG")}
-              </strong>
+              <a
+                href="${productUrl}"
+                class="product-title">
+                ${escapeHtml(product.title)}
+              </a>
 
+              <div class="product-price">
+                ${formatNaira(product.price)}
+              </div>
 
-              <button
-                class="btn primary small"
-                type="button"
-                onclick="purchaseListing('${listing.id}')"
-              >
-                Buy
-              </button>
+              <span class="product-category">
+                ${escapeHtml(product.category || "Other")}
+              </span>
+
+              ${
+                store
+                  ? `
+                    <a
+                      href="${storeUrl}"
+                      class="store-link"
+                      title="Visit ${escapeHtml(storeName)}">
+                      🏪 ${escapeHtml(storeName)}
+                    </a>
+                  `
+                  : `
+                    <span class="store-link">
+                      🏪 ${escapeHtml(storeName)}
+                    </span>
+                  `
+              }
+
+              <a
+                href="${productUrl}"
+                class="view-product">
+                View Product
+              </a>
 
             </div>
 
-          </div>
-
-        </article>
-
-      `;
-
-    }).join("");
-
-}
-
-
-function getCategoryLabel(category) {
-
-  if (!category) {
-    return "ITEM";
-  }
-
-  if (
-    category
-      .toLowerCase()
-      .includes("digital")
-  ) {
-    return "PDF";
-  }
-
-  if (
-    category
-      .toLowerCase()
-      .includes("design")
-  ) {
-    return "DESIGN";
-  }
-
-  if (
-    category
-      .toLowerCase()
-      .includes("education")
-  ) {
-    return "COURSE";
-  }
-
-  return "SERVICE";
-
-}
-
-
-function escapeHtml(value) {
-
-  return String(value || "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-
-}
-
-
-async function purchaseListing(listingId) {
-
-  const listing =
-    allListings.find(function(item) {
-
-      return item.id === listingId;
-
-    });
-
-
-  if (!listing) {
-
-    alert(
-      "This listing is no longer available."
-    );
-
-    return;
-  }
-
-
-  const confirmed = confirm(
-    "Purchase \"" +
-    listing.title +
-    "\" for ₦" +
-    Number(
-      listing.price
-    ).toLocaleString("en-NG") +
-    "?"
-  );
-
-
-  if (!confirmed) {
-    return;
-  }
-
-
-  const {
-    data,
-    error
-  } = await supabaseClient.rpc(
-    "purchase_marketplace_item",
-    {
-      p_listing_id: listingId
+          </article>
+        `;
+      }).join("");
     }
-  );
 
-
-  if (error) {
-
-    console.error(
-      "Purchase error:",
-      error
-    );
-
-    alert(
-      "Unable to complete purchase:\n\n" +
-      error.message
-    );
-
-    return;
-  }
-
-
-  console.log(
-    "Purchase completed:",
-    data
-  );
-
-
-  alert(
-    "Purchase successful!\n\n" +
-    "₦" +
-    Number(
-      listing.price
-    ).toLocaleString("en-NG") +
-    " has been deducted from your wallet."
-  );
-
-
-  loadMarketplace();
-
-}
-
-
-function filterListings() {
-
-  const search =
-    document
-      .getElementById("search-input")
-      .value
-      .trim()
-      .toLowerCase();
-
-
-  const category =
-    document
-      .getElementById("category-filter")
-      .value;
-
-
-  let filtered =
-    allListings.filter(function(listing) {
-
-      const matchesSearch =
-        !search ||
-        listing.title
-          .toLowerCase()
-          .includes(search) ||
-        listing.description
-          .toLowerCase()
-          .includes(search);
-
-
-      const matchesCategory =
-        category === "all" ||
-        listing.category === category;
-
-
-      return (
-        matchesSearch &&
-        matchesCategory
-      );
-
-    });
-
-
-  const sort =
-    document
-      .getElementById("sort-select")
-      .value;
-
-
-  if (sort === "lowest") {
-
-    filtered.sort(function(a, b) {
-
-      return Number(a.price) -
-        Number(b.price);
-
-    });
-
-  }
-
-
-  if (sort === "highest") {
-
-    filtered.sort(function(a, b) {
-
-      return Number(b.price) -
-        Number(a.price);
-
-    });
-
-  }
-
-
-  if (sort === "newest") {
-
-    filtered.sort(function(a, b) {
-
-      return new Date(b.created_at) -
-        new Date(a.created_at);
-
-    });
-
-  }
-
-
-  renderListings(filtered);
-
-}
-
-
-document
-  .getElementById("search-button")
-  .addEventListener(
-    "click",
-    filterListings
-  );
-
-
-document
-  .getElementById("search-input")
-  .addEventListener(
-    "input",
-    filterListings
-  );
-
-
-document
-  .getElementById("category-filter")
-  .addEventListener(
-    "change",
-    filterListings
-  );
-
-
-document
-  .getElementById("sort-select")
-  .addEventListener(
-    "change",
-    filterListings
-  );
-
-
-document
-  .querySelectorAll(
-    ".marketplace-categories a"
-  )
-  .forEach(function(link) {
-
-    link.addEventListener(
-      "click",
-      function(event) {
-
-        event.preventDefault();
-
-        const category =
-          link.dataset.category;
-
-        document.getElementById(
-          "category-filter"
-        ).value = category;
-
-        filterListings();
-
-        document
-          .getElementById(
-            "marketplace-listings"
-          )
-          .scrollIntoView({
-            behavior: "smooth"
+    async function loadMarketplace() {
+      try {
+
+        /*
+         * Load existing marketplace listings.
+         *
+         * Products without an image are intentionally excluded.
+         * This enforces the new marketplace rule that every product
+         * displayed to buyers must have an image.
+         */
+        const {
+          data: listings,
+          error: listingsError
+        } = await supabaseClient
+          .from("marketplace_listings")
+          .select(`
+            id,
+            seller_id,
+            title,
+            category,
+            description,
+            price,
+            delivery_type,
+            file_url,
+            image_url,
+            status,
+            created_at
+          `)
+          .order("created_at", {
+            ascending: false
           });
 
+        if (listingsError) {
+          throw listingsError;
+        }
+
+        /*
+         * Only show listings with a usable product image.
+         */
+        allProducts = (listings || []).filter(item => {
+          const image = String(item.image_url || "").trim();
+
+          if (!image) {
+            return false;
+          }
+
+          const status = String(item.status || "").toLowerCase();
+
+          /*
+           * Keep normal active listings visible.
+           * If your existing system uses another public status,
+           * listings without a status are also allowed.
+           */
+          if (
+            status &&
+            ![
+              "active",
+              "approved",
+              "published",
+              "available"
+            ].includes(status)
+          ) {
+            return false;
+          }
+
+          return true;
+        });
+
+        /*
+         * Get seller IDs.
+         */
+        const sellerIds = [
+          ...new Set(
+            allProducts
+              .map(item => item.seller_id)
+              .filter(Boolean)
+          )
+        ];
+
+        storesByVendor = {};
+
+        /*
+         * Load active stores separately.
+         *
+         * marketplace_stores.vendor_id references profiles.id,
+         * while marketplace_listings.seller_id also identifies
+         * the seller, so we can safely map them in JavaScript.
+         */
+        if (sellerIds.length) {
+
+          const {
+            data: stores,
+            error: storesError
+          } = await supabaseClient
+            .from("marketplace_stores")
+            .select(`
+              id,
+              vendor_id,
+              store_name,
+              store_slug,
+              store_logo_url,
+              status
+            `)
+            .in("vendor_id", sellerIds)
+            .eq("status", "active");
+
+          if (storesError) {
+            /*
+             * Store loading should not destroy the marketplace.
+             * Products can still be displayed if the store query
+             * encounters an RLS issue.
+             */
+            console.warn(
+              "Store information could not be loaded:",
+              storesError
+            );
+          } else {
+
+            (stores || []).forEach(store => {
+              storesByVendor[store.vendor_id] = store;
+            });
+
+          }
+        }
+
+        renderProducts();
+
+      } catch (error) {
+
+        console.error("Marketplace loading error:", error);
+
+        resultCount.textContent = "Error";
+
+        productsGrid.innerHTML = `
+          <div class="state-box error-box">
+            <div class="state-icon">⚠️</div>
+            <div class="state-title">
+              Marketplace could not be loaded
+            </div>
+            <div class="state-text">
+              Please refresh the page and try again.
+            </div>
+          </div>
+        `;
       }
-    );
+    }
 
-  });
+    searchInput.addEventListener("input", renderProducts);
 
+    categorySelect.addEventListener("change", renderProducts);
 
-loadMarketplace();
-
-</script>
+    loadMarketplace();
+  </script>
 
 </body>
 </html>
