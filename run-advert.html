@@ -2,17 +2,26 @@
 <html lang="en">
 
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>Advertise on EarnGig</title>
 
-  <link rel="stylesheet" href="styles.css">
+  <link
+    rel="stylesheet"
+    href="styles.css"
+  >
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="supabase.js"></script>
 
   <style>
+
     .advert-status-box {
       margin: 0 0 24px;
       padding: 20px;
@@ -26,7 +35,7 @@
     }
 
     .advert-status-box p {
-      margin: 0 0 8px;
+      margin: 0;
       line-height: 1.6;
     }
 
@@ -43,6 +52,143 @@
     .advert-status-box.danger {
       border-color: rgba(239, 68, 68, 0.4);
       background: rgba(127, 29, 29, 0.18);
+    }
+
+    .advert-list {
+      display: grid;
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .advert-card {
+      padding: 18px;
+      border-radius: 16px;
+      border: 1px solid rgba(139, 92, 246, 0.25);
+      background: rgba(15, 23, 42, 0.72);
+    }
+
+    .advert-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .advert-card h3 {
+      margin: 0 0 6px;
+      font-size: 18px;
+    }
+
+    .advert-card p {
+      margin: 4px 0;
+      line-height: 1.5;
+      opacity: 0.78;
+    }
+
+    .advert-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .advert-meta span {
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(99, 102, 241, 0.14);
+      border: 1px solid rgba(139, 92, 246, 0.2);
+      font-size: 12px;
+    }
+
+    .advert-status {
+      display: inline-block;
+      padding: 7px 11px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+      background: rgba(99, 102, 241, 0.18);
+    }
+
+    .advert-status.pending {
+      background: rgba(245, 158, 11, 0.18);
+      color: #fbbf24;
+    }
+
+    .advert-status.approved {
+      background: rgba(34, 197, 94, 0.16);
+      color: #86efac;
+    }
+
+    .advert-status.active {
+      background: rgba(34, 197, 94, 0.18);
+      color: #86efac;
+    }
+
+    .advert-status.revision {
+      background: rgba(245, 158, 11, 0.18);
+      color: #fbbf24;
+    }
+
+    .advert-status.rejected {
+      background: rgba(239, 68, 68, 0.18);
+      color: #fca5a5;
+    }
+
+    .advert-status.paid {
+      background: rgba(34, 197, 94, 0.18);
+      color: #86efac;
+    }
+
+    .advert-card-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .advert-card-actions button {
+      border: 0;
+      cursor: pointer;
+    }
+
+    .create-advert-button {
+      margin-bottom: 24px;
+    }
+
+    .empty-adverts {
+      text-align: center;
+      padding: 36px 20px;
+      border-radius: 16px;
+      border: 1px dashed rgba(139, 92, 246, 0.3);
+      background: rgba(15, 23, 42, 0.45);
+      margin-bottom: 24px;
+    }
+
+    .empty-adverts h3 {
+      margin: 0 0 8px;
+    }
+
+    .empty-adverts p {
+      margin: 0 0 18px;
+      opacity: 0.75;
+    }
+
+    .form-header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .form-header-bar h2 {
+      margin: 0;
+    }
+
+    .form-header-bar p {
+      margin: 5px 0 0;
+      opacity: 0.72;
     }
 
     .review-note {
@@ -200,7 +346,45 @@
       line-height: 1.55;
     }
 
+    .campaign-detail-box {
+      margin-bottom: 24px;
+      padding: 18px;
+      border-radius: 16px;
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(139, 92, 246, 0.2);
+    }
+
+    .campaign-detail-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 9px 0;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.08);
+    }
+
+    .campaign-detail-row:last-child {
+      border-bottom: 0;
+    }
+
+    .campaign-detail-row span:first-child {
+      opacity: 0.68;
+    }
+
     @media (max-width: 600px) {
+
+      .advert-card-top {
+        flex-direction: column;
+      }
+
+      .advert-status {
+        align-self: flex-start;
+      }
+
+      .form-header-bar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
       .placement-summary-row {
         flex-direction: column;
         gap: 2px;
@@ -209,24 +393,37 @@
       .history-item-header {
         flex-direction: column;
       }
+
+      .campaign-detail-row {
+        flex-direction: column;
+        gap: 3px;
+      }
+
     }
+
   </style>
+
 </head>
 
 
 <body>
 
+
 <header>
 
   <div class="container nav">
 
-    <a class="logo" href="index.html">
+    <a
+      class="logo"
+      href="index.html"
+    >
 
       <span class="logo-mark">E</span>
 
       Earn<span>Gig</span>
 
     </a>
+
 
     <a
       class="btn outline"
@@ -244,6 +441,7 @@
 
   <div class="container">
 
+
     <div class="dashboard-heading">
 
       <div>
@@ -257,9 +455,8 @@
         </h1>
 
         <p>
-          Submit your advert for review.
-          You only pay after EarnGig approves
-          your campaign.
+          Manage your adverts and submit new campaigns.
+          You only pay after EarnGig approves a campaign.
         </p>
 
       </div>
@@ -271,8 +468,146 @@
       id="loading-message"
       class="loading-message"
     >
-      Loading your advertising account...
+      Loading your adverts...
     </div>
+
+
+    <!-- MY ADVERTS -->
+
+    <section
+      id="my-adverts-section"
+      class="hidden"
+    >
+
+      <div class="form-header-bar">
+
+        <div>
+
+          <h2>
+            My Adverts
+          </h2>
+
+          <p>
+            Manage all your EarnGig advertising campaigns.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <button
+        type="button"
+        id="create-advert-button"
+        class="btn primary big create-advert-button"
+      >
+        ＋ Create New Advert
+      </button>
+
+
+      <div
+        id="advert-list"
+        class="advert-list"
+      ></div>
+
+
+      <div
+        id="empty-adverts"
+        class="empty-adverts hidden"
+      >
+
+        <h3>
+          You have no adverts yet
+        </h3>
+
+        <p>
+          Create your first advertising campaign
+          to get started.
+        </p>
+
+        <button
+          type="button"
+          id="empty-create-button"
+          class="btn primary"
+        >
+          ＋ Create New Advert
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- SELECTED CAMPAIGN DETAILS -->
+
+    <section
+      id="campaign-detail-section"
+      class="hidden"
+    >
+
+      <div class="campaign-detail-box">
+
+        <div class="form-header-bar">
+
+          <div>
+
+            <h2 id="detail-title">
+              Advert Details
+            </h2>
+
+            <p id="detail-subtitle"></p>
+
+          </div>
+
+          <button
+            type="button"
+            id="back-to-adverts-button"
+            class="btn outline"
+          >
+            ← My Adverts
+          </button>
+
+        </div>
+
+
+        <div
+          id="campaign-detail-content"
+        ></div>
+
+      </div>
+
+
+      <div
+        id="detail-review-history-section"
+        class="form-section hidden"
+      >
+
+        <div class="form-section-title">
+
+          <span>06</span>
+
+          <div>
+
+            <h2>
+              Review history
+            </h2>
+
+            <p>
+              Previous feedback from EarnGig.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div
+          id="detail-review-history"
+        ></div>
+
+      </div>
+
+    </section>
 
 
     <!-- STATUS -->
@@ -285,6 +620,7 @@
       <h3 id="status-title"></h3>
 
       <p id="status-message"></p>
+
 
       <div
         id="review-note"
@@ -302,650 +638,657 @@
     </div>
 
 
-    <!-- APPLICATION -->
+    <!-- APPLICATION FORM -->
 
-    <form
-      id="advert-form"
-      class="novel-form hidden"
+    <section
+      id="application-section"
+      class="hidden"
     >
 
+      <div class="form-header-bar">
 
-      <!-- 01 -->
+        <div>
 
-      <section class="form-section">
+          <h2 id="form-heading">
+            Create New Advert
+          </h2>
 
-        <div class="form-section-title">
-
-          <span>01</span>
-
-          <div>
-
-            <h2>
-              Advert information
-            </h2>
-
-            <p>
-              Tell us about the business and advert.
-            </p>
-
-          </div>
-
-        </div>
-
-
-        <label for="brand-name">
-          Brand / business name
-        </label>
-
-        <input
-          type="text"
-          id="brand-name"
-          placeholder="Enter your business or brand name"
-          required
-        >
-
-
-        <label for="campaign-name">
-          Campaign name
-        </label>
-
-        <input
-          type="text"
-          id="campaign-name"
-          placeholder="Example: New Product Campaign"
-          required
-        >
-
-
-        <label for="ad-title">
-          Advert title
-        </label>
-
-        <input
-          type="text"
-          id="ad-title"
-          placeholder="Enter the title of your advert"
-          required
-        >
-
-
-        <label for="description">
-          Advert description
-        </label>
-
-        <textarea
-          id="description"
-          rows="5"
-          placeholder="Describe the product, service or campaign..."
-          required
-        ></textarea>
-
-
-        <label for="destination-url">
-          Destination link
-        </label>
-
-        <input
-          type="url"
-          id="destination-url"
-          placeholder="https://yourwebsite.com"
-          required
-        >
-
-        <small class="form-help">
-          This is where members will be taken when
-          they click your advert. It can be your website,
-          online store, WhatsApp link, social media page,
-          or another valid destination.
-        </small>
-
-      </section>
-
-
-      <!-- 02 -->
-
-      <section class="form-section">
-
-        <div class="form-section-title">
-
-          <span>02</span>
-
-          <div>
-
-            <h2>
-              EarnGig advert video
-            </h2>
-
-            <p>
-              Upload the video that should appear
-              on EarnGig Watch & Earn.
-            </p>
-
-          </div>
-
-        </div>
-
-
-        <label for="video">
-          EarnGig video
-        </label>
-
-        <input
-          type="file"
-          id="video"
-          accept="video/*"
-        >
-
-        <small class="form-help">
-          This is the video EarnGig members will watch.
-          No separate thumbnail is required.
-        </small>
-
-        <span
-          id="video-file-name"
-          class="file-name"
-        ></span>
-
-      </section>
-
-
-      <!-- 03 -->
-
-      <section class="form-section">
-
-        <div class="form-section-title">
-
-          <span>03</span>
-
-          <div>
-
-            <h2>
-              EarnGig Ads
-            </h2>
-
-            <p>
-              Display your advert to members
-              through Watch & Earn.
-            </p>
-
-          </div>
-
-        </div>
-
-
-        <label class="package-card">
-
-          <input
-            type="radio"
-            name="earngig-package"
-            value="7000"
-            data-days="1"
-          >
-
-          <span class="package-card-content">
-
-            <strong>
-              24 Hours
-            </strong>
-
-            <small>
-              Your advert runs on EarnGig
-              for 24 hours.
-            </small>
-
-            <span class="package-price">
-              ₦7,000
-            </span>
-
-          </span>
-
-        </label>
-
-
-        <label class="package-card">
-
-          <input
-            type="radio"
-            name="earngig-package"
-            value="19500"
-            data-days="3"
-          >
-
-          <span class="package-card-content">
-
-            <strong>
-              3 Days
-            </strong>
-
-            <small>
-              Your advert runs on EarnGig
-              for 3 days.
-            </small>
-
-            <span class="package-price">
-              ₦19,500
-            </span>
-
-          </span>
-
-        </label>
-
-
-        <label class="package-card">
-
-          <input
-            type="radio"
-            name="earngig-package"
-            value="42000"
-            data-days="7"
-          >
-
-          <span class="package-card-content">
-
-            <strong>
-              7 Days
-            </strong>
-
-            <small>
-              Your advert runs on EarnGig
-              for 7 days.
-            </small>
-
-            <span class="package-price">
-              ₦42,000
-            </span>
-
-          </span>
-
-        </label>
-
-
-        <label class="package-card">
-
-          <input
-            type="radio"
-            name="earngig-package"
-            value="160000"
-            data-days="30"
-          >
-
-          <span class="package-card-content">
-
-            <strong>
-              30 Days
-            </strong>
-
-            <small>
-              Your advert runs on EarnGig
-              for 30 days.
-            </small>
-
-            <span class="package-price">
-              ₦160,000
-            </span>
-
-          </span>
-
-        </label>
-
-
-        <small class="form-help">
-          Select an EarnGig package if you want
-          your advert displayed directly on EarnGig.
-        </small>
-
-      </section>
-
-
-      <!-- 04 -->
-
-      <section class="form-section">
-
-        <div class="form-section-title">
-
-          <span>04</span>
-
-          <div>
-
-            <h2>
-              TikTok Ads
-            </h2>
-
-            <p>
-              Choose how many different videos
-              you want used for your TikTok campaign.
-            </p>
-
-          </div>
-
-        </div>
-
-
-        <label class="package-card">
-
-          <input
-            type="radio"
-            name="tiktok-package"
-            value="50000"
-            data-videos="1"
-          >
-
-          <span class="package-card-content">
-
-            <strong>
-              1 TikTok Video
-            </strong>
-
-            <small>
-              Upload one video for one TikTok
-              creator placement.
-            </small>
-
-            <span class="package-price">
-              ₦50,000
-            </span>
-
-          </span>
-
-        </label>
-
-
-        <label class="package-card">
-
-          <input
-            type="radio"
-            name="tiktok-package"
-            value="120000"
-            data-videos="3"
-          >
-
-          <span class="package-card-content">
-
-            <strong>
-              3 TikTok Videos
-            </strong>
-
-            <small>
-              Upload three different videos for
-              three TikTok creator placements.
-            </small>
-
-            <span class="package-price">
-              ₦120,000
-            </span>
-
-          </span>
-
-        </label>
-
-
-        <div
-          id="tiktok-upload-section"
-          class="tiktok-upload-box hidden"
-        >
-
-          <h3>
-            TikTok videos
-          </h3>
-
-          <p>
-            Upload the individual videos you want
-            to use for your TikTok campaign.
+          <p id="form-subheading">
+            Submit your campaign for review.
           </p>
 
-
-          <div class="tiktok-video-field">
-
-            <label for="tiktok-video-1">
-              TikTok Video 1
-            </label>
-
-            <input
-              type="file"
-              id="tiktok-video-1"
-              accept="video/*"
-            >
-
-            <span
-              id="tiktok-video-1-name"
-              class="file-name"
-            ></span>
-
-          </div>
-
-
-          <div
-            id="tiktok-video-2-wrapper"
-            class="tiktok-video-field hidden"
-          >
-
-            <label for="tiktok-video-2">
-              TikTok Video 2
-            </label>
-
-            <input
-              type="file"
-              id="tiktok-video-2"
-              accept="video/*"
-            >
-
-            <span
-              id="tiktok-video-2-name"
-              class="file-name"
-            ></span>
-
-          </div>
-
-
-          <div
-            id="tiktok-video-3-wrapper"
-            class="tiktok-video-field hidden"
-          >
-
-            <label for="tiktok-video-3">
-              TikTok Video 3
-            </label>
-
-            <input
-              type="file"
-              id="tiktok-video-3"
-              accept="video/*"
-            >
-
-            <span
-              id="tiktok-video-3-name"
-              class="file-name"
-            ></span>
-
-          </div>
-
         </div>
 
-
-        <small class="form-help">
-          The TikTok videos can be completely different.
-          You can use different videos to show different
-          products, services, offers or parts of your business.
-        </small>
-
-      </section>
-
-
-      <!-- 05 -->
-
-      <section class="form-section">
-
-        <div class="form-section-title">
-
-          <span>05</span>
-
-          <div>
-
-            <h2>
-              Campaign summary
-            </h2>
-
-            <p>
-              Your total is calculated from
-              your selected placements.
-            </p>
-
-          </div>
-
-        </div>
-
-
-        <div class="placement-summary">
-
-          <div class="placement-summary-row">
-
-            <span>
-              EarnGig Ads
-            </span>
-
-            <strong id="earngig-total">
-              ₦0
-            </strong>
-
-          </div>
-
-
-          <div class="placement-summary-row">
-
-            <span>
-              TikTok Ads
-            </span>
-
-            <strong id="tiktok-total">
-              ₦0
-            </strong>
-
-          </div>
-
-
-          <div class="placement-summary-row total">
-
-            <span>
-              Total campaign amount
-            </span>
-
-            <strong id="campaign-total">
-              ₦0
-            </strong>
-
-          </div>
-
-        </div>
-
-
-        <small class="form-help">
-
-          This amount is for planning purposes only.
-
-          <strong>
-            You will not be asked to pay when
-            submitting this application.
-          </strong>
-
-        </small>
-
-      </section>
-
-
-      <!-- PAYMENT NOTICE -->
-
-      <section class="assessment-notice">
-
-        <strong>
-          No payment is required yet
-        </strong>
-
-        <p>
-          Submit your advert first. EarnGig will
-          review the business information,
-          destination link, selected packages
-          and videos.
-        </p>
-
-        <p>
-          If your advert is approved, you will
-          then be given the option to pay using
-          your EarnGig Wallet or Paystack.
-        </p>
-
-      </section>
-
-
-      <!-- AGREEMENT -->
-
-      <label class="submission-agreement">
-
-        <input
-          type="checkbox"
-          id="rights-confirmation"
-          required
-        >
-
-        I confirm that I have the rights to use
-        these advert videos and that the information
-        provided is accurate.
-
-      </label>
-
-
-      <!-- ACTIONS -->
-
-      <div class="form-actions">
-
-        <a
-          href="dashboard.html"
-          class="btn outline big"
-        >
-          Cancel
-        </a>
 
         <button
-          type="submit"
-          id="submit-button"
-          class="btn primary big"
+          type="button"
+          id="cancel-form-button"
+          class="btn outline"
         >
-          Submit Advert for Review
+          ← My Adverts
         </button>
 
       </div>
 
-    </form>
+
+      <form
+        id="advert-form"
+        class="novel-form"
+      >
 
 
-    <!-- REVIEW HISTORY -->
+        <!-- 01 -->
 
-    <section
-      id="review-history-section"
-      class="form-section hidden"
-      style="margin-top:24px;"
-    >
+        <section class="form-section">
 
-      <div class="form-section-title">
+          <div class="form-section-title">
 
-        <span>06</span>
+            <span>01</span>
 
-        <div>
+            <div>
 
-          <h2>
-            Review history
-          </h2>
+              <h2>
+                Advert information
+              </h2>
+
+              <p>
+                Tell us about the business and advert.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <label for="brand-name">
+            Brand / business name
+          </label>
+
+          <input
+            type="text"
+            id="brand-name"
+            placeholder="Enter your business or brand name"
+            required
+          >
+
+
+          <label for="campaign-name">
+            Campaign name
+          </label>
+
+          <input
+            type="text"
+            id="campaign-name"
+            placeholder="Example: New Product Campaign"
+            required
+          >
+
+
+          <label for="ad-title">
+            Advert title
+          </label>
+
+          <input
+            type="text"
+            id="ad-title"
+            placeholder="Enter the title of your advert"
+            required
+          >
+
+
+          <label for="description">
+            Advert description
+          </label>
+
+          <textarea
+            id="description"
+            rows="5"
+            placeholder="Describe the product, service or campaign..."
+            required
+          ></textarea>
+
+
+          <label for="destination-url">
+            Destination link
+          </label>
+
+          <input
+            type="url"
+            id="destination-url"
+            placeholder="https://yourwebsite.com"
+            required
+          >
+
+
+          <small class="form-help">
+            This is where members will be taken when
+            they click your advert. It can be your website,
+            online store, WhatsApp link, social media page,
+            or another valid destination.
+          </small>
+
+        </section>
+
+
+        <!-- 02 -->
+
+        <section class="form-section">
+
+          <div class="form-section-title">
+
+            <span>02</span>
+
+            <div>
+
+              <h2>
+                EarnGig advert video
+              </h2>
+
+              <p>
+                Upload the video that should appear
+                on EarnGig Watch & Earn.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <label for="video">
+            EarnGig video
+          </label>
+
+          <input
+            type="file"
+            id="video"
+            accept="video/*"
+          >
+
+
+          <small class="form-help">
+            This is the video EarnGig members will watch.
+            No separate thumbnail is required.
+          </small>
+
+
+          <span
+            id="video-file-name"
+            class="file-name"
+          ></span>
+
+        </section>
+
+
+        <!-- 03 -->
+
+        <section class="form-section">
+
+          <div class="form-section-title">
+
+            <span>03</span>
+
+            <div>
+
+              <h2>
+                EarnGig Ads
+              </h2>
+
+              <p>
+                Display your advert to members
+                through Watch & Earn.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <label class="package-card">
+
+            <input
+              type="radio"
+              name="earngig-package"
+              value="7000"
+              data-days="1"
+            >
+
+            <span class="package-card-content">
+
+              <strong>
+                24 Hours
+              </strong>
+
+              <small>
+                Your advert runs on EarnGig
+                for 24 hours.
+              </small>
+
+              <span class="package-price">
+                ₦7,000
+              </span>
+
+            </span>
+
+          </label>
+
+
+          <label class="package-card">
+
+            <input
+              type="radio"
+              name="earngig-package"
+              value="19500"
+              data-days="3"
+            >
+
+            <span class="package-card-content">
+
+              <strong>
+                3 Days
+              </strong>
+
+              <small>
+                Your advert runs on EarnGig
+                for 3 days.
+              </small>
+
+              <span class="package-price">
+                ₦19,500
+              </span>
+
+            </span>
+
+          </label>
+
+
+          <label class="package-card">
+
+            <input
+              type="radio"
+              name="earngig-package"
+              value="42000"
+              data-days="7"
+            >
+
+            <span class="package-card-content">
+
+              <strong>
+                7 Days
+              </strong>
+
+              <small>
+                Your advert runs on EarnGig
+                for 7 days.
+              </small>
+
+              <span class="package-price">
+                ₦42,000
+              </span>
+
+            </span>
+
+          </label>
+
+
+          <label class="package-card">
+
+            <input
+              type="radio"
+              name="earngig-package"
+              value="160000"
+              data-days="30"
+            >
+
+            <span class="package-card-content">
+
+              <strong>
+                30 Days
+              </strong>
+
+              <small>
+                Your advert runs on EarnGig
+                for 30 days.
+              </small>
+
+              <span class="package-price">
+                ₦160,000
+              </span>
+
+            </span>
+
+          </label>
+
+
+          <small class="form-help">
+            Select an EarnGig package if you want
+            your advert displayed directly on EarnGig.
+          </small>
+
+        </section>
+
+
+        <!-- 04 -->
+
+        <section class="form-section">
+
+          <div class="form-section-title">
+
+            <span>04</span>
+
+            <div>
+
+              <h2>
+                TikTok Ads
+              </h2>
+
+              <p>
+                Choose how many different videos
+                you want used for your TikTok campaign.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <label class="package-card">
+
+            <input
+              type="radio"
+              name="tiktok-package"
+              value="50000"
+              data-videos="1"
+            >
+
+            <span class="package-card-content">
+
+              <strong>
+                1 TikTok Video
+              </strong>
+
+              <small>
+                Upload one video for one TikTok
+                creator placement.
+              </small>
+
+              <span class="package-price">
+                ₦50,000
+              </span>
+
+            </span>
+
+          </label>
+
+
+          <label class="package-card">
+
+            <input
+              type="radio"
+              name="tiktok-package"
+              value="120000"
+              data-videos="3"
+            >
+
+            <span class="package-card-content">
+
+              <strong>
+                3 TikTok Videos
+              </strong>
+
+              <small>
+                Upload three different videos for
+                three TikTok creator placements.
+              </small>
+
+              <span class="package-price">
+                ₦120,000
+              </span>
+
+            </span>
+
+          </label>
+
+
+          <div
+            id="tiktok-upload-section"
+            class="tiktok-upload-box hidden"
+          >
+
+            <h3>
+              TikTok videos
+            </h3>
+
+            <p>
+              Upload the individual videos you want
+              to use for your TikTok campaign.
+            </p>
+
+
+            <div class="tiktok-video-field">
+
+              <label for="tiktok-video-1">
+                TikTok Video 1
+              </label>
+
+              <input
+                type="file"
+                id="tiktok-video-1"
+                accept="video/*"
+              >
+
+              <span
+                id="tiktok-video-1-name"
+                class="file-name"
+              ></span>
+
+            </div>
+
+
+            <div
+              id="tiktok-video-2-wrapper"
+              class="tiktok-video-field hidden"
+            >
+
+              <label for="tiktok-video-2">
+                TikTok Video 2
+              </label>
+
+              <input
+                type="file"
+                id="tiktok-video-2"
+                accept="video/*"
+              >
+
+              <span
+                id="tiktok-video-2-name"
+                class="file-name"
+              ></span>
+
+            </div>
+
+
+            <div
+              id="tiktok-video-3-wrapper"
+              class="tiktok-video-field hidden"
+            >
+
+              <label for="tiktok-video-3">
+                TikTok Video 3
+              </label>
+
+              <input
+                type="file"
+                id="tiktok-video-3"
+                accept="video/*"
+              >
+
+              <span
+                id="tiktok-video-3-name"
+                class="file-name"
+              ></span>
+
+            </div>
+
+          </div>
+
+
+          <small class="form-help">
+            The TikTok videos can be completely different.
+            You can use different videos to show different
+            products, services, offers or parts of your business.
+          </small>
+
+        </section>
+
+
+        <!-- 05 -->
+
+        <section class="form-section">
+
+          <div class="form-section-title">
+
+            <span>05</span>
+
+            <div>
+
+              <h2>
+                Campaign summary
+              </h2>
+
+              <p>
+                Your total is calculated from
+                your selected placements.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="placement-summary">
+
+            <div class="placement-summary-row">
+
+              <span>
+                EarnGig Ads
+              </span>
+
+              <strong id="earngig-total">
+                ₦0
+              </strong>
+
+            </div>
+
+
+            <div class="placement-summary-row">
+
+              <span>
+                TikTok Ads
+              </span>
+
+              <strong id="tiktok-total">
+                ₦0
+              </strong>
+
+            </div>
+
+
+            <div class="placement-summary-row total">
+
+              <span>
+                Total campaign amount
+              </span>
+
+              <strong id="campaign-total">
+                ₦0
+              </strong>
+
+            </div>
+
+          </div>
+
+
+          <small class="form-help">
+
+            This amount is for planning purposes only.
+
+            <strong>
+              You will not be asked to pay when
+              submitting this application.
+            </strong>
+
+          </small>
+
+        </section>
+
+
+        <!-- PAYMENT NOTICE -->
+
+        <section class="assessment-notice">
+
+          <strong>
+            No payment is required yet
+          </strong>
 
           <p>
-            Previous feedback from EarnGig.
+            Submit your advert first. EarnGig will
+            review the business information,
+            destination link, selected packages
+            and videos.
           </p>
+
+          <p>
+            If your advert is approved, you will
+            then be given the option to pay using
+            your EarnGig Wallet or Paystack.
+          </p>
+
+        </section>
+
+
+        <!-- AGREEMENT -->
+
+        <label class="submission-agreement">
+
+          <input
+            type="checkbox"
+            id="rights-confirmation"
+            required
+          >
+
+          I confirm that I have the rights to use
+          these advert videos and that the information
+          provided is accurate.
+
+        </label>
+
+
+        <!-- ACTIONS -->
+
+        <div class="form-actions">
+
+          <button
+            type="button"
+            id="form-cancel-button"
+            class="btn outline big"
+          >
+            Cancel
+          </button>
+
+          <button
+            type="submit"
+            id="submit-button"
+            class="btn primary big"
+          >
+            Submit Advert for Review
+          </button>
 
         </div>
 
-      </div>
-
-      <div id="review-history"></div>
+      </form>
 
     </section>
+
 
   </div>
 
@@ -963,74 +1306,388 @@
 
 <script>
 
-const VIDEO_BUCKET = "advert-videos";
+
+const VIDEO_BUCKET =
+  "advert-videos";
+
 
 const form =
-  document.getElementById("advert-form");
+  document.getElementById(
+    "advert-form"
+  );
+
 
 const loadingMessage =
-  document.getElementById("loading-message");
+  document.getElementById(
+    "loading-message"
+  );
+
+
+const myAdvertsSection =
+  document.getElementById(
+    "my-adverts-section"
+  );
+
+
+const advertList =
+  document.getElementById(
+    "advert-list"
+  );
+
+
+const emptyAdverts =
+  document.getElementById(
+    "empty-adverts"
+  );
+
+
+const applicationSection =
+  document.getElementById(
+    "application-section"
+  );
+
+
+const campaignDetailSection =
+  document.getElementById(
+    "campaign-detail-section"
+  );
+
 
 const statusBox =
-  document.getElementById("status-box");
+  document.getElementById(
+    "status-box"
+  );
+
 
 const statusTitle =
-  document.getElementById("status-title");
+  document.getElementById(
+    "status-title"
+  );
+
 
 const statusMessage =
-  document.getElementById("status-message");
+  document.getElementById(
+    "status-message"
+  );
+
 
 const reviewNote =
-  document.getElementById("review-note");
+  document.getElementById(
+    "review-note"
+  );
+
 
 const reviewNoteText =
-  document.getElementById("review-note-text");
+  document.getElementById(
+    "review-note-text"
+  );
+
 
 const reviewHistorySection =
-  document.getElementById("review-history-section");
+  document.getElementById(
+    "detail-review-history-section"
+  );
+
 
 const reviewHistory =
-  document.getElementById("review-history");
+  document.getElementById(
+    "detail-review-history"
+  );
 
-const videoInput =
-  document.getElementById("video");
 
 const submitButton =
-  document.getElementById("submit-button");
+  document.getElementById(
+    "submit-button"
+  );
+
+
+const videoInput =
+  document.getElementById(
+    "video"
+  );
+
 
 const tiktokUploadSection =
-  document.getElementById("tiktok-upload-section");
+  document.getElementById(
+    "tiktok-upload-section"
+  );
+
 
 const tiktokVideo2Wrapper =
-  document.getElementById("tiktok-video-2-wrapper");
+  document.getElementById(
+    "tiktok-video-2-wrapper"
+  );
+
 
 const tiktokVideo3Wrapper =
-  document.getElementById("tiktok-video-3-wrapper");
+  document.getElementById(
+    "tiktok-video-3-wrapper"
+  );
+
 
 const tiktokVideo1 =
-  document.getElementById("tiktok-video-1");
+  document.getElementById(
+    "tiktok-video-1"
+  );
+
 
 const tiktokVideo2 =
-  document.getElementById("tiktok-video-2");
+  document.getElementById(
+    "tiktok-video-2"
+  );
+
 
 const tiktokVideo3 =
-  document.getElementById("tiktok-video-3");
-
-let currentUser = null;
-
-let currentCampaign = null;
-
-let isRevision = false;
-
-let currentCampaignSafeColumns = {};
+  document.getElementById(
+    "tiktok-video-3"
+  );
 
 
+let currentUser =
+  null;
 
-function formatNaira(amount) {
+
+let campaigns =
+  [];
+
+
+let currentCampaign =
+  null;
+
+
+let isRevision =
+  false;
+
+
+let safeColumns =
+  {};
+
+
+
+function formatNaira(
+  amount
+) {
 
   return "₦" +
-    Number(amount || 0)
-      .toLocaleString("en-NG");
+    Number(
+      amount || 0
+    ).toLocaleString(
+      "en-NG"
+    );
+
+}
+
+
+
+function escapeHtml(
+  value
+) {
+
+  return String(
+    value ?? ""
+  )
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+    .replace(
+      /</g,
+      "&lt;"
+    )
+    .replace(
+      />/g,
+      "&gt;"
+    )
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+
+}
+
+
+
+function hasColumn(
+  column
+) {
+
+  return (
+    safeColumns[
+      column
+    ] === true
+  );
+
+}
+
+
+
+function statusLabel(
+  campaign
+) {
+
+  const status =
+    campaign.status ||
+    "";
+
+
+  const approval =
+    campaign.approval_status ||
+    "";
+
+
+  if (
+    status ===
+      "revision_required" ||
+    approval ===
+      "revision_required"
+  ) {
+
+    return {
+      text:
+        "Changes Requested",
+      className:
+        "revision"
+    };
+
+  }
+
+
+  if (
+    status ===
+      "rejected"
+  ) {
+
+    return {
+      text:
+        "Rejected",
+      className:
+        "rejected"
+    };
+
+  }
+
+
+  if (
+    status ===
+      "active"
+  ) {
+
+    return {
+      text:
+        "Active",
+      className:
+        "active"
+    };
+
+  }
+
+
+  if (
+    status ===
+      "paid"
+  ) {
+
+    return {
+      text:
+        "Paid",
+      className:
+        "paid"
+    };
+
+  }
+
+
+  if (
+    status ===
+      "approved_payment_required"
+  ) {
+
+    return {
+      text:
+        "Approved - Payment Required",
+      className:
+        "approved"
+    };
+
+  }
+
+
+  if (
+    status ===
+      "pending_review" ||
+    approval ===
+      "pending"
+  ) {
+
+    return {
+      text:
+        "Under Review",
+      className:
+        "pending"
+    };
+
+  }
+
+
+  return {
+    text:
+      status ||
+      approval ||
+      "Submitted",
+    className:
+      "pending"
+  };
+
+}
+
+
+
+function placementLabel(
+  placement
+) {
+
+  if (!placement) {
+
+    return "Not specified";
+
+  }
+
+
+  const values =
+    String(
+      placement
+    ).split(",");
+
+
+  return values
+    .map(value => {
+
+      if (
+        value ===
+        "watch_and_earn"
+      ) {
+
+        return "EarnGig";
+
+      }
+
+      if (
+        value ===
+        "tiktok"
+      ) {
+
+        return "TikTok";
+
+      }
+
+      return value;
+
+    })
+    .join(" + ");
 
 }
 
@@ -1038,47 +1695,65 @@ function formatNaira(amount) {
 
 function calculateTotal() {
 
-  const earngig =
+  const earnGig =
     document.querySelector(
       'input[name="earngig-package"]:checked'
     );
+
 
   const tiktok =
     document.querySelector(
       'input[name="tiktok-package"]:checked'
     );
 
-  const earngigAmount =
-    earngig
-      ? Number(earngig.value)
+
+  const earnGigAmount =
+    earnGig
+      ? Number(
+          earnGig.value
+        )
       : 0;
+
 
   const tiktokAmount =
     tiktok
-      ? Number(tiktok.value)
+      ? Number(
+          tiktok.value
+        )
       : 0;
 
+
   const total =
-    earngigAmount +
+    earnGigAmount +
     tiktokAmount;
+
 
   document.getElementById(
     "earngig-total"
   ).textContent =
-    formatNaira(earngigAmount);
+    formatNaira(
+      earnGigAmount
+    );
+
 
   document.getElementById(
     "tiktok-total"
   ).textContent =
-    formatNaira(tiktokAmount);
+    formatNaira(
+      tiktokAmount
+    );
+
 
   document.getElementById(
     "campaign-total"
   ).textContent =
-    formatNaira(total);
+    formatNaira(
+      total
+    );
+
 
   return {
-    earngigAmount,
+    earnGigAmount,
     tiktokAmount,
     total
   };
@@ -1094,51 +1769,73 @@ function updateTikTokUploads() {
       'input[name="tiktok-package"]:checked'
     );
 
+
   if (!selected) {
 
     tiktokUploadSection.classList.add(
       "hidden"
     );
 
+
     tiktokVideo2Wrapper.classList.add(
       "hidden"
     );
+
 
     tiktokVideo3Wrapper.classList.add(
       "hidden"
     );
 
-    tiktokVideo1.required = false;
-    tiktokVideo2.required = false;
-    tiktokVideo3.required = false;
+
+    tiktokVideo1.required =
+      false;
+
+
+    tiktokVideo2.required =
+      false;
+
+
+    tiktokVideo3.required =
+      false;
+
 
     return;
 
   }
 
+
   const count =
     Number(
-      selected.dataset.videos || 0
+      selected.dataset.videos ||
+      0
     );
+
 
   tiktokUploadSection.classList.remove(
     "hidden"
   );
 
+
   tiktokVideo1.required =
     count >= 1;
+
 
   tiktokVideo2.required =
     count === 3;
 
+
   tiktokVideo3.required =
     count === 3;
 
-  if (count === 3) {
+
+  if (
+    count === 3
+  ) {
 
     tiktokVideo2Wrapper.classList.remove(
       "hidden"
     );
+
 
     tiktokVideo3Wrapper.classList.remove(
       "hidden"
@@ -1150,6 +1847,7 @@ function updateTikTokUploads() {
       "hidden"
     );
 
+
     tiktokVideo3Wrapper.classList.add(
       "hidden"
     );
@@ -1157,26 +1855,6 @@ function updateTikTokUploads() {
   }
 
 }
-
-
-
-document
-  .querySelectorAll(
-    'input[name="earngig-package"], input[name="tiktok-package"]'
-  )
-  .forEach(input => {
-
-    input.addEventListener(
-      "change",
-      () => {
-
-        calculateTotal();
-        updateTikTokUploads();
-
-      }
-    );
-
-  });
 
 
 
@@ -1188,14 +1866,2139 @@ function showFileName(
   const file =
     input.files[0];
 
+
   document.getElementById(
     outputId
   ).textContent =
     file
-      ? "Selected: " + file.name
+      ? "Selected: " +
+        file.name
       : "";
 
 }
+
+
+
+function showStatus(
+  title,
+  message,
+  type = ""
+) {
+
+  statusBox.className =
+    "advert-status-box" +
+    (
+      type
+        ? " " + type
+        : ""
+    );
+
+
+  statusTitle.textContent =
+    title;
+
+
+  statusMessage.textContent =
+    message;
+
+
+  statusBox.classList.remove(
+    "hidden"
+  );
+
+}
+
+
+
+function hideStatus() {
+
+  statusBox.classList.add(
+    "hidden"
+  );
+
+}
+
+
+
+async function loadColumns() {
+
+  safeColumns = {};
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from(
+        "brand_ad_campaigns"
+      )
+      .select("*")
+      .limit(1);
+
+
+  if (error) {
+
+    throw new Error(
+      "Unable to read advertising fields: " +
+      error.message
+    );
+
+  }
+
+
+  if (
+    data &&
+    data[0]
+  ) {
+
+    Object.keys(
+      data[0]
+    ).forEach(
+      column => {
+
+        safeColumns[
+          column
+        ] = true;
+
+      }
+    );
+
+  }
+
+}
+
+
+
+async function loadCampaigns() {
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from(
+        "brand_ad_campaigns"
+      )
+      .select("*")
+      .eq(
+        "brand_id",
+        currentUser.id
+      )
+      .order(
+        "created_at",
+        {
+          ascending:
+            false
+        }
+      );
+
+
+  if (error) {
+
+    throw new Error(
+      "Unable to load your adverts: " +
+      error.message
+    );
+
+  }
+
+
+  campaigns =
+    data || [];
+
+
+  renderCampaigns();
+
+}
+
+
+
+function renderCampaigns() {
+
+  advertList.innerHTML =
+    "";
+
+
+  if (
+    campaigns.length === 0
+  ) {
+
+    emptyAdverts.classList.remove(
+      "hidden"
+    );
+
+    return;
+
+  }
+
+
+  emptyAdverts.classList.add(
+    "hidden"
+  );
+
+
+  campaigns.forEach(
+    campaign => {
+
+      const card =
+        document.createElement(
+          "div"
+        );
+
+
+      card.className =
+        "advert-card";
+
+
+      const state =
+        statusLabel(
+          campaign
+        );
+
+
+      const campaignName =
+        campaign.campaign_name ||
+        "Untitled Campaign";
+
+
+      const title =
+        hasColumn(
+          "ad_title"
+        )
+          ? (
+              campaign.ad_title ||
+              "Advert"
+            )
+          : "Advert";
+
+
+      const amount =
+        formatNaira(
+          campaign.campaign_budget
+        );
+
+
+      const created =
+        campaign.created_at
+          ? new Date(
+              campaign.created_at
+            ).toLocaleDateString(
+              "en-NG"
+            )
+          : "—";
+
+
+      card.innerHTML = `
+
+        <div class="advert-card-top">
+
+          <div>
+
+            <h3>
+              ${escapeHtml(
+                campaignName
+              )}
+            </h3>
+
+            <p>
+              ${escapeHtml(
+                title
+              )}
+            </p>
+
+          </div>
+
+          <span
+            class="advert-status ${state.className}"
+          >
+            ${escapeHtml(
+              state.text
+            )}
+          </span>
+
+        </div>
+
+
+        <div class="advert-meta">
+
+          <span>
+            ${escapeHtml(
+              placementLabel(
+                campaign.placement
+              )
+            )}
+          </span>
+
+          <span>
+            ${escapeHtml(
+              amount
+            )}
+          </span>
+
+          <span>
+            Created ${escapeHtml(
+              created
+            )}
+          </span>
+
+        </div>
+
+
+        <div
+          class="advert-card-actions"
+        >
+
+          <button
+            type="button"
+            class="btn outline"
+            data-action="view"
+            data-id="${campaign.id}"
+          >
+            View
+          </button>
+
+          ${
+            (
+              campaign.status ===
+                "revision_required" ||
+              campaign.approval_status ===
+                "revision_required"
+            )
+              ? `
+                <button
+                  type="button"
+                  class="btn primary"
+                  data-action="revision"
+                  data-id="${campaign.id}"
+                >
+                  Make Changes
+                </button>
+              `
+              : ""
+          }
+
+        </div>
+
+      `;
+
+
+      advertList.appendChild(
+        card
+      );
+
+    }
+  );
+
+}
+
+
+
+function showMyAdverts() {
+
+  hideStatus();
+
+
+  applicationSection.classList.add(
+    "hidden"
+  );
+
+
+  campaignDetailSection.classList.add(
+    "hidden"
+  );
+
+
+  myAdvertsSection.classList.remove(
+    "hidden"
+  );
+
+
+  currentCampaign =
+    null;
+
+
+  isRevision =
+    false;
+
+}
+
+
+
+function showApplicationForm(
+  campaign = null
+) {
+
+  hideStatus();
+
+
+  campaignDetailSection.classList.add(
+    "hidden"
+  );
+
+
+  myAdvertsSection.classList.add(
+    "hidden"
+  );
+
+
+  applicationSection.classList.remove(
+    "hidden"
+  );
+
+
+  currentCampaign =
+    campaign;
+
+
+  isRevision =
+    !!campaign;
+
+
+  form.reset();
+
+
+  reviewNote.classList.add(
+    "hidden"
+  );
+
+
+  if (campaign) {
+
+    document.getElementById(
+      "form-heading"
+    ).textContent =
+      "Make Changes to Advert";
+
+
+    document.getElementById(
+      "form-subheading"
+    ).textContent =
+      "Update this advert and submit it again for review.";
+
+
+    submitButton.textContent =
+      "Reapply Advert for Review";
+
+
+    populateCampaign(
+      campaign
+    );
+
+
+    if (
+      campaign.admin_review_note
+    ) {
+
+      reviewNoteText.textContent =
+        campaign.admin_review_note;
+
+
+      reviewNote.classList.remove(
+        "hidden"
+      );
+
+    }
+
+
+    videoInput.required =
+      false;
+
+  } else {
+
+    document.getElementById(
+      "form-heading"
+    ).textContent =
+      "Create New Advert";
+
+
+    document.getElementById(
+      "form-subheading"
+    ).textContent =
+      "Submit your campaign for review.";
+
+
+    submitButton.textContent =
+      "Submit Advert for Review";
+
+
+    videoInput.required =
+      false;
+
+    calculateTotal();
+
+    updateTikTokUploads();
+
+  }
+
+}
+
+
+
+function populateCampaign(
+  campaign
+) {
+
+  document.getElementById(
+    "campaign-name"
+  ).value =
+    campaign.campaign_name ||
+    "";
+
+
+  document.getElementById(
+    "description"
+  ).value =
+    campaign.description ||
+    "";
+
+
+  if (
+    hasColumn(
+      "ad_title"
+    )
+  ) {
+
+    document.getElementById(
+      "ad-title"
+    ).value =
+      campaign.ad_title ||
+      "";
+
+  }
+
+
+  if (
+    hasColumn(
+      "destination_url"
+    )
+  ) {
+
+    document.getElementById(
+      "destination-url"
+    ).value =
+      campaign.destination_url ||
+      "";
+
+  }
+
+
+  const duration =
+    Number(
+      campaign.duration_days ||
+      0
+    );
+
+
+  if (duration) {
+
+    const matching =
+      document.querySelector(
+        `input[name="earngig-package"][data-days="${duration}"]`
+      );
+
+
+    if (matching) {
+
+      matching.checked =
+        true;
+
+    }
+
+  }
+
+
+  if (
+    campaign.tiktok_video_3_url
+  ) {
+
+    const three =
+      document.querySelector(
+        'input[name="tiktok-package"][data-videos="3"]'
+      );
+
+
+    if (three) {
+
+      three.checked =
+        true;
+
+    }
+
+  } else if (
+    campaign.tiktok_video_1_url
+  ) {
+
+    const one =
+      document.querySelector(
+        'input[name="tiktok-package"][data-videos="1"]'
+      );
+
+
+    if (one) {
+
+      one.checked =
+        true;
+
+    }
+
+  }
+
+
+  calculateTotal();
+
+  updateTikTokUploads();
+
+}
+
+
+
+function validateForm() {
+
+  const campaignName =
+    document.getElementById(
+      "campaign-name"
+    ).value.trim();
+
+
+  const description =
+    document.getElementById(
+      "description"
+    ).value.trim();
+
+
+  const adTitle =
+    document.getElementById(
+      "ad-title"
+    ).value.trim();
+
+
+  const destinationUrl =
+    document.getElementById(
+      "destination-url"
+    ).value.trim();
+
+
+  if (!campaignName) {
+
+    throw new Error(
+      "Please enter a campaign name."
+    );
+
+  }
+
+
+  if (!adTitle) {
+
+    throw new Error(
+      "Please enter an advert title."
+    );
+
+  }
+
+
+  if (!description) {
+
+    throw new Error(
+      "Please enter an advert description."
+    );
+
+  }
+
+
+  if (!destinationUrl) {
+
+    throw new Error(
+      "Please enter a destination link."
+    );
+
+  }
+
+
+  const earnGigPackage =
+    document.querySelector(
+      'input[name="earngig-package"]:checked'
+    );
+
+
+  const tiktokPackage =
+    document.querySelector(
+      'input[name="tiktok-package"]:checked'
+    );
+
+
+  if (
+    !earnGigPackage &&
+    !tiktokPackage
+  ) {
+
+    throw new Error(
+      "Please select at least one advertising package."
+    );
+
+  }
+
+
+  const videoFile =
+    videoInput.files[0];
+
+
+  if (
+    earnGigPackage &&
+    !videoFile &&
+    !isRevision
+  ) {
+
+    throw new Error(
+      "Please upload your EarnGig advert video."
+    );
+
+  }
+
+
+  const tiktokCount =
+    tiktokPackage
+      ? Number(
+          tiktokPackage.dataset.videos
+        )
+      : 0;
+
+
+  if (
+    tiktokCount >= 1 &&
+    !tiktokVideo1.files[0] &&
+    !isRevision
+  ) {
+
+    throw new Error(
+      "Please upload TikTok Video 1."
+    );
+
+  }
+
+
+  if (
+    tiktokCount === 3 &&
+    !tiktokVideo2.files[0] &&
+    !isRevision
+  ) {
+
+    throw new Error(
+      "Please upload TikTok Video 2."
+    );
+
+  }
+
+
+  if (
+    tiktokCount === 3 &&
+    !tiktokVideo3.files[0] &&
+    !isRevision
+  ) {
+
+    throw new Error(
+      "Please upload TikTok Video 3."
+    );
+
+  }
+
+
+  const totals =
+    calculateTotal();
+
+
+  return {
+    campaignName,
+    description,
+    adTitle,
+    destinationUrl,
+    earnGigPackage,
+    tiktokPackage,
+    tiktokCount,
+    videoFile,
+    totals
+  };
+
+}
+
+
+
+async function uploadVideo(
+  file,
+  folder
+) {
+
+  if (!file) {
+
+    return null;
+
+  }
+
+
+  const extension =
+    file.name.includes(".")
+      ? file.name
+          .split(".")
+          .pop()
+          .toLowerCase()
+      : "mp4";
+
+
+  const filePath =
+    `${folder}/${currentUser.id}/${crypto.randomUUID()}.${extension}`;
+
+
+  const {
+    error
+  } =
+    await supabaseClient
+      .storage
+      .from(
+        VIDEO_BUCKET
+      )
+      .upload(
+        filePath,
+        file,
+        {
+          cacheControl:
+            "3600",
+          upsert:
+            false
+        }
+      );
+
+
+  if (error) {
+
+    throw new Error(
+      "Video upload failed: " +
+      error.message
+    );
+
+  }
+
+
+  return filePath;
+
+}
+
+
+
+function getPlacementValue(
+  earnGigPackage,
+  tiktokPackage
+) {
+
+  const placements =
+    [];
+
+
+  if (
+    earnGigPackage
+  ) {
+
+    placements.push(
+      "watch_and_earn"
+    );
+
+  }
+
+
+  if (
+    tiktokPackage
+  ) {
+
+    placements.push(
+      "tiktok"
+    );
+
+  }
+
+
+  return placements.join(
+    ","
+  );
+
+}
+
+
+
+async function createCampaign() {
+
+  const values =
+    validateForm();
+
+
+  let videoPath =
+    null;
+
+
+  if (
+    values.videoFile
+  ) {
+
+    videoPath =
+      await uploadVideo(
+        values.videoFile,
+        "videos"
+      );
+
+  }
+
+
+  let video1Path =
+    null;
+
+
+  let video2Path =
+    null;
+
+
+  let video3Path =
+    null;
+
+
+  if (
+    values.tiktokCount >= 1
+  ) {
+
+    video1Path =
+      await uploadVideo(
+        tiktokVideo1.files[0],
+        "tiktok"
+      );
+
+  }
+
+
+  if (
+    values.tiktokCount === 3
+  ) {
+
+    video2Path =
+      await uploadVideo(
+        tiktokVideo2.files[0],
+        "tiktok"
+      );
+
+
+    video3Path =
+      await uploadVideo(
+        tiktokVideo3.files[0],
+        "tiktok"
+      );
+
+  }
+
+
+  const now =
+    new Date().toISOString();
+
+
+  const campaignData = {
+
+    brand_id:
+      currentUser.id,
+
+    campaign_name:
+      values.campaignName,
+
+    video_url:
+      videoPath,
+
+    description:
+      values.description,
+
+    campaign_budget:
+      values.totals.total,
+
+    viewer_reward:
+      0,
+
+    target_views:
+      0,
+
+    verified_views:
+      0,
+
+    posting_fee:
+      values.tiktokPackage
+        ? values.totals.tiktokAmount
+        : 0,
+
+    placement:
+      getPlacementValue(
+        values.earnGigPackage,
+        values.tiktokPackage
+      ),
+
+    approval_status:
+      "pending",
+
+    submitted_at:
+      now,
+
+    approved_at:
+      null,
+
+    approved_by:
+      null,
+
+    payment_status:
+      "unpaid",
+
+    payment_reference:
+      null,
+
+    paid_at:
+      null,
+
+    start_at:
+      null,
+
+    end_at:
+      null,
+
+    status:
+      "pending_review",
+
+    tiktok_video_1_url:
+      video1Path,
+
+    tiktok_video_2_url:
+      video2Path,
+
+    tiktok_video_3_url:
+      video3Path
+
+  };
+
+
+  if (
+    hasColumn(
+      "ad_title"
+    )
+  ) {
+
+    campaignData.ad_title =
+      values.adTitle;
+
+  }
+
+
+  if (
+    hasColumn(
+      "destination_url"
+    )
+  ) {
+
+    campaignData.destination_url =
+      values.destinationUrl;
+
+  }
+
+
+  if (
+    hasColumn(
+      "duration_days"
+    )
+  ) {
+
+    campaignData.duration_days =
+      values.earnGigPackage
+        ? Number(
+            values.earnGigPackage.dataset.days
+          )
+        : null;
+
+  }
+
+
+  if (
+    hasColumn(
+      "last_submitted_at"
+    )
+  ) {
+
+    campaignData.last_submitted_at =
+      now;
+
+  }
+
+
+  if (
+    hasColumn(
+      "revision_count"
+    )
+  ) {
+
+    campaignData.revision_count =
+      0;
+
+  }
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from(
+        "brand_ad_campaigns"
+      )
+      .insert(
+        campaignData
+      )
+      .select()
+      .single();
+
+
+  if (error) {
+
+    throw new Error(
+      "Advert submission failed: " +
+      error.message
+    );
+
+  }
+
+
+  return data;
+
+}
+
+
+
+async function reviseCampaign() {
+
+  if (!currentCampaign) {
+
+    throw new Error(
+      "No advert selected."
+    );
+
+  }
+
+
+  const values =
+    validateForm();
+
+
+  let videoPath =
+    currentCampaign.video_url ||
+    null;
+
+
+  if (
+    values.videoFile
+  ) {
+
+    videoPath =
+      await uploadVideo(
+        values.videoFile,
+        "videos"
+      );
+
+  }
+
+
+  let video1Path =
+    currentCampaign.tiktok_video_1_url ||
+    null;
+
+
+  let video2Path =
+    currentCampaign.tiktok_video_2_url ||
+    null;
+
+
+  let video3Path =
+    currentCampaign.tiktok_video_3_url ||
+    null;
+
+
+  if (
+    values.tiktokCount >= 1 &&
+    tiktokVideo1.files[0]
+  ) {
+
+    video1Path =
+      await uploadVideo(
+        tiktokVideo1.files[0],
+        "tiktok"
+      );
+
+  }
+
+
+  if (
+    values.tiktokCount === 3 &&
+    tiktokVideo2.files[0]
+  ) {
+
+    video2Path =
+      await uploadVideo(
+        tiktokVideo2.files[0],
+        "tiktok"
+      );
+
+  }
+
+
+  if (
+    values.tiktokCount === 3 &&
+    tiktokVideo3.files[0]
+  ) {
+
+    video3Path =
+      await uploadVideo(
+        tiktokVideo3.files[0],
+        "tiktok"
+      );
+
+  }
+
+
+  if (
+    values.tiktokCount === 1
+  ) {
+
+    video2Path =
+      null;
+
+    video3Path =
+      null;
+
+  }
+
+
+  if (
+    values.tiktokCount === 0
+  ) {
+
+    video1Path =
+      null;
+
+    video2Path =
+      null;
+
+    video3Path =
+      null;
+
+  }
+
+
+  const now =
+    new Date().toISOString();
+
+
+  const updateData = {
+
+    campaign_name:
+      values.campaignName,
+
+    description:
+      values.description,
+
+    campaign_budget:
+      values.totals.total,
+
+    viewer_reward:
+      0,
+
+    posting_fee:
+      values.tiktokPackage
+        ? values.totals.tiktokAmount
+        : 0,
+
+    placement:
+      getPlacementValue(
+        values.earnGigPackage,
+        values.tiktokPackage
+      ),
+
+    video_url:
+      videoPath,
+
+    approval_status:
+      "pending",
+
+    payment_status:
+      "unpaid",
+
+    status:
+      "pending_review",
+
+    tiktok_video_1_url:
+      video1Path,
+
+    tiktok_video_2_url:
+      video2Path,
+
+    tiktok_video_3_url:
+      video3Path
+
+  };
+
+
+  if (
+    hasColumn(
+      "ad_title"
+    )
+  ) {
+
+    updateData.ad_title =
+      values.adTitle;
+
+  }
+
+
+  if (
+    hasColumn(
+      "destination_url"
+    )
+  ) {
+
+    updateData.destination_url =
+      values.destinationUrl;
+
+  }
+
+
+  if (
+    hasColumn(
+      "duration_days"
+    )
+  ) {
+
+    updateData.duration_days =
+      values.earnGigPackage
+        ? Number(
+            values.earnGigPackage.dataset.days
+          )
+        : null;
+
+  }
+
+
+  if (
+    hasColumn(
+      "submitted_at"
+    )
+  ) {
+
+    updateData.submitted_at =
+      now;
+
+  }
+
+
+  if (
+    hasColumn(
+      "last_submitted_at"
+    )
+  ) {
+
+    updateData.last_submitted_at =
+      now;
+
+  }
+
+
+  if (
+    hasColumn(
+      "admin_review_note"
+    )
+  ) {
+
+    updateData.admin_review_note =
+      null;
+
+  }
+
+
+  if (
+    hasColumn(
+      "reviewed_by"
+    )
+  ) {
+
+    updateData.reviewed_by =
+      null;
+
+  }
+
+
+  if (
+    hasColumn(
+      "reviewed_at"
+    )
+  ) {
+
+    updateData.reviewed_at =
+      null;
+
+  }
+
+
+  if (
+    hasColumn(
+      "revision_count"
+    )
+  ) {
+
+    updateData.revision_count =
+      Number(
+        currentCampaign.revision_count ||
+        0
+      ) + 1;
+
+  }
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from(
+        "brand_ad_campaigns"
+      )
+      .update(
+        updateData
+      )
+      .eq(
+        "id",
+        currentCampaign.id
+      )
+      .eq(
+        "brand_id",
+        currentUser.id
+      )
+      .select()
+      .single();
+
+
+  if (error) {
+
+    throw new Error(
+      "Reapplication failed: " +
+      error.message
+    );
+
+  }
+
+
+  return data;
+
+}
+
+
+
+async function showCampaignDetails(
+  campaign
+) {
+
+  currentCampaign =
+    campaign;
+
+
+  myAdvertsSection.classList.add(
+    "hidden"
+  );
+
+
+  applicationSection.classList.add(
+    "hidden"
+  );
+
+
+  campaignDetailSection.classList.remove(
+    "hidden"
+  );
+
+
+  const state =
+    statusLabel(
+      campaign
+    );
+
+
+  document.getElementById(
+    "detail-title"
+  ).textContent =
+    campaign.campaign_name ||
+    "Advert Details";
+
+
+  document.getElementById(
+    "detail-subtitle"
+  ).textContent =
+    state.text;
+
+
+  const title =
+    hasColumn(
+      "ad_title"
+    )
+      ? (
+          campaign.ad_title ||
+          "Advert"
+        )
+      : "Advert";
+
+
+  const destination =
+    hasColumn(
+      "destination_url"
+    )
+      ? (
+          campaign.destination_url ||
+          "Not provided"
+        )
+      : "Not provided";
+
+
+  const created =
+    campaign.created_at
+      ? new Date(
+          campaign.created_at
+        ).toLocaleString(
+          "en-NG"
+        )
+      : "—";
+
+
+  const submitted =
+    campaign.submitted_at
+      ? new Date(
+          campaign.submitted_at
+        ).toLocaleString(
+          "en-NG"
+        )
+      : "—";
+
+
+  document.getElementById(
+    "campaign-detail-content"
+  ).innerHTML = `
+
+    <div class="campaign-detail-row">
+
+      <span>
+        Advert title
+      </span>
+
+      <strong>
+        ${escapeHtml(
+          title
+        )}
+      </strong>
+
+    </div>
+
+
+    <div class="campaign-detail-row">
+
+      <span>
+        Placement
+      </span>
+
+      <strong>
+        ${escapeHtml(
+          placementLabel(
+            campaign.placement
+          )
+        )}
+      </strong>
+
+    </div>
+
+
+    <div class="campaign-detail-row">
+
+      <span>
+        Campaign amount
+      </span>
+
+      <strong>
+        ${escapeHtml(
+          formatNaira(
+            campaign.campaign_budget
+          )
+        )}
+      </strong>
+
+    </div>
+
+
+    <div class="campaign-detail-row">
+
+      <span>
+        Status
+      </span>
+
+      <strong>
+        ${escapeHtml(
+          state.text
+        )}
+      </strong>
+
+    </div>
+
+
+    <div class="campaign-detail-row">
+
+      <span>
+        Destination
+      </span>
+
+      <strong style="word-break:break-word;">
+        ${escapeHtml(
+          destination
+        )}
+      </strong>
+
+    </div>
+
+
+    <div class="campaign-detail-row">
+
+      <span>
+        Submitted
+      </span>
+
+      <strong>
+        ${escapeHtml(
+          submitted
+        )}
+      </strong>
+
+    </div>
+
+
+    <div class="campaign-detail-row">
+
+      <span>
+        Created
+      </span>
+
+      <strong>
+        ${escapeHtml(
+          created
+        )}
+      </strong>
+
+    </div>
+
+
+    <div style="margin-top:18px;">
+
+      <strong>
+        Description
+      </strong>
+
+      <p style="white-space:pre-wrap;line-height:1.6;opacity:.8;">
+        ${escapeHtml(
+          campaign.description ||
+          ""
+        )}
+      </p>
+
+    </div>
+
+
+    ${
+      campaign.admin_review_note
+        ? `
+          <div class="review-note">
+
+            <strong>
+              EarnGig review note
+            </strong>
+
+            <p>
+              ${escapeHtml(
+                campaign.admin_review_note
+              )}
+            </p>
+
+          </div>
+        `
+        : ""
+    }
+
+
+    <div class="advert-card-actions">
+
+      ${
+        (
+          campaign.status ===
+            "revision_required" ||
+          campaign.approval_status ===
+            "revision_required"
+        )
+          ? `
+            <button
+              type="button"
+              class="btn primary"
+              id="detail-revision-button"
+            >
+              Make Changes
+            </button>
+          `
+          : ""
+      }
+
+    </div>
+
+  `;
+
+
+  const revisionButton =
+    document.getElementById(
+      "detail-revision-button"
+    );
+
+
+  if (revisionButton) {
+
+    revisionButton.addEventListener(
+      "click",
+      () => {
+
+        showApplicationForm(
+          campaign
+        );
+
+      }
+    );
+
+  }
+
+
+  await loadReviewHistory(
+    campaign.id
+  );
+
+}
+
+
+
+async function loadReviewHistory(
+  campaignId
+) {
+
+  reviewHistory.innerHTML =
+    "";
+
+
+  reviewHistorySection.classList.add(
+    "hidden"
+  );
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from(
+        "brand_ad_campaign_reviews"
+      )
+      .select("*")
+      .eq(
+        "campaign_id",
+        campaignId
+      )
+      .order(
+        "created_at",
+        {
+          ascending:
+            false
+        }
+      );
+
+
+  if (error) {
+
+    console.error(
+      "Review history error:",
+      error
+    );
+
+    return;
+
+  }
+
+
+  if (
+    !data ||
+    data.length === 0
+  ) {
+
+    return;
+
+  }
+
+
+  data.forEach(
+    item => {
+
+      const wrapper =
+        document.createElement(
+          "div"
+        );
+
+
+      wrapper.className =
+        "history-item";
+
+
+      const header =
+        document.createElement(
+          "div"
+        );
+
+
+      header.className =
+        "history-item-header";
+
+
+      const action =
+        document.createElement(
+          "strong"
+        );
+
+
+      if (
+        item.action ===
+        "changes_requested"
+      ) {
+
+        action.textContent =
+          "Changes requested";
+
+      } else if (
+        item.action ===
+        "approved"
+      ) {
+
+        action.textContent =
+          "Advert approved";
+
+      } else {
+
+        action.textContent =
+          "Advert rejected";
+
+      }
+
+
+      const date =
+        document.createElement(
+          "small"
+        );
+
+
+      date.textContent =
+        item.created_at
+          ? new Date(
+              item.created_at
+            ).toLocaleString(
+              "en-NG"
+            )
+          : "";
+
+
+      header.appendChild(
+        action
+      );
+
+
+      header.appendChild(
+        date
+      );
+
+
+      wrapper.appendChild(
+        header
+      );
+
+
+      if (
+        item.review_note
+      ) {
+
+        const note =
+          document.createElement(
+            "p"
+          );
+
+
+        note.textContent =
+          item.review_note;
+
+
+        wrapper.appendChild(
+          note
+        );
+
+      }
+
+
+      reviewHistory.appendChild(
+        wrapper
+      );
+
+    }
+  );
+
+
+  reviewHistorySection.classList.remove(
+    "hidden"
+  );
+
+}
+
+
+
+function resetForm() {
+
+  form.reset();
+
+
+  currentCampaign =
+    null;
+
+
+  isRevision =
+    false;
+
+
+  reviewNote.classList.add(
+    "hidden"
+  );
+
+
+  document.getElementById(
+    "form-heading"
+  ).textContent =
+    "Create New Advert";
+
+
+  document.getElementById(
+    "form-subheading"
+  ).textContent =
+    "Submit your campaign for review.";
+
+
+  submitButton.textContent =
+    "Submit Advert for Review";
+
+
+  document.getElementById(
+    "video-file-name"
+  ).textContent =
+    "";
+
+
+  document.getElementById(
+    "tiktok-video-1-name"
+  ).textContent =
+    "";
+
+
+  document.getElementById(
+    "tiktok-video-2-name"
+  ).textContent =
+    "";
+
+
+  document.getElementById(
+    "tiktok-video-3-name"
+  ).textContent =
+    "";
+
+
+  updateTikTokUploads();
+
+  calculateTotal();
+
+}
+
+
+
+document
+  .getElementById(
+    "create-advert-button"
+  )
+  .addEventListener(
+    "click",
+    () => {
+
+      resetForm();
+
+      showApplicationForm();
+
+    }
+  );
+
+
+
+document
+  .getElementById(
+    "empty-create-button"
+  )
+  .addEventListener(
+    "click",
+    () => {
+
+      resetForm();
+
+      showApplicationForm();
+
+    }
+  );
+
+
+
+document
+  .getElementById(
+    "cancel-form-button"
+  )
+  .addEventListener(
+    "click",
+    () => {
+
+      showMyAdverts();
+
+    }
+  );
+
+
+
+document
+  .getElementById(
+    "form-cancel-button"
+  )
+  .addEventListener(
+    "click",
+    () => {
+
+      showMyAdverts();
+
+    }
+  );
+
+
+
+document
+  .getElementById(
+    "back-to-adverts-button"
+  )
+  .addEventListener(
+    "click",
+    () => {
+
+      showMyAdverts();
+
+    }
+  );
+
+
+
+advertList.addEventListener(
+  "click",
+  event => {
+
+    const button =
+      event.target.closest(
+        "button[data-action]"
+      );
+
+
+    if (!button) {
+
+      return;
+
+    }
+
+
+    const campaignId =
+      button.dataset.id;
+
+
+    const campaign =
+      campaigns.find(
+        item =>
+          String(
+            item.id
+          ) ===
+          String(
+            campaignId
+          )
+      );
+
+
+    if (!campaign) {
+
+      return;
+
+    }
+
+
+    if (
+      button.dataset.action ===
+      "revision"
+    ) {
+
+      showApplicationForm(
+        campaign
+      );
+
+
+      return;
+
+    }
+
+
+    if (
+      button.dataset.action ===
+      "view"
+    ) {
+
+      showCampaignDetails(
+        campaign
+      );
+
+    }
+
+  }
+);
+
+
+
+document
+  .querySelectorAll(
+    'input[name="earngig-package"], input[name="tiktok-package"]'
+  )
+  .forEach(
+    input => {
+
+      input.addEventListener(
+        "change",
+        () => {
+
+          calculateTotal();
+
+          updateTikTokUploads();
+
+        }
+      );
+
+    }
+  );
 
 
 
@@ -1255,1382 +4058,6 @@ tiktokVideo3.addEventListener(
 
 
 
-function showStatus(
-  title,
-  message,
-  type = ""
-) {
-
-  statusBox.className =
-    "advert-status-box" +
-    (
-      type
-        ? " " + type
-        : ""
-    );
-
-  statusTitle.textContent =
-    title;
-
-  statusMessage.textContent =
-    message;
-
-  statusBox.classList.remove(
-    "hidden"
-  );
-
-}
-
-
-
-async function loadColumns() {
-
-  currentCampaignSafeColumns = {};
-
-  const {
-    data,
-    error
-  } = await supabaseClient
-    .from("brand_ad_campaigns")
-    .select("*")
-    .limit(1);
-
-  if (error) {
-
-    throw new Error(
-      "Unable to read advertising campaign fields: " +
-      error.message
-    );
-
-  }
-
-  if (
-    data &&
-    data[0]
-  ) {
-
-    Object.keys(
-      data[0]
-    ).forEach(column => {
-
-      currentCampaignSafeColumns[
-        column
-      ] = true;
-
-    });
-
-  }
-
-}
-
-
-
-function hasColumn(
-  column
-) {
-
-  return (
-    currentCampaignSafeColumns[
-      column
-    ] === true
-  );
-
-}
-
-
-
-async function loadCurrentCampaign() {
-
-  const {
-    data,
-    error
-  } = await supabaseClient
-    .from("brand_ad_campaigns")
-    .select("*")
-    .eq(
-      "brand_id",
-      currentUser.id
-    )
-    .order(
-      "created_at",
-      {
-        ascending: false
-      }
-    )
-    .limit(1);
-
-  if (error) {
-
-    throw new Error(
-      "Unable to load your advertising campaign: " +
-      error.message
-    );
-
-  }
-
-  return data &&
-    data.length
-    ? data[0]
-    : null;
-
-}
-
-
-
-async function loadReviewHistory(
-  campaignId
-) {
-
-  const {
-    data,
-    error
-  } = await supabaseClient
-    .from("brand_ad_campaign_reviews")
-    .select("*")
-    .eq(
-      "campaign_id",
-      campaignId
-    )
-    .order(
-      "created_at",
-      {
-        ascending: false
-      }
-    );
-
-  if (error) {
-
-    console.error(
-      "Review history error:",
-      error
-    );
-
-    return;
-
-  }
-
-  if (
-    !data ||
-    !data.length
-  ) {
-
-    reviewHistorySection.classList.add(
-      "hidden"
-    );
-
-    return;
-
-  }
-
-  reviewHistory.innerHTML = "";
-
-  data.forEach(item => {
-
-    const wrapper =
-      document.createElement(
-        "div"
-      );
-
-    wrapper.className =
-      "history-item";
-
-    const header =
-      document.createElement(
-        "div"
-      );
-
-    header.className =
-      "history-item-header";
-
-    const action =
-      document.createElement(
-        "strong"
-      );
-
-    if (
-      item.action ===
-      "changes_requested"
-    ) {
-
-      action.textContent =
-        "Changes requested";
-
-    } else if (
-      item.action ===
-      "approved"
-    ) {
-
-      action.textContent =
-        "Advert approved";
-
-    } else {
-
-      action.textContent =
-        "Advert rejected";
-
-    }
-
-    const date =
-      document.createElement(
-        "small"
-      );
-
-    date.textContent =
-      item.created_at
-        ? new Date(
-            item.created_at
-          ).toLocaleString(
-            "en-NG"
-          )
-        : "";
-
-    header.appendChild(action);
-    header.appendChild(date);
-
-    wrapper.appendChild(header);
-
-    if (item.review_note) {
-
-      const note =
-        document.createElement(
-          "p"
-        );
-
-      note.textContent =
-        item.review_note;
-
-      wrapper.appendChild(note);
-
-    }
-
-    reviewHistory.appendChild(
-      wrapper
-    );
-
-  });
-
-  reviewHistorySection.classList.remove(
-    "hidden"
-  );
-
-}
-
-
-
-function getBrandName() {
-
-  return document
-    .getElementById(
-      "brand-name"
-    )
-    .value
-    .trim();
-
-}
-
-
-
-function getCampaignName() {
-
-  return document
-    .getElementById(
-      "campaign-name"
-    )
-    .value
-    .trim();
-
-}
-
-
-
-function getAdTitle() {
-
-  return document
-    .getElementById(
-      "ad-title"
-    )
-    .value
-    .trim();
-
-}
-
-
-
-function getDescription() {
-
-  return document
-    .getElementById(
-      "description"
-    )
-    .value
-    .trim();
-
-}
-
-
-
-function getDestinationUrl() {
-
-  return document
-    .getElementById(
-      "destination-url"
-    )
-    .value
-    .trim();
-
-}
-
-
-
-function populateCampaign(
-  campaign
-) {
-
-  if (!campaign) {
-    return;
-  }
-
-  /*
-   * Brand name is a form-only field because
-   * brand_ad_campaigns does not contain
-   * a brand_name column.
-   */
-
-  document.getElementById(
-    "brand-name"
-  ).value =
-    getBrandName() ||
-    "";
-
-  document.getElementById(
-    "campaign-name"
-  ).value =
-    campaign.campaign_name ||
-    "";
-
-  document.getElementById(
-    "description"
-  ).value =
-    campaign.description ||
-    "";
-
-  if (
-    hasColumn("ad_title")
-  ) {
-
-    document.getElementById(
-      "ad-title"
-    ).value =
-      campaign.ad_title ||
-      "";
-
-  } else {
-
-    document.getElementById(
-      "ad-title"
-    ).value =
-      "";
-
-  }
-
-  if (
-    hasColumn("destination_url")
-  ) {
-
-    document.getElementById(
-      "destination-url"
-    ).value =
-      campaign.destination_url ||
-      "";
-
-  } else {
-
-    document.getElementById(
-      "destination-url"
-    ).value =
-      "";
-
-  }
-
-  const duration =
-    Number(
-      campaign.duration_days ||
-      0
-    );
-
-  if (duration) {
-
-    const matchingDuration =
-      document.querySelector(
-        `input[name="earngig-package"][data-days="${duration}"]`
-      );
-
-    if (matchingDuration) {
-
-      matchingDuration.checked =
-        true;
-
-    }
-
-  }
-
-  if (
-    campaign.tiktok_video_3_url
-  ) {
-
-    const three =
-      document.querySelector(
-        'input[name="tiktok-package"][data-videos="3"]'
-      );
-
-    if (three) {
-      three.checked = true;
-    }
-
-  } else if (
-    campaign.tiktok_video_1_url
-  ) {
-
-    const one =
-      document.querySelector(
-        'input[name="tiktok-package"][data-videos="1"]'
-      );
-
-    if (one) {
-      one.checked = true;
-    }
-
-  }
-
-  calculateTotal();
-  updateTikTokUploads();
-
-}
-
-
-
-function configureForRevision(
-  campaign
-) {
-
-  isRevision =
-    true;
-
-  currentCampaign =
-    campaign;
-
-  populateCampaign(
-    campaign
-  );
-
-  statusBox.className =
-    "advert-status-box warning";
-
-  statusTitle.textContent =
-    "Changes are required";
-
-  statusMessage.textContent =
-    "Please make the requested changes and submit the advert again for review.";
-
-  statusBox.classList.remove(
-    "hidden"
-  );
-
-  if (
-    campaign.admin_review_note
-  ) {
-
-    reviewNoteText.textContent =
-      campaign.admin_review_note;
-
-    reviewNote.classList.remove(
-      "hidden"
-    );
-
-  }
-
-  submitButton.textContent =
-    "Reapply Advert for Review";
-
-  videoInput.required =
-    false;
-
-}
-
-
-
-function configureForNewApplication() {
-
-  isRevision =
-    false;
-
-  currentCampaign =
-    null;
-
-  form.reset();
-
-  reviewNote.classList.add(
-    "hidden"
-  );
-
-  videoInput.required =
-    false;
-
-  updateTikTokUploads();
-
-  calculateTotal();
-
-  submitButton.textContent =
-    "Submit Advert for Review";
-
-}
-
-
-
-async function uploadVideo(
-  file,
-  folder
-) {
-
-  if (!file) {
-    return null;
-  }
-
-  const extension =
-    file.name.includes(".")
-      ? file.name
-          .split(".")
-          .pop()
-          .toLowerCase()
-      : "mp4";
-
-  const filePath =
-    `${folder}/${currentUser.id}/${crypto.randomUUID()}.${extension}`;
-
-  const {
-    error
-  } = await supabaseClient
-    .storage
-    .from(VIDEO_BUCKET)
-    .upload(
-      filePath,
-      file,
-      {
-        cacheControl: "3600",
-        upsert: false
-      }
-    );
-
-  if (error) {
-
-    throw new Error(
-      "Video upload failed: " +
-      error.message
-    );
-
-  }
-
-  return filePath;
-
-}
-
-
-
-function getSelectedTikTokPackage() {
-
-  return document.querySelector(
-    'input[name="tiktok-package"]:checked'
-  );
-
-}
-
-
-
-function getSelectedEarnGigPackage() {
-
-  return document.querySelector(
-    'input[name="earngig-package"]:checked'
-  );
-
-}
-
-
-
-function getPlacementValue(
-  earnGigPackage,
-  tiktokPackage
-) {
-
-  const placements = [];
-
-  if (earnGigPackage) {
-
-    placements.push(
-      "watch_and_earn"
-    );
-
-  }
-
-  if (tiktokPackage) {
-
-    placements.push(
-      "tiktok"
-    );
-
-  }
-
-  return placements.join(",");
-
-}
-
-
-
-function validateAdvertForm() {
-
-  const brandName =
-    getBrandName();
-
-  const campaignName =
-    getCampaignName();
-
-  const adTitle =
-    getAdTitle();
-
-  const description =
-    getDescription();
-
-  const destinationUrl =
-    getDestinationUrl();
-
-  if (!brandName) {
-
-    throw new Error(
-      "Please enter your brand or business name."
-    );
-
-  }
-
-  if (!campaignName) {
-
-    throw new Error(
-      "Please enter a campaign name."
-    );
-
-  }
-
-  if (!adTitle) {
-
-    throw new Error(
-      "Please enter an advert title."
-    );
-
-  }
-
-  if (!description) {
-
-    throw new Error(
-      "Please enter an advert description."
-    );
-
-  }
-
-  if (!destinationUrl) {
-
-    throw new Error(
-      "Please enter your destination link."
-    );
-
-  }
-
-  const earnGigPackage =
-    getSelectedEarnGigPackage();
-
-  const tiktokPackage =
-    getSelectedTikTokPackage();
-
-  if (
-    !earnGigPackage &&
-    !tiktokPackage
-  ) {
-
-    throw new Error(
-      "Please select at least one advertising package."
-    );
-
-  }
-
-  const videoFile =
-    videoInput.files[0];
-
-  if (
-    earnGigPackage &&
-    !videoFile &&
-    !isRevision
-  ) {
-
-    throw new Error(
-      "Please upload your EarnGig advert video."
-    );
-
-  }
-
-  const tiktokCount =
-    tiktokPackage
-      ? Number(
-          tiktokPackage.dataset.videos
-        )
-      : 0;
-
-  if (
-    tiktokCount >= 1 &&
-    !tiktokVideo1.files[0] &&
-    !isRevision
-  ) {
-
-    throw new Error(
-      "Please upload TikTok Video 1."
-    );
-
-  }
-
-  if (
-    tiktokCount === 3 &&
-    !tiktokVideo2.files[0] &&
-    !isRevision
-  ) {
-
-    throw new Error(
-      "Please upload TikTok Video 2."
-    );
-
-  }
-
-  if (
-    tiktokCount === 3 &&
-    !tiktokVideo3.files[0] &&
-    !isRevision
-  ) {
-
-    throw new Error(
-      "Please upload TikTok Video 3."
-    );
-
-  }
-
-  return {
-    brandName,
-    campaignName,
-    adTitle,
-    description,
-    destinationUrl,
-    earnGigPackage,
-    tiktokPackage,
-    tiktokCount,
-    videoFile
-  };
-
-}
-
-
-
-async function submitNewCampaign() {
-
-  const validated =
-    validateAdvertForm();
-
-  const totals =
-    calculateTotal();
-
-  const earnGigPackage =
-    validated.earnGigPackage;
-
-  const tiktokPackage =
-    validated.tiktokPackage;
-
-  const tiktokCount =
-    validated.tiktokCount;
-
-  const videoFile =
-    validated.videoFile;
-
-
-  /*
-   * Upload EarnGig video.
-   */
-
-  let videoPath =
-    null;
-
-  if (videoFile) {
-
-    videoPath =
-      await uploadVideo(
-        videoFile,
-        "videos"
-      );
-
-  }
-
-
-  /*
-   * Upload TikTok videos.
-   */
-
-  let tiktokVideo1Path =
-    null;
-
-  let tiktokVideo2Path =
-    null;
-
-  let tiktokVideo3Path =
-    null;
-
-
-  if (
-    tiktokCount >= 1
-  ) {
-
-    tiktokVideo1Path =
-      await uploadVideo(
-        tiktokVideo1.files[0],
-        "tiktok"
-      );
-
-  }
-
-
-  if (
-    tiktokCount === 3
-  ) {
-
-    tiktokVideo2Path =
-      await uploadVideo(
-        tiktokVideo2.files[0],
-        "tiktok"
-      );
-
-    tiktokVideo3Path =
-      await uploadVideo(
-        tiktokVideo3.files[0],
-        "tiktok"
-      );
-
-  }
-
-
-  const durationDays =
-    earnGigPackage
-      ? Number(
-          earnGigPackage.dataset.days
-        )
-      : null;
-
-
-  /*
-   * Only use columns that are actually
-   * present in brand_ad_campaigns.
-   *
-   * brand_name is deliberately NOT included.
-   */
-
-  const campaignData = {
-
-    brand_id:
-      currentUser.id,
-
-    campaign_name:
-      validated.campaignName,
-
-    video_url:
-      videoPath,
-
-    description:
-      validated.description,
-
-    campaign_budget:
-      totals.total,
-
-    viewer_reward:
-      0,
-
-    target_views:
-      0,
-
-    verified_views:
-      0,
-
-    posting_fee:
-      tiktokPackage
-        ? totals.tiktokAmount
-        : 0,
-
-    placement:
-      getPlacementValue(
-        earnGigPackage,
-        tiktokPackage
-      ),
-
-    approval_status:
-      "pending",
-
-    submitted_at:
-      new Date().toISOString(),
-
-    approved_at:
-      null,
-
-    approved_by:
-      null,
-
-    payment_status:
-      "unpaid",
-
-    payment_reference:
-      null,
-
-    paid_at:
-      null,
-
-    start_at:
-      null,
-
-    end_at:
-      null,
-
-    status:
-      "pending_review",
-
-    tiktok_video_1_url:
-      tiktokVideo1Path,
-
-    tiktok_video_2_url:
-      tiktokVideo2Path,
-
-    tiktok_video_3_url:
-      tiktokVideo3Path
-
-  };
-
-
-  /*
-   * These columns are optional in your
-   * current schema, so only add them if
-   * they actually exist.
-   */
-
-  if (
-    hasColumn("ad_title")
-  ) {
-
-    campaignData.ad_title =
-      validated.adTitle;
-
-  }
-
-
-  if (
-    hasColumn("destination_url")
-  ) {
-
-    campaignData.destination_url =
-      validated.destinationUrl;
-
-  }
-
-
-  if (
-    hasColumn("duration_days")
-  ) {
-
-    campaignData.duration_days =
-      durationDays;
-
-  }
-
-
-  if (
-    hasColumn("last_submitted_at")
-  ) {
-
-    campaignData.last_submitted_at =
-      new Date().toISOString();
-
-  }
-
-
-  if (
-    hasColumn("revision_count")
-  ) {
-
-    campaignData.revision_count =
-      0;
-
-  }
-
-
-  const {
-    data,
-    error
-  } = await supabaseClient
-    .from("brand_ad_campaigns")
-    .insert(
-      campaignData
-    )
-    .select()
-    .single();
-
-
-  if (error) {
-
-    throw new Error(
-      "Advert submission failed: " +
-      error.message
-    );
-
-  }
-
-
-  currentCampaign =
-    data;
-
-}
-
-
-
-async function submitRevision() {
-
-  if (!currentCampaign) {
-
-    throw new Error(
-      "No advert campaign was found to revise."
-    );
-
-  }
-
-
-  const validated =
-    validateAdvertForm();
-
-  const totals =
-    calculateTotal();
-
-  const earnGigPackage =
-    validated.earnGigPackage;
-
-  const tiktokPackage =
-    validated.tiktokPackage;
-
-  const tiktokCount =
-    validated.tiktokCount;
-
-
-  /*
-   * Keep existing EarnGig video unless
-   * a replacement is uploaded.
-   */
-
-  let videoPath =
-    currentCampaign.video_url ||
-    null;
-
-
-  if (
-    videoInput.files[0]
-  ) {
-
-    videoPath =
-      await uploadVideo(
-        videoInput.files[0],
-        "videos"
-      );
-
-  }
-
-
-  /*
-   * Keep existing TikTok videos unless
-   * replacements are uploaded.
-   */
-
-  let video1Path =
-    currentCampaign.tiktok_video_1_url ||
-    null;
-
-  let video2Path =
-    currentCampaign.tiktok_video_2_url ||
-    null;
-
-  let video3Path =
-    currentCampaign.tiktok_video_3_url ||
-    null;
-
-
-  if (
-    tiktokCount >= 1 &&
-    tiktokVideo1.files[0]
-  ) {
-
-    video1Path =
-      await uploadVideo(
-        tiktokVideo1.files[0],
-        "tiktok"
-      );
-
-  }
-
-
-  if (
-    tiktokCount === 3 &&
-    tiktokVideo2.files[0]
-  ) {
-
-    video2Path =
-      await uploadVideo(
-        tiktokVideo2.files[0],
-        "tiktok"
-      );
-
-  }
-
-
-  if (
-    tiktokCount === 3 &&
-    tiktokVideo3.files[0]
-  ) {
-
-    video3Path =
-      await uploadVideo(
-        tiktokVideo3.files[0],
-        "tiktok"
-      );
-
-  }
-
-
-  if (
-    tiktokCount === 1
-  ) {
-
-    video2Path =
-      null;
-
-    video3Path =
-      null;
-
-  }
-
-
-  if (
-    tiktokCount === 0
-  ) {
-
-    video1Path =
-      null;
-
-    video2Path =
-      null;
-
-    video3Path =
-      null;
-
-  }
-
-
-  const updateData = {
-
-    campaign_name:
-      validated.campaignName,
-
-    description:
-      validated.description,
-
-    campaign_budget:
-      totals.total,
-
-    viewer_reward:
-      0,
-
-    target_views:
-      Number(
-        currentCampaign.target_views ||
-        0
-      ),
-
-    verified_views:
-      Number(
-        currentCampaign.verified_views ||
-        0
-      ),
-
-    posting_fee:
-      tiktokPackage
-        ? totals.tiktokAmount
-        : 0,
-
-    placement:
-      getPlacementValue(
-        earnGigPackage,
-        tiktokPackage
-      ),
-
-    video_url:
-      videoPath,
-
-    approval_status:
-      "pending",
-
-    payment_status:
-      "unpaid",
-
-    status:
-      "pending_review",
-
-    tiktok_video_1_url:
-      video1Path,
-
-    tiktok_video_2_url:
-      video2Path,
-
-    tiktok_video_3_url:
-      video3Path
-
-  };
-
-
-  if (
-    hasColumn("ad_title")
-  ) {
-
-    updateData.ad_title =
-      validated.adTitle;
-
-  }
-
-
-  if (
-    hasColumn("destination_url")
-  ) {
-
-    updateData.destination_url =
-      validated.destinationUrl;
-
-  }
-
-
-  if (
-    hasColumn("duration_days")
-  ) {
-
-    updateData.duration_days =
-      earnGigPackage
-        ? Number(
-            earnGigPackage.dataset.days
-          )
-        : null;
-
-  }
-
-
-  if (
-    hasColumn("submitted_at")
-  ) {
-
-    updateData.submitted_at =
-      new Date().toISOString();
-
-  }
-
-
-  if (
-    hasColumn("last_submitted_at")
-  ) {
-
-    updateData.last_submitted_at =
-      new Date().toISOString();
-
-  }
-
-
-  if (
-    hasColumn("admin_review_note")
-  ) {
-
-    updateData.admin_review_note =
-      null;
-
-  }
-
-
-  if (
-    hasColumn("reviewed_by")
-  ) {
-
-    updateData.reviewed_by =
-      null;
-
-  }
-
-
-  if (
-    hasColumn("reviewed_at")
-  ) {
-
-    updateData.reviewed_at =
-      null;
-
-  }
-
-
-  if (
-    hasColumn("revision_count")
-  ) {
-
-    updateData.revision_count =
-      Number(
-        currentCampaign.revision_count ||
-        0
-      ) + 1;
-
-  }
-
-
-  const {
-    data,
-    error
-  } = await supabaseClient
-    .from("brand_ad_campaigns")
-    .update(
-      updateData
-    )
-    .eq(
-      "id",
-      currentCampaign.id
-    )
-    .eq(
-      "brand_id",
-      currentUser.id
-    )
-    .select()
-    .single();
-
-
-  if (error) {
-
-    throw new Error(
-      "Reapplication failed: " +
-      error.message
-    );
-
-  }
-
-
-  currentCampaign =
-    data;
-
-}
-
-
-
 form.addEventListener(
   "submit",
   async event => {
@@ -2641,6 +4068,7 @@ form.addEventListener(
     submitButton.disabled =
       true;
 
+
     submitButton.textContent =
       isRevision
         ? "Reapplying..."
@@ -2649,48 +4077,83 @@ form.addEventListener(
 
     try {
 
-      if (isRevision) {
+      let savedCampaign;
 
-        await submitRevision();
+
+      if (
+        isRevision
+      ) {
+
+        savedCampaign =
+          await reviseCampaign();
 
       } else {
 
-        await submitNewCampaign();
+        savedCampaign =
+          await createCampaign();
 
       }
 
 
-      form.classList.add(
-        "hidden"
-      );
+      await loadCampaigns();
 
 
-      showStatus(
-        "Advert submitted successfully",
-        "Your advert has been sent to EarnGig for review. No payment is required at this stage.",
-        ""
-      );
+      if (
+        isRevision
+      ) {
 
+        showStatus(
+          "Advert resubmitted successfully",
+          "Your changes have been sent to EarnGig for another review.",
+          ""
+        );
 
-      reviewNote.classList.add(
-        "hidden"
-      );
+      } else {
 
-
-      if (currentCampaign) {
-
-        await loadReviewHistory(
-          currentCampaign.id
+        showStatus(
+          "Advert submitted successfully",
+          "Your new advert has been sent to EarnGig for review. No payment is required at this stage.",
+          ""
         );
 
       }
 
-    } catch (error) {
+
+      applicationSection.classList.add(
+        "hidden"
+      );
+
+
+      myAdvertsSection.classList.remove(
+        "hidden"
+      );
+
+
+      currentCampaign =
+        savedCampaign;
+
+
+      isRevision =
+        false;
+
+
+      form.reset();
+
+
+      calculateTotal();
+
+      updateTikTokUploads();
+
+
+    } catch (
+      error
+    ) {
 
       console.error(
         "Advert submission error:",
         error
       );
+
 
       alert(
         error.message ||
@@ -2701,6 +4164,7 @@ form.addEventListener(
 
       submitButton.disabled =
         false;
+
 
       submitButton.textContent =
         isRevision
@@ -2724,7 +4188,9 @@ async function initialisePage() {
       },
       error
     } =
-      await supabaseClient.auth.getUser();
+      await supabaseClient
+        .auth
+        .getUser();
 
 
     if (
@@ -2744,16 +4210,10 @@ async function initialisePage() {
       user;
 
 
-    /*
-     * Read the actual columns before
-     * constructing the insert.
-     */
-
     await loadColumns();
 
 
-    currentCampaign =
-      await loadCurrentCampaign();
+    await loadCampaigns();
 
 
     loadingMessage.classList.add(
@@ -2761,163 +4221,44 @@ async function initialisePage() {
     );
 
 
-    if (!currentCampaign) {
-
-      configureForNewApplication();
-
-      form.classList.remove(
-        "hidden"
-      );
-
-      return;
-
-    }
-
-
-    /*
-     * Revision requested.
-     */
-
-    if (
-      currentCampaign.status ===
-        "revision_required"
-      ||
-      currentCampaign.approval_status ===
-        "revision_required"
-    ) {
-
-      configureForRevision(
-        currentCampaign
-      );
-
-      form.classList.remove(
-        "hidden"
-      );
-
-      await loadReviewHistory(
-        currentCampaign.id
-      );
-
-      return;
-
-    }
-
-
-    /*
-     * Pending review.
-     */
-
-    if (
-      currentCampaign.status ===
-        "pending_review"
-      ||
-      currentCampaign.approval_status ===
-        "pending"
-    ) {
-
-      showStatus(
-        "Advert under review",
-        "Your advert has been submitted and is currently being reviewed by EarnGig.",
-        ""
-      );
-
-      await loadReviewHistory(
-        currentCampaign.id
-      );
-
-      return;
-
-    }
-
-
-    /*
-     * Approved but waiting for payment.
-     */
-
-    if (
-      currentCampaign.status ===
-        "approved_payment_required"
-    ) {
-
-      showStatus(
-        "Your advert has been approved",
-        "Your advert has been approved by EarnGig. Please complete payment before the campaign can become active.",
-        "success"
-      );
-
-      await loadReviewHistory(
-        currentCampaign.id
-      );
-
-      return;
-
-    }
-
-
-    /*
-     * Paid / active.
-     */
-
-    if (
-      currentCampaign.status ===
-        "paid"
-      ||
-      currentCampaign.status ===
-        "active"
-    ) {
-
-      showStatus(
-        "Your advert is active",
-        "Your approved advert has been paid for and is currently active.",
-        "success"
-      );
-
-      await loadReviewHistory(
-        currentCampaign.id
-      );
-
-      return;
-
-    }
-
-
-    /*
-     * Rejected.
-     */
-
-    if (
-      currentCampaign.status ===
-        "rejected"
-    ) {
-
-      showStatus(
-        "Advert rejected",
-        currentCampaign.admin_review_note ||
-        "This advert was not approved by EarnGig.",
-        "danger"
-      );
-
-      await loadReviewHistory(
-        currentCampaign.id
-      );
-
-      return;
-
-    }
-
-
-    configureForNewApplication();
-
-    form.classList.remove(
+    myAdvertsSection.classList.remove(
       "hidden"
     );
 
-  } catch (error) {
+
+    /*
+     * If the URL contains ?new=1,
+     * immediately open a new advert form.
+     */
+
+    const params =
+      new URLSearchParams(
+        window.location.search
+      );
+
+
+    if (
+      params.get(
+        "new"
+      ) === "1"
+    ) {
+
+      resetForm();
+
+      showApplicationForm();
+
+    }
+
+
+  } catch (
+    error
+  ) {
 
     console.error(
       "Advertising page error:",
       error
     );
+
 
     loadingMessage.textContent =
       error.message ||
