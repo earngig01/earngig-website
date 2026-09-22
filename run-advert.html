@@ -9,6 +9,9 @@
 
   <link rel="stylesheet" href="styles.css">
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase.js"></script>
+
   <style>
 
     .advert-status-box {
@@ -635,8 +638,6 @@
         </div>
 
 
-        <!-- 1 VIDEO -->
-
         <label class="package-card">
 
           <input
@@ -666,8 +667,6 @@
         </label>
 
 
-
-        <!-- 3 VIDEOS -->
 
         <label class="package-card">
 
@@ -699,8 +698,6 @@
 
 
 
-        <!-- TIKTOK VIDEO UPLOADS -->
-
         <div
           id="tiktok-upload-section"
           class="tiktok-upload-box hidden"
@@ -715,8 +712,6 @@
             to use for your TikTok campaign.
           </p>
 
-
-          <!-- VIDEO 1 -->
 
           <div class="tiktok-video-field">
 
@@ -737,8 +732,6 @@
 
           </div>
 
-
-          <!-- VIDEO 2 -->
 
           <div
             id="tiktok-video-2-wrapper"
@@ -762,8 +755,6 @@
 
           </div>
 
-
-          <!-- VIDEO 3 -->
 
           <div
             id="tiktok-video-3-wrapper"
@@ -999,9 +990,6 @@
 
 
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase.js"></script>
-
 <script>
 
 const VIDEO_BUCKET = "advert-videos";
@@ -1061,11 +1049,8 @@ const tiktokVideo3 =
   document.getElementById("tiktok-video-3");
 
 let currentUser = null;
-
 let currentCampaign = null;
-
 let isRevision = false;
-
 let currentCampaignSafeColumns = {};
 
 
@@ -1092,23 +1077,19 @@ function calculateTotal() {
       'input[name="tiktok-package"]:checked'
     );
 
-
   const earngigAmount =
     earngig
       ? Number(earngig.value)
       : 0;
-
 
   const tiktokAmount =
     tiktok
       ? Number(tiktok.value)
       : 0;
 
-
   const total =
     earngigAmount +
     tiktokAmount;
-
 
   document.getElementById(
     "earngig-total"
@@ -1117,14 +1098,12 @@ function calculateTotal() {
       earngigAmount
     );
 
-
   document.getElementById(
     "tiktok-total"
   ).textContent =
     formatNaira(
       tiktokAmount
     );
-
 
   document.getElementById(
     "campaign-total"
@@ -1133,13 +1112,11 @@ function calculateTotal() {
       total
     );
 
-
   return {
     earngigAmount,
     tiktokAmount,
     total
   };
-
 }
 
 
@@ -1150,7 +1127,6 @@ function updateTikTokUploads() {
     document.querySelector(
       'input[name="tiktok-package"]:checked'
     );
-
 
   if (!selected) {
 
@@ -1166,54 +1142,30 @@ function updateTikTokUploads() {
       "hidden"
     );
 
-    tiktokVideo1.required =
-      false;
-
-    tiktokVideo2.required =
-      false;
-
-    tiktokVideo3.required =
-      false;
+    tiktokVideo1.required = false;
+    tiktokVideo2.required = false;
+    tiktokVideo3.required = false;
 
     return;
-
   }
-
 
   const numberOfVideos =
     Number(
       selected.dataset.videos || 0
     );
 
-
   tiktokUploadSection.classList.remove(
     "hidden"
   );
 
+  tiktokVideo1.required =
+    numberOfVideos >= 1;
 
-  if (numberOfVideos === 1) {
+  tiktokVideo2.required =
+    numberOfVideos === 3;
 
-    tiktokVideo2Wrapper.classList.add(
-      "hidden"
-    );
-
-    tiktokVideo3Wrapper.classList.add(
-      "hidden"
-    );
-
-    tiktokVideo1.required =
-      true;
-
-    tiktokVideo2.required =
-      false;
-
-    tiktokVideo3.required =
-      false;
-
-    return;
-
-  }
-
+  tiktokVideo3.required =
+    numberOfVideos === 3;
 
   if (numberOfVideos === 3) {
 
@@ -1225,17 +1177,17 @@ function updateTikTokUploads() {
       "hidden"
     );
 
-    tiktokVideo1.required =
-      true;
+  } else {
 
-    tiktokVideo2.required =
-      true;
+    tiktokVideo2Wrapper.classList.add(
+      "hidden"
+    );
 
-    tiktokVideo3.required =
-      true;
+    tiktokVideo3Wrapper.classList.add(
+      "hidden"
+    );
 
   }
-
 }
 
 
@@ -1251,7 +1203,6 @@ document
       () => {
 
         calculateTotal();
-
         updateTikTokUploads();
 
       }
@@ -1350,19 +1301,15 @@ function showStatus(
         : ""
     );
 
-
   statusTitle.textContent =
     title;
-
 
   statusMessage.textContent =
     message;
 
-
   statusBox.classList.remove(
     "hidden"
   );
-
 }
 
 
@@ -1376,7 +1323,6 @@ async function loadColumns() {
     .from("brand_ad_campaigns")
     .select("*")
     .limit(1);
-
 
   if (
     !error &&
@@ -1420,7 +1366,6 @@ async function loadCurrentCampaign() {
     )
     .limit(1);
 
-
   if (error) {
 
     throw new Error(
@@ -1430,12 +1375,10 @@ async function loadCurrentCampaign() {
 
   }
 
-
   return data &&
     data.length
     ? data[0]
     : null;
-
 }
 
 
@@ -1461,7 +1404,6 @@ async function loadReviewHistory(
       }
     );
 
-
   if (error) {
 
     console.error(
@@ -1470,9 +1412,7 @@ async function loadReviewHistory(
     );
 
     return;
-
   }
-
 
   if (
     !data ||
@@ -1484,13 +1424,9 @@ async function loadReviewHistory(
     );
 
     return;
-
   }
 
-
-  reviewHistory.innerHTML =
-    "";
-
+  reviewHistory.innerHTML = "";
 
   data.forEach(item => {
 
@@ -1499,26 +1435,21 @@ async function loadReviewHistory(
         "div"
       );
 
-
     wrapper.className =
       "history-item";
-
 
     const header =
       document.createElement(
         "div"
       );
 
-
     header.className =
       "history-item-header";
-
 
     const action =
       document.createElement(
         "strong"
       );
-
 
     if (
       item.action ===
@@ -1543,12 +1474,10 @@ async function loadReviewHistory(
 
     }
 
-
     const date =
       document.createElement(
         "small"
       );
-
 
     date.textContent =
       item.created_at
@@ -1559,21 +1488,17 @@ async function loadReviewHistory(
           )
         : "";
 
-
     header.appendChild(
       action
     );
-
 
     header.appendChild(
       date
     );
 
-
     wrapper.appendChild(
       header
     );
-
 
     if (item.review_note) {
 
@@ -1582,10 +1507,8 @@ async function loadReviewHistory(
           "p"
         );
 
-
       note.textContent =
         item.review_note;
-
 
       wrapper.appendChild(
         note
@@ -1593,18 +1516,15 @@ async function loadReviewHistory(
 
     }
 
-
     reviewHistory.appendChild(
       wrapper
     );
 
   });
 
-
   reviewHistorySection.classList.remove(
     "hidden"
   );
-
 }
 
 
@@ -1617,18 +1537,20 @@ function populateCampaign(
     return;
   }
 
+  document.getElementById(
+    "brand-name"
+  ).value =
+    campaign.brand_name || "";
 
   document.getElementById(
     "campaign-name"
   ).value =
     campaign.campaign_name || "";
 
-
   document.getElementById(
     "description"
   ).value =
     campaign.description || "";
-
 
   if (
     "ad_title" in
@@ -1642,7 +1564,6 @@ function populateCampaign(
 
   }
 
-
   if (
     "destination_url" in
     currentCampaignSafeColumns
@@ -1655,12 +1576,10 @@ function populateCampaign(
 
   }
 
-
   const duration =
     Number(
       campaign.duration_days || 0
     );
-
 
   if (duration) {
 
@@ -1669,20 +1588,11 @@ function populateCampaign(
         `input[name="earngig-package"][data-days="${duration}"]`
       );
 
-
     if (matchingDuration) {
-
-      matchingDuration.checked =
-        true;
-
+      matchingDuration.checked = true;
     }
 
   }
-
-
-  /*
-   * Restore TikTok package.
-   */
 
   if (
     campaign.tiktok_video_3_url
@@ -1693,12 +1603,8 @@ function populateCampaign(
         'input[name="tiktok-package"][data-videos="3"]'
       );
 
-
     if (threeVideoPackage) {
-
-      threeVideoPackage.checked =
-        true;
-
+      threeVideoPackage.checked = true;
     }
 
   } else if (
@@ -1710,21 +1616,14 @@ function populateCampaign(
         'input[name="tiktok-package"][data-videos="1"]'
       );
 
-
     if (oneVideoPackage) {
-
-      oneVideoPackage.checked =
-        true;
-
+      oneVideoPackage.checked = true;
     }
 
   }
 
-
   calculateTotal();
-
   updateTikTokUploads();
-
 }
 
 
@@ -1733,35 +1632,26 @@ function configureForRevision(
   campaign
 ) {
 
-  isRevision =
-    true;
+  isRevision = true;
 
-
-  currentCampaign =
-    campaign;
-
+  currentCampaign = campaign;
 
   populateCampaign(
     campaign
   );
 
-
   statusBox.className =
     "advert-status-box warning";
-
 
   statusTitle.textContent =
     "Changes are required";
 
-
   statusMessage.textContent =
     "Please make the requested changes and submit the advert again for review.";
-
 
   statusBox.classList.remove(
     "hidden"
   );
-
 
   if (
     campaign.admin_review_note
@@ -1770,55 +1660,36 @@ function configureForRevision(
     reviewNoteText.textContent =
       campaign.admin_review_note;
 
-
     reviewNote.classList.remove(
       "hidden"
     );
 
   }
 
-
   submitButton.textContent =
     "Reapply Advert for Review";
 
-
-  /*
-   * Existing EarnGig video can remain
-   * unchanged during a revision.
-   */
-
-  videoInput.required =
-    false;
-
+  videoInput.required = false;
 }
 
 
 
 function configureForNewApplication() {
 
-  isRevision =
-    false;
+  isRevision = false;
 
-
-  currentCampaign =
-    null;
-
+  currentCampaign = null;
 
   form.reset();
 
-
-  videoInput.required =
-    false;
-
+  videoInput.required = false;
 
   updateTikTokUploads();
 
   calculateTotal();
 
-
   submitButton.textContent =
     "Submit Advert for Review";
-
 }
 
 
@@ -1832,7 +1703,6 @@ async function uploadVideo(
     return null;
   }
 
-
   const extension =
     file.name.includes(".")
       ? file.name
@@ -1841,10 +1711,8 @@ async function uploadVideo(
           .toLowerCase()
       : "mp4";
 
-
   const filePath =
     `${folder}/${currentUser.id}/${crypto.randomUUID()}.${extension}`;
-
 
   const {
     error
@@ -1860,7 +1728,6 @@ async function uploadVideo(
       }
     );
 
-
   if (error) {
 
     throw new Error(
@@ -1870,9 +1737,7 @@ async function uploadVideo(
 
   }
 
-
   return filePath;
-
 }
 
 
@@ -1904,39 +1769,149 @@ function getPlacementValue(
 
   const placements = [];
 
-
   if (earngigPackage) {
-
     placements.push(
       "watch_and_earn"
     );
-
   }
 
-
   if (tiktokPackage) {
-
     placements.push(
       "tiktok"
     );
-
   }
 
-
   return placements.join(",");
+}
+
+
+
+function getBrandName() {
+
+  return document
+    .getElementById(
+      "brand-name"
+    )
+    .value
+    .trim();
 
 }
 
 
 
-async function submitNewCampaign() {
+function getCampaignName() {
 
-  const totals =
-    calculateTotal();
+  return document
+    .getElementById(
+      "campaign-name"
+    )
+    .value
+    .trim();
 
+}
+
+
+
+function getDescription() {
+
+  return document
+    .getElementById(
+      "description"
+    )
+    .value
+    .trim();
+
+}
+
+
+
+function getAdTitle() {
+
+  return document
+    .getElementById(
+      "ad-title"
+    )
+    .value
+    .trim();
+
+}
+
+
+
+function getDestinationUrl() {
+
+  return document
+    .getElementById(
+      "destination-url"
+    )
+    .value
+    .trim();
+
+}
+
+
+
+/*
+ * Validate all advertiser inputs before uploading
+ * anything.
+ */
+
+function validateAdvertForm() {
+
+  const brandName =
+    getBrandName();
+
+  const campaignName =
+    getCampaignName();
+
+  const adTitle =
+    getAdTitle();
+
+  const description =
+    getDescription();
+
+  const destinationUrl =
+    getDestinationUrl();
+
+  if (!brandName) {
+    throw new Error(
+      "Please enter your brand or business name."
+    );
+  }
+
+  if (!campaignName) {
+    throw new Error(
+      "Please enter a campaign name."
+    );
+  }
+
+  if (!adTitle) {
+    throw new Error(
+      "Please enter an advert title."
+    );
+  }
+
+  if (!description) {
+    throw new Error(
+      "Please enter an advert description."
+    );
+  }
+
+  if (!destinationUrl) {
+    throw new Error(
+      "Please enter your destination link."
+    );
+  }
+
+  const earnGigPackage =
+    getSelectedEarnGigPackage();
+
+  const tiktokPackage =
+    getSelectedTikTokPackage();
 
   if (
-    totals.total <= 0
+    !earnGigPackage &&
+    !tiktokPackage
   ) {
 
     throw new Error(
@@ -1945,27 +1920,13 @@ async function submitNewCampaign() {
 
   }
 
-
-  const earnGigPackage =
-    getSelectedEarnGigPackage();
-
-
-  const tiktokPackage =
-    getSelectedTikTokPackage();
-
-
-  /*
-   * EarnGig video is required only when
-   * EarnGig placement is selected.
-   */
-
   const videoFile =
     videoInput.files[0];
 
-
   if (
     earnGigPackage &&
-    !videoFile
+    !videoFile &&
+    !isRevision
   ) {
 
     throw new Error(
@@ -1974,11 +1935,6 @@ async function submitNewCampaign() {
 
   }
 
-
-  /*
-   * TikTok video validation.
-   */
-
   const tiktokCount =
     tiktokPackage
       ? Number(
@@ -1986,10 +1942,10 @@ async function submitNewCampaign() {
         )
       : 0;
 
-
   if (
     tiktokCount >= 1 &&
-    !tiktokVideo1.files[0]
+    !tiktokVideo1.files[0] &&
+    !isRevision
   ) {
 
     throw new Error(
@@ -1998,10 +1954,10 @@ async function submitNewCampaign() {
 
   }
 
-
   if (
     tiktokCount === 3 &&
-    !tiktokVideo2.files[0]
+    !tiktokVideo2.files[0] &&
+    !isRevision
   ) {
 
     throw new Error(
@@ -2010,10 +1966,10 @@ async function submitNewCampaign() {
 
   }
 
-
   if (
     tiktokCount === 3 &&
-    !tiktokVideo3.files[0]
+    !tiktokVideo3.files[0] &&
+    !isRevision
   ) {
 
     throw new Error(
@@ -2022,38 +1978,47 @@ async function submitNewCampaign() {
 
   }
 
-
-  const campaignName =
-    document.getElementById(
-      "campaign-name"
-    ).value.trim();
-
-
-  const description =
-    document.getElementById(
-      "description"
-    ).value.trim();
-
-
-  const adTitle =
-    document.getElementById(
-      "ad-title"
-    ).value.trim();
+  return {
+    brandName,
+    campaignName,
+    adTitle,
+    description,
+    destinationUrl,
+    earnGigPackage,
+    tiktokPackage,
+    tiktokCount,
+    videoFile
+  };
+}
 
 
-  const destinationUrl =
-    document.getElementById(
-      "destination-url"
-    ).value.trim();
+
+async function submitNewCampaign() {
+
+  const validated =
+    validateAdvertForm();
+
+  const totals =
+    calculateTotal();
+
+  const {
+    brandName,
+    campaignName,
+    adTitle,
+    description,
+    destinationUrl,
+    earnGigPackage,
+    tiktokPackage,
+    tiktokCount,
+    videoFile
+  } = validated;
 
 
   /*
    * Upload EarnGig video.
    */
 
-  let videoPath =
-    null;
-
+  let videoPath = null;
 
   if (videoFile) {
 
@@ -2070,14 +2035,9 @@ async function submitNewCampaign() {
    * Upload TikTok videos.
    */
 
-  let tiktokVideo1Path =
-    null;
-
-  let tiktokVideo2Path =
-    null;
-
-  let tiktokVideo3Path =
-    null;
+  let tiktokVideo1Path = null;
+  let tiktokVideo2Path = null;
+  let tiktokVideo3Path = null;
 
 
   if (
@@ -2103,7 +2063,6 @@ async function submitNewCampaign() {
         "tiktok"
       );
 
-
     tiktokVideo3Path =
       await uploadVideo(
         tiktokVideo3.files[0],
@@ -2121,13 +2080,33 @@ async function submitNewCampaign() {
       : null;
 
 
+  /*
+   * IMPORTANT:
+   *
+   * viewer_reward is required by the existing
+   * brand_ad_campaigns table.
+   *
+   * Advertisers are NOT paying viewers from
+   * this campaign field, so it is explicitly
+   * set to 0.
+   *
+   * target_views and verified_views are also
+   * initialized to 0.
+   */
+
   const campaignData = {
 
     brand_id:
       currentUser.id,
 
+    brand_name:
+      brandName,
+
     campaign_name:
       campaignName,
+
+    ad_title:
+      adTitle,
 
     video_url:
       videoPath,
@@ -2135,8 +2114,20 @@ async function submitNewCampaign() {
     description:
       description,
 
+    destination_url:
+      destinationUrl,
+
     campaign_budget:
       totals.total,
+
+    viewer_reward:
+      0,
+
+    target_views:
+      0,
+
+    verified_views:
+      0,
 
     posting_fee:
       tiktokPackage
@@ -2152,9 +2143,6 @@ async function submitNewCampaign() {
     approval_status:
       "pending",
 
-    status:
-      "pending_review",
-
     submitted_at:
       new Date().toISOString(),
 
@@ -2167,6 +2155,9 @@ async function submitNewCampaign() {
     payment_status:
       "unpaid",
 
+    status:
+      "pending_review",
+
     tiktok_video_1_url:
       tiktokVideo1Path,
 
@@ -2174,52 +2165,12 @@ async function submitNewCampaign() {
       tiktokVideo2Path,
 
     tiktok_video_3_url:
-      tiktokVideo3Path
+      tiktokVideo3Path,
+
+    duration_days:
+      durationDays
 
   };
-
-
-  if (durationDays) {
-
-    campaignData.duration_days =
-      durationDays;
-
-  }
-
-
-  if (
-    "ad_title" in
-    currentCampaignSafeColumns
-  ) {
-
-    campaignData.ad_title =
-      adTitle;
-
-  }
-
-
-  if (
-    "destination_url" in
-    currentCampaignSafeColumns
-  ) {
-
-    campaignData.destination_url =
-      destinationUrl;
-
-  }
-
-
-  if (
-    "brand_name" in
-    currentCampaignSafeColumns
-  ) {
-
-    campaignData.brand_name =
-      document.getElementById(
-        "brand-name"
-      ).value.trim();
-
-  }
 
 
   const {
@@ -2262,40 +2213,26 @@ async function submitRevision() {
   }
 
 
+  const validated =
+    validateAdvertForm();
+
   const totals =
     calculateTotal();
 
-
-  if (
-    totals.total <= 0
-  ) {
-
-    throw new Error(
-      "Please select at least one advertising package."
-    );
-
-  }
-
-
-  const earnGigPackage =
-    getSelectedEarnGigPackage();
-
-
-  const tiktokPackage =
-    getSelectedTikTokPackage();
-
-
-  const tiktokCount =
-    tiktokPackage
-      ? Number(
-          tiktokPackage.dataset.videos
-        )
-      : 0;
+  const {
+    campaignName,
+    adTitle,
+    description,
+    destinationUrl,
+    earnGigPackage,
+    tiktokPackage,
+    tiktokCount
+  } = validated;
 
 
   /*
-   * Keep the existing EarnGig video unless
-   * a replacement is uploaded.
+   * Keep existing EarnGig video unless
+   * advertiser uploads a replacement.
    */
 
   let videoPath =
@@ -2318,7 +2255,7 @@ async function submitRevision() {
 
   /*
    * Keep existing TikTok videos unless
-   * replacement files are selected.
+   * replacements are uploaded.
    */
 
   let video1Path =
@@ -2377,19 +2314,16 @@ async function submitRevision() {
 
 
   /*
-   * If the advertiser changes from 3 videos
-   * to 1 video, clear videos 2 and 3.
+   * Remove unused TikTok videos if the
+   * advertiser changed package.
    */
 
   if (
     tiktokCount === 1
   ) {
 
-    video2Path =
-      null;
-
-    video3Path =
-      null;
+    video2Path = null;
+    video3Path = null;
 
   }
 
@@ -2398,36 +2332,51 @@ async function submitRevision() {
     tiktokCount === 0
   ) {
 
-    video1Path =
-      null;
-
-    video2Path =
-      null;
-
-    video3Path =
-      null;
+    video1Path = null;
+    video2Path = null;
+    video3Path = null;
 
   }
 
 
   const updateData = {
 
+    brand_name:
+      getBrandName(),
+
     campaign_name:
-      document
-        .getElementById(
-          "campaign-name"
-        )
-        .value.trim(),
+      campaignName,
+
+    ad_title:
+      adTitle,
 
     description:
-      document
-        .getElementById(
-          "description"
-        )
-        .value.trim(),
+      description,
+
+    destination_url:
+      destinationUrl,
 
     campaign_budget:
       totals.total,
+
+    /*
+     * Keep viewer reward at zero.
+     * It is NOT an advertiser payment
+     * to viewers.
+     */
+
+    viewer_reward:
+      0,
+
+    target_views:
+      Number(
+        currentCampaign.target_views || 0
+      ),
+
+    verified_views:
+      Number(
+        currentCampaign.verified_views || 0
+      ),
 
     posting_fee:
       tiktokPackage
@@ -2479,67 +2428,16 @@ async function submitRevision() {
       video2Path,
 
     tiktok_video_3_url:
-      video3Path
+      video3Path,
+
+    duration_days:
+      earnGigPackage
+        ? Number(
+            earnGigPackage.dataset.days
+          )
+        : null
 
   };
-
-
-  if (earnGigPackage) {
-
-    updateData.duration_days =
-      Number(
-        earnGigPackage.dataset.days
-      );
-
-  } else {
-
-    updateData.duration_days =
-      null;
-
-  }
-
-
-  if (
-    "ad_title" in
-    currentCampaignSafeColumns
-  ) {
-
-    updateData.ad_title =
-      document
-        .getElementById(
-          "ad-title"
-        )
-        .value.trim();
-
-  }
-
-
-  if (
-    "destination_url" in
-    currentCampaignSafeColumns
-  ) {
-
-    updateData.destination_url =
-      document
-        .getElementById(
-          "destination-url"
-        ).value.trim();
-
-  }
-
-
-  if (
-    "brand_name" in
-    currentCampaignSafeColumns
-  ) {
-
-    updateData.brand_name =
-      document
-        .getElementById(
-          "brand-name"
-        ).value.trim();
-
-  }
 
 
   const {
@@ -2637,6 +2535,7 @@ form.addEventListener(
     } catch (error) {
 
       console.error(
+        "Advert submission error:",
         error
       );
 
@@ -2862,10 +2761,6 @@ async function initialisePage() {
     }
 
 
-    /*
-     * Otherwise allow a new application.
-     */
-
     configureForNewApplication();
 
     form.classList.remove(
@@ -2875,6 +2770,7 @@ async function initialisePage() {
   } catch (error) {
 
     console.error(
+      "Advertising page error:",
       error
     );
 
