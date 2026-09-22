@@ -1,14 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
-  <meta charset="UTF-8">
-
+  <meta charset="UTF-8" />
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0"
-  >
+  />
 
   <title>Marketplace | EarnGig</title>
 
@@ -16,7 +13,6 @@
   <script src="supabase.js"></script>
 
   <style>
-
     * {
       box-sizing: border-box;
     }
@@ -59,19 +55,65 @@
       color: #8b5cf6;
     }
 
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .cart-btn,
     .sell-btn {
       border: 0;
+      color: #fff;
+      border-radius: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    .cart-btn {
+      position: relative;
+      background: #171e35;
+      border: 1px solid #30395c;
+      padding: 10px 13px;
+      min-width: 52px;
+    }
+
+    .cart-btn:hover {
+      background: #222b47;
+      border-color: #6543c5;
+    }
+
+    .cart-icon {
+      font-size: 18px;
+      vertical-align: middle;
+    }
+
+    .cart-count {
+      position: absolute;
+      top: -7px;
+      right: -6px;
+      min-width: 20px;
+      height: 20px;
+      padding: 0 5px;
+      border-radius: 50px;
+      background: #9333ea;
+      color: #fff;
+      font-size: 10px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #080d1f;
+    }
+
+    .sell-btn {
       background: linear-gradient(
         135deg,
         #7c3aed,
         #9333ea
       );
-      color: #fff;
       padding: 10px 14px;
-      border-radius: 10px;
-      font-weight: 700;
-      cursor: pointer;
-      font-size: 13px;
     }
 
     .sell-btn:hover {
@@ -86,12 +128,7 @@
         rgba(124, 58, 237, 0.18),
         rgba(37, 99, 235, 0.10)
       );
-      border: 1px solid rgba(
-        139,
-        92,
-        246,
-        0.18
-      );
+      border: 1px solid rgba(139, 92, 246, 0.18);
       border-radius: 18px;
       padding: 20px;
       margin-bottom: 18px;
@@ -119,7 +156,6 @@
 
     .search-box {
       flex: 1;
-      position: relative;
     }
 
     .search-box input,
@@ -141,11 +177,7 @@
     }
 
     .category-wrap {
-      width: 210px;
-    }
-
-    .category-select {
-      appearance: auto;
+      width: 230px;
     }
 
     .category-select option {
@@ -177,8 +209,10 @@
 
     .products-grid {
       display: grid;
-      grid-template-columns:
-        repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(
+        4,
+        minmax(0, 1fr)
+      );
       gap: 15px;
     }
 
@@ -218,6 +252,7 @@
       font-weight: 700;
       line-height: 1.35;
       margin-bottom: 8px;
+
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
@@ -276,7 +311,7 @@
       background: #263154;
     }
 
-    /* STATES */
+    /* EMPTY / LOADING */
 
     .state-box {
       background: #11182e;
@@ -320,7 +355,10 @@
 
       .products-grid {
         grid-template-columns:
-          repeat(3, minmax(0, 1fr));
+          repeat(
+            3,
+            minmax(0, 1fr)
+          );
       }
 
     }
@@ -337,6 +375,19 @@
 
       .brand {
         font-size: 20px;
+      }
+
+      .header-actions {
+        gap: 6px;
+      }
+
+      .cart-btn {
+        padding: 9px 11px;
+      }
+
+      .sell-btn {
+        padding: 9px 11px;
+        font-size: 12px;
       }
 
       .hero {
@@ -358,7 +409,10 @@
 
       .products-grid {
         grid-template-columns:
-          repeat(2, minmax(0, 1fr));
+          repeat(
+            2,
+            minmax(0, 1fr)
+          );
         gap: 10px;
       }
 
@@ -374,9 +428,22 @@
         font-size: 15px;
       }
 
+    }
+
+    @media (max-width: 430px) {
+
+      .brand {
+        font-size: 17px;
+      }
+
       .sell-btn {
-        padding: 9px 11px;
-        font-size: 12px;
+        font-size: 11px;
+        padding: 9px 8px;
+      }
+
+      .cart-btn {
+        min-width: 46px;
+        padding: 9px 8px;
       }
 
     }
@@ -389,429 +456,599 @@
       }
 
       .brand {
-        font-size: 18px;
+        font-size: 16px;
       }
 
     }
 
   </style>
-
 </head>
-
 
 <body>
 
+  <div class="page">
 
-<div class="page">
+    <!-- HEADER -->
 
+    <div class="topbar">
 
-  <!-- HEADER -->
-
-  <div class="topbar">
-
-    <a
-      href="index.html"
-      class="brand"
-    >
-      Earn<span>Gig</span> Marketplace
-    </a>
-
-
-    <!-- IMPORTANT:
-         This now opens the vendor application,
-         NOT the seller dashboard. -->
-
-    <button
-      class="sell-btn"
-      type="button"
-      onclick="window.location.href='vendor-application.html'"
-    >
-      Sell on EarnGig
-    </button>
-
-  </div>
-
-
-
-  <!-- HERO -->
-
-  <section class="hero">
-
-    <h1>
-      Shop from EarnGig vendors
-    </h1>
-
-    <p>
-      Discover products from different vendors
-      and stores on EarnGig.
-    </p>
-
-  </section>
-
-
-
-  <!-- SEARCH + CATEGORY -->
-
-  <div class="search-area">
-
-
-    <div class="search-box">
-
-      <input
-        type="search"
-        id="searchInput"
-        placeholder="Search products..."
-        autocomplete="off"
+      <a
+        href="index.html"
+        class="brand"
       >
+        Earn<span>Gig</span> Marketplace
+      </a>
+
+
+      <div class="header-actions">
+
+        <!-- CART -->
+
+        <button
+          class="cart-btn"
+          type="button"
+          onclick="window.location.href='cart.html'"
+          aria-label="Open shopping cart"
+          title="Shopping Cart"
+        >
+
+          <span class="cart-icon">
+            🛒
+          </span>
+
+          <span
+            id="cartCount"
+            class="cart-count"
+            style="display:none;"
+          >
+            0
+          </span>
+
+        </button>
+
+
+        <!-- SELL -->
+
+        <button
+          class="sell-btn"
+          type="button"
+          onclick="window.location.href='vendor-application.html'"
+        >
+          Sell on EarnGig
+        </button>
+
+      </div>
 
     </div>
 
 
-    <div class="category-wrap">
+    <!-- HERO -->
 
-      <select
-        id="categorySelect"
-        class="category-select"
+    <section class="hero">
+
+      <h1>
+        Shop from EarnGig vendors
+      </h1>
+
+      <p>
+        Discover physical products from different
+        vendors and stores on EarnGig.
+      </p>
+
+    </section>
+
+
+    <!-- SEARCH + CATEGORY -->
+
+    <div class="search-area">
+
+      <div class="search-box">
+
+        <input
+          type="search"
+          id="searchInput"
+          placeholder="Search products..."
+          autocomplete="off"
+        />
+
+      </div>
+
+
+      <div class="category-wrap">
+
+        <select
+          id="categorySelect"
+          class="category-select"
+        >
+
+          <option value="">
+            All categories
+          </option>
+
+          <option value="Fashion & Clothing">
+            Fashion & Clothing
+          </option>
+
+          <option value="Beauty & Cosmetics">
+            Beauty & Cosmetics
+          </option>
+
+          <option value="Nails & Nail Accessories">
+            Nails & Nail Accessories
+          </option>
+
+          <option value="Bags & Accessories">
+            Bags & Accessories
+          </option>
+
+          <option value="Shoes & Footwear">
+            Shoes & Footwear
+          </option>
+
+          <option value="Phones & Tablets">
+            Phones & Tablets
+          </option>
+
+          <option value="Computers & Laptops">
+            Computers & Laptops
+          </option>
+
+          <option value="Electronics & Gadgets">
+            Electronics & Gadgets
+          </option>
+
+          <option value="Home & Kitchen">
+            Home & Kitchen
+          </option>
+
+          <option value="Furniture">
+            Furniture
+          </option>
+
+          <option value="Baby & Kids">
+            Baby & Kids
+          </option>
+
+          <option value="Health & Personal Care">
+            Health & Personal Care
+          </option>
+
+          <option value="Food & Drinks">
+            Food & Drinks
+          </option>
+
+          <option value="Groceries">
+            Groceries
+          </option>
+
+          <option value="Auto & Accessories">
+            Auto & Accessories
+          </option>
+
+          <option value="Tools & Hardware">
+            Tools & Hardware
+          </option>
+
+          <option value="Gifts & Accessories">
+            Gifts & Accessories
+          </option>
+
+          <option value="Other">
+            Other
+          </option>
+
+        </select>
+
+      </div>
+
+    </div>
+
+
+    <!-- RESULTS HEADER -->
+
+    <div class="results-header">
+
+      <div class="results-title">
+        Products
+      </div>
+
+      <div
+        class="result-count"
+        id="resultCount"
       >
-
-        <option value="">
-          All categories
-        </option>
-
-        <option value="Fashion & Clothing">
-          Fashion & Clothing
-        </option>
-
-        <option value="Beauty & Cosmetics">
-          Beauty & Cosmetics
-        </option>
-
-        <option value="Nails & Nail Accessories">
-          Nails & Nail Accessories
-        </option>
-
-        <option value="Bags & Accessories">
-          Bags & Accessories
-        </option>
-
-        <option value="Shoes & Footwear">
-          Shoes & Footwear
-        </option>
-
-        <option value="Phones & Tablets">
-          Phones & Tablets
-        </option>
-
-        <option value="Computers & Laptops">
-          Computers & Laptops
-        </option>
-
-        <option value="Electronics & Gadgets">
-          Electronics & Gadgets
-        </option>
-
-        <option value="Home & Kitchen">
-          Home & Kitchen
-        </option>
-
-        <option value="Furniture">
-          Furniture
-        </option>
-
-        <option value="Baby & Kids">
-          Baby & Kids
-        </option>
-
-        <option value="Health & Personal Care">
-          Health & Personal Care
-        </option>
-
-        <option value="Food & Drinks">
-          Food & Drinks
-        </option>
-
-        <option value="Groceries">
-          Groceries
-        </option>
-
-        <option value="Auto & Accessories">
-          Auto & Accessories
-        </option>
-
-        <option value="Tools & Hardware">
-          Tools & Hardware
-        </option>
-
-        <option value="Gifts & Accessories">
-          Gifts & Accessories
-        </option>
-
-        <option value="Other">
-          Other
-        </option>
-
-      </select>
+        Loading...
+      </div>
 
     </div>
 
-  </div>
 
-
-
-  <!-- RESULTS HEADER -->
-
-  <div class="results-header">
-
-    <div class="results-title">
-      Products
-    </div>
+    <!-- PRODUCTS -->
 
     <div
-      class="result-count"
-      id="resultCount"
+      class="products-grid"
+      id="productsGrid"
     >
-      Loading...
-    </div>
 
-  </div>
+      <div class="state-box">
 
-
-
-  <!-- PRODUCTS -->
-
-  <div
-    class="products-grid"
-    id="productsGrid"
-  >
-
-    <div class="state-box">
-
-      <div class="state-icon">
-        🛍️
-      </div>
-
-      <div class="state-title">
-        Loading marketplace
-      </div>
-
-      <div class="state-text">
-        Please wait while we load available products.
-      </div>
-
-    </div>
-
-  </div>
-
-
-</div>
-
-
-
-<script>
-
-  const productsGrid =
-    document.getElementById(
-      "productsGrid"
-    );
-
-
-  const searchInput =
-    document.getElementById(
-      "searchInput"
-    );
-
-
-  const categorySelect =
-    document.getElementById(
-      "categorySelect"
-    );
-
-
-  const resultCount =
-    document.getElementById(
-      "resultCount"
-    );
-
-
-  let allProducts = [];
-
-  let storesByVendor = {};
-
-
-
-  function formatNaira(
-    amount
-  ) {
-
-    const value =
-      Number(
-        amount || 0
-      );
-
-
-    return "₦" +
-      value.toLocaleString(
-        "en-NG",
-        {
-          minimumFractionDigits: 0,
-          maximumFractionDigits: 2
-        }
-      );
-
-  }
-
-
-
-  function escapeHtml(
-    value
-  ) {
-
-    return String(
-      value ?? ""
-    )
-      .replace(
-        /&/g,
-        "&amp;"
-      )
-      .replace(
-        /</g,
-        "&lt;"
-      )
-      .replace(
-        />/g,
-        "&gt;"
-      )
-      .replace(
-        /"/g,
-        "&quot;"
-      )
-      .replace(
-        /'/g,
-        "&#039;"
-      );
-
-  }
-
-
-
-  function getStoreForSeller(
-    sellerId
-  ) {
-
-    return (
-      storesByVendor[
-        sellerId
-      ] ||
-      null
-    );
-
-  }
-
-
-
-  function renderProducts() {
-
-    const search =
-      searchInput.value
-        .trim()
-        .toLowerCase();
-
-
-    const category =
-      categorySelect.value;
-
-
-    const filtered =
-      allProducts.filter(
-        function(product) {
-
-          const title =
-            String(
-              product.title || ""
-            ).toLowerCase();
-
-
-          const description =
-            String(
-              product.description || ""
-            ).toLowerCase();
-
-
-          const productCategory =
-            String(
-              product.category || ""
-            );
-
-
-          const matchesSearch =
-            !search ||
-            title.includes(search) ||
-            description.includes(search) ||
-            productCategory
-              .toLowerCase()
-              .includes(search);
-
-
-          const matchesCategory =
-            !category ||
-            productCategory ===
-              category;
-
-
-          return (
-            matchesSearch &&
-            matchesCategory
-          );
-
-        }
-      );
-
-
-    resultCount.textContent =
-      filtered.length +
-      (
-        filtered.length === 1
-          ? " product"
-          : " products"
-      );
-
-
-    if (!filtered.length) {
-
-      productsGrid.innerHTML = `
-
-        <div class="state-box">
-
-          <div class="state-icon">
-            🔎
-          </div>
-
-          <div class="state-title">
-            No products found
-          </div>
-
-          <div class="state-text">
-            Try another search term or category.
-          </div>
-
+        <div class="state-icon">
+          🛍️
         </div>
 
-      `;
+        <div class="state-title">
+          Loading marketplace
+        </div>
 
-      return;
+        <div class="state-text">
+          Please wait while we load available products.
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <script>
+
+    const productsGrid =
+      document.getElementById(
+        "productsGrid"
+      );
+
+    const searchInput =
+      document.getElementById(
+        "searchInput"
+      );
+
+    const categorySelect =
+      document.getElementById(
+        "categorySelect"
+      );
+
+    const resultCount =
+      document.getElementById(
+        "resultCount"
+      );
+
+    const cartCount =
+      document.getElementById(
+        "cartCount"
+      );
+
+
+    let allProducts = [];
+
+    let storesById = {};
+
+
+    /* ======================================================
+       HELPERS
+    ====================================================== */
+
+    function formatNaira(amount) {
+
+      const value =
+        Number(amount || 0);
+
+      return "₦" +
+        value.toLocaleString(
+          "en-NG",
+          {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 2
+          }
+        );
 
     }
 
 
-    productsGrid.innerHTML =
-      filtered
-        .map(
-          function(product) {
+    function escapeHtml(value) {
+
+      return String(value ?? "")
+        .replace(
+          /&/g,
+          "&amp;"
+        )
+        .replace(
+          /</g,
+          "&lt;"
+        )
+        .replace(
+          />/g,
+          "&gt;"
+        )
+        .replace(
+          /"/g,
+          "&quot;"
+        )
+        .replace(
+          /'/g,
+          "&#039;"
+        );
+
+    }
+
+
+    function getStore(product) {
+
+      return storesById[
+        product.store_id
+      ] || null;
+
+    }
+
+
+    /* ======================================================
+       CART COUNT
+    ====================================================== */
+
+    async function loadCartCount() {
+
+      try {
+
+        /*
+         * We only need the current user's cart.
+         * If the buyer is not logged in, the cart button
+         * still works and opens cart.html.
+         */
+
+        const {
+          data: {
+            user
+          }
+        } =
+          await supabaseClient.auth.getUser();
+
+
+        if (!user) {
+
+          cartCount.style.display =
+            "none";
+
+          return;
+
+        }
+
+
+        const {
+          data: cart,
+          error: cartError
+        } =
+          await supabaseClient
+            .from("marketplace_carts")
+            .select("id")
+            .eq(
+              "user_id",
+              user.id
+            )
+            .limit(1)
+            .maybeSingle();
+
+
+        if (cartError) {
+
+          console.warn(
+            "Cart loading error:",
+            cartError
+          );
+
+          cartCount.style.display =
+            "none";
+
+          return;
+
+        }
+
+
+        if (!cart) {
+
+          cartCount.style.display =
+            "none";
+
+          return;
+
+        }
+
+
+        const {
+          data: items,
+          error: itemsError
+        } =
+          await supabaseClient
+            .from(
+              "marketplace_cart_items"
+            )
+            .select(`
+              quantity
+            `)
+            .eq(
+              "cart_id",
+              cart.id
+            );
+
+
+        if (itemsError) {
+
+          console.warn(
+            "Cart item count error:",
+            itemsError
+          );
+
+          cartCount.style.display =
+            "none";
+
+          return;
+
+        }
+
+
+        const totalQuantity =
+          (items || []).reduce(
+            (
+              total,
+              item
+            ) => {
+
+              return total +
+                Number(
+                  item.quantity || 0
+                );
+
+            },
+            0
+          );
+
+
+        if (
+          totalQuantity > 0
+        ) {
+
+          cartCount.textContent =
+            totalQuantity > 99
+              ? "99+"
+              : String(
+                  totalQuantity
+                );
+
+          cartCount.style.display =
+            "flex";
+
+        } else {
+
+          cartCount.style.display =
+            "none";
+
+        }
+
+      } catch (error) {
+
+        console.warn(
+          "Unable to load cart count:",
+          error
+        );
+
+        cartCount.style.display =
+          "none";
+
+      }
+
+    }
+
+
+    /* ======================================================
+       RENDER PRODUCTS
+    ====================================================== */
+
+    function renderProducts() {
+
+      const search =
+        searchInput.value
+          .trim()
+          .toLowerCase();
+
+      const category =
+        categorySelect.value;
+
+
+      const filtered =
+        allProducts.filter(
+          product => {
+
+            const title =
+              String(
+                product.title || ""
+              ).toLowerCase();
+
+            const description =
+              String(
+                product.description || ""
+              ).toLowerCase();
+
+            const productCategory =
+              String(
+                product.category || ""
+              );
+
 
             const store =
-              getStoreForSeller(
-                product.seller_id
-              );
+              getStore(product);
+
+
+            const storeName =
+              String(
+                store?.store_name || ""
+              ).toLowerCase();
+
+
+            const matchesSearch =
+              !search ||
+              title.includes(search) ||
+              description.includes(search) ||
+              productCategory
+                .toLowerCase()
+                .includes(search) ||
+              storeName.includes(search);
+
+
+            const matchesCategory =
+              !category ||
+              productCategory ===
+                category;
+
+
+            return (
+              matchesSearch &&
+              matchesCategory
+            );
+
+          }
+        );
+
+
+      resultCount.textContent =
+        filtered.length +
+        (
+          filtered.length === 1
+            ? " product"
+            : " products"
+        );
+
+
+      if (!filtered.length) {
+
+        productsGrid.innerHTML = `
+
+          <div class="state-box">
+
+            <div class="state-icon">
+              🔎
+            </div>
+
+            <div class="state-title">
+              No products found
+            </div>
+
+            <div class="state-text">
+              Try another search term or category.
+            </div>
+
+          </div>
+
+        `;
+
+        return;
+
+      }
+
+
+      productsGrid.innerHTML =
+        filtered.map(
+          product => {
+
+            const store =
+              getStore(product);
 
 
             const storeName =
@@ -826,22 +1063,25 @@
 
             const storeUrl =
               storeSlug
-                ? `store.html?store=${encodeURIComponent(
-                    storeSlug
-                  )}`
+                ? `store.html?store=${
+                    encodeURIComponent(
+                      storeSlug
+                    )
+                  }`
                 : "#";
 
 
             const productUrl =
-              `product.html?id=${encodeURIComponent(
-                product.id
-              )}`;
+              `product.html?id=${
+                encodeURIComponent(
+                  product.id
+                )
+              }`;
 
 
             return `
 
               <article class="product-card">
-
 
                 <a
                   href="${productUrl}"
@@ -860,44 +1100,35 @@
                     )}"
                     class="product-image"
                     loading="lazy"
-                  >
+                  />
 
                 </a>
 
 
                 <div class="product-content">
 
-
                   <a
                     href="${productUrl}"
                     class="product-title"
                   >
-
                     ${escapeHtml(
                       product.title
                     )}
-
                   </a>
 
 
                   <div class="product-price">
-
                     ${formatNaira(
                       product.price
                     )}
-
                   </div>
 
 
-                  <span
-                    class="product-category"
-                  >
-
+                  <span class="product-category">
                     ${escapeHtml(
                       product.category ||
                       "Other"
                     )}
-
                   </span>
 
 
@@ -923,9 +1154,7 @@
                       `
                       : `
 
-                        <span
-                          class="store-link"
-                        >
+                        <span class="store-link">
 
                           🏪
                           ${escapeHtml(
@@ -942,95 +1171,74 @@
                     href="${productUrl}"
                     class="view-product"
                   >
-
                     View Product
-
                   </a>
 
-
                 </div>
-
 
               </article>
 
             `;
 
           }
-        )
-        .join("");
+        ).join("");
 
-  }
-
+    }
 
 
-  async function loadMarketplace() {
+    /* ======================================================
+       LOAD MARKETPLACE
+    ====================================================== */
 
-    try {
+    async function loadMarketplace() {
 
-      const {
-        data: listings,
-        error: listingsError
-      } =
-        await supabaseClient
-          .from(
-            "marketplace_listings"
-          )
-          .select(`
-            id,
-            seller_id,
-            title,
-            category,
-            description,
-            price,
-            delivery_type,
-            file_url,
-            image_url,
-            status,
-            created_at
-          `)
-          .order(
-            "created_at",
-            {
-              ascending: false
-            }
-          );
+      try {
 
-
-      if (listingsError) {
-
-        throw listingsError;
-
-      }
-
-
-      /*
-       * Only products with an image
-       * are displayed to buyers.
-       */
-
-      allProducts =
-        (listings || [])
-          .filter(
-            function(item) {
-
-              const image =
-                String(
-                  item.image_url ||
-                  ""
-                ).trim();
-
-
-              if (!image) {
-
-                return false;
-
+        const {
+          data: products,
+          error: productsError
+        } =
+          await supabaseClient
+            .from(
+              "marketplace_products"
+            )
+            .select(`
+              id,
+              store_id,
+              vendor_id,
+              title,
+              category,
+              description,
+              price,
+              stock_quantity,
+              delivery_type,
+              status,
+              created_at
+            `)
+            .order(
+              "created_at",
+              {
+                ascending: false
               }
+            );
 
+
+        if (productsError) {
+
+          throw productsError;
+
+        }
+
+
+        const usableProducts =
+          (
+            products || []
+          ).filter(
+            product => {
 
               const status =
                 String(
-                  item.status ||
-                  ""
+                  product.status || ""
                 ).toLowerCase();
 
 
@@ -1051,142 +1259,307 @@
               }
 
 
+              if (
+                Number(
+                  product.stock_quantity
+                ) <= 0
+              ) {
+
+                return false;
+
+              }
+
+
               return true;
 
             }
           );
 
 
-      const sellerIds = [
-        ...new Set(
-          allProducts
-            .map(
-              function(item) {
-                return item.seller_id;
-              }
-            )
-            .filter(Boolean)
-        )
-      ];
+        if (
+          !usableProducts.length
+        ) {
+
+          allProducts = [];
+
+          resultCount.textContent =
+            "0 products";
 
 
-      storesByVendor = {};
+          productsGrid.innerHTML = `
 
+            <div class="state-box">
 
-      if (
-        sellerIds.length
-      ) {
+              <div class="state-icon">
+                🛍️
+              </div>
 
-        const {
-          data: stores,
-          error: storesError
-        } =
-          await supabaseClient
-            .from(
-              "marketplace_stores"
-            )
-            .select(`
-              id,
-              vendor_id,
-              store_name,
-              store_slug,
-              store_logo_url,
-              status
-            `)
-            .in(
-              "vendor_id",
-              sellerIds
-            )
-            .eq(
-              "status",
-              "active"
-            );
+              <div class="state-title">
+                No products available yet
+              </div>
 
+              <div class="state-text">
+                New products from approved
+                EarnGig vendors will appear here.
+              </div>
 
-        if (storesError) {
+            </div>
 
-          console.warn(
-            "Store information could not be loaded:",
-            storesError
-          );
+          `;
 
-        } else {
-
-          (
-            stores || []
-          ).forEach(
-            function(store) {
-
-              storesByVendor[
-                store.vendor_id
-              ] = store;
-
-            }
-          );
+          return;
 
         }
 
+
+        const productIds =
+          usableProducts
+            .map(
+              product =>
+                product.id
+            )
+            .filter(Boolean);
+
+
+        const {
+          data: images,
+          error: imagesError
+        } =
+          await supabaseClient
+            .from(
+              "marketplace_product_images"
+            )
+            .select(`
+              id,
+              product_id,
+              image_url,
+              is_primary,
+              sort_order
+            `)
+            .in(
+              "product_id",
+              productIds
+            )
+            .order(
+              "is_primary",
+              {
+                ascending: false
+              }
+            )
+            .order(
+              "sort_order",
+              {
+                ascending: true
+              }
+            );
+
+
+        if (imagesError) {
+
+          throw imagesError;
+
+        }
+
+
+        const primaryImageByProduct =
+          {};
+
+
+        (
+          images || []
+        ).forEach(
+          image => {
+
+            if (
+              !primaryImageByProduct[
+                image.product_id
+              ]
+            ) {
+
+              primaryImageByProduct[
+                image.product_id
+              ] =
+                image.image_url;
+
+            }
+
+          }
+        );
+
+
+        allProducts =
+          usableProducts
+            .map(
+              product => {
+
+                return {
+                  ...product,
+
+                  image_url:
+                    primaryImageByProduct[
+                      product.id
+                    ] || ""
+
+                };
+
+              }
+            )
+            .filter(
+              product => {
+
+                return String(
+                  product.image_url || ""
+                ).trim() !== "";
+
+              }
+            );
+
+
+        const storeIds =
+          [
+            ...new Set(
+              allProducts
+                .map(
+                  product =>
+                    product.store_id
+                )
+                .filter(Boolean)
+            )
+          ];
+
+
+        storesById = {};
+
+
+        if (
+          storeIds.length
+        ) {
+
+          const {
+            data: stores,
+            error: storesError
+          } =
+            await supabaseClient
+              .from(
+                "marketplace_stores"
+              )
+              .select(`
+                id,
+                vendor_id,
+                store_name,
+                store_slug,
+                store_logo_url,
+                description,
+                status
+              `)
+              .in(
+                "id",
+                storeIds
+              )
+              .eq(
+                "status",
+                "active"
+              );
+
+
+          if (storesError) {
+
+            console.warn(
+              "Store information could not be loaded:",
+              storesError
+            );
+
+          } else {
+
+            (
+              stores || []
+            ).forEach(
+              store => {
+
+                storesById[
+                  store.id
+                ] = store;
+
+              }
+            );
+
+          }
+
+        }
+
+
+        renderProducts();
+
+      } catch (error) {
+
+        console.error(
+          "Marketplace loading error:",
+          error
+        );
+
+
+        resultCount.textContent =
+          "Error";
+
+
+        productsGrid.innerHTML = `
+
+          <div class="state-box error-box">
+
+            <div class="state-icon">
+              ⚠️
+            </div>
+
+            <div class="state-title">
+              Marketplace could not be loaded
+            </div>
+
+            <div class="state-text">
+              Please refresh the page and try again.
+            </div>
+
+          </div>
+
+        `;
+
       }
-
-
-      renderProducts();
-
-
-    } catch (error) {
-
-      console.error(
-        "Marketplace loading error:",
-        error
-      );
-
-
-      resultCount.textContent =
-        "Error";
-
-
-      productsGrid.innerHTML = `
-
-        <div class="state-box error-box">
-
-          <div class="state-icon">
-            ⚠️
-          </div>
-
-          <div class="state-title">
-            Marketplace could not be loaded
-          </div>
-
-          <div class="state-text">
-            Please refresh the page and try again.
-          </div>
-
-        </div>
-
-      `;
 
     }
 
-  }
+
+    /* ======================================================
+       EVENTS
+    ====================================================== */
+
+    searchInput.addEventListener(
+      "input",
+      renderProducts
+    );
 
 
-
-  searchInput.addEventListener(
-    "input",
-    renderProducts
-  );
-
-
-  categorySelect.addEventListener(
-    "change",
-    renderProducts
-  );
+    categorySelect.addEventListener(
+      "change",
+      renderProducts
+    );
 
 
-  loadMarketplace();
+    /* ======================================================
+       START
+    ====================================================== */
 
-</script>
+    async function initializeMarketplace() {
 
+      await Promise.all([
+        loadMarketplace(),
+        loadCartCount()
+      ]);
+
+    }
+
+
+    initializeMarketplace();
+
+  </script>
 
 </body>
-
 </html>
