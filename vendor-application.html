@@ -2,7 +2,9 @@
 <html lang="en">
 
 <head>
+
   <meta charset="UTF-8">
+
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0"
@@ -10,7 +12,10 @@
 
   <title>Become a Vendor | EarnGig</title>
 
-  <link rel="stylesheet" href="styles.css">
+  <link
+    rel="stylesheet"
+    href="styles.css"
+  >
 
   <style>
 
@@ -25,11 +30,11 @@
     }
 
     .vendor-page {
-      padding: 40px 0 70px;
+      padding: 35px 0 70px;
     }
 
     .vendor-header {
-      margin-bottom: 28px;
+      margin-bottom: 25px;
     }
 
     .vendor-header h1 {
@@ -47,7 +52,7 @@
       background: rgba(14, 19, 57, 0.96);
       border: 1px solid rgba(122, 105, 220, 0.22);
       border-radius: 18px;
-      padding: 26px;
+      padding: 25px;
       margin-bottom: 20px;
       box-shadow: 0 12px 40px rgba(0,0,0,0.18);
     }
@@ -65,8 +70,9 @@
 
     .form-grid {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 18px;
+      grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+      gap: 17px;
     }
 
     .form-group {
@@ -85,9 +91,13 @@
       font-weight: 700;
     }
 
-    .form-group label span {
-      color: #8e8ab8;
+    .optional {
+      color: #858baa;
       font-weight: 400;
+    }
+
+    .required {
+      color: #bda7ff;
     }
 
     .form-group input,
@@ -106,11 +116,13 @@
     .form-group input:focus,
     .form-group textarea:focus {
       border-color: #7565df;
-      box-shadow: 0 0 0 3px rgba(117,101,223,0.12);
+      box-shadow:
+        0 0 0 3px
+        rgba(117,101,223,0.12);
     }
 
     .form-group textarea {
-      min-height: 120px;
+      min-height: 115px;
       resize: vertical;
       font-family: inherit;
     }
@@ -168,25 +180,25 @@
 
     .notice.info {
       background: rgba(70, 80, 170, 0.12);
-      border: 1px solid rgba(103, 112, 207, 0.3);
+      border: 1px solid rgba(103,112,207,0.3);
       color: #c7ccff;
     }
 
     .notice.warning {
-      background: rgba(180, 130, 40, 0.1);
-      border: 1px solid rgba(210, 160, 60, 0.3);
+      background: rgba(180,130,40,0.1);
+      border: 1px solid rgba(210,160,60,0.3);
       color: #ead39a;
     }
 
     .notice.success {
-      background: rgba(35, 150, 100, 0.1);
-      border: 1px solid rgba(35, 150, 100, 0.3);
+      background: rgba(35,150,100,0.1);
+      border: 1px solid rgba(35,150,100,0.3);
       color: #9ee0c1;
     }
 
     .notice.danger {
-      background: rgba(190, 60, 70, 0.1);
-      border: 1px solid rgba(210, 70, 80, 0.3);
+      background: rgba(190,60,70,0.1);
+      border: 1px solid rgba(210,70,80,0.3);
       color: #f0aaaa;
     }
 
@@ -220,12 +232,6 @@
       flex-wrap: wrap;
     }
 
-    .small-note {
-      color: #858baa;
-      font-size: 12px;
-      line-height: 1.5;
-    }
-
     .loading {
       text-align: center;
       padding: 60px 20px;
@@ -239,7 +245,7 @@
     @media (max-width: 700px) {
 
       .vendor-page {
-        padding: 25px 0 50px;
+        padding: 22px 0 50px;
       }
 
       .vendor-header h1 {
@@ -270,24 +276,43 @@
     }
 
   </style>
+
 </head>
 
 
 <body>
 
+
 <header>
 
   <div class="container nav">
 
-    <a class="logo" href="index.html">
-      <span class="logo-mark">E</span>
+    <a
+      class="logo"
+      href="index.html"
+    >
+
+      <span class="logo-mark">
+        E
+      </span>
+
       Earn<span>Gig</span>
+
     </a>
 
+
     <nav>
-      <a href="dashboard.html">Dashboard</a>
-      <a href="marketplace.html">Marketplace</a>
+
+      <a href="dashboard.html">
+        Dashboard
+      </a>
+
+      <a href="marketplace.html">
+        Marketplace
+      </a>
+
     </nav>
+
 
     <a
       class="btn outline"
@@ -301,20 +326,30 @@
 </header>
 
 
+
 <main class="dashboard-page vendor-page">
 
   <div class="container">
 
-    <div id="loading-state" class="loading">
+
+    <div
+      id="loading-state"
+      class="loading"
+    >
       Checking your vendor application...
     </div>
 
 
-    <!-- =====================================================
-         APPLICATION FORM
-    ====================================================== -->
 
-    <div id="application-area" class="hidden">
+    <!-- ==================================================
+         APPLICATION AREA
+    =================================================== -->
+
+    <div
+      id="application-area"
+      class="hidden"
+    >
+
 
       <div class="vendor-header">
 
@@ -322,28 +357,36 @@
           EARNGIG MARKETPLACE
         </span>
 
+
         <h1>
           Become a Vendor
         </h1>
 
+
         <p>
-          Create your vendor profile and submit your business
-          information for EarnGig review. Approval is required
-          before you can open your store and pay the monthly
-          vendor subscription.
+          Apply to open your own EarnGig marketplace store.
+          Your application will be reviewed before you can
+          activate your store.
         </p>
 
       </div>
 
 
+
       <div class="notice info">
 
-        <strong>Important:</strong>
-        Submitting this application does not charge you any
-        subscription fee. Your application must first be
-        reviewed and approved by EarnGig.
+        <strong>
+          How it works:
+        </strong>
+
+        Submit your application →
+        EarnGig reviews it →
+        if approved, pay the ₦2,500 monthly vendor
+        subscription →
+        activate your store.
 
       </div>
+
 
 
       <form id="vendor-form">
@@ -355,68 +398,95 @@
 
         <section class="vendor-card">
 
-          <h2>Personal Information</h2>
+          <h2>
+            Personal Information
+          </h2>
+
 
           <p class="vendor-card-description">
-            These details help us identify and verify the person
-            responsible for the store.
+            These details help EarnGig identify and verify
+            the person responsible for the store.
           </p>
 
 
           <div class="form-grid">
 
+
             <div class="form-group">
 
               <label for="full-name">
+
                 Full Name
+                <span class="required">*</span>
+
               </label>
+
 
               <input
                 id="full-name"
                 type="text"
+                autocomplete="name"
                 required
               >
 
             </div>
+
 
 
             <div class="form-group">
 
               <label for="email">
+
                 Email Address
+                <span class="required">*</span>
+
               </label>
+
 
               <input
                 id="email"
                 type="email"
+                autocomplete="email"
                 required
               >
 
             </div>
+
 
 
             <div class="form-group">
 
               <label for="phone-number">
+
                 Phone Number
+                <span class="required">*</span>
+
               </label>
+
 
               <input
                 id="phone-number"
                 type="tel"
-                placeholder="e.g. 08012345678"
+                placeholder="08012345678"
+                autocomplete="tel"
                 required
               >
 
             </div>
 
 
+
             <div class="form-group">
 
               <label for="alternate-phone">
+
                 Alternative Phone
-                <span>(optional)</span>
+                <span class="optional">
+                  (optional)
+                </span>
+
               </label>
+
 
               <input
                 id="alternate-phone"
@@ -427,11 +497,16 @@
             </div>
 
 
+
             <div class="form-group full">
 
               <label for="vendor-photo">
-                Your Personal Photograph
+
+                Personal Photograph
+                <span class="required">*</span>
+
               </label>
+
 
               <div class="file-box">
 
@@ -439,28 +514,32 @@
                   id="vendor-photo"
                   type="file"
                   accept="image/jpeg,image/png,image/webp"
-                  required
                 >
 
+
                 <div class="file-help">
+
                   Upload a clear recent photograph of yourself.
-                  This photograph is kept in EarnGig's private
-                  vendor records for verification and security.
+                  This is kept privately for EarnGig verification.
+
                 </div>
+
 
                 <img
                   id="photo-preview"
                   class="photo-preview"
-                  alt="Vendor photo preview"
+                  alt="Personal photograph preview"
                 >
 
               </div>
 
             </div>
 
+
           </div>
 
         </section>
+
 
 
         <!-- =================================================
@@ -469,40 +548,56 @@
 
         <section class="vendor-card">
 
-          <h2>Business / Store Information</h2>
+          <h2>
+            Business / Store Information
+          </h2>
+
 
           <p class="vendor-card-description">
-            Tell us about the business that will operate on
-            EarnGig. You can sell products from multiple
-            categories, so there is no single business category
-            here.
+
+            Your store can sell products from multiple
+            categories. You do not select a single business
+            category here. Product categories will be selected
+            separately when products are added.
+
           </p>
 
 
           <div class="form-grid">
 
+
             <div class="form-group">
 
               <label for="business-name">
+
                 Business / Store Name
+                <span class="required">*</span>
+
               </label>
+
 
               <input
                 id="business-name"
                 type="text"
-                placeholder="Your store or business name"
+                placeholder="Your store name"
                 required
               >
 
             </div>
 
 
+
             <div class="form-group">
 
               <label for="business-phone">
+
                 Business Phone
-                <span>(optional)</span>
+                <span class="optional">
+                  (optional)
+                </span>
+
               </label>
+
 
               <input
                 id="business-phone"
@@ -513,12 +608,18 @@
             </div>
 
 
+
             <div class="form-group">
 
               <label for="business-email">
+
                 Business Email
-                <span>(optional)</span>
+                <span class="optional">
+                  (optional)
+                </span>
+
               </label>
+
 
               <input
                 id="business-email"
@@ -529,11 +630,16 @@
             </div>
 
 
+
             <div class="form-group">
 
               <label for="state">
+
                 State
+                <span class="required">*</span>
+
               </label>
+
 
               <input
                 id="state"
@@ -545,12 +651,18 @@
             </div>
 
 
+
             <div class="form-group">
 
               <label for="lga">
+
                 LGA
-                <span>(optional)</span>
+                <span class="optional">
+                  (optional)
+                </span>
+
               </label>
+
 
               <input
                 id="lga"
@@ -561,58 +673,79 @@
             </div>
 
 
+
             <div class="form-group">
 
               <label for="business-location">
-                Business Location
+
+                City / Town / Area
+                <span class="required">*</span>
+
               </label>
+
 
               <input
                 id="business-location"
                 type="text"
-                placeholder="Area / town / city"
+                placeholder="City, town or area"
                 required
               >
 
             </div>
 
 
+
             <div class="form-group full">
 
               <label for="business-address">
+
                 Business Address
+                <span class="required">*</span>
+
               </label>
+
 
               <textarea
                 id="business-address"
-                placeholder="Enter the full business or operating address"
+                placeholder="Enter your full business or operating address"
                 required
               ></textarea>
 
             </div>
+
 
 
             <div class="form-group full">
 
               <label for="business-description">
+
                 About Your Business
+                <span class="required">*</span>
+
               </label>
+
 
               <textarea
                 id="business-description"
-                placeholder="Tell us what your business does and what you intend to sell on EarnGig."
+                placeholder="Tell us about your business and the products you intend to sell."
                 required
               ></textarea>
 
             </div>
 
 
+
             <div class="form-group full">
 
               <label for="business-logo">
+
                 Business Logo
-                <span>(optional)</span>
+                <span class="optional">
+                  (optional)
+                </span>
+
               </label>
+
 
               <div class="file-box">
 
@@ -622,9 +755,11 @@
                   accept="image/jpeg,image/png,image/webp"
                 >
 
+
                 <div class="file-help">
-                  Upload your business/store logo if you have one.
+                  Upload your business or store logo.
                 </div>
+
 
                 <img
                   id="logo-preview"
@@ -636,44 +771,55 @@
 
             </div>
 
+
           </div>
 
         </section>
 
 
+
         <!-- =================================================
-             SOCIAL / AUTHENTICITY
+             ONLINE PRESENCE
         ================================================== -->
 
         <section class="vendor-card">
 
-          <h2>Business Verification & Online Presence</h2>
+          <h2>
+            Business Verification
+          </h2>
+
 
           <p class="vendor-card-description">
-            Provide links that can help EarnGig verify that your
-            business is genuine. You do not need every item,
-            but provide as much useful information as you can.
+
+            These links help EarnGig verify your business.
+            Provide the ones you have.
+
           </p>
 
 
           <div class="notice warning">
 
-            Examples of useful proof include an active Instagram
-            business page, TikTok page, Facebook business page,
-            WhatsApp Business contact, website, existing store
-            page, or other public business presence.
+            You can provide an Instagram page, TikTok page,
+            Facebook page, WhatsApp Business link, website,
+            or another public business presence.
 
           </div>
 
 
           <div class="form-grid">
 
+
             <div class="form-group">
 
               <label for="whatsapp-url">
-                WhatsApp Link
-                <span>(optional)</span>
+
+                WhatsApp
+                <span class="optional">
+                  (optional)
+                </span>
+
               </label>
+
 
               <input
                 id="whatsapp-url"
@@ -684,12 +830,18 @@
             </div>
 
 
+
             <div class="form-group">
 
               <label for="instagram-url">
-                Instagram URL
-                <span>(optional)</span>
+
+                Instagram
+                <span class="optional">
+                  (optional)
+                </span>
+
               </label>
+
 
               <input
                 id="instagram-url"
@@ -700,12 +852,18 @@
             </div>
 
 
+
             <div class="form-group">
 
               <label for="tiktok-url">
-                TikTok URL
-                <span>(optional)</span>
+
+                TikTok
+                <span class="optional">
+                  (optional)
+                </span>
+
               </label>
+
 
               <input
                 id="tiktok-url"
@@ -716,12 +874,18 @@
             </div>
 
 
+
             <div class="form-group">
 
               <label for="facebook-url">
-                Facebook URL
-                <span>(optional)</span>
+
+                Facebook
+                <span class="optional">
+                  (optional)
+                </span>
+
               </label>
+
 
               <input
                 id="facebook-url"
@@ -732,12 +896,18 @@
             </div>
 
 
+
             <div class="form-group full">
 
               <label for="website-url">
+
                 Website
-                <span>(optional)</span>
+                <span class="optional">
+                  (optional)
+                </span>
+
               </label>
+
 
               <input
                 id="website-url"
@@ -748,22 +918,31 @@
             </div>
 
 
+
             <div class="form-group full">
 
               <label for="additional-information">
-                Additional Information / Proof
+
+                Additional Information
+                <span class="optional">
+                  (optional)
+                </span>
+
               </label>
+
 
               <textarea
                 id="additional-information"
-                placeholder="Tell us anything else that can help us verify your business. You may also provide links to other public business pages or explain how customers normally reach you."
+                placeholder="Anything else that can help us verify your business."
               ></textarea>
 
             </div>
 
+
           </div>
 
         </section>
+
 
 
         <!-- =================================================
@@ -772,12 +951,13 @@
 
         <section class="vendor-card">
 
+
           <div class="notice info">
 
-            By submitting this application, you confirm that the
-            information provided is accurate and belongs to you
-            or your business. EarnGig may review the information
-            before approving your store.
+            Submitting this application does <strong>not</strong>
+            charge the ₦2,500 monthly vendor subscription.
+            The subscription is only requested after your
+            application has been approved.
 
           </div>
 
@@ -797,35 +977,41 @@
               Cancel
             </a>
 
+
             <button
-              class="btn primary"
               id="submit-button"
               type="submit"
+              class="btn primary"
             >
               Submit for Review
             </button>
 
           </div>
 
+
         </section>
+
 
       </form>
 
     </div>
 
 
-    <!-- =====================================================
+
+    <!-- ==================================================
          STATUS AREA
-    ====================================================== -->
+    =================================================== -->
 
     <div
       id="status-area"
       class="hidden"
     ></div>
 
+
   </div>
 
 </main>
+
 
 
 <footer>
@@ -835,6 +1021,7 @@
   </div>
 
 </footer>
+
 
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -853,7 +1040,7 @@ let existingApplication = null;
 
 function escapeHtml(value) {
 
-  return String(value || "")
+  return String(value ?? "")
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
@@ -863,7 +1050,7 @@ function escapeHtml(value) {
 }
 
 
-function showElement(id) {
+function show(id) {
 
   document
     .getElementById(id)
@@ -873,7 +1060,7 @@ function showElement(id) {
 }
 
 
-function hideElement(id) {
+function hide(id) {
 
   document
     .getElementById(id)
@@ -886,11 +1073,16 @@ function hideElement(id) {
 function showFormError(message) {
 
   const box =
-    document.getElementById("form-error");
+    document.getElementById(
+      "form-error"
+    );
 
-  box.textContent = message;
+  box.textContent =
+    message;
 
-  box.classList.remove("hidden");
+  box.classList.remove(
+    "hidden"
+  );
 
   box.scrollIntoView({
     behavior: "smooth",
@@ -903,11 +1095,15 @@ function showFormError(message) {
 function clearFormError() {
 
   const box =
-    document.getElementById("form-error");
+    document.getElementById(
+      "form-error"
+    );
 
   box.textContent = "";
 
-  box.classList.add("hidden");
+  box.classList.add(
+    "hidden"
+  );
 
 }
 
@@ -923,23 +1119,25 @@ async function initializePage() {
       user
     },
     error
-  } = await supabaseClient.auth.getUser();
+  } =
+    await supabaseClient.auth.getUser();
 
 
-  if (error || !user) {
+  if (
+    error ||
+    !user
+  ) {
 
     window.location.href =
       "login.html?redirect=vendor-application.html";
 
     return;
+
   }
 
 
-  currentUser = user;
-
-
-  document.getElementById("email").value =
-    user.email || "";
+  currentUser =
+    user;
 
 
   await loadExistingApplication();
@@ -956,175 +1154,199 @@ async function loadExistingApplication() {
   const {
     data,
     error
-  } = await supabaseClient
-    .from("vendor_applications")
-    .select("*")
-    .eq("user_id", currentUser.id)
-    .order("created_at", {
-      ascending: false
-    })
-    .limit(1)
-    .maybeSingle();
+  } =
+    await supabaseClient
+      .from("vendor_applications")
+      .select("*")
+      .eq(
+        "user_id",
+        currentUser.id
+      )
+      .order(
+        "created_at",
+        {
+          ascending: false
+        }
+      )
+      .limit(1)
+      .maybeSingle();
 
 
   if (error) {
 
     console.error(
-      "Vendor application loading error:",
+      "Vendor application error:",
       error
     );
 
+
+    hide("loading-state");
+
+
     document.getElementById(
-      "loading-state"
+      "status-area"
     ).innerHTML = `
-      <div class="notice danger">
-        Unable to load your vendor application.
-        <br><br>
-        ${escapeHtml(error.message)}
-      </div>
+
+      <section class="vendor-card status-card">
+
+        <div class="status-icon">
+          ⚠️
+        </div>
+
+        <h2>
+          Unable to load application
+        </h2>
+
+        <p>
+          ${escapeHtml(error.message)}
+        </p>
+
+        <a
+          href="marketplace.html"
+          class="btn outline"
+        >
+          Back to Marketplace
+        </a>
+
+      </section>
+
     `;
 
+
+    show("status-area");
+
     return;
+
   }
 
 
-  existingApplication = data;
+  existingApplication =
+    data;
 
 
-  hideElement("loading-state");
+  hide("loading-state");
 
 
   if (!data) {
 
-    showElement("application-area");
+    prepareNewApplication();
 
     return;
+
   }
 
 
-  if (data.status === "revision_required") {
+  if (
+    data.status ===
+    "revision_required"
+  ) {
 
-    showElement("application-area");
-
-    populateForm(data);
-
-    showRevisionNotice(data);
-
-    return;
-  }
-
-
-  showStatus(data);
-
-}
-
-
-/* ==========================================================
-   POPULATE FORM FOR REVISION
-========================================================== */
-
-function populateForm(application) {
-
-  document.getElementById("full-name").value =
-    application.full_name || "";
-
-  document.getElementById("email").value =
-    application.email || currentUser.email || "";
-
-  document.getElementById("phone-number").value =
-    application.phone_number || "";
-
-  document.getElementById("alternate-phone").value =
-    application.alternate_phone || "";
-
-  document.getElementById("business-name").value =
-    application.business_name || "";
-
-  document.getElementById("business-phone").value =
-    application.business_phone || "";
-
-  document.getElementById("business-email").value =
-    application.business_email || "";
-
-  document.getElementById("state").value =
-    application.state || "";
-
-  document.getElementById("lga").value =
-    application.lga || "";
-
-  document.getElementById("business-location").value =
-    application.business_location || "";
-
-  document.getElementById("business-address").value =
-    application.business_address || "";
-
-  document.getElementById("business-description").value =
-    application.business_description || "";
-
-  document.getElementById("whatsapp-url").value =
-    application.whatsapp_url || "";
-
-  document.getElementById("instagram-url").value =
-    application.instagram_url || "";
-
-  document.getElementById("tiktok-url").value =
-    application.tiktok_url || "";
-
-  document.getElementById("facebook-url").value =
-    application.facebook_url || "";
-
-  document.getElementById("website-url").value =
-    application.website_url || "";
-
-  document.getElementById("additional-information").value =
-    application.additional_information || "";
-
-}
-
-
-/* ==========================================================
-   REVISION NOTICE
-========================================================== */
-
-function showRevisionNotice(application) {
-
-  const header =
-    document.querySelector(".vendor-header");
-
-
-  const existing =
-    document.getElementById(
-      "revision-notice"
+    prepareRevision(
+      data
     );
 
+    return;
 
-  if (existing) {
-    existing.remove();
   }
+
+
+  showApplicationStatus(
+    data
+  );
+
+}
+
+
+/* ==========================================================
+   NEW APPLICATION
+========================================================== */
+
+function prepareNewApplication() {
+
+  show(
+    "application-area"
+  );
+
+
+  document.getElementById(
+    "email"
+  ).value =
+    currentUser.email || "";
+
+
+  document.getElementById(
+    "full-name"
+  ).value =
+    "";
+
+
+  document.getElementById(
+    "submit-button"
+  ).textContent =
+    "Submit for Review";
+
+}
+
+
+/* ==========================================================
+   REVISION
+========================================================== */
+
+function prepareRevision(application) {
+
+  show(
+    "application-area"
+  );
+
+
+  populateForm(
+    application
+  );
 
 
   const notice =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
 
-
-  notice.id =
-    "revision-notice";
 
   notice.className =
     "notice warning";
 
 
   notice.innerHTML = `
-    <strong>Revision Required</strong><br>
-    Your previous vendor application requires
-    some changes before it can be approved.
+
+    <strong>
+      Revision Required
+    </strong>
+
+    <br><br>
+
+    Your application requires
+    changes before it can be approved.
+
     ${
       application.admin_note
-        ? `<br><br><strong>Admin note:</strong>
-           ${escapeHtml(application.admin_note)}`
+        ? `
+          <br><br>
+          <strong>
+            Admin note:
+          </strong>
+
+          ${escapeHtml(
+            application.admin_note
+          )}
+        `
         : ""
     }
+
   `;
+
+
+  const header =
+    document.querySelector(
+      ".vendor-header"
+    );
 
 
   header.parentNode.insertBefore(
@@ -1133,69 +1355,219 @@ function showRevisionNotice(application) {
   );
 
 
-  const button =
-    document.getElementById("submit-button");
-
-
-  button.textContent =
+  document.getElementById(
+    "submit-button"
+  ).textContent =
     "Resubmit Application";
 
 }
 
 
 /* ==========================================================
-   STATUS DISPLAY
+   POPULATE FORM
 ========================================================== */
 
-function showStatus(application) {
+function populateForm(application) {
 
-  hideElement("application-area");
+  document.getElementById(
+    "full-name"
+  ).value =
+    application.full_name || "";
 
-  const statusArea =
-    document.getElementById("status-area");
 
-  showElement("status-area");
+  document.getElementById(
+    "email"
+  ).value =
+    application.email ||
+    currentUser.email ||
+    "";
+
+
+  document.getElementById(
+    "phone-number"
+  ).value =
+    application.phone_number || "";
+
+
+  document.getElementById(
+    "alternate-phone"
+  ).value =
+    application.alternate_phone || "";
+
+
+  document.getElementById(
+    "business-name"
+  ).value =
+    application.business_name || "";
+
+
+  document.getElementById(
+    "business-phone"
+  ).value =
+    application.business_phone || "";
+
+
+  document.getElementById(
+    "business-email"
+  ).value =
+    application.business_email || "";
+
+
+  document.getElementById(
+    "state"
+  ).value =
+    application.state || "";
+
+
+  document.getElementById(
+    "lga"
+  ).value =
+    application.lga || "";
+
+
+  document.getElementById(
+    "business-location"
+  ).value =
+    application.business_location || "";
+
+
+  document.getElementById(
+    "business-address"
+  ).value =
+    application.business_address || "";
+
+
+  document.getElementById(
+    "business-description"
+  ).value =
+    application.business_description || "";
+
+
+  document.getElementById(
+    "whatsapp-url"
+  ).value =
+    application.whatsapp_url || "";
+
+
+  document.getElementById(
+    "instagram-url"
+  ).value =
+    application.instagram_url || "";
+
+
+  document.getElementById(
+    "tiktok-url"
+  ).value =
+    application.tiktok_url || "";
+
+
+  document.getElementById(
+    "facebook-url"
+  ).value =
+    application.facebook_url || "";
+
+
+  document.getElementById(
+    "website-url"
+  ).value =
+    application.website_url || "";
+
+
+  document.getElementById(
+    "additional-information"
+  ).value =
+    application.additional_information || "";
+
+}
+
+
+/* ==========================================================
+   STATUS
+========================================================== */
+
+function showApplicationStatus(
+  application
+) {
+
+  hide(
+    "application-area"
+  );
+
+
+  const status =
+    String(
+      application.status || ""
+    ).toLowerCase();
 
 
   let icon = "⏳";
-  let title = "Application Under Review";
+
+  let title =
+    "Application Under Review";
+
   let message =
     "Your vendor application has been submitted and is currently being reviewed by EarnGig.";
-  let noticeClass = "info";
+
+  let noticeClass =
+    "info";
+
   let action = "";
 
 
-  if (application.status === "approved") {
+  if (
+    status ===
+    "approved"
+  ) {
 
     icon = "✓";
-    title = "Vendor Application Approved";
-    noticeClass = "success";
+
+    title =
+      "Application Approved";
+
+    noticeClass =
+      "success";
 
     message =
-      "Your vendor application has been approved. Your next step is to complete the monthly vendor subscription before your store can be activated.";
+      "Your vendor application has been approved. Complete your ₦2,500 monthly vendor subscription to continue to store activation.";
+
 
     action = `
+
       <a
-        class="btn primary"
         href="vendor-subscription.html"
+        class="btn primary"
       >
-        Pay Monthly Vendor Fee
+        Continue to Subscription
       </a>
+
     `;
 
   }
 
 
-  if (application.status === "rejected") {
+  if (
+    status ===
+    "rejected"
+  ) {
 
     icon = "✕";
-    title = "Vendor Application Rejected";
-    noticeClass = "danger";
+
+    title =
+      "Application Not Approved";
+
+    noticeClass =
+      "danger";
 
     message =
       "Your vendor application was not approved at this time.";
 
   }
+
+
+  const statusArea =
+    document.getElementById(
+      "status-area"
+    );
 
 
   statusArea.innerHTML = `
@@ -1214,24 +1586,40 @@ function showStatus(application) {
         ${message}
       </p>
 
+
       ${
         application.admin_note
           ? `
-            <div class="notice ${noticeClass}">
-              <strong>Admin Note</strong><br><br>
-              ${escapeHtml(application.admin_note)}
+
+            <div
+              class="notice ${noticeClass}"
+            >
+
+              <strong>
+                EarnGig Note
+              </strong>
+
+              <br><br>
+
+              ${escapeHtml(
+                application.admin_note
+              )}
+
             </div>
+
           `
           : ""
       }
 
+
       ${action}
+
 
       <div style="margin-top:20px;">
 
         <a
-          class="btn outline"
           href="marketplace.html"
+          class="btn outline"
         >
           Back to Marketplace
         </a>
@@ -1242,6 +1630,11 @@ function showStatus(application) {
 
   `;
 
+
+  show(
+    "status-area"
+  );
+
 }
 
 
@@ -1250,13 +1643,16 @@ function showStatus(application) {
 ========================================================== */
 
 document
-  .getElementById("vendor-photo")
+  .getElementById(
+    "vendor-photo"
+  )
   .addEventListener(
     "change",
     function() {
 
       const file =
         this.files[0];
+
 
       const preview =
         document.getElementById(
@@ -1266,17 +1662,20 @@ document
 
       if (!file) {
 
+        preview.src = "";
+
         preview.style.display =
           "none";
 
-        preview.src = "";
-
         return;
+
       }
 
 
       preview.src =
-        URL.createObjectURL(file);
+        URL.createObjectURL(
+          file
+        );
 
       preview.style.display =
         "block";
@@ -1286,13 +1685,16 @@ document
 
 
 document
-  .getElementById("business-logo")
+  .getElementById(
+    "business-logo"
+  )
   .addEventListener(
     "change",
     function() {
 
       const file =
         this.files[0];
+
 
       const preview =
         document.getElementById(
@@ -1302,17 +1704,20 @@ document
 
       if (!file) {
 
+        preview.src = "";
+
         preview.style.display =
           "none";
 
-        preview.src = "";
-
         return;
+
       }
 
 
       preview.src =
-        URL.createObjectURL(file);
+        URL.createObjectURL(
+          file
+        );
 
       preview.style.display =
         "block";
@@ -1322,7 +1727,7 @@ document
 
 
 /* ==========================================================
-   FILE UPLOAD
+   UPLOAD
 ========================================================== */
 
 async function uploadVendorFile(
@@ -1336,12 +1741,13 @@ async function uploadVendorFile(
     if (required) {
 
       throw new Error(
-        "Please select the required vendor photograph."
+        "Please upload your personal photograph."
       );
 
     }
 
     return null;
+
   }
 
 
@@ -1352,7 +1758,11 @@ async function uploadVendorFile(
   ];
 
 
-  if (!allowedTypes.includes(file.type)) {
+  if (
+    !allowedTypes.includes(
+      file.type
+    )
+  ) {
 
     throw new Error(
       "Please upload a JPG, PNG, or WEBP image."
@@ -1361,7 +1771,10 @@ async function uploadVendorFile(
   }
 
 
-  if (file.size > 5 * 1024 * 1024) {
+  if (
+    file.size >
+    5 * 1024 * 1024
+  ) {
 
     throw new Error(
       "Each image must be 5MB or smaller."
@@ -1377,7 +1790,7 @@ async function uploadVendorFile(
       .toLowerCase();
 
 
-  const fileName =
+  const path =
     folder +
     "/" +
     currentUser.id +
@@ -1389,17 +1802,22 @@ async function uploadVendorFile(
 
   const {
     error
-  } = await supabaseClient
-    .storage
-    .from("vendor-documents")
-    .upload(
-      fileName,
-      file,
-      {
-        cacheControl: "3600",
-        upsert: false
-      }
-    );
+  } =
+    await supabaseClient
+      .storage
+      .from(
+        "vendor-documents"
+      )
+      .upload(
+        path,
+        file,
+        {
+          cacheControl:
+            "3600",
+          upsert:
+            false
+        }
+      );
 
 
   if (error) {
@@ -1412,7 +1830,7 @@ async function uploadVendorFile(
   }
 
 
-  return fileName;
+  return path;
 
 }
 
@@ -1422,7 +1840,9 @@ async function uploadVendorFile(
 ========================================================== */
 
 document
-  .getElementById("vendor-form")
+  .getElementById(
+    "vendor-form"
+  )
   .addEventListener(
     "submit",
     async function(event) {
@@ -1432,16 +1852,16 @@ document
       clearFormError();
 
 
-      const submitButton =
+      const button =
         document.getElementById(
           "submit-button"
         );
 
 
-      submitButton.disabled =
+      button.disabled =
         true;
 
-      submitButton.textContent =
+      button.textContent =
         "Submitting...";
 
 
@@ -1449,109 +1869,162 @@ document
 
         const fullName =
           document
-            .getElementById("full-name")
+            .getElementById(
+              "full-name"
+            )
             .value
             .trim();
+
 
         const email =
           document
-            .getElementById("email")
+            .getElementById(
+              "email"
+            )
             .value
             .trim();
+
 
         const phoneNumber =
           document
-            .getElementById("phone-number")
+            .getElementById(
+              "phone-number"
+            )
             .value
             .trim();
+
 
         const alternatePhone =
           document
-            .getElementById("alternate-phone")
+            .getElementById(
+              "alternate-phone"
+            )
             .value
             .trim();
+
 
         const businessName =
           document
-            .getElementById("business-name")
+            .getElementById(
+              "business-name"
+            )
             .value
             .trim();
+
 
         const businessPhone =
           document
-            .getElementById("business-phone")
+            .getElementById(
+              "business-phone"
+            )
             .value
             .trim();
+
 
         const businessEmail =
           document
-            .getElementById("business-email")
+            .getElementById(
+              "business-email"
+            )
             .value
             .trim();
+
 
         const state =
           document
-            .getElementById("state")
+            .getElementById(
+              "state"
+            )
             .value
             .trim();
+
 
         const lga =
           document
-            .getElementById("lga")
+            .getElementById(
+              "lga"
+            )
             .value
             .trim();
+
 
         const businessLocation =
           document
-            .getElementById("business-location")
+            .getElementById(
+              "business-location"
+            )
             .value
             .trim();
+
 
         const businessAddress =
           document
-            .getElementById("business-address")
+            .getElementById(
+              "business-address"
+            )
             .value
             .trim();
+
 
         const businessDescription =
           document
-            .getElementById("business-description")
+            .getElementById(
+              "business-description"
+            )
             .value
             .trim();
+
 
         const whatsappUrl =
           document
-            .getElementById("whatsapp-url")
+            .getElementById(
+              "whatsapp-url"
+            )
             .value
             .trim();
+
 
         const instagramUrl =
           document
-            .getElementById("instagram-url")
+            .getElementById(
+              "instagram-url"
+            )
             .value
             .trim();
+
 
         const tiktokUrl =
           document
-            .getElementById("tiktok-url")
+            .getElementById(
+              "tiktok-url"
+            )
             .value
             .trim();
+
 
         const facebookUrl =
           document
-            .getElementById("facebook-url")
+            .getElementById(
+              "facebook-url"
+            )
             .value
             .trim();
+
 
         const websiteUrl =
           document
-            .getElementById("website-url")
+            .getElementById(
+              "website-url"
+            )
             .value
             .trim();
 
+
         const additionalInformation =
           document
-            .getElementById("additional-information")
+            .getElementById(
+              "additional-information"
+            )
             .value
             .trim();
 
@@ -1574,36 +2047,32 @@ document
         }
 
 
-        /*
-          For a brand-new application the personal photo
-          is required.
-
-          For a revision, the existing photo can remain unless
-          the vendor chooses a new one.
-        */
-
         const photoFile =
           document
-            .getElementById("vendor-photo")
+            .getElementById(
+              "vendor-photo"
+            )
             .files[0];
 
 
         const logoFile =
           document
-            .getElementById("business-logo")
+            .getElementById(
+              "business-logo"
+            )
             .files[0];
 
 
         let vendorPhotoPath =
           existingApplication
-            ? existingApplication.vendor_photo_path
-            : null;
+            ?.vendor_photo_path ||
+          null;
 
 
         let businessLogoPath =
           existingApplication
-            ? existingApplication.business_logo_path
-            : null;
+            ?.business_logo_path ||
+          null;
 
 
         if (photoFile) {
@@ -1654,7 +2123,8 @@ document
             phoneNumber,
 
           alternate_phone:
-            alternatePhone || null,
+            alternatePhone ||
+            null,
 
           vendor_photo_path:
             vendorPhotoPath,
@@ -1669,7 +2139,8 @@ document
             state,
 
           lga:
-            lga || null,
+            lga ||
+            null,
 
           business_location:
             businessLocation,
@@ -1678,31 +2149,40 @@ document
             businessAddress,
 
           business_phone:
-            businessPhone || null,
+            businessPhone ||
+            null,
 
           business_email:
-            businessEmail || null,
+            businessEmail ||
+            null,
 
           business_logo_path:
-            businessLogoPath || null,
+            businessLogoPath ||
+            null,
 
           whatsapp_url:
-            whatsappUrl || null,
+            whatsappUrl ||
+            null,
 
           instagram_url:
-            instagramUrl || null,
+            instagramUrl ||
+            null,
 
           tiktok_url:
-            tiktokUrl || null,
+            tiktokUrl ||
+            null,
 
           facebook_url:
-            facebookUrl || null,
+            facebookUrl ||
+            null,
 
           website_url:
-            websiteUrl || null,
+            websiteUrl ||
+            null,
 
           additional_information:
-            additionalInformation || null,
+            additionalInformation ||
+            null,
 
           status:
             "pending_review",
@@ -1725,14 +2205,6 @@ document
         let result;
 
 
-        /*
-          Revision:
-          update the existing application.
-
-          New application:
-          insert a new application.
-        */
-
         if (
           existingApplication &&
           existingApplication.status ===
@@ -1741,8 +2213,12 @@ document
 
           result =
             await supabaseClient
-              .from("vendor_applications")
-              .update(applicationData)
+              .from(
+                "vendor_applications"
+              )
+              .update(
+                applicationData
+              )
               .eq(
                 "id",
                 existingApplication.id
@@ -1758,7 +2234,9 @@ document
 
           result =
             await supabaseClient
-              .from("vendor_applications")
+              .from(
+                "vendor_applications"
+              )
               .insert(
                 applicationData
               )
@@ -1781,12 +2259,12 @@ document
           result.data;
 
 
-        document.getElementById(
+        hide(
           "application-area"
-        ).classList.add("hidden");
+        );
 
 
-        showStatus(
+        showApplicationStatus(
           result.data
         );
 
@@ -1805,11 +2283,11 @@ document
         );
 
 
-        submitButton.disabled =
+        button.disabled =
           false;
 
 
-        submitButton.textContent =
+        button.textContent =
           existingApplication &&
           existingApplication.status ===
             "revision_required"
@@ -1830,5 +2308,7 @@ initializePage();
 
 </script>
 
+
 </body>
+
 </html>
