@@ -1,0 +1,2427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Competitions & Awards - EarnGig</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(124, 58, 237, 0.18), transparent 35%),
+        linear-gradient(180deg, #080b18 0%, #0d1022 100%);
+      color: #f5f7ff;
+      min-height: 100vh;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
+    }
+
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(8, 11, 24, 0.94);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+    }
+
+    .header-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 20px;
+    }
+
+    .brand-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, #7c3aed, #a855f7);
+      box-shadow: 0 8px 24px rgba(124, 58, 237, 0.3);
+    }
+
+    .nav {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .nav a,
+    .nav button {
+      border: 0;
+      background: transparent;
+      color: #cbd5e1;
+      padding: 9px 12px;
+      border-radius: 9px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .nav a:hover,
+    .nav button:hover {
+      background: rgba(124, 58, 237, 0.14);
+      color: #fff;
+    }
+
+    .container {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 28px 18px 60px;
+    }
+
+    .hero {
+      padding: 26px;
+      border-radius: 22px;
+      background:
+        linear-gradient(135deg, rgba(124, 58, 237, 0.23), rgba(30, 41, 59, 0.32)),
+        rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(139, 92, 246, 0.25);
+      margin-bottom: 22px;
+    }
+
+    .hero h1 {
+      margin: 0 0 8px;
+      font-size: clamp(27px, 5vw, 42px);
+    }
+
+    .hero p {
+      margin: 0;
+      color: #b9c2d5;
+      line-height: 1.65;
+      max-width: 760px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin: 0 0 22px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+
+    .tab {
+      white-space: nowrap;
+      border: 1px solid #26304d;
+      background: #11172a;
+      color: #aeb8cd;
+      padding: 11px 16px;
+      border-radius: 11px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .tab.active {
+      background: linear-gradient(135deg, #6d28d9, #8b5cf6);
+      border-color: #8b5cf6;
+      color: #fff;
+    }
+
+    .status-box {
+      display: none;
+      padding: 14px 16px;
+      border-radius: 12px;
+      margin-bottom: 18px;
+      line-height: 1.5;
+    }
+
+    .status-box.show {
+      display: block;
+    }
+
+    .status-box.success {
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: #86efac;
+    }
+
+    .status-box.error {
+      background: rgba(239, 68, 68, 0.12);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #fca5a5;
+    }
+
+    .status-box.info {
+      background: rgba(59, 130, 246, 0.12);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      color: #93c5fd;
+    }
+
+    .loading,
+    .empty {
+      text-align: center;
+      padding: 45px 20px;
+      color: #94a3b8;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid #202a44;
+      border-radius: 18px;
+      padding: 19px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.16);
+    }
+
+    .competition-card {
+      display: flex;
+      flex-direction: column;
+      min-height: 330px;
+    }
+
+    .type-badge {
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      padding: 6px 9px;
+      border-radius: 999px;
+      background: rgba(124, 58, 237, 0.14);
+      border: 1px solid rgba(139, 92, 246, 0.25);
+      color: #c4b5fd;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .competition-card h3 {
+      margin: 14px 0 9px;
+      font-size: 20px;
+      line-height: 1.3;
+    }
+
+    .description {
+      color: #aeb8cd;
+      line-height: 1.55;
+      font-size: 14px;
+      flex: 1;
+    }
+
+    .meta {
+      margin-top: 14px;
+      display: grid;
+      gap: 7px;
+      color: #94a3b8;
+      font-size: 13px;
+    }
+
+    .meta strong {
+      color: #e2e8f0;
+    }
+
+    .prize-preview {
+      margin-top: 15px;
+      padding: 12px;
+      border-radius: 12px;
+      background: rgba(124, 58, 237, 0.08);
+      border: 1px solid rgba(124, 58, 237, 0.18);
+    }
+
+    .prize-preview-title {
+      color: #c4b5fd;
+      font-size: 12px;
+      font-weight: 800;
+      margin-bottom: 7px;
+    }
+
+    .prize-line {
+      font-size: 13px;
+      color: #dbe4f3;
+      margin-top: 4px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 10px;
+      padding: 11px 15px;
+      cursor: pointer;
+      font-weight: 800;
+      color: #fff;
+      background: #25304a;
+      flex: 1;
+    }
+
+    .btn:hover {
+      filter: brightness(1.1);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #6d28d9, #8b5cf6);
+    }
+
+    .btn-success {
+      background: linear-gradient(135deg, #059669, #10b981);
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, #b91c1c, #ef4444);
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .section-title {
+      margin: 4px 0 16px;
+      font-size: 22px;
+    }
+
+    .my-entry {
+      margin-bottom: 14px;
+    }
+
+    .entry-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .entry-top h3 {
+      margin: 0 0 7px;
+      font-size: 18px;
+    }
+
+    .entry-status {
+      display: inline-flex;
+      padding: 6px 9px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      background: #1e293b;
+      color: #cbd5e1;
+      white-space: nowrap;
+    }
+
+    .entry-status.won,
+    .entry-status.selected,
+    .entry-status.announced,
+    .entry-status.fulfilled {
+      background: rgba(16, 185, 129, 0.13);
+      color: #86efac;
+    }
+
+    .entry-status.not-selected,
+    .entry-status.disqualified,
+    .entry-status.rejected {
+      background: rgba(239, 68, 68, 0.12);
+      color: #fca5a5;
+    }
+
+    .entry-details {
+      color: #94a3b8;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    /* Modal */
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      background: rgba(0, 0, 0, 0.72);
+      backdrop-filter: blur(5px);
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .modal-box {
+      width: min(760px, 100%);
+      max-height: 92vh;
+      overflow-y: auto;
+      background: #0d1326;
+      border: 1px solid #2b3756;
+      border-radius: 20px;
+      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.45);
+    }
+
+    .modal-header {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 19px;
+      background: rgba(13, 19, 38, 0.96);
+      border-bottom: 1px solid #202a44;
+    }
+
+    .modal-header h2 {
+      margin: 0;
+      font-size: 21px;
+    }
+
+    .close-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 9px;
+      border: 1px solid #2b3756;
+      background: #151d34;
+      color: #fff;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .modal-body {
+      padding: 20px;
+    }
+
+    .detail-block {
+      margin-bottom: 20px;
+    }
+
+    .detail-block h4 {
+      margin: 0 0 8px;
+      color: #c4b5fd;
+      font-size: 14px;
+    }
+
+    .detail-block p {
+      margin: 0;
+      color: #b8c2d4;
+      line-height: 1.65;
+      white-space: pre-wrap;
+    }
+
+    .prizes {
+      display: grid;
+      gap: 9px;
+    }
+
+    .prize-card {
+      padding: 12px;
+      border-radius: 11px;
+      background: #11192d;
+      border: 1px solid #25304a;
+    }
+
+    .prize-card strong {
+      color: #f8fafc;
+    }
+
+    .prize-card span {
+      display: block;
+      color: #aeb8cd;
+      font-size: 13px;
+      margin-top: 4px;
+    }
+
+    .entry-form {
+      margin-top: 20px;
+      padding: 17px;
+      border-radius: 15px;
+      background: rgba(124, 58, 237, 0.07);
+      border: 1px solid rgba(139, 92, 246, 0.2);
+    }
+
+    .entry-form h3 {
+      margin: 0 0 7px;
+    }
+
+    .form-note {
+      color: #94a3b8;
+      font-size: 13px;
+      line-height: 1.5;
+      margin-bottom: 15px;
+    }
+
+    .field {
+      margin-bottom: 14px;
+    }
+
+    .field label {
+      display: block;
+      color: #dbe4f3;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 7px;
+    }
+
+    .field input,
+    .field textarea,
+    .field select {
+      width: 100%;
+      border: 1px solid #2a3552;
+      background: #0b1121;
+      color: #f8fafc;
+      border-radius: 10px;
+      padding: 11px 12px;
+      outline: none;
+    }
+
+    .field input:focus,
+    .field textarea:focus,
+    .field select:focus {
+      border-color: #8b5cf6;
+    }
+
+    .field textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    .quiz-shell {
+      margin-top: 20px;
+    }
+
+    .quiz-header {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      padding: 12px;
+      margin-bottom: 15px;
+      border-radius: 13px;
+      background: rgba(13, 19, 38, 0.97);
+      border: 1px solid #303b5c;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .timer {
+      font-size: 22px;
+      font-weight: 900;
+      color: #a78bfa;
+      min-width: 82px;
+      text-align: right;
+    }
+
+    .timer.warning {
+      color: #fbbf24;
+    }
+
+    .timer.danger {
+      color: #f87171;
+    }
+
+    .quiz-question {
+      padding: 16px;
+      margin-bottom: 13px;
+      border-radius: 14px;
+      background: #10182c;
+      border: 1px solid #26314e;
+    }
+
+    .question-number {
+      color: #a78bfa;
+      font-size: 12px;
+      font-weight: 800;
+      margin-bottom: 7px;
+    }
+
+    .question-text {
+      color: #f8fafc;
+      font-weight: 700;
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+
+    .option {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      padding: 10px;
+      margin-top: 7px;
+      border-radius: 9px;
+      background: #151e34;
+      border: 1px solid transparent;
+      cursor: pointer;
+      color: #cbd5e1;
+    }
+
+    .option:hover {
+      border-color: #4c3b75;
+    }
+
+    .option input {
+      margin-top: 3px;
+    }
+
+    .quiz-submit {
+      margin-top: 5px;
+    }
+
+    .result-box {
+      margin-top: 15px;
+      padding: 17px;
+      border-radius: 13px;
+      background: rgba(16, 185, 129, 0.09);
+      border: 1px solid rgba(16, 185, 129, 0.22);
+    }
+
+    .result-box h3 {
+      margin: 0 0 8px;
+      color: #86efac;
+    }
+
+    .result-box p {
+      margin: 4px 0;
+      color: #cbd5e1;
+    }
+
+    .winner-box {
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 10px;
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      color: #bbf7d0;
+      font-size: 13px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 900px) {
+      .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 650px) {
+      .header-inner {
+        padding: 11px 13px;
+      }
+
+      .brand {
+        font-size: 17px;
+      }
+
+      .brand-icon {
+        width: 34px;
+        height: 34px;
+      }
+
+      .nav a:not(.keep-mobile) {
+        display: none;
+      }
+
+      .container {
+        padding: 18px 13px 45px;
+      }
+
+      .hero {
+        padding: 20px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .modal {
+        padding: 8px;
+      }
+
+      .modal-box {
+        max-height: 96vh;
+        border-radius: 16px;
+      }
+
+      .modal-body {
+        padding: 15px;
+      }
+
+      .entry-top {
+        flex-direction: column;
+      }
+
+      .actions {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="header">
+    <div class="header-inner">
+      <a href="dashboard.html" class="brand">
+        <span class="brand-icon">₦</span>
+        <span>EarnGig</span>
+      </a>
+
+      <nav class="nav">
+        <a href="dashboard.html" class="keep-mobile">Dashboard</a>
+        <a href="watch-ads.html">Watch & Earn</a>
+        <a href="competitions.html">Competitions</a>
+        <button id="logoutBtn">Logout</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <section class="hero">
+      <h1>🏆 Competitions & Awards</h1>
+      <p>
+        Enter official EarnGig competitions, quizzes, giveaways, challenges
+        and special awards. Check the requirements, submit your entry and
+        track your result from one place.
+      </p>
+    </section>
+
+    <div id="statusBox" class="status-box"></div>
+
+    <div class="tabs">
+      <button class="tab active" id="availableTab">Available Competitions</button>
+      <button class="tab" id="myTab">My Competitions</button>
+    </div>
+
+    <section id="availableSection">
+      <h2 class="section-title">Available Competitions</h2>
+
+      <div id="competitionsLoading" class="loading">
+        Loading competitions...
+      </div>
+
+      <div id="competitionsGrid" class="grid"></div>
+
+      <div id="competitionsEmpty" class="empty hidden">
+        There are no published competitions available right now.
+        Check back later for new opportunities.
+      </div>
+    </section>
+
+    <section id="mySection" class="hidden">
+      <h2 class="section-title">My Competitions</h2>
+
+      <div id="myLoading" class="loading">
+        Loading your entries...
+      </div>
+
+      <div id="myEntries"></div>
+
+      <div id="myEmpty" class="empty hidden">
+        You have not entered any competitions yet.
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Competition Details Modal -->
+  <div id="competitionModal" class="modal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2 id="modalTitle">Competition</h2>
+        <button class="close-btn" id="closeModal">×</button>
+      </div>
+
+      <div class="modal-body">
+        <div id="modalContent"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentUser = null;
+    let competitions = [];
+    let myEntries = [];
+    let currentCompetition = null;
+
+    let quizEntryId = null;
+    let quizExpiresAt = null;
+    let quizTimerInterval = null;
+    let quizSubmitting = false;
+
+    const statusBox = document.getElementById("statusBox");
+    const competitionsGrid = document.getElementById("competitionsGrid");
+    const competitionsLoading = document.getElementById("competitionsLoading");
+    const competitionsEmpty = document.getElementById("competitionsEmpty");
+
+    const myEntriesContainer = document.getElementById("myEntries");
+    const myLoading = document.getElementById("myLoading");
+    const myEmpty = document.getElementById("myEmpty");
+
+    const availableSection = document.getElementById("availableSection");
+    const mySection = document.getElementById("mySection");
+
+    const availableTab = document.getElementById("availableTab");
+    const myTab = document.getElementById("myTab");
+
+    const competitionModal = document.getElementById("competitionModal");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalContent = document.getElementById("modalContent");
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function showStatus(message, type = "info") {
+      statusBox.textContent = message;
+      statusBox.className = "status-box show " + type;
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    }
+
+    function clearStatus() {
+      statusBox.className = "status-box";
+      statusBox.textContent = "";
+    }
+
+    function formatMoney(amount) {
+      if (amount === null || amount === undefined || amount === "") {
+        return "";
+      }
+
+      const number = Number(amount);
+
+      if (!Number.isFinite(number)) {
+        return "";
+      }
+
+      return "₦" + number.toLocaleString("en-NG", {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+      });
+    }
+
+    function formatDate(value) {
+      if (!value) return "Not specified";
+
+      const date = new Date(value);
+
+      if (Number.isNaN(date.getTime())) {
+        return "Not specified";
+      }
+
+      return date.toLocaleString("en-NG", {
+        dateStyle: "medium",
+        timeStyle: "short"
+      });
+    }
+
+    function formatType(type) {
+      const names = {
+        quiz: "Quiz",
+        video: "TikTok / Video",
+        giveaway: "Giveaway",
+        challenge: "Challenge",
+        application: "Application"
+      };
+
+      return names[type] || type || "Competition";
+    }
+
+    function formatEntryStatus(status) {
+      const names = {
+        submitted: "Submitted",
+        under_review: "Under Review",
+        qualified: "Qualified",
+        disqualified: "Disqualified",
+        withdrawn: "Withdrawn"
+      };
+
+      return names[status] || status || "Submitted";
+    }
+
+    function formatWinnerStatus(status) {
+      const names = {
+        selected: "Winner Selected",
+        announced: "Winner Announced",
+        fulfilled: "Prize Fulfilled",
+        cancelled: "Winner Cancelled"
+      };
+
+      return names[status] || status;
+    }
+
+    function formatDuration(seconds) {
+      const total = Math.max(0, Number(seconds) || 0);
+      const minutes = Math.floor(total / 60);
+      const secs = total % 60;
+
+      return `${minutes}m ${String(secs).padStart(2, "0")}s`;
+    }
+
+    function competitionIsOpen(competition) {
+      const now = Date.now();
+
+      const start = competition.start_at
+        ? new Date(competition.start_at).getTime()
+        : null;
+
+      const end = competition.end_at
+        ? new Date(competition.end_at).getTime()
+        : null;
+
+      if (competition.status !== "published") {
+        return false;
+      }
+
+      if (start && now < start) {
+        return false;
+      }
+
+      if (end && now > end) {
+        return false;
+      }
+
+      return true;
+    }
+
+    function getPrizeText(prize) {
+      if (prize.amount !== null && prize.amount !== undefined) {
+        return formatMoney(prize.amount);
+      }
+
+      return prize.item_description || prize.prize_name || "Prize";
+    }
+
+    function openModal() {
+      competitionModal.classList.add("show");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeModal() {
+      stopQuizTimer();
+      competitionModal.classList.remove("show");
+      document.body.style.overflow = "";
+      currentCompetition = null;
+      quizEntryId = null;
+      quizExpiresAt = null;
+      quizSubmitting = false;
+    }
+
+    function renderPrizes(prizes) {
+      if (!prizes || !prizes.length) {
+        return `
+          <div class="detail-block">
+            <h4>🏆 Prizes</h4>
+            <p>Prize information will be announced by EarnGig.</p>
+          </div>
+        `;
+      }
+
+      return `
+        <div class="detail-block">
+          <h4>🏆 Prizes</h4>
+
+          <div class="prizes">
+            ${prizes
+              .sort((a, b) => Number(a.prize_order || 0) - Number(b.prize_order || 0))
+              .map((prize) => `
+                <div class="prize-card">
+                  <strong>
+                    ${escapeHtml(prize.prize_name || "Prize")}
+                    ${Number(prize.winner_count || 1) > 1
+                      ? ` × ${escapeHtml(prize.winner_count)} winners`
+                      : ""}
+                  </strong>
+
+                  <span>
+                    ${escapeHtml(
+                      getPrizeText(prize)
+                    )}
+                  </span>
+
+                  ${
+                    prize.item_description
+                      ? `<span>${escapeHtml(prize.item_description)}</span>`
+                      : ""
+                  }
+                </div>
+              `)
+              .join("")}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderCompetitionCard(competition) {
+      const prizes = competition.prizes || [];
+
+      const firstPrize = prizes.length
+        ? getPrizeText(
+            prizes.slice().sort(
+              (a, b) =>
+                Number(a.prize_order || 0) -
+                Number(b.prize_order || 0)
+            )[0]
+          )
+        : "See details";
+
+      const hasEntered = myEntries.some(
+        entry => entry.competition_id === competition.id
+      );
+
+      let actionText = "View & Enter";
+
+      if (hasEntered) {
+        actionText = "View Entry";
+      }
+
+      if (!competitionIsOpen(competition)) {
+        actionText = "View Details";
+      }
+
+      return `
+        <article class="card competition-card">
+
+          <span class="type-badge">
+            ${escapeHtml(formatType(competition.competition_type))}
+          </span>
+
+          <h3>${escapeHtml(competition.title)}</h3>
+
+          <div class="description">
+            ${escapeHtml(
+              competition.description ||
+              "Join this EarnGig competition and follow the instructions to participate."
+            )}
+          </div>
+
+          <div class="meta">
+            <div>
+              <strong>Starts:</strong>
+              ${escapeHtml(formatDate(competition.start_at))}
+            </div>
+
+            <div>
+              <strong>Ends:</strong>
+              ${escapeHtml(formatDate(competition.end_at))}
+            </div>
+
+            ${
+              competition.max_participants
+                ? `
+                  <div>
+                    <strong>Maximum participants:</strong>
+                    ${escapeHtml(competition.max_participants)}
+                  </div>
+                `
+                : ""
+            }
+
+            ${
+              competition.competition_type === "quiz" &&
+              competition.quiz_time_limit_minutes
+                ? `
+                  <div>
+                    <strong>Quiz time:</strong>
+                    ${escapeHtml(competition.quiz_time_limit_minutes)} minutes
+                  </div>
+                `
+                : ""
+            }
+          </div>
+
+          <div class="prize-preview">
+            <div class="prize-preview-title">TOP PRIZE / AWARDS</div>
+            <div class="prize-line">
+              🏆 ${escapeHtml(firstPrize)}
+            </div>
+          </div>
+
+          <div class="actions">
+            <button
+              class="btn btn-primary"
+              onclick="viewCompetition('${competition.id}')"
+            >
+              ${actionText}
+            </button>
+          </div>
+
+        </article>
+      `;
+    }
+
+    async function loadCompetitions() {
+      competitionsLoading.classList.remove("hidden");
+      competitionsGrid.innerHTML = "";
+      competitionsEmpty.classList.add("hidden");
+
+      const { data, error } = await supabaseClient
+        .from("competitions")
+        .select(`
+          id,
+          title,
+          description,
+          competition_type,
+          entry_method,
+          instructions,
+          eligibility,
+          max_participants,
+          start_at,
+          end_at,
+          status,
+          quiz_time_limit_minutes,
+          created_at,
+          competition_prizes (
+            id,
+            prize_name,
+            prize_type,
+            amount,
+            item_description,
+            winner_count,
+            prize_order
+          )
+        `)
+        .in("status", ["published", "closed", "winners_announced", "completed"])
+        .order("start_at", { ascending: true });
+
+      competitionsLoading.classList.add("hidden");
+
+      if (error) {
+        console.error("Competition load error:", error);
+
+        showStatus(
+          "Unable to load competitions. Please refresh the page and try again.",
+          "error"
+        );
+
+        return;
+      }
+
+      competitions = (data || []).map(item => ({
+        ...item,
+        prizes: item.competition_prizes || []
+      }));
+
+      if (!competitions.length) {
+        competitionsEmpty.classList.remove("hidden");
+        return;
+      }
+
+      competitionsGrid.innerHTML = competitions
+        .map(renderCompetitionCard)
+        .join("");
+    }
+
+    async function loadMyEntries() {
+      myLoading.classList.remove("hidden");
+      myEntriesContainer.innerHTML = "";
+      myEmpty.classList.add("hidden");
+
+      const { data, error } = await supabaseClient
+        .from("competition_entries")
+        .select(`
+          id,
+          competition_id,
+          entry_status,
+          score,
+          correct_answers,
+          total_questions,
+          submission_text,
+          submission_url,
+          evidence_url,
+          submitted_at,
+          started_at,
+          expires_at,
+          time_taken_seconds,
+          created_at,
+          competitions (
+            id,
+            title,
+            competition_type,
+            start_at,
+            end_at
+          )
+        `)
+        .eq("user_id", currentUser.id)
+        .order("created_at", { ascending: false });
+
+      myLoading.classList.add("hidden");
+
+      if (error) {
+        console.error("My entries error:", error);
+
+        showStatus(
+          "Unable to load your competition entries.",
+          "error"
+        );
+
+        return;
+      }
+
+      myEntries = data || [];
+
+      await loadMyWinners();
+
+      if (!myEntries.length) {
+        myEmpty.classList.remove("hidden");
+        return;
+      }
+
+      renderMyEntries();
+      renderAvailableCompetitions();
+    }
+
+    async function loadMyWinners() {
+      if (!myEntries.length) {
+        return;
+      }
+
+      const entryIds = myEntries.map(entry => entry.id);
+
+      const { data, error } = await supabaseClient
+        .from("competition_winners")
+        .select(`
+          id,
+          entry_id,
+          competition_id,
+          winner_position,
+          winner_status,
+          prize_id,
+          selected_at,
+          announced_at,
+          fulfilled_at,
+          fulfillment_note,
+          competition_prizes (
+            prize_name,
+            prize_type,
+            amount,
+            item_description
+          )
+        `)
+        .in("entry_id", entryIds);
+
+      if (error) {
+        console.warn("Winner lookup error:", error);
+        return;
+      }
+
+      const winners = data || [];
+
+      myEntries = myEntries.map(entry => ({
+        ...entry,
+        winner: winners.find(
+          winner => winner.entry_id === entry.id
+        ) || null
+      }));
+    }
+
+    function renderMyEntries() {
+      myEntriesContainer.innerHTML = myEntries
+        .map(entry => {
+          const competition = entry.competitions || {};
+          const winner = entry.winner;
+
+          let statusClass = String(
+            entry.entry_status || ""
+          ).replace(/_/g, "-");
+
+          let winnerHtml = "";
+
+          if (winner) {
+            const prize = winner.competition_prizes;
+
+            winnerHtml = `
+              <div class="winner-box">
+                🏆 <strong>Winner - Position ${escapeHtml(winner.winner_position)}</strong>
+                <br>
+                Status: ${escapeHtml(formatWinnerStatus(winner.winner_status))}
+                ${
+                  prize
+                    ? `<br>Prize: ${escapeHtml(
+                        prize.amount !== null && prize.amount !== undefined
+                          ? formatMoney(prize.amount)
+                          : prize.item_description || prize.prize_name || "Prize"
+                      )}`
+                    : ""
+                }
+                ${
+                  winner.fulfillment_note
+                    ? `<br>Note: ${escapeHtml(winner.fulfillment_note)}`
+                    : ""
+                }
+              </div>
+            `;
+          }
+
+          const scoreHtml =
+            competition.competition_type === "quiz" &&
+            entry.submitted_at
+              ? `
+                <div>
+                  <strong>Score:</strong>
+                  ${escapeHtml(entry.score ?? 0)}
+                  |
+                  ${escapeHtml(entry.correct_answers ?? 0)}
+                  / ${escapeHtml(entry.total_questions ?? 0)}
+                  correct
+                </div>
+
+                <div>
+                  <strong>Time:</strong>
+                  ${escapeHtml(
+                    formatDuration(entry.time_taken_seconds)
+                  )}
+                </div>
+              `
+              : "";
+
+          return `
+            <article class="card my-entry">
+
+              <div class="entry-top">
+                <div>
+                  <h3>${escapeHtml(competition.title || "Competition")}</h3>
+
+                  <div class="entry-details">
+                    Type:
+                    ${escapeHtml(
+                      formatType(competition.competition_type)
+                    )}
+                  </div>
+                </div>
+
+                <span class="entry-status ${statusClass}">
+                  ${escapeHtml(
+                    formatEntryStatus(entry.entry_status)
+                  )}
+                </span>
+              </div>
+
+              <div class="entry-details" style="margin-top: 13px;">
+
+                <div>
+                  <strong>Submitted:</strong>
+                  ${escapeHtml(formatDate(entry.submitted_at))}
+                </div>
+
+                ${scoreHtml}
+
+                ${
+                  entry.submission_url
+                    ? `
+                      <div>
+                        <strong>Submission:</strong>
+                        <a
+                          href="${escapeHtml(entry.submission_url)}"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style="color:#a78bfa;"
+                        >
+                          View submission
+                        </a>
+                      </div>
+                    `
+                    : ""
+                }
+
+              </div>
+
+              ${winnerHtml}
+
+            </article>
+          `;
+        })
+        .join("");
+    }
+
+    function renderAvailableCompetitions() {
+      if (!competitions.length) {
+        return;
+      }
+
+      competitionsGrid.innerHTML = competitions
+        .map(renderCompetitionCard)
+        .join("");
+    }
+
+    async function viewCompetition(id) {
+      clearStatus();
+
+      const competition = competitions.find(
+        item => item.id === id
+      );
+
+      if (!competition) {
+        showStatus(
+          "Competition could not be found.",
+          "error"
+        );
+        return;
+      }
+
+      currentCompetition = competition;
+
+      const existingEntry = myEntries.find(
+        entry => entry.competition_id === competition.id
+      );
+
+      modalTitle.textContent = competition.title;
+
+      let entryForm = "";
+
+      if (existingEntry) {
+        entryForm = renderExistingEntryMessage(existingEntry);
+      } else if (competitionIsOpen(competition)) {
+        entryForm = renderEntryForm(competition);
+      } else {
+        entryForm = `
+          <div class="entry-form">
+            <h3>Entry Closed</h3>
+            <div class="form-note">
+              This competition is not currently accepting entries.
+            </div>
+          </div>
+        `;
+      }
+
+      modalContent.innerHTML = `
+        <div class="detail-block">
+          <h4>About this competition</h4>
+          <p>${escapeHtml(
+            competition.description ||
+            "No additional description provided."
+          )}</p>
+        </div>
+
+        ${
+          competition.instructions
+            ? `
+              <div class="detail-block">
+                <h4>📋 Instructions</h4>
+                <p>${escapeHtml(competition.instructions)}</p>
+              </div>
+            `
+            : ""
+        }
+
+        ${
+          competition.eligibility
+            ? `
+              <div class="detail-block">
+                <h4>👤 Eligibility</h4>
+                <p>${escapeHtml(competition.eligibility)}</p>
+              </div>
+            `
+            : ""
+        }
+
+        <div class="detail-block">
+          <h4>📅 Competition Period</h4>
+          <p>
+            Starts: ${escapeHtml(formatDate(competition.start_at))}
+            <br>
+            Ends: ${escapeHtml(formatDate(competition.end_at))}
+          </p>
+        </div>
+
+        ${renderPrizes(competition.prizes)}
+
+        ${entryForm}
+      `;
+
+      openModal();
+    }
+
+    function renderExistingEntryMessage(entry) {
+      const winner = entry.winner;
+
+      return `
+        <div class="entry-form">
+          <h3>✅ You Have Already Entered</h3>
+
+          <div class="form-note">
+            Your entry has already been recorded for this competition.
+          </div>
+
+          <div class="entry-details">
+            Status:
+            <strong>
+              ${escapeHtml(formatEntryStatus(entry.entry_status))}
+            </strong>
+
+            <br>
+
+            Submitted:
+            <strong>
+              ${escapeHtml(formatDate(entry.submitted_at))}
+            </strong>
+
+            ${
+              entry.competitions?.competition_type === "quiz"
+                ? `
+                  <br>
+                  Score:
+                  <strong>
+                    ${escapeHtml(entry.score ?? 0)}
+                  </strong>
+
+                  <br>
+                  Time:
+                  <strong>
+                    ${escapeHtml(
+                      formatDuration(entry.time_taken_seconds)
+                    )}
+                  </strong>
+                `
+                : ""
+            }
+          </div>
+
+          ${
+            winner
+              ? `
+                <div class="winner-box">
+                  🏆 You were selected as a winner!
+                  <br>
+                  Position:
+                  ${escapeHtml(winner.winner_position)}
+                  <br>
+                  Status:
+                  ${escapeHtml(formatWinnerStatus(winner.winner_status))}
+                </div>
+              `
+              : ""
+          }
+        </div>
+      `;
+    }
+
+    function renderEntryForm(competition) {
+      if (competition.competition_type === "quiz" ||
+          competition.entry_method === "quiz") {
+        return `
+          <div class="entry-form">
+            <h3>🎯 Timed Quiz</h3>
+
+            <div class="form-note">
+              Once you click <strong>Start Quiz</strong>, your official
+              server-side timer begins immediately.
+              The quiz will automatically submit when the timer reaches zero.
+            </div>
+
+            ${
+              competition.quiz_time_limit_minutes
+                ? `
+                  <div class="form-note">
+                    Time limit:
+                    <strong>
+                      ${escapeHtml(
+                        competition.quiz_time_limit_minutes
+                      )} minutes
+                    </strong>
+                  </div>
+                `
+                : ""
+            }
+
+            <button
+              class="btn btn-primary"
+              onclick="startQuiz('${competition.id}')"
+            >
+              ▶ Start Quiz
+            </button>
+          </div>
+        `;
+      }
+
+      if (
+        competition.competition_type === "video" ||
+        competition.entry_method === "url"
+      ) {
+        return `
+          <div class="entry-form">
+
+            <h3>🎥 Submit Your Video</h3>
+
+            <div class="form-note">
+              Paste the TikTok or required video URL below.
+            </div>
+
+            <div class="field">
+              <label for="submissionUrl">Video URL</label>
+              <input
+                id="submissionUrl"
+                type="url"
+                placeholder="https://www.tiktok.com/..."
+              />
+            </div>
+
+            <div class="field">
+              <label for="submissionText">
+                Additional Information
+              </label>
+
+              <textarea
+                id="submissionText"
+                placeholder="Add anything the judges should know..."
+              ></textarea>
+            </div>
+
+            <button
+              class="btn btn-primary"
+              onclick="submitStandardEntry('${competition.id}', 'url')"
+            >
+              Submit Entry
+            </button>
+
+          </div>
+        `;
+      }
+
+      if (
+        competition.competition_type === "giveaway" ||
+        competition.entry_method === "simple"
+      ) {
+        return `
+          <div class="entry-form">
+
+            <h3>🎁 Enter Giveaway</h3>
+
+            <div class="form-note">
+              Click the button below to submit your giveaway entry.
+            </div>
+
+            <div class="field">
+              <label for="giveawayMessage">
+                Optional Message
+              </label>
+
+              <textarea
+                id="giveawayMessage"
+                placeholder="Tell us anything required by the giveaway..."
+              ></textarea>
+            </div>
+
+            <button
+              class="btn btn-primary"
+              onclick="submitStandardEntry('${competition.id}', 'simple')"
+            >
+              Enter Giveaway
+            </button>
+
+          </div>
+        `;
+      }
+
+      if (
+        competition.competition_type === "challenge" ||
+        competition.entry_method === "evidence"
+      ) {
+        return `
+          <div class="entry-form">
+
+            <h3>🔥 Submit Challenge Evidence</h3>
+
+            <div class="form-note">
+              Submit the evidence requested by the competition.
+            </div>
+
+            <div class="field">
+              <label for="evidenceUrl">
+                Evidence URL
+              </label>
+
+              <input
+                id="evidenceUrl"
+                type="url"
+                placeholder="https://..."
+              />
+            </div>
+
+            <div class="field">
+              <label for="challengeText">
+                Explanation
+              </label>
+
+              <textarea
+                id="challengeText"
+                placeholder="Explain your submission..."
+              ></textarea>
+            </div>
+
+            <button
+              class="btn btn-primary"
+              onclick="submitStandardEntry('${competition.id}', 'evidence')"
+            >
+              Submit Evidence
+            </button>
+
+          </div>
+        `;
+      }
+
+      return `
+        <div class="entry-form">
+
+          <h3>🎓 Application</h3>
+
+          <div class="form-note">
+            Complete the application information below.
+          </div>
+
+          <div class="field">
+            <label for="applicationName">
+              Full Name
+            </label>
+
+            <input
+              id="applicationName"
+              type="text"
+              placeholder="Your full name"
+            />
+          </div>
+
+          <div class="field">
+            <label for="applicationPhone">
+              Phone Number
+            </label>
+
+            <input
+              id="applicationPhone"
+              type="tel"
+              placeholder="Your phone number"
+            />
+          </div>
+
+          <div class="field">
+            <label for="applicationMessage">
+              Application / Reason
+            </label>
+
+            <textarea
+              id="applicationMessage"
+              placeholder="Tell us why you should be selected..."
+            ></textarea>
+          </div>
+
+          <button
+            class="btn btn-primary"
+            onclick="submitApplication('${competition.id}')"
+          >
+            Submit Application
+          </button>
+
+        </div>
+      `;
+    }
+
+    async function submitStandardEntry(
+      competitionId,
+      method
+    ) {
+      const competition = competitions.find(
+        item => item.id === competitionId
+      );
+
+      if (!competition) {
+        showStatus("Competition not found.", "error");
+        return;
+      }
+
+      const existing = myEntries.find(
+        entry => entry.competition_id === competitionId
+      );
+
+      if (existing) {
+        showStatus(
+          "You have already entered this competition.",
+          "error"
+        );
+        return;
+      }
+
+      let submissionText = null;
+      let submissionUrl = null;
+      let evidenceUrl = null;
+
+      if (method === "url") {
+        submissionUrl =
+          document.getElementById("submissionUrl")?.value.trim() || null;
+
+        submissionText =
+          document.getElementById("submissionText")?.value.trim() || null;
+
+        if (!submissionUrl) {
+          showStatus(
+            "Please provide your video URL.",
+            "error"
+          );
+          return;
+        }
+      }
+
+      if (method === "simple") {
+        submissionText =
+          document.getElementById("giveawayMessage")?.value.trim() || null;
+      }
+
+      if (method === "evidence") {
+        evidenceUrl =
+          document.getElementById("evidenceUrl")?.value.trim() || null;
+
+        submissionText =
+          document.getElementById("challengeText")?.value.trim() || null;
+
+        if (!evidenceUrl && !submissionText) {
+          showStatus(
+            "Please provide your evidence.",
+            "error"
+          );
+          return;
+        }
+      }
+
+      const { data, error } = await supabaseClient
+        .from("competition_entries")
+        .insert({
+          competition_id: competitionId,
+          user_id: currentUser.id,
+          entry_status: "submitted",
+          submission_text: submissionText,
+          submission_url: submissionUrl,
+          evidence_url: evidenceUrl,
+          submitted_at: new Date().toISOString()
+        })
+        .select()
+        .single();
+
+      if (error) {
+        console.error("Entry submission error:", error);
+
+        if (
+          String(error.message || "")
+            .toLowerCase()
+            .includes("duplicate")
+        ) {
+          showStatus(
+            "You have already entered this competition.",
+            "error"
+          );
+        } else {
+          showStatus(
+            error.message || "Unable to submit your entry.",
+            "error"
+          );
+        }
+
+        return;
+      }
+
+      myEntries.unshift({
+        ...data,
+        competitions: competition
+      });
+
+      closeModal();
+
+      showStatus(
+        "Your competition entry has been submitted successfully.",
+        "success"
+      );
+
+      renderMyEntries();
+      renderAvailableCompetitions();
+    }
+
+    async function submitApplication(competitionId) {
+      const fullName =
+        document.getElementById("applicationName")?.value.trim() || "";
+
+      const phone =
+        document.getElementById("applicationPhone")?.value.trim() || "";
+
+      const message =
+        document.getElementById("applicationMessage")?.value.trim() || "";
+
+      if (!fullName || !phone || !message) {
+        showStatus(
+          "Please complete all application fields.",
+          "error"
+        );
+        return;
+      }
+
+      const existing = myEntries.find(
+        entry => entry.competition_id === competitionId
+      );
+
+      if (existing) {
+        showStatus(
+          "You have already applied for this competition.",
+          "error"
+        );
+        return;
+      }
+
+      const applicationData = {
+        full_name: fullName,
+        phone: phone,
+        message: message
+      };
+
+      const { data, error } = await supabaseClient
+        .from("competition_entries")
+        .insert({
+          competition_id: competitionId,
+          user_id: currentUser.id,
+          entry_status: "submitted",
+          application_data: applicationData,
+          submission_text: message,
+          submitted_at: new Date().toISOString()
+        })
+        .select()
+        .single();
+
+      if (error) {
+        console.error("Application error:", error);
+
+        showStatus(
+          error.message || "Unable to submit your application.",
+          "error"
+        );
+
+        return;
+      }
+
+      const competition = competitions.find(
+        item => item.id === competitionId
+      );
+
+      myEntries.unshift({
+        ...data,
+        competitions: competition
+      });
+
+      closeModal();
+
+      showStatus(
+        "Your application has been submitted successfully.",
+        "success"
+      );
+
+      renderMyEntries();
+      renderAvailableCompetitions();
+    }
+
+    async function startQuiz(competitionId) {
+      if (quizSubmitting) {
+        return;
+      }
+
+      const competition = competitions.find(
+        item => item.id === competitionId
+      );
+
+      if (!competition) {
+        showStatus("Competition not found.", "error");
+        return;
+      }
+
+      const existing = myEntries.find(
+        entry => entry.competition_id === competitionId
+      );
+
+      if (existing) {
+        showStatus(
+          "You have already entered this quiz.",
+          "error"
+        );
+        return;
+      }
+
+      quizSubmitting = true;
+
+      const { data, error } = await supabaseClient.rpc(
+        "start_competition_quiz",
+        {
+          p_competition_id: competitionId
+        }
+      );
+
+      quizSubmitting = false;
+
+      if (error) {
+        console.error("Start quiz error:", error);
+
+        showStatus(
+          error.message || "Unable to start this quiz.",
+          "error"
+        );
+
+        return;
+      }
+
+      if (!data || !data.success) {
+        showStatus(
+          "Unable to start the quiz.",
+          "error"
+        );
+        return;
+      }
+
+      currentCompetition = competition;
+      quizEntryId = data.entry_id;
+      quizExpiresAt = new Date(data.expires_at).getTime();
+
+      renderQuiz(data);
+    }
+
+    function renderQuiz(data) {
+      const questions = Array.isArray(data.questions)
+        ? data.questions
+        : [];
+
+      modalTitle.textContent =
+        currentCompetition?.title || "Quiz";
+
+      modalContent.innerHTML = `
+        <div class="quiz-shell">
+
+          <div class="quiz-header">
+
+            <div>
+              <strong>⏱️ Time Remaining</strong>
+              <div style="font-size:12px;color:#94a3b8;margin-top:3px;">
+                ${escapeHtml(data.total_questions)} questions
+              </div>
+            </div>
+
+            <div id="quizTimer" class="timer">
+              --:--
+            </div>
+
+          </div>
+
+          <div id="quizQuestions">
+
+            ${
+              questions.length
+                ? questions
+                    .map((question, index) => `
+                      <div class="quiz-question">
+
+                        <div class="question-number">
+                          QUESTION ${index + 1}
+                        </div>
+
+                        <div class="question-text">
+                          ${escapeHtml(question.question_text)}
+                        </div>
+
+                        ${renderQuizOption(
+                          question,
+                          "A",
+                          question.option_a
+                        )}
+
+                        ${renderQuizOption(
+                          question,
+                          "B",
+                          question.option_b
+                        )}
+
+                        ${renderQuizOption(
+                          question,
+                          "C",
+                          question.option_c
+                        )}
+
+                        ${renderQuizOption(
+                          question,
+                          "D",
+                          question.option_d
+                        )}
+
+                      </div>
+                    `)
+                    .join("")
+                : `
+                  <div class="empty">
+                    No questions were returned.
+                  </div>
+                `
+            }
+
+          </div>
+
+          <button
+            id="submitQuizBtn"
+            class="btn btn-success quiz-submit"
+            onclick="submitQuiz(false)"
+          >
+            Submit Quiz
+          </button>
+
+          <div
+            id="quizResult"
+            class="result-box hidden"
+          ></div>
+
+        </div>
+      `;
+
+      startQuizTimer();
+    }
+
+    function renderQuizOption(question, letter, text) {
+      if (!text) {
+        return "";
+      }
+
+      return `
+        <label class="option">
+          <input
+            type="radio"
+            name="question_${escapeHtml(question.id)}"
+            value="${letter}"
+          />
+
+          <span>
+            <strong>${letter}.</strong>
+            ${escapeHtml(text)}
+          </span>
+        </label>
+      `;
+    }
+
+    function startQuizTimer() {
+      stopQuizTimer();
+
+      updateQuizTimer();
+
+      quizTimerInterval = setInterval(
+        updateQuizTimer,
+        250
+      );
+    }
+
+    function stopQuizTimer() {
+      if (quizTimerInterval) {
+        clearInterval(quizTimerInterval);
+        quizTimerInterval = null;
+      }
+    }
+
+    function updateQuizTimer() {
+      if (!quizExpiresAt) {
+        return;
+      }
+
+      const remainingMs =
+        quizExpiresAt - Date.now();
+
+      const timer = document.getElementById("quizTimer");
+
+      if (!timer) {
+        stopQuizTimer();
+        return;
+      }
+
+      if (remainingMs <= 0) {
+        timer.textContent = "00:00";
+        timer.classList.remove("warning");
+        timer.classList.add("danger");
+
+        stopQuizTimer();
+
+        submitQuiz(true);
+        return;
+      }
+
+      const totalSeconds =
+        Math.ceil(remainingMs / 1000);
+
+      const minutes =
+        Math.floor(totalSeconds / 60);
+
+      const seconds =
+        totalSeconds % 60;
+
+      timer.textContent =
+        `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+
+      timer.classList.remove("warning", "danger");
+
+      if (totalSeconds <= 60) {
+        timer.classList.add("danger");
+      } else if (totalSeconds <= 180) {
+        timer.classList.add("warning");
+      }
+    }
+
+    async function submitQuiz(autoSubmit) {
+      if (quizSubmitting || !quizEntryId) {
+        return;
+      }
+
+      quizSubmitting = true;
+      stopQuizTimer();
+
+      const button =
+        document.getElementById("submitQuizBtn");
+
+      if (button) {
+        button.disabled = true;
+        button.textContent = autoSubmit
+          ? "Time expired — submitting..."
+          : "Submitting...";
+      }
+
+      const answers = [];
+
+      document
+        .querySelectorAll(".quiz-question")
+        .forEach(questionElement => {
+          const radio =
+            questionElement.querySelector(
+              'input[type="radio"]:checked'
+            );
+
+          if (!radio) {
+            return;
+          }
+
+          const name = radio.name || "";
+
+          const questionId =
+            name.replace("question_", "");
+
+          answers.push({
+            question_id: questionId,
+            selected_option: radio.value
+          });
+        });
+
+      const { data, error } =
+        await supabaseClient.rpc(
+          "submit_competition_quiz",
+          {
+            p_entry_id: quizEntryId,
+            p_answers: answers
+          }
+        );
+
+      quizSubmitting = false;
+
+      if (error) {
+        console.error("Submit quiz error:", error);
+
+        if (button) {
+          button.disabled = false;
+          button.textContent = "Submit Quiz";
+        }
+
+        showStatus(
+          error.message || "Unable to submit the quiz.",
+          "error"
+        );
+
+        return;
+      }
+
+      if (!data || !data.success) {
+        showStatus(
+          "The quiz could not be submitted.",
+          "error"
+        );
+        return;
+      }
+
+      const competition = currentCompetition;
+
+      const newEntry = {
+        id: quizEntryId,
+        competition_id: competition.id,
+        user_id: currentUser.id,
+        entry_status: "submitted",
+        score: data.score,
+        correct_answers: data.correct_answers,
+        total_questions: data.total_questions,
+        submitted_at: data.submitted_at || new Date().toISOString(),
+        started_at: null,
+        expires_at: null,
+        time_taken_seconds: data.time_taken_seconds,
+        competitions: competition
+      };
+
+      myEntries.unshift(newEntry);
+
+      const resultBox =
+        document.getElementById("quizResult");
+
+      if (resultBox) {
+        resultBox.classList.remove("hidden");
+
+        resultBox.innerHTML = `
+          <h3>
+            ${data.expired ? "⏰ Time Expired" : "🎉 Quiz Submitted"}
+          </h3>
+
+          <p>
+            <strong>Score:</strong>
+            ${escapeHtml(data.score ?? 0)}
+          </p>
+
+          <p>
+            <strong>Correct:</strong>
+            ${escapeHtml(data.correct_answers ?? 0)}
+            /
+            ${escapeHtml(data.total_questions ?? 0)}
+          </p>
+
+          <p>
+            <strong>Time Taken:</strong>
+            ${escapeHtml(
+              formatDuration(data.time_taken_seconds)
+            )}
+          </p>
+
+          <p style="margin-top:10px;color:#94a3b8;">
+            Your result has been recorded. Final winner selection,
+            where applicable, is controlled by EarnGig administrators.
+          </p>
+        `;
+      }
+
+      if (button) {
+        button.remove();
+      }
+
+      quizEntryId = null;
+      quizExpiresAt = null;
+
+      renderMyEntries();
+      renderAvailableCompetitions();
+
+      showStatus(
+        data.expired
+          ? "Your quiz time expired and the result was submitted."
+          : "Your quiz has been submitted successfully.",
+        data.expired ? "info" : "success"
+      );
+    }
+
+    function switchTab(tab) {
+      clearStatus();
+
+      if (tab === "available") {
+        availableTab.classList.add("active");
+        myTab.classList.remove("active");
+
+        availableSection.classList.remove("hidden");
+        mySection.classList.add("hidden");
+      } else {
+        availableTab.classList.remove("active");
+        myTab.classList.add("active");
+
+        availableSection.classList.add("hidden");
+        mySection.classList.remove("hidden");
+      }
+    }
+
+    availableTab.addEventListener(
+      "click",
+      () => switchTab("available")
+    );
+
+    myTab.addEventListener(
+      "click",
+      async () => {
+        switchTab("my");
+
+        await loadMyEntries();
+      }
+    );
+
+    document
+      .getElementById("closeModal")
+      .addEventListener("click", closeModal);
+
+    competitionModal.addEventListener(
+      "click",
+      event => {
+        if (event.target === competitionModal) {
+          closeModal();
+        }
+      }
+    );
+
+    document
+      .getElementById("logoutBtn")
+      .addEventListener("click", async () => {
+        await supabaseClient.auth.signOut();
+        window.location.href = "index.html";
+      });
+
+    async function initializePage() {
+      const {
+        data: { user },
+        error
+      } = await supabaseClient.auth.getUser();
+
+      if (error || !user) {
+        window.location.href = "index.html";
+        return;
+      }
+
+      currentUser = user;
+
+      await loadMyEntries();
+      await loadCompetitions();
+
+      renderAvailableCompetitions();
+    }
+
+    initializePage();
+  </script>
+
+</body>
+</html>
