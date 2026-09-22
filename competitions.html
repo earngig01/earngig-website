@@ -368,8 +368,6 @@
       line-height: 1.7;
     }
 
-    /* Modal */
-
     .modal {
       position: fixed;
       inset: 0;
@@ -722,15 +720,17 @@
       <h1>🏆 Competitions & Awards</h1>
 
       <p>
-        Enter official EarnGig competitions, quizzes, giveaways,
-        challenges and special awards. Check the requirements,
-        submit your entry and track your result from one place.
+        Enter official EarnGig competitions, quizzes,
+        giveaways, challenges and special awards.
+        Check the requirements, submit your entry
+        and track your result from one place.
       </p>
     </section>
 
     <div id="statusBox" class="status-box"></div>
 
     <div class="tabs">
+
       <button
         class="tab active"
         id="availableTab"
@@ -744,6 +744,7 @@
       >
         My Competitions
       </button>
+
     </div>
 
     <section id="availableSection">
@@ -768,8 +769,8 @@
         id="competitionsEmpty"
         class="empty hidden"
       >
-        There are no published competitions available right now.
-        Check back later for new opportunities.
+        There are no published competitions available
+        right now. Check back later for new opportunities.
       </div>
 
     </section>
@@ -803,7 +804,6 @@
 
   </main>
 
-  <!-- Competition Details Modal -->
 
   <div
     id="competitionModal"
@@ -836,6 +836,7 @@
 
   </div>
 
+
   <script>
     let currentUser = null;
     let competitions = [];
@@ -846,6 +847,7 @@
     let quizExpiresAt = null;
     let quizTimerInterval = null;
     let quizSubmitting = false;
+
 
     const statusBox =
       document.getElementById("statusBox");
@@ -900,10 +902,7 @@
     }
 
 
-    function showStatus(
-      message,
-      type = "info"
-    ) {
+    function showStatus(message, type = "info") {
       statusBox.textContent = message;
 
       statusBox.className =
@@ -917,9 +916,7 @@
 
 
     function clearStatus() {
-      statusBox.className =
-        "status-box";
-
+      statusBox.className = "status-box";
       statusBox.textContent = "";
     }
 
@@ -974,9 +971,7 @@
         application: "Application"
       };
 
-      return names[type] ||
-        type ||
-        "Competition";
+      return names[type] || type || "Competition";
     }
 
 
@@ -989,9 +984,7 @@
         withdrawn: "Withdrawn"
       };
 
-      return names[status] ||
-        status ||
-        "Submitted";
+      return names[status] || status || "Submitted";
     }
 
 
@@ -1003,17 +996,13 @@
         cancelled: "Winner Cancelled"
       };
 
-      return names[status] ||
-        status;
+      return names[status] || status;
     }
 
 
     function formatDuration(seconds) {
       const total =
-        Math.max(
-          0,
-          Number(seconds) || 0
-        );
+        Math.max(0, Number(seconds) || 0);
 
       const minutes =
         Math.floor(total / 60);
@@ -1030,36 +1019,23 @@
 
       const start =
         competition.start_at
-          ? new Date(
-              competition.start_at
-            ).getTime()
+          ? new Date(competition.start_at).getTime()
           : null;
 
       const end =
         competition.end_at
-          ? new Date(
-              competition.end_at
-            ).getTime()
+          ? new Date(competition.end_at).getTime()
           : null;
 
-      if (
-        competition.status !==
-        "published"
-      ) {
+      if (competition.status !== "published") {
         return false;
       }
 
-      if (
-        start &&
-        now < start
-      ) {
+      if (start && now < start) {
         return false;
       }
 
-      if (
-        end &&
-        now > end
-      ) {
+      if (end && now > end) {
         return false;
       }
 
@@ -1072,9 +1048,7 @@
         prize.amount !== null &&
         prize.amount !== undefined
       ) {
-        return formatMoney(
-          prize.amount
-        );
+        return formatMoney(prize.amount);
       }
 
       return (
@@ -1086,24 +1060,17 @@
 
 
     function openModal() {
-      competitionModal.classList.add(
-        "show"
-      );
-
-      document.body.style.overflow =
-        "hidden";
+      competitionModal.classList.add("show");
+      document.body.style.overflow = "hidden";
     }
 
 
     function closeModal() {
       stopQuizTimer();
 
-      competitionModal.classList.remove(
-        "show"
-      );
+      competitionModal.classList.remove("show");
 
-      document.body.style.overflow =
-        "";
+      document.body.style.overflow = "";
 
       currentCompetition = null;
       quizEntryId = null;
@@ -1113,10 +1080,7 @@
 
 
     function renderPrizes(prizes) {
-      if (
-        !prizes ||
-        !prizes.length
-      ) {
+      if (!prizes || !prizes.length) {
         return `
           <div class="detail-block">
             <h4>🏆 Prizes</h4>
@@ -1142,52 +1106,44 @@
 
           <div class="prizes">
 
-            ${sortedPrizes
-              .map((prize, index) => `
-                <div class="prize-card">
+            ${sortedPrizes.map((prize, index) => `
+              <div class="prize-card">
 
-                  <strong>
-                    ${escapeHtml(
-                      prize.prize_name ||
-                      `${index + 1} Place`
-                    )}
-
-                    ${
-                      Number(
-                        prize.winner_count || 1
-                      ) > 1
-                        ? `
-                          ×
-                          ${escapeHtml(
-                            prize.winner_count
-                          )}
-                          winners
-                        `
-                        : ""
-                    }
-                  </strong>
-
-                  <span>
-                    ${escapeHtml(
-                      getPrizeText(prize)
-                    )}
-                  </span>
+                <strong>
+                  ${escapeHtml(
+                    prize.prize_name ||
+                    `${index + 1} Place`
+                  )}
 
                   ${
-                    prize.item_description
+                    Number(prize.winner_count || 1) > 1
                       ? `
-                        <span>
-                          ${escapeHtml(
-                            prize.item_description
-                          )}
-                        </span>
+                        ×
+                        ${escapeHtml(prize.winner_count)}
+                        winners
                       `
                       : ""
                   }
+                </strong>
 
-                </div>
-              `)
-              .join("")}
+                <span>
+                  ${escapeHtml(getPrizeText(prize))}
+                </span>
+
+                ${
+                  prize.item_description
+                    ? `
+                      <span>
+                        ${escapeHtml(
+                          prize.item_description
+                        )}
+                      </span>
+                    `
+                    : ""
+                }
+
+              </div>
+            `).join("")}
 
           </div>
 
@@ -1196,15 +1152,7 @@
     }
 
 
-    /*
-      IMPORTANT:
-      This version displays EVERY prize tier
-      on the competition card.
-    */
-
-    function renderCompetitionCard(
-      competition
-    ) {
+    function renderCompetitionCard(competition) {
       const prizes =
         (competition.prizes || [])
           .slice()
@@ -1217,89 +1165,66 @@
       const hasEntered =
         myEntries.some(
           entry =>
-            entry.competition_id ===
-            competition.id
+            entry.competition_id === competition.id
         );
 
-      let actionText =
-        "View & Enter";
+      let actionText = "View & Enter";
 
       if (hasEntered) {
-        actionText =
-          "View Entry";
+        actionText = "View Entry";
       }
 
-      if (
-        !competitionIsOpen(
-          competition
-        )
-      ) {
-        actionText =
-          "View Details";
+      if (!competitionIsOpen(competition)) {
+        actionText = "View Details";
       }
 
 
       const prizeHtml =
         prizes.length
-          ? prizes
-              .map((prize, index) => {
+          ? prizes.map((prize, index) => {
 
-                const defaultPosition =
-                  index === 0
-                    ? "1st Place"
-                    : index === 1
-                    ? "2nd Place"
-                    : index === 2
-                    ? "3rd Place"
-                    : `${index + 1}th Place`;
+              const defaultPosition =
+                index === 0
+                  ? "1st Place"
+                  : index === 1
+                  ? "2nd Place"
+                  : index === 2
+                  ? "3rd Place"
+                  : `${index + 1}th Place`;
 
-                const position =
-                  prize.prize_name ||
-                  defaultPosition;
+              const position =
+                prize.prize_name ||
+                defaultPosition;
 
-                return `
-                  <div class="prize-line">
+              return `
+                <div class="prize-line">
 
-                    🏆
+                  🏆
 
-                    <strong>
-                      ${escapeHtml(
-                        position
-                      )}
-                    </strong>
+                  <strong>
+                    ${escapeHtml(position)}
+                  </strong>
 
-                    —
-                    ${escapeHtml(
-                      getPrizeText(
-                        prize
-                      )
-                    )}
+                  —
+                  ${escapeHtml(
+                    getPrizeText(prize)
+                  )}
 
-                    ${
-                      Number(
-                        prize.winner_count ||
-                        1
-                      ) > 1
-                        ? `
-                          <span
-                            style="
-                              color:#94a3b8;
-                            "
-                          >
-                            (
-                            ${escapeHtml(
-                              prize.winner_count
-                            )}
-                            winners)
-                          </span>
-                        `
-                        : ""
-                    }
+                  ${
+                    Number(prize.winner_count || 1) > 1
+                      ? `
+                        <span style="color:#94a3b8;">
+                          (${escapeHtml(
+                            prize.winner_count
+                          )} winners)
+                        </span>
+                      `
+                      : ""
+                  }
 
-                  </div>
-                `;
-              })
-              .join("")
+                </div>
+              `;
+            }).join("")
           : `
               <div class="prize-line">
                 Prize details will be announced.
@@ -1308,9 +1233,7 @@
 
 
       return `
-        <article
-          class="card competition-card"
-        >
+        <article class="card competition-card">
 
           <span class="type-badge">
             ${escapeHtml(
@@ -1320,51 +1243,32 @@
             )}
           </span>
 
-
           <h3>
-            ${escapeHtml(
-              competition.title
-            )}
+            ${escapeHtml(competition.title)}
           </h3>
 
-
           <div class="description">
-
             ${escapeHtml(
               competition.description ||
               "Join this EarnGig competition and follow the instructions to participate."
             )}
-
           </div>
-
 
           <div class="meta">
 
             <div>
-              <strong>
-                Starts:
-              </strong>
-
+              <strong>Starts:</strong>
               ${escapeHtml(
-                formatDate(
-                  competition.start_at
-                )
+                formatDate(competition.start_at)
               )}
             </div>
-
 
             <div>
-              <strong>
-                Ends:
-              </strong>
-
+              <strong>Ends:</strong>
               ${escapeHtml(
-                formatDate(
-                  competition.end_at
-                )
+                formatDate(competition.end_at)
               )}
             </div>
-
 
             ${
               competition.max_participants
@@ -1382,10 +1286,8 @@
                 : ""
             }
 
-
             ${
-              competition.competition_type ===
-                "quiz" &&
+              competition.competition_type === "quiz" &&
               competition.quiz_time_limit_minutes
                 ? `
                   <div>
@@ -1404,7 +1306,6 @@
 
           </div>
 
-
           <div class="prize-preview">
 
             <div class="prize-preview-title">
@@ -1415,15 +1316,12 @@
 
           </div>
 
-
           <div class="actions">
 
             <button
               class="btn btn-primary"
               onclick="
-                viewCompetition(
-                  '${competition.id}'
-                )
+                viewCompetition('${competition.id}')
               "
             >
               ${actionText}
@@ -1437,16 +1335,11 @@
 
 
     async function loadCompetitions() {
-      competitionsLoading.classList.remove(
-        "hidden"
-      );
+      competitionsLoading.classList.remove("hidden");
 
-      competitionsGrid.innerHTML =
-        "";
+      competitionsGrid.innerHTML = "";
 
-      competitionsEmpty.classList.add(
-        "hidden"
-      );
+      competitionsEmpty.classList.add("hidden");
 
 
       const {
@@ -1496,9 +1389,7 @@
           );
 
 
-      competitionsLoading.classList.add(
-        "hidden"
-      );
+      competitionsLoading.classList.add("hidden");
 
 
       if (error) {
@@ -1517,47 +1408,32 @@
 
 
       competitions =
-        (data || []).map(
-          item => ({
-            ...item,
-            prizes:
-              item.competition_prizes ||
-              []
-          })
-        );
+        (data || []).map(item => ({
+          ...item,
+          prizes:
+            item.competition_prizes || []
+        }));
 
 
-      if (
-        !competitions.length
-      ) {
-        competitionsEmpty.classList.remove(
-          "hidden"
-        );
-
+      if (!competitions.length) {
+        competitionsEmpty.classList.remove("hidden");
         return;
       }
 
 
       competitionsGrid.innerHTML =
         competitions
-          .map(
-            renderCompetitionCard
-          )
+          .map(renderCompetitionCard)
           .join("");
     }
 
 
     async function loadMyEntries() {
-      myLoading.classList.remove(
-        "hidden"
-      );
+      myLoading.classList.remove("hidden");
 
-      myEntriesContainer.innerHTML =
-        "";
+      myEntriesContainer.innerHTML = "";
 
-      myEmpty.classList.add(
-        "hidden"
-      );
+      myEmpty.classList.add("hidden");
 
 
       const {
@@ -1565,9 +1441,7 @@
         error
       } =
         await supabaseClient
-          .from(
-            "competition_entries"
-          )
+          .from("competition_entries")
           .select(`
             id,
             competition_id,
@@ -1591,10 +1465,7 @@
               end_at
             )
           `)
-          .eq(
-            "user_id",
-            currentUser.id
-          )
+          .eq("user_id", currentUser.id)
           .order(
             "created_at",
             {
@@ -1603,9 +1474,7 @@
           );
 
 
-      myLoading.classList.add(
-        "hidden"
-      );
+      myLoading.classList.add("hidden");
 
 
       if (error) {
@@ -1623,19 +1492,13 @@
       }
 
 
-      myEntries =
-        data || [];
-
+      myEntries = data || [];
 
       await loadMyWinners();
 
 
-      if (
-        !myEntries.length
-      ) {
-        myEmpty.classList.remove(
-          "hidden"
-        );
+      if (!myEntries.length) {
+        myEmpty.classList.remove("hidden");
 
         renderAvailableCompetitions();
 
@@ -1649,9 +1512,7 @@
 
 
     async function loadMyWinners() {
-      if (
-        !myEntries.length
-      ) {
+      if (!myEntries.length) {
         return;
       }
 
@@ -1667,9 +1528,7 @@
         error
       } =
         await supabaseClient
-          .from(
-            "competition_winners"
-          )
+          .from("competition_winners")
           .select(`
             id,
             entry_id,
@@ -1688,10 +1547,7 @@
               item_description
             )
           `)
-          .in(
-            "entry_id",
-            entryIds
-          );
+          .in("entry_id", entryIds);
 
 
       if (error) {
@@ -1704,23 +1560,19 @@
       }
 
 
-      const winners =
-        data || [];
+      const winners = data || [];
 
 
       myEntries =
-        myEntries.map(
-          entry => ({
-            ...entry,
+        myEntries.map(entry => ({
+          ...entry,
 
-            winner:
-              winners.find(
-                winner =>
-                  winner.entry_id ===
-                  entry.id
-              ) || null
-          })
-        );
+          winner:
+            winners.find(
+              winner =>
+                winner.entry_id === entry.id
+            ) || null
+        }));
     }
 
 
@@ -1730,25 +1582,22 @@
           .map(entry => {
 
             const competition =
-              entry.competitions ||
-              {};
+              entry.competitions || {};
 
             const winner =
               entry.winner;
 
 
-            let statusClass =
+            const statusClass =
               String(
-                entry.entry_status ||
-                ""
+                entry.entry_status || ""
               ).replace(
                 /_/g,
                 "-"
               );
 
 
-            let winnerHtml =
-              "";
+            let winnerHtml = "";
 
 
             if (winner) {
@@ -1784,10 +1633,8 @@
                         <br>
                         Prize:
                         ${escapeHtml(
-                          prize.amount !==
-                            null &&
-                          prize.amount !==
-                            undefined
+                          prize.amount !== null &&
+                          prize.amount !== undefined
                             ? formatMoney(
                                 prize.amount
                               )
@@ -1817,39 +1664,28 @@
 
 
             const scoreHtml =
-              competition.competition_type ===
-                "quiz" &&
+              competition.competition_type === "quiz" &&
               entry.submitted_at
                 ? `
                   <div>
-                    <strong>
-                      Score:
-                    </strong>
-
-                    ${escapeHtml(
-                      entry.score ?? 0
-                    )}
+                    <strong>Score:</strong>
+                    ${escapeHtml(entry.score ?? 0)}
 
                     |
 
                     ${escapeHtml(
-                      entry.correct_answers ??
-                      0
+                      entry.correct_answers ?? 0
                     )}
 
                     /
                     ${escapeHtml(
-                      entry.total_questions ??
-                      0
+                      entry.total_questions ?? 0
                     )}
                     correct
                   </div>
 
                   <div>
-                    <strong>
-                      Time:
-                    </strong>
-
+                    <strong>Time:</strong>
                     ${escapeHtml(
                       formatDuration(
                         entry.time_taken_seconds
@@ -1861,13 +1697,9 @@
 
 
             return `
-              <article
-                class="card my-entry"
-              >
+              <article class="card my-entry">
 
-                <div
-                  class="entry-top"
-                >
+                <div class="entry-top">
 
                   <div>
 
@@ -1878,9 +1710,7 @@
                       )}
                     </h3>
 
-                    <div
-                      class="entry-details"
-                    >
+                    <div class="entry-details">
                       Type:
                       ${escapeHtml(
                         formatType(
@@ -1890,7 +1720,6 @@
                     </div>
 
                   </div>
-
 
                   <span
                     class="
@@ -1907,12 +1736,9 @@
 
                 </div>
 
-
                 <div
                   class="entry-details"
-                  style="
-                    margin-top:13px;
-                  "
+                  style="margin-top:13px;"
                 >
 
                   <div>
@@ -1927,9 +1753,7 @@
                     )}
                   </div>
 
-
                   ${scoreHtml}
-
 
                   ${
                     entry.submission_url
@@ -1946,9 +1770,7 @@
                             )}"
                             target="_blank"
                             rel="noopener noreferrer"
-                            style="
-                              color:#a78bfa;
-                            "
+                            style="color:#a78bfa;"
                           >
                             View submission
                           </a>
@@ -1960,7 +1782,6 @@
 
                 </div>
 
-
                 ${winnerHtml}
 
               </article>
@@ -1971,17 +1792,13 @@
 
 
     function renderAvailableCompetitions() {
-      if (
-        !competitions.length
-      ) {
+      if (!competitions.length) {
         return;
       }
 
       competitionsGrid.innerHTML =
         competitions
-          .map(
-            renderCompetitionCard
-          )
+          .map(renderCompetitionCard)
           .join("");
     }
 
@@ -2014,8 +1831,7 @@
       const existingEntry =
         myEntries.find(
           entry =>
-            entry.competition_id ===
-            competition.id
+            entry.competition_id === competition.id
         );
 
 
@@ -2023,8 +1839,7 @@
         competition.title;
 
 
-      let entryForm =
-        "";
+      let entryForm = "";
 
 
       if (existingEntry) {
@@ -2033,9 +1848,7 @@
             existingEntry
           );
       } else if (
-        competitionIsOpen(
-          competition
-        )
+        competitionIsOpen(competition)
       ) {
         entryForm =
           renderEntryForm(
@@ -2050,7 +1863,8 @@
             </h3>
 
             <div class="form-note">
-              This competition is not currently accepting entries.
+              This competition is not currently
+              accepting entries.
             </div>
 
           </div>
@@ -2075,7 +1889,6 @@
 
         </div>
 
-
         ${
           competition.instructions
             ? `
@@ -2096,7 +1909,6 @@
             : ""
         }
 
-
         ${
           competition.eligibility
             ? `
@@ -2116,7 +1928,6 @@
             `
             : ""
         }
-
 
         <div class="detail-block">
 
@@ -2146,11 +1957,7 @@
 
         </div>
 
-
-        ${renderPrizes(
-          competition.prizes
-        )}
-
+        ${renderPrizes(competition.prizes)}
 
         ${entryForm}
 
@@ -2161,9 +1968,7 @@
     }
 
 
-    function renderExistingEntryMessage(
-      entry
-    ) {
+    function renderExistingEntryMessage(entry) {
       const winner =
         entry.winner;
 
@@ -2175,14 +1980,10 @@
             ✅ You Have Already Entered
           </h3>
 
-
           <div class="form-note">
-
             Your entry has already been recorded
             for this competition.
-
           </div>
-
 
           <div class="entry-details">
 
@@ -2206,10 +2007,8 @@
               )}
             </strong>
 
-
             ${
-              entry.competitions?.competition_type ===
-              "quiz"
+              entry.competitions?.competition_type === "quiz"
                 ? `
                   <br>
 
@@ -2236,13 +2035,13 @@
 
           </div>
 
-
           ${
             winner
               ? `
                 <div class="winner-box">
 
                   🏆
+
                   You were selected
                   as a winner!
 
@@ -2272,15 +2071,11 @@
     }
 
 
-    function renderEntryForm(
-      competition
-    ) {
+    function renderEntryForm(competition) {
 
       if (
-        competition.competition_type ===
-          "quiz" ||
-        competition.entry_method ===
-          "quiz"
+        competition.competition_type === "quiz" ||
+        competition.entry_method === "quiz"
       ) {
         return `
           <div class="entry-form">
@@ -2289,21 +2084,17 @@
               🎯 Timed Quiz
             </h3>
 
-
             <div class="form-note">
 
               Once you click
-              <strong>
-                Start Quiz
-              </strong>,
-              your official server-side
-              timer begins immediately.
+              <strong>Start Quiz</strong>,
+              your official server-side timer
+              begins immediately.
 
               The quiz will automatically
               submit when the timer reaches zero.
 
             </div>
-
 
             ${
               competition.quiz_time_limit_minutes
@@ -2312,12 +2103,10 @@
 
                     Time limit:
                     <strong>
-
                       ${escapeHtml(
                         competition.quiz_time_limit_minutes
                       )}
                       minutes
-
                     </strong>
 
                   </div>
@@ -2325,13 +2114,10 @@
                 : ""
             }
 
-
             <button
               class="btn btn-primary"
               onclick="
-                startQuiz(
-                  '${competition.id}'
-                )
+                startQuiz('${competition.id}')
               "
             >
               ▶ Start Quiz
@@ -2343,10 +2129,8 @@
 
 
       if (
-        competition.competition_type ===
-          "video" ||
-        competition.entry_method ===
-          "url"
+        competition.competition_type === "video" ||
+        competition.entry_method === "url"
       ) {
         return `
           <div class="entry-form">
@@ -2355,51 +2139,37 @@
               🎥 Submit Your Video
             </h3>
 
-
             <div class="form-note">
-
               Paste the TikTok or required
               video URL below.
-
             </div>
-
 
             <div class="field">
 
-              <label
-                for="submissionUrl"
-              >
+              <label for="submissionUrl">
                 Video URL
               </label>
 
               <input
                 id="submissionUrl"
                 type="url"
-                placeholder="
-                  https://www.tiktok.com/...
-                "
+                placeholder="https://www.tiktok.com/..."
               />
 
             </div>
 
-
             <div class="field">
 
-              <label
-                for="submissionText"
-              >
+              <label for="submissionText">
                 Additional Information
               </label>
 
               <textarea
                 id="submissionText"
-                placeholder="
-                  Add anything the judges should know...
-                "
+                placeholder="Add anything the judges should know..."
               ></textarea>
 
             </div>
-
 
             <button
               class="btn btn-primary"
@@ -2419,10 +2189,8 @@
 
 
       if (
-        competition.competition_type ===
-          "giveaway" ||
-        competition.entry_method ===
-          "simple"
+        competition.competition_type === "giveaway" ||
+        competition.entry_method === "simple"
       ) {
         return `
           <div class="entry-form">
@@ -2431,32 +2199,23 @@
               🎁 Enter Giveaway
             </h3>
 
-
             <div class="form-note">
-
               Click the button below to submit
               your giveaway entry.
-
             </div>
-
 
             <div class="field">
 
-              <label
-                for="giveawayMessage"
-              >
+              <label for="giveawayMessage">
                 Optional Message
               </label>
 
               <textarea
                 id="giveawayMessage"
-                placeholder="
-                  Tell us anything required by the giveaway...
-                "
+                placeholder="Tell us anything required by the giveaway..."
               ></textarea>
 
             </div>
-
 
             <button
               class="btn btn-primary"
@@ -2476,10 +2235,8 @@
 
 
       if (
-        competition.competition_type ===
-          "challenge" ||
-        competition.entry_method ===
-          "evidence"
+        competition.competition_type === "challenge" ||
+        competition.entry_method === "evidence"
       ) {
         return `
           <div class="entry-form">
@@ -2488,51 +2245,37 @@
               🔥 Submit Challenge Evidence
             </h3>
 
-
             <div class="form-note">
-
               Submit the evidence requested
               by the competition.
-
             </div>
-
 
             <div class="field">
 
-              <label
-                for="evidenceUrl"
-              >
+              <label for="evidenceUrl">
                 Evidence URL
               </label>
 
               <input
                 id="evidenceUrl"
                 type="url"
-                placeholder="
-                  https://...
-                "
+                placeholder="https://..."
               />
 
             </div>
 
-
             <div class="field">
 
-              <label
-                for="challengeText"
-              >
+              <label for="challengeText">
                 Explanation
               </label>
 
               <textarea
                 id="challengeText"
-                placeholder="
-                  Explain your submission...
-                "
+                placeholder="Explain your submission..."
               ></textarea>
 
             </div>
-
 
             <button
               class="btn btn-primary"
@@ -2558,70 +2301,51 @@
             🎓 Application
           </h3>
 
-
           <div class="form-note">
-
             Complete the application
             information below.
-
           </div>
-
 
           <div class="field">
 
-            <label
-              for="applicationName"
-            >
+            <label for="applicationName">
               Full Name
             </label>
 
             <input
               id="applicationName"
               type="text"
-              placeholder="
-                Your full name
-              "
+              placeholder="Your full name"
             />
 
           </div>
 
-
           <div class="field">
 
-            <label
-              for="applicationPhone"
-            >
+            <label for="applicationPhone">
               Phone Number
             </label>
 
             <input
               id="applicationPhone"
               type="tel"
-              placeholder="
-                Your phone number
-              "
+              placeholder="Your phone number"
             />
 
           </div>
 
-
           <div class="field">
 
-            <label
-              for="applicationMessage"
-            >
+            <label for="applicationMessage">
               Application / Reason
             </label>
 
             <textarea
               id="applicationMessage"
-              placeholder="
-                Tell us why you should be selected...
-              "
+              placeholder="Tell us why you should be selected..."
             ></textarea>
 
           </div>
-
 
           <button
             class="btn btn-primary"
@@ -2646,8 +2370,7 @@
       const competition =
         competitions.find(
           item =>
-            item.id ===
-            competitionId
+            item.id === competitionId
         );
 
 
@@ -2664,8 +2387,7 @@
       const existing =
         myEntries.find(
           entry =>
-            entry.competition_id ===
-            competitionId
+            entry.competition_id === competitionId
         );
 
 
@@ -2679,36 +2401,25 @@
       }
 
 
-      let submissionText =
-        null;
-
-      let submissionUrl =
-        null;
-
-      let evidenceUrl =
-        null;
+      let submissionText = null;
+      let submissionUrl = null;
+      let evidenceUrl = null;
 
 
       if (method === "url") {
 
         submissionUrl =
           document
-            .getElementById(
-              "submissionUrl"
-            )
+            .getElementById("submissionUrl")
             ?.value
-            .trim() ||
-          null;
+            .trim() || null;
 
 
         submissionText =
           document
-            .getElementById(
-              "submissionText"
-            )
+            .getElementById("submissionText")
             ?.value
-            .trim() ||
-          null;
+            .trim() || null;
 
 
         if (!submissionUrl) {
@@ -2726,12 +2437,9 @@
 
         submissionText =
           document
-            .getElementById(
-              "giveawayMessage"
-            )
+            .getElementById("giveawayMessage")
             ?.value
-            .trim() ||
-          null;
+            .trim() || null;
       }
 
 
@@ -2739,28 +2447,19 @@
 
         evidenceUrl =
           document
-            .getElementById(
-              "evidenceUrl"
-            )
+            .getElementById("evidenceUrl")
             ?.value
-            .trim() ||
-          null;
+            .trim() || null;
 
 
         submissionText =
           document
-            .getElementById(
-              "challengeText"
-            )
+            .getElementById("challengeText")
             ?.value
-            .trim() ||
-          null;
+            .trim() || null;
 
 
-        if (
-          !evidenceUrl &&
-          !submissionText
-        ) {
+        if (!evidenceUrl && !submissionText) {
           showStatus(
             "Please provide your evidence.",
             "error"
@@ -2776,28 +2475,14 @@
         error
       } =
         await supabaseClient
-          .from(
-            "competition_entries"
-          )
+          .from("competition_entries")
           .insert({
-            competition_id:
-              competitionId,
-
-            user_id:
-              currentUser.id,
-
-            entry_status:
-              "submitted",
-
-            submission_text:
-              submissionText,
-
-            submission_url:
-              submissionUrl,
-
-            evidence_url:
-              evidenceUrl,
-
+            competition_id: competitionId,
+            user_id: currentUser.id,
+            entry_status: "submitted",
+            submission_text: submissionText,
+            submission_url: submissionUrl,
+            evidence_url: evidenceUrl,
             submitted_at:
               new Date().toISOString()
           })
@@ -2813,13 +2498,9 @@
 
 
         if (
-          String(
-            error.message || ""
-          )
+          String(error.message || "")
             .toLowerCase()
-            .includes(
-              "duplicate"
-            )
+            .includes("duplicate")
         ) {
           showStatus(
             "You have already entered this competition.",
@@ -2839,8 +2520,7 @@
 
       myEntries.unshift({
         ...data,
-        competitions:
-          competition
+        competitions: competition
       });
 
 
@@ -2863,39 +2543,26 @@
     ) {
       const fullName =
         document
-          .getElementById(
-            "applicationName"
-          )
+          .getElementById("applicationName")
           ?.value
-          .trim() ||
-        "";
+          .trim() || "";
 
 
       const phone =
         document
-          .getElementById(
-            "applicationPhone"
-          )
+          .getElementById("applicationPhone")
           ?.value
-          .trim() ||
-        "";
+          .trim() || "";
 
 
       const message =
         document
-          .getElementById(
-            "applicationMessage"
-          )
+          .getElementById("applicationMessage")
           ?.value
-          .trim() ||
-        "";
+          .trim() || "";
 
 
-      if (
-        !fullName ||
-        !phone ||
-        !message
-      ) {
+      if (!fullName || !phone || !message) {
         showStatus(
           "Please complete all application fields.",
           "error"
@@ -2908,8 +2575,7 @@
       const existing =
         myEntries.find(
           entry =>
-            entry.competition_id ===
-            competitionId
+            entry.competition_id === competitionId
         );
 
 
@@ -2924,14 +2590,9 @@
 
 
       const applicationData = {
-        full_name:
-          fullName,
-
-        phone:
-          phone,
-
-        message:
-          message
+        full_name: fullName,
+        phone: phone,
+        message: message
       };
 
 
@@ -2940,25 +2601,13 @@
         error
       } =
         await supabaseClient
-          .from(
-            "competition_entries"
-          )
+          .from("competition_entries")
           .insert({
-            competition_id:
-              competitionId,
-
-            user_id:
-              currentUser.id,
-
-            entry_status:
-              "submitted",
-
-            application_data:
-              applicationData,
-
-            submission_text:
-              message,
-
+            competition_id: competitionId,
+            user_id: currentUser.id,
+            entry_status: "submitted",
+            application_data: applicationData,
+            submission_text: message,
             submitted_at:
               new Date().toISOString()
           })
@@ -2985,15 +2634,13 @@
       const competition =
         competitions.find(
           item =>
-            item.id ===
-            competitionId
+            item.id === competitionId
         );
 
 
       myEntries.unshift({
         ...data,
-        competitions:
-          competition
+        competitions: competition
       });
 
 
@@ -3022,8 +2669,7 @@
       const competition =
         competitions.find(
           item =>
-            item.id ===
-            competitionId
+            item.id === competitionId
         );
 
 
@@ -3040,8 +2686,7 @@
       const existing =
         myEntries.find(
           entry =>
-            entry.competition_id ===
-            competitionId
+            entry.competition_id === competitionId
         );
 
 
@@ -3055,8 +2700,7 @@
       }
 
 
-      quizSubmitting =
-        true;
+      quizSubmitting = true;
 
 
       const {
@@ -3066,14 +2710,12 @@
         await supabaseClient.rpc(
           "start_competition_quiz",
           {
-            p_competition_id:
-              competitionId
+            p_competition_id: competitionId
           }
         );
 
 
-      quizSubmitting =
-        false;
+      quizSubmitting = false;
 
 
       if (error) {
@@ -3081,7 +2723,6 @@
           "Start quiz error:",
           error
         );
-
 
         showStatus(
           error.message ||
@@ -3093,10 +2734,7 @@
       }
 
 
-      if (
-        !data ||
-        !data.success
-      ) {
+      if (!data || !data.success) {
         showStatus(
           "Unable to start the quiz.",
           "error"
@@ -3124,13 +2762,9 @@
     }
 
 
-    function renderQuiz(
-      data
-    ) {
+    function renderQuiz(data) {
       const questions =
-        Array.isArray(
-          data.questions
-        )
+        Array.isArray(data.questions)
           ? data.questions
           : [];
 
@@ -3143,7 +2777,6 @@
       modalContent.innerHTML = `
 
         <div class="quiz-shell">
-
 
           <div class="quiz-header">
 
@@ -3168,7 +2801,6 @@
 
             </div>
 
-
             <div
               id="quizTimer"
               class="timer"
@@ -3185,13 +2817,13 @@
               questions.length
                 ? questions
                     .map(
-                      (
-                        question,
-                        index
-                      ) => `
+                      (question, index) => `
 
                         <div
                           class="quiz-question"
+                          data-question-id="${escapeHtml(
+                            question.id
+                          )}"
                         >
 
                           <div
@@ -3254,14 +2886,8 @@
 
           <button
             id="submitQuizBtn"
-            class="
-              btn
-              btn-success
-              quiz-submit
-            "
-            onclick="
-              submitQuiz(false)
-            "
+            class="btn btn-success quiz-submit"
+            onclick="submitQuiz(false)"
           >
             Submit Quiz
           </button>
@@ -3271,7 +2897,6 @@
             id="quizResult"
             class="result-box hidden"
           ></div>
-
 
         </div>
       `;
@@ -3296,14 +2921,11 @@
 
           <input
             type="radio"
-            name="
-              question_${escapeHtml(
-                question.id
-              )}
-            "
+            name="question_${escapeHtml(
+              question.id
+            )}"
             value="${letter}"
           />
-
 
           <span>
 
@@ -3311,9 +2933,7 @@
               ${letter}.
             </strong>
 
-            ${escapeHtml(
-              text
-            )}
+            ${escapeHtml(text)}
 
           </span>
 
@@ -3336,15 +2956,12 @@
 
 
     function stopQuizTimer() {
-      if (
-        quizTimerInterval
-      ) {
+      if (quizTimerInterval) {
         clearInterval(
           quizTimerInterval
         );
 
-        quizTimerInterval =
-          null;
+        quizTimerInterval = null;
       }
     }
 
@@ -3372,9 +2989,8 @@
       }
 
 
-      if (
-        remainingMs <= 0
-      ) {
+      if (remainingMs <= 0) {
+
         timer.textContent =
           "00:00";
 
@@ -3389,7 +3005,6 @@
 
         stopQuizTimer();
 
-
         submitQuiz(true);
 
         return;
@@ -3398,21 +3013,18 @@
 
       const totalSeconds =
         Math.ceil(
-          remainingMs /
-          1000
+          remainingMs / 1000
         );
 
 
       const minutes =
         Math.floor(
-          totalSeconds /
-          60
+          totalSeconds / 60
         );
 
 
       const seconds =
-        totalSeconds %
-        60;
+        totalSeconds % 60;
 
 
       timer.textContent =
@@ -3425,25 +3037,15 @@
       );
 
 
-      if (
-        totalSeconds <= 60
-      ) {
-        timer.classList.add(
-          "danger"
-        );
-      } else if (
-        totalSeconds <= 180
-      ) {
-        timer.classList.add(
-          "warning"
-        );
+      if (totalSeconds <= 60) {
+        timer.classList.add("danger");
+      } else if (totalSeconds <= 180) {
+        timer.classList.add("warning");
       }
     }
 
 
-    async function submitQuiz(
-      autoSubmit
-    ) {
+    async function submitQuiz(autoSubmit) {
       if (
         quizSubmitting ||
         !quizEntryId
@@ -3452,9 +3054,7 @@
       }
 
 
-      quizSubmitting =
-        true;
-
+      quizSubmitting = true;
 
       stopQuizTimer();
 
@@ -3466,8 +3066,7 @@
 
 
       if (button) {
-        button.disabled =
-          true;
+        button.disabled = true;
 
         button.textContent =
           autoSubmit
@@ -3476,8 +3075,14 @@
       }
 
 
-      const answers =
-        [];
+      /*
+        IMPORTANT FIX:
+        Read the question UUID directly from
+        data-question-id instead of trying to
+        extract it from the radio button name.
+      */
+
+      const answers = [];
 
 
       document
@@ -3487,26 +3092,18 @@
         .forEach(
           questionElement => {
 
-            const radio =
-              questionElement.querySelector(
-                'input[type="radio"]:checked'
-              );
+            const questionId =
+              questionElement.dataset.questionId;
 
 
-            if (!radio) {
+            if (!questionId) {
               return;
             }
 
 
-            const name =
-              radio.name ||
-              "";
-
-
-            const questionId =
-              name.replace(
-                "question_",
-                ""
+            const radio =
+              questionElement.querySelector(
+                'input[type="radio"]:checked'
               );
 
 
@@ -3515,11 +3112,19 @@
                 questionId,
 
               selected_option:
-                radio.value
+                radio
+                  ? radio.value
+                  : null
             });
 
           }
         );
+
+
+      console.log(
+        "Submitting quiz answers:",
+        answers
+      );
 
 
       const {
@@ -3538,8 +3143,7 @@
         );
 
 
-      quizSubmitting =
-        false;
+      quizSubmitting = false;
 
 
       if (error) {
@@ -3550,11 +3154,8 @@
 
 
         if (button) {
-          button.disabled =
-            false;
-
-          button.textContent =
-            "Submit Quiz";
+          button.disabled = false;
+          button.textContent = "Submit Quiz";
         }
 
 
@@ -3568,10 +3169,7 @@
       }
 
 
-      if (
-        !data ||
-        !data.success
-      ) {
+      if (!data || !data.success) {
         showStatus(
           "The quiz could not be submitted.",
           "error"
@@ -3586,8 +3184,7 @@
 
 
       const newEntry = {
-        id:
-          quizEntryId,
+        id: quizEntryId,
 
         competition_id:
           competition.id,
@@ -3655,7 +3252,6 @@
 
 
           <p>
-
             <strong>
               Score:
             </strong>
@@ -3663,33 +3259,27 @@
             ${escapeHtml(
               data.score ?? 0
             )}
-
           </p>
 
 
           <p>
-
             <strong>
               Correct:
             </strong>
 
             ${escapeHtml(
-              data.correct_answers ??
-              0
+              data.correct_answers ?? 0
             )}
 
             /
 
             ${escapeHtml(
-              data.total_questions ??
-              0
+              data.total_questions ?? 0
             )}
-
           </p>
 
 
           <p>
-
             <strong>
               Time Taken:
             </strong>
@@ -3699,7 +3289,6 @@
                 data.time_taken_seconds
               )
             )}
-
           </p>
 
 
@@ -3723,15 +3312,11 @@
       }
 
 
-      quizEntryId =
-        null;
-
-      quizExpiresAt =
-        null;
+      quizEntryId = null;
+      quizExpiresAt = null;
 
 
       renderMyEntries();
-
       renderAvailableCompetitions();
 
 
@@ -3746,52 +3331,25 @@
     }
 
 
-    function switchTab(
-      tab
-    ) {
+    function switchTab(tab) {
       clearStatus();
 
 
-      if (
-        tab ===
-        "available"
-      ) {
+      if (tab === "available") {
 
-        availableTab.classList.add(
-          "active"
-        );
+        availableTab.classList.add("active");
+        myTab.classList.remove("active");
 
-        myTab.classList.remove(
-          "active"
-        );
-
-
-        availableSection.classList.remove(
-          "hidden"
-        );
-
-        mySection.classList.add(
-          "hidden"
-        );
+        availableSection.classList.remove("hidden");
+        mySection.classList.add("hidden");
 
       } else {
 
-        availableTab.classList.remove(
-          "active"
-        );
+        availableTab.classList.remove("active");
+        myTab.classList.add("active");
 
-        myTab.classList.add(
-          "active"
-        );
-
-
-        availableSection.classList.add(
-          "hidden"
-        );
-
-        mySection.classList.remove(
-          "hidden"
-        );
+        availableSection.classList.add("hidden");
+        mySection.classList.remove("hidden");
       }
     }
 
@@ -3799,9 +3357,7 @@
     availableTab.addEventListener(
       "click",
       () =>
-        switchTab(
-          "available"
-        )
+        switchTab("available")
     );
 
 
@@ -3809,9 +3365,7 @@
       "click",
       async () => {
 
-        switchTab(
-          "my"
-        );
+        switchTab("my");
 
         await loadMyEntries();
 
@@ -3820,9 +3374,7 @@
 
 
     document
-      .getElementById(
-        "closeModal"
-      )
+      .getElementById("closeModal")
       .addEventListener(
         "click",
         closeModal
@@ -3845,9 +3397,7 @@
 
 
     document
-      .getElementById(
-        "logoutBtn"
-      )
+      .getElementById("logoutBtn")
       .addEventListener(
         "click",
         async () => {
@@ -3876,10 +3426,7 @@
           .getUser();
 
 
-      if (
-        error ||
-        !user
-      ) {
+      if (error || !user) {
         window.location.href =
           "index.html";
 
@@ -3887,8 +3434,7 @@
       }
 
 
-      currentUser =
-        user;
+      currentUser = user;
 
 
       await loadMyEntries();
