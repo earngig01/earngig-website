@@ -671,7 +671,8 @@
 
 
     /*
-     * Confirm EarnGig membership.
+     * First confirm that the member
+     * has an active EarnGig membership.
      */
 
     const {
@@ -688,10 +689,23 @@
       .maybeSingle();
 
 
-    if (
-      membershipError ||
-      !membership
-    ) {
+    if (membershipError) {
+
+      console.error(
+        "Membership verification error:",
+        membershipError
+      );
+
+      alert(
+        "Unable to verify your EarnGig membership."
+      );
+
+      return false;
+
+    }
+
+
+    if (!membership) {
 
       alert(
         "You must have an active EarnGig membership before becoming a seller."
@@ -706,7 +720,18 @@
 
 
     /*
-     * Confirm current seller subscription.
+     * Check the seller's current monthly
+     * subscription.
+     *
+     * IMPORTANT:
+     *
+     * We no longer show the old
+     * "Seller access requires..." popup.
+     *
+     * A member who has not yet completed
+     * the seller approval/subscription
+     * process is sent to the vendor
+     * application page instead.
      */
 
     const thirtyDaysAgo =
@@ -752,12 +777,16 @@
 
     if (!sellerPayment) {
 
-      alert(
-        "Seller access requires an active ₦2,500 monthly subscription."
-      );
+      /*
+       * Do NOT show the old subscription
+       * popup.
+       *
+       * Send the member into the normal
+       * seller application flow.
+       */
 
       window.location.href =
-        "seller-subscription.html";
+        "vendor-application.html";
 
       return false;
 
@@ -1049,12 +1078,14 @@
                 </div>
 
                 <div style="margin-top:7px;">
+
                   <span class="status-pill">
                     ${escapeHtml(
                       product.status ||
                       "unknown"
                     )}
                   </span>
+
                 </div>
 
               </div>
@@ -1138,12 +1169,6 @@
     ).textContent =
       sellerOrders.length;
 
-
-    /*
-     * Only completed orders count as
-     * completed sales in this legacy
-     * dashboard.
-     */
 
     const completedOrders =
       sellerOrders.filter(function(order) {
@@ -1308,12 +1333,10 @@
 
 
     /*
-     * Pending earnings are not calculated
-     * from the old marketplace_orders table.
-     *
-     * They will be connected to the new
-     * delivery-confirmation system when
-     * marketplace_store_orders is activated.
+     * Pending marketplace earnings will be
+     * connected to marketplace_store_orders
+     * after the new delivery-confirmation
+     * checkout system is activated.
      */
 
     document.getElementById(
