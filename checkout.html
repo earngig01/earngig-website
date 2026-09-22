@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta
@@ -10,51 +9,128 @@
 
   <title>Checkout | EarnGig Marketplace</title>
 
-  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase.js"></script>
 
   <style>
 
-    .checkout-page {
-      padding: 30px 0 70px;
+    * {
+      box-sizing: border-box;
     }
 
-    .checkout-header {
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background:
+        radial-gradient(
+          circle at top right,
+          rgba(92, 60, 180, 0.12),
+          transparent 35%
+        ),
+        #080d1f;
+      color: #ffffff;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page {
+      max-width: 1100px;
+      margin: auto;
+      padding: 20px 16px 60px;
+    }
+
+    /* ======================================================
+       HEADER
+    ====================================================== */
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
       margin-bottom: 25px;
     }
 
-    .checkout-header h1 {
-      margin: 6px 0 8px;
+    .brand {
+      font-size: 22px;
+      font-weight: 800;
     }
 
-    .checkout-header p {
-      color: #9da7c0;
-      margin: 0;
+    .brand span {
+      color: #8b5cf6;
     }
+
+    .back-btn {
+      background: #171e35;
+      border: 1px solid #2a3454;
+      color: #dce1f3;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .back-btn:hover {
+      border-color: #7c3aed;
+    }
+
+    /* ======================================================
+       PAGE TITLE
+    ====================================================== */
+
+    .page-title {
+      margin-bottom: 22px;
+    }
+
+    .page-title h1 {
+      margin: 0 0 7px;
+      font-size: 28px;
+    }
+
+    .page-title p {
+      margin: 0;
+      color: #9da7c0;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* ======================================================
+       LAYOUT
+    ====================================================== */
 
     .checkout-layout {
       display: grid;
-      grid-template-columns: minmax(0, 1.5fr) minmax(300px, .8fr);
-      gap: 22px;
+      grid-template-columns: minmax(0, 1.5fr) minmax(300px, 0.8fr);
+      gap: 20px;
       align-items: start;
     }
 
-    .checkout-card {
-      background: #10172b;
+    .card {
+      background: #11182e;
       border: 1px solid #222b47;
-      border-radius: 18px;
-      padding: 22px;
+      border-radius: 17px;
+      padding: 20px;
       margin-bottom: 18px;
     }
 
-    .checkout-card h2 {
-      margin: 0 0 18px;
+    .card h2 {
+      margin: 0 0 7px;
       font-size: 19px;
     }
 
-    .checkout-card h3 {
-      margin: 0 0 12px;
-      font-size: 15px;
+    .card-description {
+      color: #8f99b4;
+      font-size: 13px;
+      line-height: 1.5;
+      margin: 0 0 20px;
     }
+
+    /* ======================================================
+       FORM
+    ====================================================== */
 
     .form-grid {
       display: grid;
@@ -63,7 +139,9 @@
     }
 
     .form-group {
-      margin-bottom: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
     }
 
     .form-group.full {
@@ -71,52 +149,51 @@
     }
 
     .form-group label {
-      display: block;
-      color: #d7dced;
+      color: #e7eaff;
       font-size: 13px;
       font-weight: 700;
-      margin-bottom: 7px;
     }
 
-    .required {
-      color: #a78bfa;
+    .optional {
+      color: #737d9c;
+      font-weight: 400;
     }
 
     .form-group input,
-    .form-group select,
     .form-group textarea {
       width: 100%;
-      box-sizing: border-box;
-      background: #0b1122;
-      border: 1px solid #293451;
-      color: #fff;
+      border: 1px solid #303a5b;
+      background: #090f25;
+      color: #ffffff;
       border-radius: 10px;
       padding: 12px 13px;
-      font: inherit;
       outline: none;
+      font-family: inherit;
+      font-size: 14px;
     }
 
-    .form-group input:focus,
-    .form-group select:focus,
-    .form-group textarea:focus {
-      border-color: #7c3aed;
-      box-shadow: 0 0 0 3px rgba(124, 58, 237, .12);
+    .form-group input {
+      height: 45px;
     }
 
     .form-group textarea {
-      min-height: 95px;
+      min-height: 90px;
       resize: vertical;
     }
 
-    .form-hint {
-      color: #7f89a4;
-      font-size: 11px;
-      margin-top: 5px;
+    .form-group input:focus,
+    .form-group textarea:focus {
+      border-color: #7c3aed;
+      box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.12);
     }
+
+    /* ======================================================
+       PAYMENT
+    ====================================================== */
 
     .payment-options {
       display: grid;
-      gap: 12px;
+      gap: 11px;
     }
 
     .payment-option {
@@ -130,201 +207,274 @@
     }
 
     .payment-label {
-      display: block;
-      padding: 16px;
-      border: 1px solid #293451;
-      border-radius: 13px;
-      background: #0b1122;
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      border: 1px solid #303a5b;
+      background: #090f25;
+      border-radius: 12px;
+      padding: 15px;
       cursor: pointer;
-      transition: .2s ease;
+      transition: 0.18s ease;
+    }
+
+    .payment-label:hover {
+      border-color: #5e45b7;
     }
 
     .payment-option input:checked + .payment-label {
       border-color: #7c3aed;
-      background: rgba(124, 58, 237, .10);
-      box-shadow: 0 0 0 2px rgba(124, 58, 237, .08);
+      background: rgba(124, 58, 237, 0.10);
+      box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.08);
     }
 
-    .payment-title {
+    .payment-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #1b2440;
+      font-size: 19px;
+      flex-shrink: 0;
+    }
+
+    .payment-name {
+      font-size: 14px;
       font-weight: 800;
-      color: #fff;
-      margin-bottom: 5px;
+      margin-bottom: 4px;
     }
 
     .payment-description {
-      color: #8f99b4;
+      color: #8d97b1;
       font-size: 12px;
-      line-height: 1.5;
+      line-height: 1.4;
     }
 
-    .cart-vendor {
-      border: 1px solid #222b47;
-      border-radius: 14px;
+    .disabled-payment {
+      opacity: 0.48;
+      cursor: not-allowed;
+    }
+
+    .coming-soon {
+      margin-left: auto;
+      background: #242b45;
+      color: #9ca6c1;
+      border-radius: 7px;
+      padding: 5px 7px;
+      font-size: 10px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    /* ======================================================
+       ORDER SUMMARY
+    ====================================================== */
+
+    .summary-card {
+      position: sticky;
+      top: 15px;
+    }
+
+    .summary-title {
+      font-size: 19px;
+      font-weight: 800;
+      margin-bottom: 15px;
+    }
+
+    .store-section {
+      border: 1px solid #252f4c;
+      background: #0b1229;
+      border-radius: 12px;
       overflow: hidden;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
 
-    .cart-vendor:last-child {
-      margin-bottom: 0;
+    .store-heading {
+      padding: 11px 12px;
+      background: #151d38;
+      color: #cbd1e5;
+      font-size: 12px;
+      font-weight: 800;
     }
 
-    .vendor-heading {
-      padding: 13px 15px;
-      background: #151d34;
-      border-bottom: 1px solid #222b47;
-    }
-
-    .vendor-heading strong {
-      display: block;
-      font-size: 14px;
-    }
-
-    .vendor-heading small {
-      display: block;
-      color: #7f89a4;
-      margin-top: 3px;
-      font-size: 11px;
-    }
-
-    .checkout-product {
+    .summary-item {
       display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 13px 15px;
-      border-bottom: 1px solid #1c2640;
+      gap: 10px;
+      padding: 11px 12px;
+      border-top: 1px solid #202943;
     }
 
-    .checkout-product:last-child {
-      border-bottom: 0;
-    }
-
-    .checkout-product-image {
-      width: 58px;
-      height: 58px;
+    .summary-image {
+      width: 52px;
+      height: 52px;
+      border-radius: 8px;
       object-fit: cover;
-      border-radius: 9px;
       background: #171e35;
       flex-shrink: 0;
     }
 
-    .checkout-product-info {
+    .summary-info {
       min-width: 0;
       flex: 1;
     }
 
-    .checkout-product-title {
-      font-size: 13px;
-      font-weight: 800;
-      color: #fff;
+    .summary-product-name {
+      color: #e8ebf7;
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1.35;
       margin-bottom: 4px;
     }
 
-    .checkout-product-meta {
-      color: #7f89a4;
+    .summary-meta {
+      color: #8993ae;
       font-size: 11px;
     }
 
-    .checkout-product-total {
-      font-size: 14px;
+    .summary-line-total {
+      color: #c4adff;
+      font-size: 12px;
       font-weight: 800;
-      color: #c4b5fd;
       white-space: nowrap;
     }
 
-    .summary-card {
-      position: sticky;
-      top: 20px;
+    .totals {
+      border-top: 1px solid #2a3452;
+      margin-top: 16px;
+      padding-top: 15px;
     }
 
-    .summary-row {
+    .total-row {
       display: flex;
       justify-content: space-between;
-      gap: 15px;
-      padding: 10px 0;
-      color: #aeb7cc;
+      gap: 10px;
+      margin-bottom: 11px;
+      color: #aeb7cd;
       font-size: 13px;
     }
 
-    .summary-row.total {
-      border-top: 1px solid #293451;
-      margin-top: 8px;
-      padding-top: 16px;
-      color: #fff;
-      font-size: 17px;
+    .total-row.grand {
+      color: #ffffff;
+      font-size: 18px;
       font-weight: 800;
+      padding-top: 9px;
+      border-top: 1px solid #2a3452;
     }
 
-    .summary-row strong {
-      color: #fff;
+    .grand-value {
+      color: #a78bfa;
     }
 
-    .checkout-button {
+    /* ======================================================
+       BUTTON
+    ====================================================== */
+
+    .checkout-btn {
       width: 100%;
-      margin-top: 18px;
       border: 0;
+      background: linear-gradient(
+        135deg,
+        #7c3aed,
+        #9333ea
+      );
+      color: #ffffff;
+      padding: 14px;
+      border-radius: 11px;
+      font-size: 14px;
+      font-weight: 800;
       cursor: pointer;
-      font-size: 15px;
+      margin-top: 17px;
     }
 
-    .checkout-button:disabled {
-      opacity: .55;
+    .checkout-btn:hover {
+      filter: brightness(1.08);
+    }
+
+    .checkout-btn:disabled {
+      opacity: 0.55;
       cursor: not-allowed;
     }
 
+    /* ======================================================
+       SECURITY NOTICE
+    ====================================================== */
+
     .security-note {
       margin-top: 13px;
-      color: #7f89a4;
+      background: rgba(40, 150, 100, 0.08);
+      border: 1px solid rgba(40, 150, 100, 0.22);
+      color: #a9dfc4;
+      border-radius: 10px;
+      padding: 11px 12px;
       font-size: 11px;
-      line-height: 1.6;
-      text-align: center;
+      line-height: 1.5;
     }
 
-    .empty-checkout {
-      text-align: center;
-      padding: 55px 20px;
-      background: #10172b;
+    /* ======================================================
+       STATE BOXES
+    ====================================================== */
+
+    .state-box {
+      background: #11182e;
       border: 1px solid #222b47;
-      border-radius: 18px;
-    }
-
-    .empty-checkout h2 {
-      margin: 0 0 8px;
-    }
-
-    .empty-checkout p {
-      color: #929cb5;
-      margin-bottom: 20px;
-    }
-
-    .loading-box {
+      border-radius: 15px;
+      padding: 45px 20px;
       text-align: center;
-      padding: 35px;
-      color: #929cb5;
+      color: #9da7c0;
+    }
+
+    .state-icon {
+      font-size: 34px;
+      margin-bottom: 10px;
+    }
+
+    .state-title {
+      color: #ffffff;
+      font-size: 17px;
+      font-weight: 800;
+      margin-bottom: 7px;
+    }
+
+    .state-text {
+      font-size: 13px;
+      line-height: 1.6;
     }
 
     .error-box {
-      background: rgba(127, 29, 29, .15);
-      border: 1px solid rgba(248, 113, 113, .25);
-      color: #fca5a5;
-      padding: 13px;
-      border-radius: 10px;
-      font-size: 13px;
-      margin-bottom: 15px;
-      display: none;
+      border-color: rgba(239, 68, 68, 0.35);
+      background: rgba(100, 20, 30, 0.15);
+      color: #f1b2b8;
     }
 
     .success-box {
-      background: rgba(22, 101, 52, .15);
-      border: 1px solid rgba(74, 222, 128, .25);
-      color: #86efac;
-      padding: 13px;
-      border-radius: 10px;
-      font-size: 13px;
-      margin-bottom: 15px;
-      display: none;
+      border-color: rgba(35, 160, 100, 0.35);
+      background: rgba(25, 110, 75, 0.12);
+      color: #a9e3c7;
     }
 
-    @media (max-width: 850px) {
+    .form-error {
+      display: none;
+      background: rgba(190, 50, 60, 0.12);
+      border: 1px solid rgba(220, 70, 80, 0.32);
+      color: #f2afb4;
+      border-radius: 10px;
+      padding: 12px 13px;
+      margin-bottom: 15px;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .form-error.show {
+      display: block;
+    }
+
+    /* ======================================================
+       MOBILE
+    ====================================================== */
+
+    @media (max-width: 800px) {
 
       .checkout-layout {
         grid-template-columns: 1fr;
@@ -332,210 +482,164 @@
 
       .summary-card {
         position: static;
+        grid-row: 1;
       }
 
     }
 
     @media (max-width: 600px) {
 
-      .checkout-page {
-        padding: 20px 0 50px;
+      .page {
+        padding: 14px 12px 45px;
       }
 
-      .checkout-card {
+      .topbar {
+        margin-bottom: 20px;
+      }
+
+      .brand {
+        font-size: 19px;
+      }
+
+      .back-btn {
+        padding: 9px 11px;
+        font-size: 12px;
+      }
+
+      .page-title h1 {
+        font-size: 24px;
+      }
+
+      .card {
         padding: 16px;
-        border-radius: 15px;
+        border-radius: 14px;
       }
 
       .form-grid {
         grid-template-columns: 1fr;
-        gap: 13px;
       }
 
       .form-group.full {
         grid-column: auto;
       }
 
-      .checkout-product {
-        padding: 11px;
-      }
-
-      .checkout-product-image {
-        width: 52px;
-        height: 52px;
-      }
-
-      .checkout-product-total {
-        font-size: 12px;
-      }
-
     }
 
   </style>
-
 </head>
-
 
 <body>
 
+  <div class="page">
 
-<header>
+    <!-- ====================================================
+         HEADER
+    ===================================================== -->
 
-  <div class="container nav">
-
-    <a
-      class="logo"
-      href="index.html"
-    >
-      <span class="logo-mark">E</span>
-      Earn<span>Gig</span>
-    </a>
-
-
-    <div
-      style="
-        display:flex;
-        gap:8px;
-        flex-wrap:wrap;
-      "
-    >
+    <div class="topbar">
 
       <a
-        class="btn outline"
         href="marketplace.html"
+        class="brand"
       >
-        Marketplace
+        Earn<span>Gig</span> Marketplace
       </a>
 
       <a
-        class="btn outline"
         href="cart.html"
+        class="back-btn"
       >
-        ← Cart
-      </a>
-
-    </div>
-
-  </div>
-
-</header>
-
-
-
-<main class="checkout-page">
-
-  <div class="container">
-
-
-    <div class="checkout-header">
-
-      <span class="eyebrow">
-        MARKETPLACE CHECKOUT
-      </span>
-
-      <h1>
-        Complete your order
-      </h1>
-
-      <p>
-        Enter your delivery details and choose how you want to pay.
-      </p>
-
-    </div>
-
-
-    <div
-      id="checkout-error"
-      class="error-box"
-    ></div>
-
-
-    <div
-      id="checkout-success"
-      class="success-box"
-    ></div>
-
-
-    <div
-      id="loading"
-      class="loading-box"
-    >
-      Loading your cart...
-    </div>
-
-
-    <div
-      id="empty-checkout"
-      class="empty-checkout"
-      style="display:none;"
-    >
-
-      <h2>
-        Your cart is empty
-      </h2>
-
-      <p>
-        Add products to your cart before checking out.
-      </p>
-
-      <a
-        href="marketplace.html"
-        class="btn primary"
-      >
-        Browse Marketplace
+        ← Back to Cart
       </a>
 
     </div>
 
 
+    <!-- ====================================================
+         TITLE
+    ===================================================== -->
+
+    <div class="page-title">
+
+      <h1>Checkout</h1>
+
+      <p>
+        Enter your delivery information and choose how you
+        want to pay for your marketplace order.
+      </p>
+
+    </div>
+
+
+    <!-- ====================================================
+         LOADING
+    ===================================================== -->
+
     <div
-      id="checkout-content"
+      id="loadingState"
+      class="state-box"
+    >
+
+      <div class="state-icon">
+        🛒
+      </div>
+
+      <div class="state-title">
+        Loading your cart
+      </div>
+
+      <div class="state-text">
+        Please wait while we prepare your secure checkout.
+      </div>
+
+    </div>
+
+
+    <!-- ====================================================
+         CHECKOUT
+    ===================================================== -->
+
+    <div
+      id="checkoutArea"
       class="checkout-layout"
       style="display:none;"
     >
 
-
-      <!-- LEFT SIDE -->
+      <!-- ==================================================
+           LEFT SIDE
+      =================================================== -->
 
       <div>
 
+        <!-- DELIVERY INFORMATION -->
 
-        <!-- CART -->
+        <section class="card">
 
-        <section class="checkout-card">
+          <h2>Delivery Information</h2>
 
-          <h2>
-            Your order
-          </h2>
-
-          <div id="checkout-cart">
-          </div>
-
-        </section>
+          <p class="card-description">
+            Please provide the information the vendor will use
+            to deliver your order.
+          </p>
 
 
-        <!-- DELIVERY DETAILS -->
-
-        <section class="checkout-card">
-
-          <h2>
-            Delivery information
-          </h2>
+          <div
+            id="formError"
+            class="form-error"
+          ></div>
 
 
           <div class="form-grid">
 
+            <div class="form-group full">
 
-            <div class="form-group">
-
-              <label for="full-name">
-                Full name
-                <span class="required">*</span>
+              <label for="fullName">
+                Full Name
               </label>
 
               <input
+                id="fullName"
                 type="text"
-                id="full-name"
                 autocomplete="name"
                 placeholder="Enter your full name"
                 required
@@ -546,16 +650,15 @@
 
             <div class="form-group">
 
-              <label for="primary-phone">
-                Primary phone
-                <span class="required">*</span>
+              <label for="phone1">
+                Primary Phone
               </label>
 
               <input
+                id="phone1"
                 type="tel"
-                id="primary-phone"
                 autocomplete="tel"
-                placeholder="08012345678"
+                placeholder="e.g. 08012345678"
                 required
               >
 
@@ -564,17 +667,15 @@
 
             <div class="form-group">
 
-              <label for="second-phone">
-                Second phone
-                <span style="color:#7f89a4;">
-                  (optional)
-                </span>
+              <label for="phone2">
+                Second Phone
+                <span class="optional">(optional)</span>
               </label>
 
               <input
+                id="phone2"
                 type="tel"
-                id="second-phone"
-                placeholder="Alternative phone number"
+                placeholder="Optional second number"
               >
 
             </div>
@@ -584,57 +685,14 @@
 
               <label for="state">
                 State
-                <span class="required">*</span>
               </label>
 
-              <select
+              <input
                 id="state"
+                type="text"
+                placeholder="e.g. Rivers"
                 required
               >
-
-                <option value="">
-                  Select state
-                </option>
-
-                <option>Abia</option>
-                <option>Adamawa</option>
-                <option>Akwa Ibom</option>
-                <option>Anambra</option>
-                <option>Bauchi</option>
-                <option>Bayelsa</option>
-                <option>Benue</option>
-                <option>Borno</option>
-                <option>Cross River</option>
-                <option>Delta</option>
-                <option>Ebonyi</option>
-                <option>Edo</option>
-                <option>Ekiti</option>
-                <option>Enugu</option>
-                <option>FCT Abuja</option>
-                <option>Gombe</option>
-                <option>Imo</option>
-                <option>Jigawa</option>
-                <option>Kaduna</option>
-                <option>Kano</option>
-                <option>Katsina</option>
-                <option>Kebbi</option>
-                <option>Kogi</option>
-                <option>Kwara</option>
-                <option>Lagos</option>
-                <option>Nasarawa</option>
-                <option>Niger</option>
-                <option>Ogun</option>
-                <option>Ondo</option>
-                <option>Osun</option>
-                <option>Oyo</option>
-                <option>Plateau</option>
-                <option>Rivers</option>
-                <option>Sokoto</option>
-                <option>Taraba</option>
-                <option>Yobe</option>
-                <option>Zamfara</option>
-
-              </select>
 
             </div>
 
@@ -643,12 +701,11 @@
 
               <label for="lga">
                 LGA
-                <span class="required">*</span>
               </label>
 
               <input
-                type="text"
                 id="lga"
+                type="text"
                 placeholder="Local Government Area"
                 required
               >
@@ -660,12 +717,11 @@
 
               <label for="city">
                 City / Town
-                <span class="required">*</span>
               </label>
 
               <input
-                type="text"
                 id="city"
+                type="text"
                 placeholder="City or town"
                 required
               >
@@ -677,13 +733,28 @@
 
               <label for="area">
                 Area
-                <span class="required">*</span>
               </label>
 
               <input
-                type="text"
                 id="area"
-                placeholder="Neighbourhood / area"
+                type="text"
+                placeholder="Area / neighbourhood"
+                required
+              >
+
+            </div>
+
+
+            <div class="form-group full">
+
+              <label for="street">
+                Street / Full Address
+              </label>
+
+              <input
+                id="street"
+                type="text"
+                placeholder="Street name and house/building number"
                 required
               >
 
@@ -693,14 +764,13 @@
             <div class="form-group full">
 
               <label for="address">
-                Street / Full address
-                <span class="required">*</span>
+                Additional Address Details
+                <span class="optional">(optional)</span>
               </label>
 
               <textarea
                 id="address"
-                placeholder="Enter your complete delivery address"
-                required
+                placeholder="Apartment, estate, floor, room number, etc."
               ></textarea>
 
             </div>
@@ -710,14 +780,12 @@
 
               <label for="landmark">
                 Landmark
-                <span style="color:#7f89a4;">
-                  (optional)
-                </span>
+                <span class="optional">(optional)</span>
               </label>
 
               <input
-                type="text"
                 id="landmark"
+                type="text"
                 placeholder="Nearby landmark"
               >
 
@@ -726,20 +794,17 @@
 
             <div class="form-group full">
 
-              <label for="delivery-instructions">
-                Delivery instructions
-                <span style="color:#7f89a4;">
-                  (optional)
-                </span>
+              <label for="deliveryInstructions">
+                Delivery Instructions
+                <span class="optional">(optional)</span>
               </label>
 
               <textarea
-                id="delivery-instructions"
+                id="deliveryInstructions"
                 placeholder="Anything the vendor or delivery person should know?"
               ></textarea>
 
             </div>
-
 
           </div>
 
@@ -748,1144 +813,1193 @@
 
         <!-- PAYMENT -->
 
-        <section class="checkout-card">
+        <section class="card">
 
-          <h2>
-            Payment method
-          </h2>
+          <h2>Payment Method</h2>
+
+          <p class="card-description">
+            Choose how you want to pay for this marketplace
+            order.
+          </p>
 
 
           <div class="payment-options">
 
+            <!-- WALLET -->
 
             <div class="payment-option">
 
               <input
                 type="radio"
-                id="payment-wallet"
-                name="payment_method"
+                id="walletPayment"
+                name="paymentMethod"
                 value="wallet"
                 checked
               >
 
               <label
-                for="payment-wallet"
+                for="walletPayment"
                 class="payment-label"
               >
 
-                <div class="payment-title">
-                  EarnGig Wallet
+                <div class="payment-icon">
+                  💰
                 </div>
 
-                <div class="payment-description">
-                  Pay directly from your EarnGig wallet balance.
+                <div>
+
+                  <div class="payment-name">
+                    EarnGig Wallet
+                  </div>
+
+                  <div class="payment-description">
+                    Pay securely from your EarnGig wallet.
+                  </div>
+
                 </div>
 
               </label>
 
             </div>
 
+
+            <!-- PAYSTACK -->
 
             <div class="payment-option">
 
               <input
                 type="radio"
-                id="payment-paystack"
-                name="payment_method"
+                id="paystackPayment"
+                name="paymentMethod"
                 value="paystack"
+                disabled
               >
 
               <label
-                for="payment-paystack"
-                class="payment-label"
+                for="paystackPayment"
+                class="payment-label disabled-payment"
               >
 
-                <div class="payment-title">
-                  Paystack
+                <div class="payment-icon">
+                  💳
                 </div>
 
-                <div class="payment-description">
-                  Pay securely using Paystack-supported payment methods.
+                <div>
+
+                  <div class="payment-name">
+                    Paystack
+                  </div>
+
+                  <div class="payment-description">
+                    Card, bank transfer and other Paystack
+                    payment options.
+                  </div>
+
                 </div>
+
+                <span class="coming-soon">
+                  COMING SOON
+                </span>
 
               </label>
 
             </div>
 
-
           </div>
 
         </section>
 
-
       </div>
 
 
+      <!-- ==================================================
+           RIGHT SIDE — ORDER SUMMARY
+      =================================================== -->
 
-      <!-- RIGHT SIDE -->
+      <aside class="card summary-card">
 
-      <aside>
-
-
-        <section class="checkout-card summary-card">
-
-          <h2>
-            Order summary
-          </h2>
+        <div class="summary-title">
+          Order Summary
+        </div>
 
 
-          <div class="summary-row">
-
-            <span>
-              Items
-            </span>
-
-            <strong id="summary-items">
-              0
-            </strong>
-
-          </div>
+        <div id="orderSummary">
+          Loading...
+        </div>
 
 
-          <div class="summary-row">
+        <div class="totals">
+
+          <div class="total-row">
 
             <span>
-              Product total
+              Products
             </span>
 
-            <strong id="summary-subtotal">
+            <strong id="subtotal">
               ₦0
             </strong>
 
           </div>
 
 
-          <div class="summary-row">
+          <div class="total-row">
 
             <span>
               Delivery
             </span>
 
-            <strong id="summary-delivery">
-              Calculated by vendor
-            </strong>
-
-          </div>
-
-
-          <div class="summary-row total">
-
-            <span>
-              Order total
-            </span>
-
-            <strong id="summary-total">
+            <strong id="deliveryFee">
               ₦0
             </strong>
 
           </div>
 
 
-          <button
-            id="place-order-button"
-            type="button"
-            class="btn primary checkout-button"
-          >
-            Continue to Payment
-          </button>
+          <div class="total-row grand">
 
+            <span>
+              Total
+            </span>
 
-          <div class="security-note">
-            Your payment is held against the order until the delivery process is completed. Vendor earnings are not released immediately after payment.
-          </div>
-
-        </section>
-
-
-        <section class="checkout-card">
-
-          <h3>
-            How marketplace orders work
-          </h3>
-
-          <div
-            style="
-              color:#8f99b4;
-              font-size:12px;
-              line-height:1.8;
-            "
-          >
-
-            <div>
-              1. You pay for your order.
-            </div>
-
-            <div>
-              2. The vendor receives the new order.
-            </div>
-
-            <div>
-              3. The vendor dispatches your products.
-            </div>
-
-            <div>
-              4. You confirm delivery.
-            </div>
-
-            <div>
-              5. The vendor's earnings are released.
-            </div>
-
-            <div style="margin-top:8px;">
-              If there is a dispute, the funds remain pending until the matter is resolved.
-            </div>
+            <strong
+              id="totalAmount"
+              class="grand-value"
+            >
+              ₦0
+            </strong>
 
           </div>
 
-        </section>
+        </div>
 
+
+        <button
+          id="placeOrderButton"
+          class="checkout-btn"
+          type="button"
+        >
+          Pay with EarnGig Wallet
+        </button>
+
+
+        <div class="security-note">
+
+          🔒 Your product prices, stock quantities and payment
+          amount are checked on EarnGig's secure server before
+          the order is completed.
+
+        </div>
 
       </aside>
 
+    </div>
+
+
+    <!-- ====================================================
+         EMPTY STATE
+    ===================================================== -->
+
+    <div
+      id="emptyState"
+      class="state-box"
+      style="display:none;"
+    >
+
+      <div class="state-icon">
+        🛒
+      </div>
+
+      <div class="state-title">
+        Your cart is empty
+      </div>
+
+      <div class="state-text">
+        Add products to your cart before continuing to checkout.
+      </div>
+
+      <br>
+
+      <a
+        href="marketplace.html"
+        class="back-btn"
+        style="display:inline-block;"
+      >
+        Browse Marketplace
+      </a>
+
+    </div>
+
+
+    <!-- ====================================================
+         SUCCESS STATE
+    ===================================================== -->
+
+    <div
+      id="successState"
+      class="state-box success-box"
+      style="display:none;"
+    >
+
+      <div class="state-icon">
+        ✓
+      </div>
+
+      <div class="state-title">
+        Order placed successfully
+      </div>
+
+      <div class="state-text">
+        Your payment was successful and your marketplace order
+        has been created. The vendor will receive the order and
+        prepare it for dispatch.
+      </div>
+
+      <div
+        id="successReference"
+        style="
+          margin-top:15px;
+          font-weight:800;
+          color:#c7b7ff;
+        "
+      ></div>
+
+      <br>
+
+      <a
+        href="marketplace.html"
+        class="back-btn"
+        style="display:inline-block;"
+      >
+        Continue Shopping
+      </a>
 
     </div>
 
   </div>
 
-</main>
 
+  <script>
 
+    let currentUser = null;
+    let cartId = null;
+    let cartItems = [];
+    let productsById = {};
+    let storesById = {};
 
-<footer>
 
-  <div class="container copy">
-    © 2026 EarnGig. All rights reserved.
-  </div>
+    /* ======================================================
+       HELPERS
+    ====================================================== */
 
-</footer>
+    function formatNaira(amount) {
 
+      const value = Number(amount || 0);
 
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase.js"></script>
-
-
-<script>
-
-  let currentUser = null;
-  let currentCart = null;
-  let cartItems = [];
-  let productMap = {};
-  let storeMap = {};
-
-
-
-  function formatNaira(amount) {
-
-    return "₦" +
-      Number(amount || 0).toLocaleString(
-        "en-NG"
-      );
-
-  }
-
-
-
-  function escapeHtml(value) {
-
-    return String(value ?? "")
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
-
-  }
-
-
-
-  function showError(message) {
-
-    const box =
-      document.getElementById(
-        "checkout-error"
-      );
-
-    box.textContent =
-      message;
-
-    box.style.display =
-      "block";
-
-    document.getElementById(
-      "checkout-success"
-    ).style.display =
-      "none";
-
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth"
-    });
-
-  }
-
-
-
-  function showSuccess(message) {
-
-    const box =
-      document.getElementById(
-        "checkout-success"
-      );
-
-    box.textContent =
-      message;
-
-    box.style.display =
-      "block";
-
-    document.getElementById(
-      "checkout-error"
-    ).style.display =
-      "none";
-
-  }
-
-
-
-  async function checkUser() {
-
-    const {
-      data: {
-        user
-      },
-      error
-    } =
-      await supabaseClient.auth.getUser();
-
-
-    if (
-      error ||
-      !user
-    ) {
-
-      window.location.href =
-        "login.html";
-
-      return false;
-
-    }
-
-
-    currentUser =
-      user;
-
-    return true;
-
-  }
-
-
-
-  async function loadCart() {
-
-    const {
-      data: cart,
-      error: cartError
-    } =
-      await supabaseClient
-        .from("marketplace_carts")
-        .select(`
-          id,
-          buyer_id,
-          status
-        `)
-        .eq(
-          "buyer_id",
-          currentUser.id
-        )
-        .eq(
-          "status",
-          "active"
-        )
-        .maybeSingle();
-
-
-    if (cartError) {
-
-      throw cartError;
-
-    }
-
-
-    if (!cart) {
-
-      showEmptyCart();
-
-      return false;
-
-    }
-
-
-    currentCart =
-      cart;
-
-
-    const {
-      data: items,
-      error: itemsError
-    } =
-      await supabaseClient
-        .from("marketplace_cart_items")
-        .select(`
-          id,
-          cart_id,
-          product_id,
-          quantity
-        `)
-        .eq(
-          "cart_id",
-          cart.id
-        );
-
-
-    if (itemsError) {
-
-      throw itemsError;
-
-    }
-
-
-    cartItems =
-      items || [];
-
-
-    if (!cartItems.length) {
-
-      showEmptyCart();
-
-      return false;
-
-    }
-
-
-    const productIds =
-      cartItems.map(function(item) {
-
-        return item.product_id;
-
+      return "₦" + value.toLocaleString("en-NG", {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
       });
 
-
-    const {
-      data: products,
-      error: productsError
-    } =
-      await supabaseClient
-        .from("marketplace_listings")
-        .select(`
-          id,
-          seller_id,
-          title,
-          category,
-          price,
-          image_url,
-          status
-        `)
-        .in(
-          "id",
-          productIds
-        );
+    }
 
 
-    if (productsError) {
+    function escapeHtml(value) {
 
-      throw productsError;
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 
     }
 
 
-    productMap = {};
+    function showFormError(message) {
 
-    (products || []).forEach(
-      function(product) {
+      const box =
+        document.getElementById("formError");
 
-        productMap[
-          product.id
-        ] = product;
+      box.textContent =
+        message;
 
-      }
-    );
+      box.classList.add("show");
 
+      box.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+      });
 
-    const sellerIds =
-      [
-        ...new Set(
-          (products || []).map(
-            function(product) {
-              return product.seller_id;
-            }
-          )
-        )
-      ];
+    }
 
 
-    if (sellerIds.length) {
+    function clearFormError() {
+
+      const box =
+        document.getElementById("formError");
+
+      box.textContent = "";
+
+      box.classList.remove("show");
+
+    }
+
+
+    /* ======================================================
+       AUTH
+    ====================================================== */
+
+    async function initializeCheckout() {
 
       const {
-        data: stores,
-        error: storesError
-      } =
-        await supabaseClient
-          .from("marketplace_stores")
-          .select(`
-            id,
-            vendor_id,
-            store_name,
-            store_slug,
-            status
-          `)
-          .in(
-            "vendor_id",
-            sellerIds
-          )
-          .eq(
-            "status",
-            "active"
-          );
+        data: {
+          user
+        },
+        error
+      } = await supabaseClient.auth.getUser();
 
 
-      if (storesError) {
+      if (error || !user) {
 
-        console.error(
-          "Store loading error:",
-          storesError
-        );
-
-      } else {
-
-        storeMap = {};
-
-        (stores || []).forEach(
-          function(store) {
-
-            storeMap[
-              store.vendor_id
-            ] = store;
-
-          }
-        );
-
-      }
-
-    }
-
-
-    renderCheckoutCart();
-
-    return true;
-
-  }
-
-
-
-  function showEmptyCart() {
-
-    document.getElementById(
-      "loading"
-    ).style.display =
-      "none";
-
-    document.getElementById(
-      "empty-checkout"
-    ).style.display =
-      "block";
-
-  }
-
-
-
-  function renderCheckoutCart() {
-
-    const container =
-      document.getElementById(
-        "checkout-cart"
-      );
-
-
-    const groups = {};
-
-
-    cartItems.forEach(
-      function(item) {
-
-        const product =
-          productMap[
-            item.product_id
-          ];
-
-
-        if (!product) {
-
-          return;
-
-        }
-
-
-        const sellerId =
-          product.seller_id;
-
-
-        if (!groups[sellerId]) {
-
-          groups[sellerId] = [];
-
-        }
-
-
-        groups[sellerId].push({
-          item: item,
-          product: product
-        });
-
-      }
-    );
-
-
-    const groupIds =
-      Object.keys(groups);
-
-
-    if (!groupIds.length) {
-
-      showEmptyCart();
-
-      return;
-
-    }
-
-
-    let subtotal = 0;
-    let itemCount = 0;
-
-
-    container.innerHTML =
-      groupIds.map(
-        function(sellerId) {
-
-          const store =
-            storeMap[
-              sellerId
-            ];
-
-
-          const vendorName =
-            store?.store_name ||
-            "Marketplace Vendor";
-
-
-          const productsHtml =
-            groups[
-              sellerId
-            ].map(
-              function(entry) {
-
-                const product =
-                  entry.product;
-
-                const item =
-                  entry.item;
-
-                const quantity =
-                  Number(
-                    item.quantity || 1
-                  );
-
-                const lineTotal =
-                  Number(
-                    product.price || 0
-                  ) *
-                  quantity;
-
-
-                subtotal +=
-                  lineTotal;
-
-                itemCount +=
-                  quantity;
-
-
-                const image =
-                  product.image_url ||
-                  "https://placehold.co/300x300/11182e/ffffff?text=Product";
-
-
-                return `
-
-                  <div class="checkout-product">
-
-                    <img
-                      src="${escapeHtml(image)}"
-                      alt="${escapeHtml(product.title)}"
-                      class="checkout-product-image"
-                    >
-
-                    <div class="checkout-product-info">
-
-                      <div class="checkout-product-title">
-                        ${escapeHtml(product.title)}
-                      </div>
-
-                      <div class="checkout-product-meta">
-                        ${escapeHtml(
-                          product.category ||
-                          "Other"
-                        )}
-                        · Qty ${quantity}
-                      </div>
-
-                    </div>
-
-                    <div class="checkout-product-total">
-                      ${formatNaira(lineTotal)}
-                    </div>
-
-                  </div>
-
-                `;
-
-              }
-            ).join("");
-
-
-          return `
-
-            <div class="cart-vendor">
-
-              <div class="vendor-heading">
-
-                <strong>
-                  ${escapeHtml(vendorName)}
-                </strong>
-
-                <small>
-                  Products from this store
-                </small>
-
-              </div>
-
-              ${productsHtml}
-
-            </div>
-
-          `;
-
-        }
-      ).join("");
-
-
-    document.getElementById(
-      "summary-items"
-    ).textContent =
-      itemCount;
-
-
-    document.getElementById(
-      "summary-subtotal"
-    ).textContent =
-      formatNaira(subtotal);
-
-
-    /*
-     * Delivery fees will be calculated
-     * by the vendor/order system.
-     *
-     * They are deliberately not invented
-     * on the client.
-     */
-
-    document.getElementById(
-      "summary-delivery"
-    ).textContent =
-      "Calculated by vendor";
-
-
-    /*
-     * For this first checkout layer,
-     * total equals product subtotal.
-     *
-     * The final order/payment amount
-     * will include actual delivery fees
-     * once the order RPC/payment backend
-     * is connected.
-     */
-
-    document.getElementById(
-      "summary-total"
-    ).textContent =
-      formatNaira(subtotal);
-
-
-    document.getElementById(
-      "loading"
-    ).style.display =
-      "none";
-
-
-    document.getElementById(
-      "checkout-content"
-    ).style.display =
-      "grid";
-
-  }
-
-
-
-  function validateCheckoutForm() {
-
-    const fullName =
-      document.getElementById(
-        "full-name"
-      ).value.trim();
-
-
-    const primaryPhone =
-      document.getElementById(
-        "primary-phone"
-      ).value.trim();
-
-
-    const state =
-      document.getElementById(
-        "state"
-      ).value.trim();
-
-
-    const lga =
-      document.getElementById(
-        "lga"
-      ).value.trim();
-
-
-    const city =
-      document.getElementById(
-        "city"
-      ).value.trim();
-
-
-    const area =
-      document.getElementById(
-        "area"
-      ).value.trim();
-
-
-    const address =
-      document.getElementById(
-        "address"
-      ).value.trim();
-
-
-    if (!fullName) {
-
-      showError(
-        "Please enter your full name."
-      );
-
-      return false;
-
-    }
-
-
-    if (!primaryPhone) {
-
-      showError(
-        "Please enter your primary phone number."
-      );
-
-      return false;
-
-    }
-
-
-    if (primaryPhone.length < 7) {
-
-      showError(
-        "Please enter a valid primary phone number."
-      );
-
-      return false;
-
-    }
-
-
-    if (!state) {
-
-      showError(
-        "Please select your state."
-      );
-
-      return false;
-
-    }
-
-
-    if (!lga) {
-
-      showError(
-        "Please enter your LGA."
-      );
-
-      return false;
-
-    }
-
-
-    if (!city) {
-
-      showError(
-        "Please enter your city or town."
-      );
-
-      return false;
-
-    }
-
-
-    if (!area) {
-
-      showError(
-        "Please enter your area."
-      );
-
-      return false;
-
-    }
-
-
-    if (!address) {
-
-      showError(
-        "Please enter your full delivery address."
-      );
-
-      return false;
-
-    }
-
-
-    return true;
-
-  }
-
-
-
-  function getCheckoutData() {
-
-    const paymentMethod =
-      document.querySelector(
-        'input[name="payment_method"]:checked'
-      )?.value ||
-      "wallet";
-
-
-    return {
-
-      full_name:
-        document.getElementById(
-          "full-name"
-        ).value.trim(),
-
-      primary_phone:
-        document.getElementById(
-          "primary-phone"
-        ).value.trim(),
-
-      second_phone:
-        document.getElementById(
-          "second-phone"
-        ).value.trim(),
-
-      state:
-        document.getElementById(
-          "state"
-        ).value.trim(),
-
-      lga:
-        document.getElementById(
-          "lga"
-        ).value.trim(),
-
-      city:
-        document.getElementById(
-          "city"
-        ).value.trim(),
-
-      area:
-        document.getElementById(
-          "area"
-        ).value.trim(),
-
-      address:
-        document.getElementById(
-          "address"
-        ).value.trim(),
-
-      landmark:
-        document.getElementById(
-          "landmark"
-        ).value.trim(),
-
-      delivery_instructions:
-        document.getElementById(
-          "delivery-instructions"
-        ).value.trim(),
-
-      payment_method:
-        paymentMethod
-
-    };
-
-  }
-
-
-
-  async function continueToPayment() {
-
-    document.getElementById(
-      "checkout-error"
-    ).style.display =
-      "none";
-
-
-    if (!validateCheckoutForm()) {
-
-      return;
-
-    }
-
-
-    const button =
-      document.getElementById(
-        "place-order-button"
-      );
-
-
-    const checkoutData =
-      getCheckoutData();
-
-
-    /*
-     * Keep the validated checkout details
-     * temporarily so the secure order/payment
-     * process can use them.
-     */
-
-    sessionStorage.setItem(
-      "earngig_checkout_details",
-      JSON.stringify(
-        checkoutData
-      )
-    );
-
-
-    /*
-     * IMPORTANT:
-     *
-     * Do not deduct wallet funds or create
-     * a paid marketplace order directly
-     * from browser JavaScript.
-     *
-     * Wallet payment and Paystack payment
-     * must go through a secure server-side
-     * RPC/Edge Function.
-     *
-     * The exact marketplace order table
-     * columns and secure payment function
-     * have not yet been wired into this page.
-     */
-
-    button.disabled =
-      true;
-
-    button.textContent =
-      "Payment setup coming next...";
-
-
-    showSuccess(
-      "Your delivery information is valid and has been saved for checkout. The secure wallet/Paystack payment step will be connected next."
-    );
-
-
-    setTimeout(
-      function() {
-
-        button.disabled =
-          false;
-
-        button.textContent =
-          "Continue to Payment";
-
-      },
-      1800
-    );
-
-  }
-
-
-
-  document
-    .getElementById(
-      "place-order-button"
-    )
-    .addEventListener(
-      "click",
-      continueToPayment
-    );
-
-
-
-  (async function() {
-
-    try {
-
-      const loggedIn =
-        await checkUser();
-
-
-      if (!loggedIn) {
+        window.location.href =
+          "login.html?redirect=checkout.html";
 
         return;
 
       }
 
 
+      currentUser = user;
+
+
       await loadCart();
-
-    } catch (error) {
-
-      console.error(
-        "Checkout loading error:",
-        error
-      );
-
-
-      document.getElementById(
-        "loading"
-      ).style.display =
-        "none";
-
-
-      showError(
-        error.message ||
-        "Unable to load your checkout."
-      );
 
     }
 
-  })();
 
-</script>
+    /* ======================================================
+       LOAD CART
+    ====================================================== */
 
+    async function loadCart() {
+
+      try {
+
+        const {
+          data: cart,
+          error: cartError
+        } = await supabaseClient
+          .from("marketplace_carts")
+          .select(`
+            id,
+            user_id,
+            created_at,
+            updated_at
+          `)
+          .eq("user_id", currentUser.id)
+          .order("created_at", {
+            ascending: false
+          })
+          .limit(1)
+          .maybeSingle();
+
+
+        if (cartError) {
+          throw cartError;
+        }
+
+
+        if (!cart) {
+
+          showEmptyState();
+
+          return;
+
+        }
+
+
+        cartId =
+          cart.id;
+
+
+        const {
+          data: items,
+          error: itemsError
+        } = await supabaseClient
+          .from("marketplace_cart_items")
+          .select(`
+            id,
+            cart_id,
+            product_id,
+            quantity,
+            created_at
+          `)
+          .eq("cart_id", cartId)
+          .order("created_at", {
+            ascending: true
+          });
+
+
+        if (itemsError) {
+          throw itemsError;
+        }
+
+
+        cartItems =
+          items || [];
+
+
+        if (!cartItems.length) {
+
+          showEmptyState();
+
+          return;
+
+        }
+
+
+        /* ==================================================
+           LOAD REAL MARKETPLACE PRODUCTS
+        ================================================== */
+
+        const productIds = [
+          ...new Set(
+            cartItems
+              .map(item => item.product_id)
+              .filter(Boolean)
+          )
+        ];
+
+
+        if (!productIds.length) {
+
+          showEmptyState();
+
+          return;
+
+        }
+
+
+        const {
+          data: products,
+          error: productsError
+        } = await supabaseClient
+          .from("marketplace_products")
+          .select(`
+            id,
+            store_id,
+            vendor_id,
+            title,
+            category,
+            description,
+            price,
+            stock_quantity,
+            delivery_type,
+            status
+          `)
+          .in("id", productIds);
+
+
+        if (productsError) {
+          throw productsError;
+        }
+
+
+        productsById = {};
+
+
+        (products || []).forEach(product => {
+
+          productsById[product.id] =
+            product;
+
+        });
+
+
+        /* ==================================================
+           LOAD STORES
+        ================================================== */
+
+        const storeIds = [
+          ...new Set(
+            (products || [])
+              .map(product => product.store_id)
+              .filter(Boolean)
+          )
+        ];
+
+
+        storesById = {};
+
+
+        if (storeIds.length) {
+
+          const {
+            data: stores,
+            error: storesError
+          } = await supabaseClient
+            .from("marketplace_stores")
+            .select(`
+              id,
+              vendor_id,
+              store_name,
+              store_slug,
+              store_logo_url,
+              status
+            `)
+            .in("id", storeIds);
+
+
+          if (storesError) {
+            throw storesError;
+          }
+
+
+          (stores || []).forEach(store => {
+
+            storesById[store.id] =
+              store;
+
+          });
+
+        }
+
+
+        renderSummary();
+
+        document.getElementById(
+          "loadingState"
+        ).style.display = "none";
+
+        document.getElementById(
+          "checkoutArea"
+        ).style.display = "grid";
+
+
+      } catch (error) {
+
+        console.error(
+          "Checkout loading error:",
+          error
+        );
+
+
+        document.getElementById(
+          "loadingState"
+        ).innerHTML = `
+
+          <div class="state-icon">
+            ⚠️
+          </div>
+
+          <div class="state-title">
+            Checkout could not be loaded
+          </div>
+
+          <div class="state-text">
+            ${escapeHtml(error.message)}
+          </div>
+
+          <br>
+
+          <a
+            href="cart.html"
+            class="back-btn"
+            style="display:inline-block;"
+          >
+            Return to Cart
+          </a>
+
+        `;
+
+      }
+
+    }
+
+
+    /* ======================================================
+       SUMMARY
+    ====================================================== */
+
+    function renderSummary() {
+
+      const groups = {};
+
+      let subtotal = 0;
+      let itemCount = 0;
+
+
+      cartItems.forEach(item => {
+
+        const product =
+          productsById[item.product_id];
+
+
+        if (!product) {
+          return;
+        }
+
+
+        const storeId =
+          product.store_id;
+
+
+        if (!groups[storeId]) {
+
+          groups[storeId] = [];
+
+        }
+
+
+        const quantity =
+          Number(item.quantity || 0);
+
+        const price =
+          Number(product.price || 0);
+
+        const lineTotal =
+          quantity * price;
+
+
+        subtotal +=
+          lineTotal;
+
+        itemCount +=
+          quantity;
+
+
+        groups[storeId].push({
+          item,
+          product,
+          lineTotal
+        });
+
+      });
+
+
+      const summary =
+        document.getElementById(
+          "orderSummary"
+        );
+
+
+      const groupIds =
+        Object.keys(groups);
+
+
+      if (!groupIds.length) {
+
+        showEmptyState();
+
+        return;
+
+      }
+
+
+      summary.innerHTML =
+        groupIds.map(storeId => {
+
+          const store =
+            storesById[storeId];
+
+
+          const storeName =
+            store?.store_name ||
+            "EarnGig Vendor";
+
+
+          const items =
+            groups[storeId];
+
+
+          return `
+
+            <div class="store-section">
+
+              <div class="store-heading">
+                🏪 ${escapeHtml(storeName)}
+              </div>
+
+              ${items.map(entry => {
+
+                const product =
+                  entry.product;
+
+                return `
+
+                  <div class="summary-item">
+
+                    <img
+                      class="summary-image"
+                      src="https://via.placeholder.com/100x100/171e35/a78bfa?text=Product"
+                      alt=""
+                    >
+
+                    <div class="summary-info">
+
+                      <div class="summary-product-name">
+                        ${escapeHtml(product.title)}
+                      </div>
+
+                      <div class="summary-meta">
+                        ${entry.item.quantity}
+                        ×
+                        ${formatNaira(product.price)}
+                      </div>
+
+                    </div>
+
+                    <div class="summary-line-total">
+                      ${formatNaira(entry.lineTotal)}
+                    </div>
+
+                  </div>
+
+                `;
+
+              }).join("")}
+
+            </div>
+
+          `;
+
+        }).join("");
+
+
+      document.getElementById(
+        "subtotal"
+      ).textContent =
+        formatNaira(subtotal);
+
+
+      document.getElementById(
+        "deliveryFee"
+      ).textContent =
+        formatNaira(0);
+
+
+      document.getElementById(
+        "totalAmount"
+      ).textContent =
+        formatNaira(subtotal);
+
+
+      document.getElementById(
+        "placeOrderButton"
+      ).textContent =
+        "Pay " +
+        formatNaira(subtotal) +
+        " with EarnGig Wallet";
+
+    }
+
+
+    /* ======================================================
+       EMPTY STATE
+    ====================================================== */
+
+    function showEmptyState() {
+
+      document.getElementById(
+        "loadingState"
+      ).style.display = "none";
+
+
+      document.getElementById(
+        "checkoutArea"
+      ).style.display = "none";
+
+
+      document.getElementById(
+        "emptyState"
+      ).style.display = "block";
+
+    }
+
+
+    /* ======================================================
+       PAYMENT BUTTON TEXT
+    ====================================================== */
+
+    document
+      .querySelectorAll(
+        'input[name="paymentMethod"]'
+      )
+      .forEach(input => {
+
+        input.addEventListener(
+          "change",
+          function() {
+
+            const button =
+              document.getElementById(
+                "placeOrderButton"
+              );
+
+
+            const totalText =
+              document.getElementById(
+                "totalAmount"
+              ).textContent;
+
+
+            if (this.value === "wallet") {
+
+              button.textContent =
+                "Pay " +
+                totalText +
+                " with EarnGig Wallet";
+
+            }
+
+          }
+        );
+
+      });
+
+
+    /* ======================================================
+       PLACE ORDER
+    ====================================================== */
+
+    document
+      .getElementById("placeOrderButton")
+      .addEventListener(
+        "click",
+        async function() {
+
+          clearFormError();
+
+
+          const button =
+            this;
+
+
+          const fullName =
+            document
+              .getElementById("fullName")
+              .value
+              .trim();
+
+
+          const phone1 =
+            document
+              .getElementById("phone1")
+              .value
+              .trim();
+
+
+          const phone2 =
+            document
+              .getElementById("phone2")
+              .value
+              .trim();
+
+
+          const state =
+            document
+              .getElementById("state")
+              .value
+              .trim();
+
+
+          const lga =
+            document
+              .getElementById("lga")
+              .value
+              .trim();
+
+
+          const city =
+            document
+              .getElementById("city")
+              .value
+              .trim();
+
+
+          const area =
+            document
+              .getElementById("area")
+              .value
+              .trim();
+
+
+          const street =
+            document
+              .getElementById("street")
+              .value
+              .trim();
+
+
+          const address =
+            document
+              .getElementById("address")
+              .value
+              .trim();
+
+
+          const landmark =
+            document
+              .getElementById("landmark")
+              .value
+              .trim();
+
+
+          const deliveryInstructions =
+            document
+              .getElementById("deliveryInstructions")
+              .value
+              .trim();
+
+
+          const paymentMethod =
+            document.querySelector(
+              'input[name="paymentMethod"]:checked'
+            )?.value;
+
+
+          /* ==================================================
+             VALIDATION
+          ================================================== */
+
+          if (!fullName) {
+
+            showFormError(
+              "Please enter your full name."
+            );
+
+            return;
+
+          }
+
+
+          if (!phone1) {
+
+            showFormError(
+              "Please enter your primary phone number."
+            );
+
+            return;
+
+          }
+
+
+          if (!state) {
+
+            showFormError(
+              "Please enter your state."
+            );
+
+            return;
+
+          }
+
+
+          if (!lga) {
+
+            showFormError(
+              "Please enter your LGA."
+            );
+
+            return;
+
+          }
+
+
+          if (!city) {
+
+            showFormError(
+              "Please enter your city or town."
+            );
+
+            return;
+
+          }
+
+
+          if (!area) {
+
+            showFormError(
+              "Please enter your area."
+            );
+
+            return;
+
+          }
+
+
+          if (!street) {
+
+            showFormError(
+              "Please enter your street/full address."
+            );
+
+            return;
+
+          }
+
+
+          if (paymentMethod !== "wallet") {
+
+            showFormError(
+              "Please select EarnGig Wallet. Paystack will be available after its secure payment verification is connected."
+            );
+
+            return;
+
+          }
+
+
+          /* ==================================================
+             CONFIRM
+          ================================================== */
+
+          const confirmed =
+            window.confirm(
+              "Place this order and pay from your EarnGig Wallet?"
+            );
+
+
+          if (!confirmed) {
+            return;
+          }
+
+
+          button.disabled =
+            true;
+
+          button.textContent =
+            "Processing secure payment...";
+
+
+          try {
+
+            /* ================================================
+               CALL SECURE SERVER-SIDE RPC
+               ================================================ */
+
+            const {
+              data,
+              error
+            } = await supabaseClient
+              .rpc(
+                "create_marketplace_checkout",
+                {
+                  p_full_name:
+                    fullName,
+
+                  p_phone_1:
+                    phone1,
+
+                  p_phone_2:
+                    phone2 || null,
+
+                  p_state:
+                    state,
+
+                  p_lga:
+                    lga,
+
+                  p_city:
+                    city,
+
+                  p_area:
+                    area,
+
+                  p_street:
+                    street,
+
+                  p_address:
+                    address || null,
+
+                  p_landmark:
+                    landmark || null,
+
+                  p_delivery_instructions:
+                    deliveryInstructions || null,
+
+                  p_payment_method:
+                    "wallet"
+                }
+              );
+
+
+            if (error) {
+
+              throw error;
+
+            }
+
+
+            if (!data || data.success !== true) {
+
+              throw new Error(
+                "The checkout could not be completed."
+              );
+
+            }
+
+
+            /* ================================================
+               SUCCESS
+            ================================================= */
+
+            document.getElementById(
+              "checkoutArea"
+            ).style.display = "none";
+
+
+            document.getElementById(
+              "successState"
+            ).style.display = "block";
+
+
+            document.getElementById(
+              "successReference"
+            ).textContent =
+              "Payment reference: " +
+              data.payment_reference;
+
+
+          } catch (error) {
+
+            console.error(
+              "Marketplace checkout error:",
+              error
+            );
+
+
+            showFormError(
+              error.message ||
+              "Unable to complete your order. Your wallet has not been charged if the checkout failed."
+            );
+
+
+            button.disabled =
+              false;
+
+
+            button.textContent =
+              "Pay " +
+              document.getElementById(
+                "totalAmount"
+              ).textContent +
+              " with EarnGig Wallet";
+
+          }
+
+        }
+      );
+
+
+    /* ======================================================
+       START
+    ====================================================== */
+
+    initializeCheckout();
+
+  </script>
 
 </body>
-
 </html>
