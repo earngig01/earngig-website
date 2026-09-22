@@ -8,11 +8,277 @@
   <title>Seller Dashboard | EarnGig</title>
 
   <link rel="stylesheet" href="styles.css">
+
+  <style>
+    .seller-page {
+      padding: 35px 0 70px;
+    }
+
+    .seller-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .seller-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .seller-store-card {
+      background: linear-gradient(
+        135deg,
+        rgba(124, 58, 237, 0.18),
+        rgba(37, 99, 235, 0.10)
+      );
+      border: 1px solid rgba(139, 92, 246, 0.22);
+      border-radius: 18px;
+      padding: 20px;
+      margin-bottom: 25px;
+    }
+
+    .store-status {
+      display: inline-flex;
+      padding: 6px 10px;
+      border-radius: 8px;
+      background: rgba(139, 92, 246, 0.14);
+      color: #bda7ff;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .store-name {
+      font-size: 22px;
+      font-weight: 800;
+      margin: 10px 0 5px;
+    }
+
+    .store-slug {
+      color: #9da7c0;
+      font-size: 13px;
+    }
+
+    .store-link {
+      margin-top: 14px;
+      display: inline-flex;
+      padding: 9px 13px;
+      border-radius: 9px;
+      background: #171f38;
+      color: #c9bcff;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .dashboard-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .dashboard-stat {
+      background: #10172b;
+      border: 1px solid #222b47;
+      border-radius: 15px;
+      padding: 18px;
+    }
+
+    .dashboard-stat small {
+      display: block;
+      color: #8f99b4;
+      margin-bottom: 8px;
+      font-size: 12px;
+    }
+
+    .dashboard-stat strong {
+      font-size: 22px;
+    }
+
+    .seller-products {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+    }
+
+    .seller-product {
+      background: #10172b;
+      border: 1px solid #222b47;
+      border-radius: 15px;
+      overflow: hidden;
+    }
+
+    .seller-product-image {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      display: block;
+      background: #171e35;
+    }
+
+    .seller-product-content {
+      padding: 15px;
+    }
+
+    .seller-product-title {
+      font-size: 16px;
+      font-weight: 800;
+      margin-bottom: 7px;
+    }
+
+    .seller-product-price {
+      color: #a78bfa;
+      font-size: 18px;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .product-meta {
+      color: #8f99b4;
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      padding: 5px 9px;
+      border-radius: 7px;
+      background: #19213a;
+      color: #cbd3e8;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .order-card {
+      background: #10172b;
+      border: 1px solid #222b47;
+      border-radius: 15px;
+      padding: 17px;
+    }
+
+    .order-card h3 {
+      margin: 0 0 10px;
+      font-size: 15px;
+    }
+
+    .order-card p {
+      color: #9da7c0;
+      font-size: 13px;
+      margin: 6px 0;
+    }
+
+    .earning-box {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+    }
+
+    .earning-item {
+      background: #10172b;
+      border: 1px solid #222b47;
+      border-radius: 15px;
+      padding: 20px;
+    }
+
+    .earning-item small {
+      display: block;
+      color: #8f99b4;
+      margin-bottom: 8px;
+    }
+
+    .earning-item strong {
+      font-size: 21px;
+    }
+
+    .empty-box {
+      background: #10172b;
+      border: 1px solid #222b47;
+      border-radius: 15px;
+      padding: 30px;
+      text-align: center;
+      color: #929cb5;
+      grid-column: 1 / -1;
+    }
+
+    .empty-box h3 {
+      color: #fff;
+      margin: 0 0 8px;
+    }
+
+    .error-message {
+      color: #fca5a5;
+    }
+
+    @media (max-width: 850px) {
+
+      .dashboard-stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .seller-products {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .earning-box {
+        grid-template-columns: 1fr;
+      }
+
+    }
+
+    @media (max-width: 600px) {
+
+      .seller-page {
+        padding: 20px 0 50px;
+      }
+
+      .seller-header {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .dashboard-stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+      }
+
+      .dashboard-stat {
+        padding: 14px;
+      }
+
+      .dashboard-stat strong {
+        font-size: 18px;
+      }
+
+      .seller-products {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+      }
+
+      .seller-product-content {
+        padding: 11px;
+      }
+
+      .seller-product-title {
+        font-size: 13px;
+      }
+
+      .seller-product-price {
+        font-size: 15px;
+      }
+
+    }
+  </style>
 </head>
+
 
 <body>
 
 <header>
+
   <div class="container nav">
 
     <a class="logo" href="index.html">
@@ -20,80 +286,191 @@
       Earn<span>Gig</span>
     </a>
 
-    <span class="admin-badge">SELLER</span>
+    <span class="admin-badge">
+      SELLER
+    </span>
 
-    <a class="btn outline" href="marketplace.html">
-      Marketplace
-    </a>
+    <div style="display:flex; gap:8px; flex-wrap:wrap;">
 
-  </div>
-</header>
+      <a
+        class="btn outline"
+        href="marketplace.html">
+        Marketplace
+      </a>
 
-
-<main class="dashboard-page">
-
-  <div class="container">
-
-    <div class="dashboard-heading">
-
-      <div>
-        <span class="eyebrow">SELLER CENTER</span>
-
-        <h1>Welcome, <span id="seller-name">Seller</span></h1>
-
-        <p>
-          Manage your listings, sales and marketplace earnings.
-        </p>
-      </div>
-
-      <a class="btn primary" href="create-listing.html">
-        + Create Listing
+      <a
+        class="btn primary"
+        href="create-listing.html">
+        + Add Product
       </a>
 
     </div>
 
+  </div>
 
-    <!-- SELLER STATS -->
+</header>
 
-    <div class="dashboard-stats">
 
-      <div class="dashboard-stat">
-        <small>Active Listings</small>
-        <strong id="active-listings">0</strong>
+<main class="seller-page">
+
+  <div class="container">
+
+
+    <!-- HEADER -->
+
+    <div class="seller-header">
+
+      <div>
+
+        <span class="eyebrow">
+          SELLER CENTER
+        </span>
+
+        <h1>
+          Welcome,
+          <span id="seller-name">
+            Seller
+          </span>
+        </h1>
+
+        <p>
+          Manage your products, orders and marketplace earnings.
+        </p>
+
       </div>
 
-      <div class="dashboard-stat">
-        <small>Total Orders</small>
-        <strong id="total-orders">0</strong>
-      </div>
+      <div class="seller-actions">
 
-      <div class="dashboard-stat">
-        <small>Total Sales</small>
-        <strong id="total-sales">₦0</strong>
-      </div>
+        <a
+          class="btn outline"
+          href="marketplace.html">
+          View Marketplace
+        </a>
 
-      <div class="dashboard-stat">
-        <small>Available Earnings</small>
-        <strong id="available-earnings">₦0</strong>
+        <a
+          class="btn primary"
+          href="create-listing.html">
+          + Add Product
+        </a>
+
       </div>
 
     </div>
 
 
-    <!-- MY LISTINGS -->
+    <!-- STORE -->
+
+    <section
+      class="seller-store-card"
+      id="store-card">
+
+      <span class="store-status">
+        STORE
+      </span>
+
+      <div
+        class="store-name"
+        id="store-name">
+        Loading store...
+      </div>
+
+      <div
+        class="store-slug"
+        id="store-description">
+        Checking your marketplace store...
+      </div>
+
+      <a
+        id="store-link"
+        class="store-link"
+        href="#"
+        style="display:none;">
+        Visit My Store →
+      </a>
+
+    </section>
+
+
+    <!-- STATS -->
+
+    <div class="dashboard-stats">
+
+      <div class="dashboard-stat">
+
+        <small>
+          Active Products
+        </small>
+
+        <strong id="active-listings">
+          0
+        </strong>
+
+      </div>
+
+
+      <div class="dashboard-stat">
+
+        <small>
+          Total Orders
+        </small>
+
+        <strong id="total-orders">
+          0
+        </strong>
+
+      </div>
+
+
+      <div class="dashboard-stat">
+
+        <small>
+          Total Sales
+        </small>
+
+        <strong id="total-sales">
+          ₦0
+        </strong>
+
+      </div>
+
+
+      <div class="dashboard-stat">
+
+        <small>
+          Available Earnings
+        </small>
+
+        <strong id="available-earnings">
+          ₦0
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <!-- PRODUCTS -->
 
     <section class="dashboard-section">
 
       <div class="section-title">
 
         <div>
-          <span class="eyebrow">MY LISTINGS</span>
 
-          <h2>Your marketplace listings</h2>
+          <span class="eyebrow">
+            MY PRODUCTS
+          </span>
+
+          <h2>
+            Your marketplace products
+          </h2>
+
         </div>
 
-        <a href="create-listing.html" class="text-link">
-          Create listing →
+        <a
+          href="create-listing.html"
+          class="text-link">
+          Add product →
         </a>
 
       </div>
@@ -101,15 +478,16 @@
 
       <div
         id="seller-listings"
-        class="task-grid"
-      >
+        class="seller-products">
 
-        <div class="empty-state">
+        <div class="empty-box">
 
-          <h3>Loading listings...</h3>
+          <h3>
+            Loading products...
+          </h3>
 
           <p>
-            Your marketplace listings are being loaded.
+            Your marketplace products are being loaded.
           </p>
 
         </div>
@@ -119,16 +497,21 @@
     </section>
 
 
-    <!-- RECENT ORDERS -->
+    <!-- ORDERS -->
 
     <section class="dashboard-section">
 
       <div class="section-title">
 
         <div>
-          <span class="eyebrow">RECENT ORDERS</span>
 
-          <h2>Sales activity</h2>
+          <span class="eyebrow">
+            RECENT ORDERS
+          </span>
+
+          <h2>
+            Customer orders
+          </h2>
 
         </div>
 
@@ -137,12 +520,13 @@
 
       <div
         id="seller-orders"
-        class="task-grid"
-      >
+        class="task-grid">
 
-        <div class="empty-state">
+        <div class="empty-box">
 
-          <h3>Loading orders...</h3>
+          <h3>
+            Loading orders...
+          </h3>
 
           <p>
             Your customer orders are being loaded.
@@ -155,7 +539,7 @@
     </section>
 
 
-    <!-- SELLER EARNINGS -->
+    <!-- EARNINGS -->
 
     <section class="dashboard-section">
 
@@ -167,7 +551,9 @@
             SELLER EARNINGS
           </span>
 
-          <h2>Financial summary</h2>
+          <h2>
+            Financial summary
+          </h2>
 
         </div>
 
@@ -176,7 +562,7 @@
 
       <div class="earning-box">
 
-        <div>
+        <div class="earning-item">
 
           <small>
             Available earnings
@@ -189,7 +575,7 @@
         </div>
 
 
-        <div>
+        <div class="earning-item">
 
           <small>
             Pending earnings
@@ -202,7 +588,7 @@
         </div>
 
 
-        <div>
+        <div class="earning-item">
 
           <small>
             Total sales
@@ -217,6 +603,7 @@
       </div>
 
     </section>
+
 
   </div>
 
@@ -236,286 +623,441 @@
 <script src="supabase.js"></script>
 
 <script>
-async function checkSellerAccess() {
 
-  const {
-    data: { user },
-    error: userError
-  } = await supabaseClient.auth.getUser();
-
-  if (userError || !user) {
-    window.location.href = "login.html";
-    return false;
-  }
-
-  // First confirm the user's ₦9,000 membership.
-  const {
-    data: membership,
-    error: membershipError
-  } = await supabaseClient
-    .from("membership_payments")
-    .select("id")
-    .eq("user_id", user.id)
-    .eq("payment_type", "first_payment")
-    .eq("status", "confirmed")
-    .eq("amount", 9000)
-    .limit(1)
-    .maybeSingle();
-
-  if (membershipError || !membership) {
-
-    alert(
-      "You must have an active EarnGig membership before becoming a seller."
-    );
-
-    window.location.href = "login.html";
-
-    return false;
-  }
-
-  /*
-   * Seller subscription.
-   *
-   * This checks for a confirmed ₦2,500 seller payment
-   * whose payment date is within the current 30-day period.
-   */
-  const thirtyDaysAgo =
-    new Date(
-      Date.now() - 30 * 24 * 60 * 60 * 1000
-    ).toISOString();
-
-  const {
-    data: sellerPayment,
-    error: sellerPaymentError
-  } = await supabaseClient
-    .from("membership_payments")
-    .select("id, paid_at")
-    .eq("user_id", user.id)
-    .eq("payment_type", "seller")
-    .eq("status", "confirmed")
-    .eq("amount", 2500)
-    .gte("paid_at", thirtyDaysAgo)
-    .order("paid_at", {
-      ascending: false
-    })
-    .limit(1)
-    .maybeSingle();
-
-  if (sellerPaymentError) {
-
-    console.error(
-      "Seller subscription check error:",
-      sellerPaymentError
-    );
-
-    alert(
-      "Unable to verify your seller subscription."
-    );
-
-    return false;
-  }
-
-  if (!sellerPayment) {
-
-    alert(
-      "Seller access requires an active ₦2,500 monthly subscription."
-    );
-
-    window.location.href =
-      "seller-subscription.html";
-
-    return false;
-  }
-
-  return true;
-}
-async function loadSellerDashboard() {
-
-  const {
-    data: { user },
-    error: userError
-  } = await supabaseClient.auth.getUser();
+  let currentSeller = null;
 
 
-  if (userError || !user) {
+  function formatNaira(amount) {
 
-    window.location.href = "login.html";
+    return "₦" +
+      Number(amount || 0).toLocaleString(
+        "en-NG"
+      );
 
-    return;
   }
 
 
-  /*
-   * Load seller profile
-   */
+  function escapeHtml(value) {
 
-  const {
-    data: profile
-  } = await supabaseClient
-    .from("profiles")
-    .select("full_name")
-    .eq("id", user.id)
-    .maybeSingle();
+    return String(value ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
 
-
-  document.getElementById(
-    "seller-name"
-  ).textContent =
-    profile?.full_name || "Seller";
+  }
 
 
-  /*
-   * Load seller listings
-   */
+  async function checkSellerAccess() {
 
-  const {
-    data: listings,
-    error: listingsError
-  } = await supabaseClient
-    .from("marketplace_listings")
-    .select(`
-      id,
-      title,
-      category,
-      description,
-      price,
-      delivery_type,
-      status,
-      created_at
-    `)
-    .eq("seller_id", user.id)
-    .order("created_at", {
-      ascending: false
-    });
+    const {
+      data: { user },
+      error: userError
+    } = await supabaseClient.auth.getUser();
 
 
-  if (listingsError) {
+    if (userError || !user) {
 
-    console.error(
-      "Listings error:",
-      listingsError
-    );
+      window.location.href =
+        "login.html";
+
+      return false;
+
+    }
+
+
+    currentSeller = user;
+
+
+    /*
+     * Confirm EarnGig membership.
+     */
+
+    const {
+      data: membership,
+      error: membershipError
+    } = await supabaseClient
+      .from("membership_payments")
+      .select("id")
+      .eq("user_id", user.id)
+      .eq("payment_type", "first_payment")
+      .eq("status", "confirmed")
+      .eq("amount", 9000)
+      .limit(1)
+      .maybeSingle();
+
+
+    if (
+      membershipError ||
+      !membership
+    ) {
+
+      alert(
+        "You must have an active EarnGig membership before becoming a seller."
+      );
+
+      window.location.href =
+        "login.html";
+
+      return false;
+
+    }
+
+
+    /*
+     * Confirm current seller subscription.
+     */
+
+    const thirtyDaysAgo =
+      new Date(
+        Date.now() -
+        30 * 24 * 60 * 60 * 1000
+      ).toISOString();
+
+
+    const {
+      data: sellerPayment,
+      error: sellerPaymentError
+    } = await supabaseClient
+      .from("membership_payments")
+      .select("id, paid_at")
+      .eq("user_id", user.id)
+      .eq("payment_type", "seller")
+      .eq("status", "confirmed")
+      .eq("amount", 2500)
+      .gte("paid_at", thirtyDaysAgo)
+      .order("paid_at", {
+        ascending: false
+      })
+      .limit(1)
+      .maybeSingle();
+
+
+    if (sellerPaymentError) {
+
+      console.error(
+        "Seller subscription error:",
+        sellerPaymentError
+      );
+
+      alert(
+        "Unable to verify your seller subscription."
+      );
+
+      return false;
+
+    }
+
+
+    if (!sellerPayment) {
+
+      alert(
+        "Seller access requires an active ₦2,500 monthly subscription."
+      );
+
+      window.location.href =
+        "seller-subscription.html";
+
+      return false;
+
+    }
+
+
+    return true;
+
+  }
+
+
+  async function loadSellerProfile() {
+
+    const {
+      data: profile,
+      error
+    } = await supabaseClient
+      .from("profiles")
+      .select("full_name")
+      .eq("id", currentSeller.id)
+      .maybeSingle();
+
+
+    if (error) {
+
+      console.error(
+        "Profile error:",
+        error
+      );
+
+    }
+
 
     document.getElementById(
-      "seller-listings"
-    ).innerHTML = `
-      <div class="empty-state">
-        <h3>Unable to load listings</h3>
-        <p>
-          ${listingsError.message}
-        </p>
-      </div>
-    `;
+      "seller-name"
+    ).textContent =
+      profile?.full_name ||
+      "Seller";
 
-    return;
   }
 
 
-  const sellerListings =
-    listings || [];
+  async function loadSellerStore() {
+
+    const {
+      data: store,
+      error
+    } = await supabaseClient
+      .from("marketplace_stores")
+      .select(`
+        id,
+        vendor_id,
+        store_name,
+        store_slug,
+        description,
+        store_logo_url,
+        status
+      `)
+      .eq(
+        "vendor_id",
+        currentSeller.id
+      )
+      .maybeSingle();
 
 
-  /*
-   * Active listing count
-   */
+    if (error) {
 
-  const activeListings =
-    sellerListings.filter(function(listing) {
+      console.error(
+        "Store error:",
+        error
+      );
 
-      return listing.status === "active";
+      document.getElementById(
+        "store-name"
+      ).textContent =
+        "Store unavailable";
 
-    }).length;
+      document.getElementById(
+        "store-description"
+      ).textContent =
+        "Your store information could not be loaded.";
+
+      return;
+
+    }
 
 
-  document.getElementById(
-    "active-listings"
-  ).textContent =
-    activeListings;
+    if (!store) {
+
+      document.getElementById(
+        "store-name"
+      ).textContent =
+        "No store yet";
+
+      document.getElementById(
+        "store-description"
+      ).textContent =
+        "Your marketplace store will appear here after approval.";
+
+      return;
+
+    }
 
 
-  /*
-   * Render listings
-   */
-
-  const listingContainer =
     document.getElementById(
-      "seller-listings"
-    );
+      "store-name"
+    ).textContent =
+      store.store_name;
 
 
-  if (sellerListings.length === 0) {
+    document.getElementById(
+      "store-description"
+    ).textContent =
+      store.description ||
+      `Store status: ${store.status}`;
 
-    listingContainer.innerHTML = `
-      <div class="empty-state">
 
-        <div class="empty-icon">▣</div>
+    if (store.store_slug) {
 
-        <h3>No listings yet</h3>
+      const link =
+        document.getElementById(
+          "store-link"
+        );
 
-        <p>
-          Create your first product or service listing.
-        </p>
+      link.href =
+        `store.html?store=${encodeURIComponent(
+          store.store_slug
+        )}`;
 
-        <a
-          href="create-listing.html"
-          class="btn primary"
-        >
-          Create Listing
-        </a>
+      link.style.display =
+        "inline-flex";
 
-      </div>
-    `;
+    }
 
-  } else {
+  }
 
-    listingContainer.innerHTML =
-      sellerListings.map(function(listing) {
+
+  async function loadSellerListings() {
+
+    const {
+      data: listings,
+      error
+    } = await supabaseClient
+      .from("marketplace_listings")
+      .select(`
+        id,
+        title,
+        category,
+        description,
+        price,
+        delivery_type,
+        image_url,
+        status,
+        created_at
+      `)
+      .eq(
+        "seller_id",
+        currentSeller.id
+      )
+      .order("created_at", {
+        ascending: false
+      });
+
+
+    const container =
+      document.getElementById(
+        "seller-listings"
+      );
+
+
+    if (error) {
+
+      console.error(
+        "Listings error:",
+        error
+      );
+
+      container.innerHTML = `
+        <div class="empty-box">
+
+          <h3>
+            Unable to load products
+          </h3>
+
+          <p class="error-message">
+            ${escapeHtml(error.message)}
+          </p>
+
+        </div>
+      `;
+
+      return [];
+
+    }
+
+
+    const products =
+      listings || [];
+
+
+    const activeProducts =
+      products.filter(function(item) {
+
+        return String(
+          item.status || ""
+        ).toLowerCase() === "active";
+
+      });
+
+
+    document.getElementById(
+      "active-listings"
+    ).textContent =
+      activeProducts.length;
+
+
+    if (!products.length) {
+
+      container.innerHTML = `
+        <div class="empty-box">
+
+          <h3>
+            No products yet
+          </h3>
+
+          <p>
+            Add your first physical product to the EarnGig marketplace.
+          </p>
+
+          <a
+            href="create-listing.html"
+            class="btn primary">
+            + Add Product
+          </a>
+
+        </div>
+      `;
+
+      return products;
+
+    }
+
+
+    container.innerHTML =
+      products.map(function(product) {
+
+        const image =
+          product.image_url ||
+          "https://placehold.co/600x600/11182e/ffffff?text=Product";
+
 
         return `
 
-          <article class="task-card">
+          <article class="seller-product">
 
-            <div class="task-card-content">
+            <img
+              src="${escapeHtml(image)}"
+              alt="${escapeHtml(product.title)}"
+              class="seller-product-image"
+              loading="lazy"
+            >
 
-              <span class="eyebrow">
-                ${listing.category}
-              </span>
+            <div class="seller-product-content">
 
-              <h3>
-                ${listing.title}
-              </h3>
+              <div class="seller-product-title">
+                ${escapeHtml(product.title)}
+              </div>
 
-              <p>
-                ${listing.description}
-              </p>
+              <div class="seller-product-price">
+                ${formatNaira(product.price)}
+              </div>
 
-              <strong
-                class="task-reward"
-                style="
-                  display:inline-flex;
-                  width:max-content;
-                  padding:10px 16px;
-                  border-radius:10px;
-                  background:#f6c945;
-                  color:#172554 !important;
-                  font-size:20px;
-                  font-weight:800;
-                "
-              >
-                ₦${Number(
-                  listing.price
-                ).toLocaleString("en-NG")}
-              </strong>
+              <div class="product-meta">
 
-              <p>
-                <strong>Status:</strong>
-                ${listing.status}
-              </p>
+                <div>
+                  Category:
+                  ${escapeHtml(
+                    product.category ||
+                    "Other"
+                  )}
+                </div>
 
-              <p>
-                <strong>Delivery:</strong>
-                ${listing.delivery_type}
-              </p>
+                <div>
+                  Delivery:
+                  ${escapeHtml(
+                    product.delivery_type ||
+                    "Not specified"
+                  )}
+                </div>
+
+                <div style="margin-top:7px;">
+                  <span class="status-pill">
+                    ${escapeHtml(
+                      product.status ||
+                      "unknown"
+                    )}
+                  </span>
+                </div>
+
+              </div>
 
             </div>
 
@@ -525,164 +1067,180 @@ async function loadSellerDashboard() {
 
       }).join("");
 
+
+    return products;
+
   }
 
 
-  /*
-   * Load seller orders
-   */
+  async function loadSellerOrders() {
 
-  const {
-    data: orders,
-    error: ordersError
-  } = await supabaseClient
-    .from("marketplace_orders")
-    .select(`
-      id,
-      listing_id,
-      buyer_id,
-      amount,
-      status,
-      created_at
-    `)
-    .eq("seller_id", user.id)
-    .order("created_at", {
-      ascending: false
-    });
+    const {
+      data: orders,
+      error
+    } = await supabaseClient
+      .from("marketplace_orders")
+      .select(`
+        id,
+        listing_id,
+        buyer_id,
+        amount,
+        status,
+        created_at
+      `)
+      .eq(
+        "seller_id",
+        currentSeller.id
+      )
+      .order("created_at", {
+        ascending: false
+      });
 
 
-  if (ordersError) {
+    const container =
+      document.getElementById(
+        "seller-orders"
+      );
 
-    console.error(
-      "Orders error:",
-      ordersError
-    );
+
+    if (error) {
+
+      console.error(
+        "Orders error:",
+        error
+      );
+
+      container.innerHTML = `
+        <div class="empty-box">
+
+          <h3>
+            Unable to load orders
+          </h3>
+
+          <p class="error-message">
+            ${escapeHtml(error.message)}
+          </p>
+
+        </div>
+      `;
+
+      return [];
+
+    }
+
+
+    const sellerOrders =
+      orders || [];
+
 
     document.getElementById(
-      "seller-orders"
-    ).innerHTML = `
-      <div class="empty-state">
-        <h3>Unable to load orders</h3>
-        <p>
-          ${ordersError.message}
-        </p>
-      </div>
-    `;
-
-    return;
-  }
+      "total-orders"
+    ).textContent =
+      sellerOrders.length;
 
 
-  const sellerOrders =
-    orders || [];
+    /*
+     * Only completed orders count as
+     * completed sales in this legacy
+     * dashboard.
+     */
+
+    const completedOrders =
+      sellerOrders.filter(function(order) {
+
+        return String(
+          order.status || ""
+        ).toLowerCase() ===
+          "completed";
+
+      });
 
 
-  /*
-   * Order statistics
-   */
+    const totalSales =
+      completedOrders.reduce(
+        function(total, order) {
 
-  const totalOrders =
-    sellerOrders.length;
+          return total +
+            Number(
+              order.amount || 0
+            );
 
-
-  const totalSales =
-    sellerOrders
-      .filter(function(order) {
-
-        return order.status === "completed";
-
-      })
-      .reduce(function(total, order) {
-
-        return total +
-          Number(order.amount || 0);
-
-      }, 0);
+        },
+        0
+      );
 
 
-  document.getElementById(
-    "total-orders"
-  ).textContent =
-    totalOrders;
-
-
-  document.getElementById(
-    "total-sales"
-  ).textContent =
-    `₦${totalSales.toLocaleString("en-NG")}`;
-
-
-  document.getElementById(
-    "summary-total-sales"
-  ).textContent =
-    `₦${totalSales.toLocaleString("en-NG")}`;
-
-
-  /*
-   * Render orders
-   */
-
-  const orderContainer =
     document.getElementById(
-      "seller-orders"
-    );
+      "total-sales"
+    ).textContent =
+      formatNaira(totalSales);
 
 
-  if (sellerOrders.length === 0) {
+    document.getElementById(
+      "summary-total-sales"
+    ).textContent =
+      formatNaira(totalSales);
 
-    orderContainer.innerHTML = `
-      <div class="empty-state">
 
-        <div class="empty-icon">◷</div>
+    if (!sellerOrders.length) {
 
-        <h3>No orders yet</h3>
+      container.innerHTML = `
+        <div class="empty-box">
 
-        <p>
-          Customer orders will appear here once
-          someone purchases your listing.
-        </p>
+          <h3>
+            No orders yet
+          </h3>
 
-      </div>
-    `;
+          <p>
+            Customer orders will appear here when buyers purchase your products.
+          </p>
 
-  } else {
+        </div>
+      `;
 
-    orderContainer.innerHTML =
+      return sellerOrders;
+
+    }
+
+
+    container.innerHTML =
       sellerOrders.map(function(order) {
 
         return `
 
-          <article class="task-card">
+          <article class="order-card">
 
-            <div class="task-card-content">
+            <h3>
+              Order #${escapeHtml(
+                String(order.id).slice(0, 8)
+              )}
+            </h3>
 
-              <span class="eyebrow">
-                MARKETPLACE SALE
+            <p>
+              Amount:
+              <strong style="color:#a78bfa;">
+                ${formatNaira(order.amount)}
+              </strong>
+            </p>
+
+            <p>
+              Status:
+              <span class="status-pill">
+                ${escapeHtml(
+                  order.status ||
+                  "pending"
+                )}
               </span>
+            </p>
 
-              <h3>
-                Order #${order.id.slice(0, 8)}
-              </h3>
-
-              <p>
-                Amount:
-                ₦${Number(
-                  order.amount
-                ).toLocaleString("en-NG")}
-              </p>
-
-              <p>
-                Status:
-                ${order.status}
-              </p>
-
-              <p>
-                ${new Date(
-                  order.created_at
-                ).toLocaleString("en-NG")}
-              </p>
-
-            </div>
+            <p>
+              Date:
+              ${new Date(
+                order.created_at
+              ).toLocaleString(
+                "en-NG"
+              )}
+            </p>
 
           </article>
 
@@ -690,54 +1248,73 @@ async function loadSellerDashboard() {
 
       }).join("");
 
+
+    return sellerOrders;
+
   }
 
 
-  /*
-   * Load seller wallet
-   */
+  async function loadSellerWallet() {
 
-  const {
-    data: wallet,
-    error: walletError
-  } = await supabaseClient
-    .from("wallets")
-    .select(`
-      balance,
-      total_earned
-    `)
-    .eq("user_id", user.id)
-    .maybeSingle();
-
-
-  if (walletError) {
-
-    console.error(
-      "Wallet error:",
-      walletError
-    );
-
-    return;
-  }
+    const {
+      data: wallet,
+      error
+    } = await supabaseClient
+      .from("wallets")
+      .select(`
+        balance,
+        total_earned
+      `)
+      .eq(
+        "user_id",
+        currentSeller.id
+      )
+      .maybeSingle();
 
 
-  if (wallet) {
+    if (error) {
+
+      console.error(
+        "Wallet error:",
+        error
+      );
+
+      return;
+
+    }
+
+
+    if (!wallet) {
+
+      return;
+
+    }
+
 
     document.getElementById(
       "available-earnings"
     ).textContent =
-      `₦${Number(
-        wallet.balance || 0
-      ).toLocaleString("en-NG")}`;
+      formatNaira(
+        wallet.balance
+      );
 
 
     document.getElementById(
       "earning-balance"
     ).textContent =
-      `₦${Number(
-        wallet.balance || 0
-      ).toLocaleString("en-NG")}`;
+      formatNaira(
+        wallet.balance
+      );
 
+
+    /*
+     * Pending earnings are not calculated
+     * from the old marketplace_orders table.
+     *
+     * They will be connected to the new
+     * delivery-confirmation system when
+     * marketplace_store_orders is activated.
+     */
 
     document.getElementById(
       "pending-earnings"
@@ -746,23 +1323,41 @@ async function loadSellerDashboard() {
 
   }
 
-}
 
+  async function loadSellerDashboard() {
 
-(async function () {
+    await loadSellerProfile();
 
-  const hasSellerAccess =
-    await checkSellerAccess();
+    await loadSellerStore();
 
-  if (!hasSellerAccess) {
-    return;
+    await loadSellerListings();
+
+    await loadSellerOrders();
+
+    await loadSellerWallet();
+
   }
 
-  await loadSellerDashboard();
 
-})();
+  (async function() {
+
+    const allowed =
+      await checkSellerAccess();
+
+
+    if (!allowed) {
+
+      return;
+
+    }
+
+
+    await loadSellerDashboard();
+
+  })();
 
 </script>
 
 </body>
-  </html>
+
+</html>
