@@ -1,0 +1,1415 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Store | EarnGig Marketplace</title>
+
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+
+    body {
+      background:
+        radial-gradient(
+          circle at top right,
+          rgba(92, 60, 180, 0.12),
+          transparent 35%
+        ),
+        #070b2b;
+    }
+
+    .store-page {
+      padding: 25px 0 70px;
+    }
+
+    .back-link {
+      display: inline-flex;
+      margin-bottom: 18px;
+      color: #a99cff;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .store-header {
+      background:
+        linear-gradient(
+          135deg,
+          rgba(124, 58, 237, 0.20),
+          rgba(37, 99, 235, 0.08)
+        );
+
+      border: 1px solid rgba(122, 105, 220, 0.24);
+      border-radius: 20px;
+      padding: 25px;
+      margin-bottom: 20px;
+    }
+
+    .store-header-content {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .store-logo {
+      width: 86px;
+      height: 86px;
+      border-radius: 16px;
+      object-fit: contain;
+      background: #090d31;
+      border: 1px solid #343963;
+      padding: 7px;
+      flex-shrink: 0;
+    }
+
+    .store-logo-fallback {
+      width: 86px;
+      height: 86px;
+      border-radius: 16px;
+      background: linear-gradient(
+        135deg,
+        #6d28d9,
+        #9333ea
+      );
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 32px;
+      font-weight: 900;
+      flex-shrink: 0;
+    }
+
+    .store-title {
+      margin: 0 0 6px;
+      font-size: 28px;
+      line-height: 1.2;
+    }
+
+    .store-description {
+      margin: 0;
+      color: #aeb5d0;
+      line-height: 1.65;
+      font-size: 14px;
+      max-width: 700px;
+    }
+
+    .store-meta {
+      margin-top: 10px;
+      color: #858baa;
+      font-size: 12px;
+    }
+
+    .store-actions {
+      display: flex;
+      gap: 9px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    .share-btn {
+      border: 1px solid #353c69;
+      background: #111738;
+      color: #d4d8ed;
+      padding: 9px 13px;
+      border-radius: 9px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .share-btn:hover {
+      border-color: #7565df;
+    }
+
+    .search-area {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .search-box {
+      flex: 1;
+    }
+
+    .search-box input,
+    .category-select {
+      width: 100%;
+      height: 46px;
+      border-radius: 11px;
+      border: 1px solid #303666;
+      background: #090d31;
+      color: #fff;
+      padding: 0 14px;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .search-box input:focus,
+    .category-select:focus {
+      border-color: #7565df;
+    }
+
+    .category-wrap {
+      width: 210px;
+    }
+
+    .category-select option {
+      background: #090d31;
+      color: #fff;
+    }
+
+    .products-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .products-heading h2 {
+      margin: 0;
+      font-size: 19px;
+    }
+
+    .product-count {
+      color: #858baa;
+      font-size: 13px;
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 15px;
+    }
+
+    .product-card {
+      background: #101638;
+      border: 1px solid #272e53;
+      border-radius: 15px;
+      overflow: hidden;
+      transition:
+        transform .18s ease,
+        border-color .18s ease;
+    }
+
+    .product-card:hover {
+      transform: translateY(-2px);
+      border-color: #6956d8;
+    }
+
+    .product-image-link {
+      display: block;
+    }
+
+    .product-image {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      display: block;
+      background: #0a0f32;
+    }
+
+    .product-content {
+      padding: 13px;
+    }
+
+    .product-title {
+      display: block;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 800;
+      line-height: 1.4;
+      margin-bottom: 8px;
+
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      overflow: hidden;
+    }
+
+    .product-price {
+      color: #a78bfa;
+      font-size: 17px;
+      font-weight: 900;
+      margin-bottom: 9px;
+    }
+
+    .product-category {
+      display: inline-flex;
+      padding: 5px 8px;
+      border-radius: 7px;
+      background: rgba(117, 101, 223, 0.13);
+      color: #b8aaff;
+      font-size: 10px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .view-product {
+      display: block;
+      text-align: center;
+      background: #191f3d;
+      color: #d7daf0;
+      border-radius: 8px;
+      padding: 9px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .view-product:hover {
+      background: #252d53;
+    }
+
+    .state-box {
+      grid-column: 1 / -1;
+      background: #101638;
+      border: 1px solid #272e53;
+      border-radius: 15px;
+      padding: 40px 20px;
+      text-align: center;
+      color: #929bb8;
+    }
+
+    .state-box h3 {
+      color: #fff;
+      margin: 0 0 8px;
+    }
+
+    .state-box p {
+      margin: 0 0 18px;
+      line-height: 1.6;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 900px) {
+
+      .products-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+    }
+
+    @media (max-width: 650px) {
+
+      .store-page {
+        padding: 18px 0 50px;
+      }
+
+      .store-header {
+        padding: 18px;
+      }
+
+      .store-header-content {
+        align-items: flex-start;
+      }
+
+      .store-logo,
+      .store-logo-fallback {
+        width: 68px;
+        height: 68px;
+      }
+
+      .store-logo-fallback {
+        font-size: 25px;
+      }
+
+      .store-title {
+        font-size: 22px;
+      }
+
+      .search-area {
+        flex-direction: column;
+      }
+
+      .category-wrap {
+        width: 100%;
+      }
+
+      .products-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .product-content {
+        padding: 10px;
+      }
+
+      .product-title {
+        font-size: 13px;
+      }
+
+      .product-price {
+        font-size: 15px;
+      }
+
+    }
+
+  </style>
+</head>
+
+
+<body>
+
+<header>
+
+  <div class="container nav">
+
+    <a class="logo" href="index.html">
+
+      <span class="logo-mark">E</span>
+
+      Earn<span>Gig</span>
+
+    </a>
+
+
+    <nav>
+
+      <a href="dashboard.html">
+        Dashboard
+      </a>
+
+      <a href="marketplace.html">
+        Marketplace
+      </a>
+
+    </nav>
+
+
+    <a
+      class="btn outline"
+      href="marketplace.html"
+    >
+      Marketplace
+    </a>
+
+  </div>
+
+</header>
+
+
+<main class="dashboard-page store-page">
+
+  <div class="container">
+
+    <a
+      href="marketplace.html"
+      class="back-link"
+    >
+      ← Back to Marketplace
+    </a>
+
+
+    <!-- LOADING -->
+
+    <div
+      id="loading-state"
+      class="state-box"
+    >
+
+      <h3>
+        Loading store...
+      </h3>
+
+      <p>
+        Please wait while we load this vendor's store.
+      </p>
+
+    </div>
+
+
+    <!-- STORE NOT FOUND -->
+
+    <div
+      id="not-found"
+      class="state-box hidden"
+    >
+
+      <h3>
+        Store not found
+      </h3>
+
+      <p>
+        This store may not be active or the link may be incorrect.
+      </p>
+
+      <a
+        href="marketplace.html"
+        class="btn primary"
+      >
+        Browse Marketplace
+      </a>
+
+    </div>
+
+
+    <!-- STORE -->
+
+    <div
+      id="store-area"
+      class="hidden"
+    >
+
+
+      <!-- STORE HEADER -->
+
+      <section class="store-header">
+
+        <div class="store-header-content">
+
+          <div id="logo-container">
+
+            <div
+              id="logo-fallback"
+              class="store-logo-fallback"
+            >
+              S
+            </div>
+
+            <img
+              id="store-logo"
+              class="store-logo hidden"
+              src=""
+              alt=""
+            >
+
+          </div>
+
+
+          <div>
+
+            <h1
+              id="store-name"
+              class="store-title"
+            >
+              Store
+            </h1>
+
+
+            <p
+              id="store-description"
+              class="store-description"
+            >
+            </p>
+
+
+            <div
+              id="store-meta"
+              class="store-meta"
+            >
+              EarnGig Vendor Store
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="store-actions">
+
+          <button
+            id="share-button"
+            class="share-btn"
+            type="button"
+          >
+            Share Store
+          </button>
+
+          <button
+            id="copy-button"
+            class="share-btn"
+            type="button"
+          >
+            Copy Store Link
+          </button>
+
+        </div>
+
+      </section>
+
+
+      <!-- SEARCH -->
+
+      <div class="search-area">
+
+        <div class="search-box">
+
+          <input
+            id="search-input"
+            type="search"
+            placeholder="Search this store..."
+            autocomplete="off"
+          >
+
+        </div>
+
+
+        <div class="category-wrap">
+
+          <select
+            id="category-select"
+            class="category-select"
+          >
+
+            <option value="">
+              All categories
+            </option>
+
+            <option value="Fashion & Clothing">
+              Fashion & Clothing
+            </option>
+
+            <option value="Beauty & Cosmetics">
+              Beauty & Cosmetics
+            </option>
+
+            <option value="Nails & Nail Accessories">
+              Nails & Nail Accessories
+            </option>
+
+            <option value="Bags & Accessories">
+              Bags & Accessories
+            </option>
+
+            <option value="Shoes & Footwear">
+              Shoes & Footwear
+            </option>
+
+            <option value="Phones & Tablets">
+              Phones & Tablets
+            </option>
+
+            <option value="Computers & Laptops">
+              Computers & Laptops
+            </option>
+
+            <option value="Electronics & Gadgets">
+              Electronics & Gadgets
+            </option>
+
+            <option value="Home & Kitchen">
+              Home & Kitchen
+            </option>
+
+            <option value="Furniture">
+              Furniture
+            </option>
+
+            <option value="Baby & Kids">
+              Baby & Kids
+            </option>
+
+            <option value="Health & Personal Care">
+              Health & Personal Care
+            </option>
+
+            <option value="Food & Drinks">
+              Food & Drinks
+            </option>
+
+            <option value="Groceries">
+              Groceries
+            </option>
+
+            <option value="Auto & Accessories">
+              Auto & Accessories
+            </option>
+
+            <option value="Tools & Hardware">
+              Tools & Hardware
+            </option>
+
+            <option value="Gifts & Accessories">
+              Gifts & Accessories
+            </option>
+
+            <option value="Other">
+              Other
+            </option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+
+      <!-- PRODUCTS HEADER -->
+
+      <div class="products-heading">
+
+        <h2>
+          Products
+        </h2>
+
+        <span
+          id="product-count"
+          class="product-count"
+        >
+          0 products
+        </span>
+
+      </div>
+
+
+      <!-- PRODUCTS -->
+
+      <div
+        id="products-grid"
+        class="products-grid"
+      ></div>
+
+    </div>
+
+  </div>
+
+</main>
+
+
+<footer>
+
+  <div class="container copy">
+    © 2026 EarnGig. All rights reserved.
+  </div>
+
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+
+
+<script>
+
+let currentStore = null;
+let storeProducts = [];
+
+
+/* ==========================================================
+   HELPERS
+========================================================== */
+
+function escapeHtml(value) {
+
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+
+}
+
+
+function formatNaira(amount) {
+
+  return "₦" +
+    Number(amount || 0).toLocaleString(
+      "en-NG",
+      {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+      }
+    );
+
+}
+
+
+function getStoreSlug() {
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+  return params.get("store");
+
+}
+
+
+/* ==========================================================
+   LOAD STORE
+========================================================== */
+
+async function loadStore() {
+
+  const storeSlug =
+    getStoreSlug();
+
+
+  if (!storeSlug) {
+
+    showNotFound();
+
+    return;
+
+  }
+
+
+  const {
+    data: store,
+    error
+  } = await supabaseClient
+    .from("marketplace_stores")
+    .select(`
+      id,
+      vendor_id,
+      store_name,
+      store_slug,
+      description,
+      store_logo_url,
+      status
+    `)
+    .eq(
+      "store_slug",
+      storeSlug
+    )
+    .eq(
+      "status",
+      "active"
+    )
+    .maybeSingle();
+
+
+  if (error) {
+
+    console.error(
+      "Store loading error:",
+      error
+    );
+
+    showNotFound();
+
+    return;
+
+  }
+
+
+  if (!store) {
+
+    showNotFound();
+
+    return;
+
+  }
+
+
+  currentStore =
+    store;
+
+
+  renderStore();
+
+
+  await loadProducts();
+
+}
+
+
+/* ==========================================================
+   RENDER STORE
+========================================================== */
+
+function renderStore() {
+
+  const store =
+    currentStore;
+
+
+  document.getElementById(
+    "store-name"
+  ).textContent =
+    store.store_name ||
+    "EarnGig Store";
+
+
+  document.getElementById(
+    "store-description"
+  ).textContent =
+    store.description ||
+    "Welcome to our EarnGig marketplace store.";
+
+
+  document.getElementById(
+    "store-meta"
+  ).textContent =
+    "EarnGig Vendor Store";
+
+
+  /*
+   * Logo
+   */
+
+  const logo =
+    document.getElementById(
+      "store-logo"
+    );
+
+  const fallback =
+    document.getElementById(
+      "logo-fallback"
+    );
+
+
+  if (store.store_logo_url) {
+
+    logo.src =
+      store.store_logo_url;
+
+    logo.alt =
+      store.store_name ||
+      "Store logo";
+
+    logo.classList.remove(
+      "hidden"
+    );
+
+    fallback.classList.add(
+      "hidden"
+    );
+
+  } else {
+
+    const firstLetter =
+      String(
+        store.store_name ||
+        "S"
+      )
+        .trim()
+        .charAt(0)
+        .toUpperCase();
+
+
+    fallback.textContent =
+      firstLetter;
+
+  }
+
+
+  /*
+   * Page title
+   */
+
+  document.title =
+    `${store.store_name || "Store"} | EarnGig Marketplace`;
+
+
+  /*
+   * Show store.
+   */
+
+  document.getElementById(
+    "loading-state"
+  ).classList.add(
+    "hidden"
+  );
+
+
+  document.getElementById(
+    "store-area"
+  ).classList.remove(
+    "hidden"
+  );
+
+}
+
+
+/* ==========================================================
+   LOAD PRODUCTS
+========================================================== */
+
+async function loadProducts() {
+
+  const {
+    data: products,
+    error
+  } = await supabaseClient
+    .from("marketplace_listings")
+    .select(`
+      id,
+      seller_id,
+      title,
+      category,
+      description,
+      price,
+      delivery_type,
+      image_url,
+      status,
+      created_at
+    `)
+    .eq(
+      "seller_id",
+      currentStore.vendor_id
+    )
+    .order(
+      "created_at",
+      {
+        ascending: false
+      }
+    );
+
+
+  if (error) {
+
+    console.error(
+      "Store products error:",
+      error
+    );
+
+    document.getElementById(
+      "products-grid"
+    ).innerHTML = `
+
+      <div class="state-box">
+
+        <h3>
+          Unable to load products
+        </h3>
+
+        <p>
+          ${escapeHtml(
+            error.message
+          )}
+        </p>
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  /*
+   * Only active products with images
+   * are displayed.
+   */
+
+  storeProducts =
+    (products || [])
+      .filter(function(product) {
+
+        const status =
+          String(
+            product.status || ""
+          ).toLowerCase();
+
+
+        const validStatus =
+          !status ||
+          [
+            "active",
+            "approved",
+            "published",
+            "available"
+          ].includes(status);
+
+
+        const hasImage =
+          String(
+            product.image_url || ""
+          ).trim();
+
+
+        return (
+          validStatus &&
+          hasImage
+        );
+
+      });
+
+
+  renderProducts();
+
+}
+
+
+/* ==========================================================
+   RENDER PRODUCTS
+========================================================== */
+
+function renderProducts() {
+
+  const search =
+    document.getElementById(
+      "search-input"
+    ).value
+      .trim()
+      .toLowerCase();
+
+
+  const category =
+    document.getElementById(
+      "category-select"
+    ).value;
+
+
+  const filtered =
+    storeProducts.filter(
+      function(product) {
+
+        const title =
+          String(
+            product.title || ""
+          ).toLowerCase();
+
+
+        const description =
+          String(
+            product.description || ""
+          ).toLowerCase();
+
+
+        const productCategory =
+          String(
+            product.category || ""
+          );
+
+
+        const matchesSearch =
+          !search ||
+          title.includes(search) ||
+          description.includes(search) ||
+          productCategory
+            .toLowerCase()
+            .includes(search);
+
+
+        const matchesCategory =
+          !category ||
+          productCategory === category;
+
+
+        return (
+          matchesSearch &&
+          matchesCategory
+        );
+
+      }
+    );
+
+
+  document.getElementById(
+    "product-count"
+  ).textContent =
+    filtered.length +
+    (
+      filtered.length === 1
+        ? " product"
+        : " products"
+    );
+
+
+  const grid =
+    document.getElementById(
+      "products-grid"
+    );
+
+
+  if (!filtered.length) {
+
+    grid.innerHTML = `
+
+      <div class="state-box">
+
+        <h3>
+          No products found
+        </h3>
+
+        <p>
+          This store does not have any products matching your search.
+        </p>
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  grid.innerHTML =
+    filtered.map(
+      function(product) {
+
+        const productUrl =
+          `product.html?id=${encodeURIComponent(
+            product.id
+          )}`;
+
+
+        return `
+
+          <article class="product-card">
+
+            <a
+              href="${productUrl}"
+              class="product-image-link"
+            >
+
+              <img
+                src="${escapeHtml(
+                  product.image_url
+                )}"
+                alt="${escapeHtml(
+                  product.title
+                )}"
+                class="product-image"
+                loading="lazy"
+              >
+
+            </a>
+
+
+            <div class="product-content">
+
+              <a
+                href="${productUrl}"
+                class="product-title"
+              >
+                ${escapeHtml(
+                  product.title
+                )}
+              </a>
+
+
+              <div class="product-price">
+                ${formatNaira(
+                  product.price
+                )}
+              </div>
+
+
+              <span class="product-category">
+                ${escapeHtml(
+                  product.category ||
+                  "Other"
+                )}
+              </span>
+
+
+              <a
+                href="${productUrl}"
+                class="view-product"
+              >
+                View Product
+              </a>
+
+            </div>
+
+          </article>
+
+        `;
+
+      }
+    ).join("");
+
+}
+
+
+/* ==========================================================
+   SHARE STORE
+========================================================== */
+
+function getStoreUrl() {
+
+  return window.location.href;
+
+}
+
+
+async function copyStoreLink() {
+
+  const url =
+    getStoreUrl();
+
+
+  try {
+
+    await navigator.clipboard.writeText(
+      url
+    );
+
+
+    const button =
+      document.getElementById(
+        "copy-button"
+      );
+
+
+    const original =
+      button.textContent;
+
+
+    button.textContent =
+      "Copied ✓";
+
+
+    setTimeout(
+      function() {
+
+        button.textContent =
+          original;
+
+      },
+      1800
+    );
+
+
+  } catch (error) {
+
+    window.prompt(
+      "Copy your store link:",
+      url
+    );
+
+  }
+
+}
+
+
+async function shareStore() {
+
+  const url =
+    getStoreUrl();
+
+
+  const storeName =
+    currentStore?.store_name ||
+    "EarnGig Store";
+
+
+  if (
+    navigator.share
+  ) {
+
+    try {
+
+      await navigator.share({
+
+        title:
+          storeName,
+
+        text:
+          `Shop ${storeName} on EarnGig Marketplace.`,
+
+        url:
+          url
+
+      });
+
+    } catch (error) {
+
+      /*
+       * User cancelled the share sheet.
+       * No action required.
+       */
+
+    }
+
+    return;
+
+  }
+
+
+  await copyStoreLink();
+
+}
+
+
+/* ==========================================================
+   NOT FOUND
+========================================================== */
+
+function showNotFound() {
+
+  document.getElementById(
+    "loading-state"
+  ).classList.add(
+    "hidden"
+  );
+
+
+  document.getElementById(
+    "store-area"
+  ).classList.add(
+    "hidden"
+  );
+
+
+  document.getElementById(
+    "not-found"
+  ).classList.remove(
+    "hidden"
+  );
+
+}
+
+
+/* ==========================================================
+   EVENTS
+========================================================== */
+
+document
+  .getElementById(
+    "search-input"
+  )
+  .addEventListener(
+    "input",
+    renderProducts
+  );
+
+
+document
+  .getElementById(
+    "category-select"
+  )
+  .addEventListener(
+    "change",
+    renderProducts
+  );
+
+
+document
+  .getElementById(
+    "copy-button"
+  )
+  .addEventListener(
+    "click",
+    copyStoreLink
+  );
+
+
+document
+  .getElementById(
+    "share-button"
+  )
+  .addEventListener(
+    "click",
+    shareStore
+  );
+
+
+/* ==========================================================
+   START
+========================================================== */
+
+loadStore();
+
+</script>
+
+</body>
+
+</html>
