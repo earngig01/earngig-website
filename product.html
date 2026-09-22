@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Product | EarnGig Marketplace</title>
+
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+
+    body {
+      background:
+        radial-gradient(
+          circle at top right,
+          rgba(92, 60, 180, 0.12),
+          transparent 35%
+        ),
+        #070b2b;
+    }
+
+    .product-page {
+      padding: 25px 0 70px;
+    }
+
+    .back-link {
+      display: inline-flex;
+      margin-bottom: 20px;
+      color: #a99cff;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .product-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+      gap: 30px;
+      align-items: start;
+    }
+
+    .product-image-card,
+    .product-info-card,
+    .seller-card {
+      background: rgba(14, 19, 57, 0.96);
+      border: 1px solid rgba(122, 105, 220, 0.22);
+      border-radius: 18px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.18);
+    }
+
+    .product-image-card {
+      overflow: hidden;
+    }
+
+    .main-product-image {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      display: block;
+      background: #0a0f32;
+    }
+
+    .product-info-card {
+      padding: 25px;
+    }
+
+    .product-category {
+      display: inline-flex;
+      padding: 6px 10px;
+      border-radius: 8px;
+      background: rgba(117, 101, 223, 0.14);
+      color: #b8aaff;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .product-title {
+      margin: 0 0 12px;
+      font-size: 30px;
+      line-height: 1.2;
+    }
+
+    .product-price {
+      color: #a78bfa;
+      font-size: 28px;
+      font-weight: 900;
+      margin-bottom: 18px;
+    }
+
+    .stock {
+      color: #9ca3c7;
+      font-size: 13px;
+      margin-bottom: 20px;
+    }
+
+    .description-title {
+      font-size: 15px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .description {
+      color: #aeb5d0;
+      line-height: 1.75;
+      font-size: 14px;
+      white-space: pre-wrap;
+    }
+
+    .seller-card {
+      margin-top: 18px;
+      padding: 18px;
+    }
+
+    .seller-label {
+      color: #858baa;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .7px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .seller-name {
+      color: #fff;
+      font-size: 18px;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .seller-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .purchase-area {
+      margin-top: 22px;
+      padding-top: 20px;
+      border-top: 1px solid #282f52;
+    }
+
+    .quantity-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .quantity-row label {
+      color: #cfd4e8;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .quantity-input {
+      width: 90px;
+      height: 42px;
+      border-radius: 9px;
+      border: 1px solid #303666;
+      background: #090d31;
+      color: #fff;
+      padding: 0 12px;
+      outline: none;
+      font-size: 14px;
+    }
+
+    .quantity-input:focus {
+      border-color: #7565df;
+    }
+
+    .cart-btn {
+      width: 100%;
+      border: 0;
+      cursor: pointer;
+      padding: 14px;
+      border-radius: 11px;
+      background: linear-gradient(
+        135deg,
+        #7c3aed,
+        #9333ea
+      );
+      color: #fff;
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    .cart-btn:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+    }
+
+    .message {
+      margin-top: 14px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 13px;
+      line-height: 1.5;
+      display: none;
+    }
+
+    .message.success {
+      display: block;
+      background: rgba(35, 150, 100, 0.1);
+      border: 1px solid rgba(35, 150, 100, 0.3);
+      color: #9ee0c1;
+    }
+
+    .message.error {
+      display: block;
+      background: rgba(190, 60, 70, 0.1);
+      border: 1px solid rgba(210, 70, 80, 0.3);
+      color: #f0aaaa;
+    }
+
+    .loading,
+    .not-found {
+      background: rgba(14, 19, 57, 0.96);
+      border: 1px solid rgba(122, 105, 220, 0.22);
+      border-radius: 18px;
+      padding: 50px 20px;
+      text-align: center;
+      color: #9ca3c7;
+    }
+
+    .not-found h2,
+    .loading h2 {
+      color: #fff;
+      margin-top: 0;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 750px) {
+
+      .product-page {
+        padding: 18px 0 50px;
+      }
+
+      .product-layout {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      .product-info-card {
+        padding: 19px;
+      }
+
+      .product-title {
+        font-size: 24px;
+      }
+
+      .product-price {
+        font-size: 24px;
+      }
+
+    }
+
+  </style>
+</head>
+
+
+<body>
+
+<header>
+
+  <div class="container nav">
+
+    <a class="logo" href="index.html">
+
+      <span class="logo-mark">E</span>
+
+      Earn<span>Gig</span>
+
+    </a>
+
+
+    <nav>
+
+      <a href="dashboard.html">
+        Dashboard
+      </a>
+
+      <a href="marketplace.html">
+        Marketplace
+      </a>
+
+    </nav>
+
+
+    <a
+      class="btn outline"
+      href="marketplace.html"
+    >
+      Marketplace
+    </a>
+
+  </div>
+
+</header>
+
+
+<main class="dashboard-page product-page">
+
+  <div class="container">
+
+    <a
+      href="marketplace.html"
+      class="back-link"
+    >
+      ← Back to Marketplace
+    </a>
+
+
+    <div
+      id="loading-state"
+      class="loading"
+    >
+
+      <h2>
+        Loading product...
+      </h2>
+
+      <p>
+        Please wait while we load the product details.
+      </p>
+
+    </div>
+
+
+    <div
+      id="not-found"
+      class="not-found hidden"
+    >
+
+      <h2>
+        Product not found
+      </h2>
+
+      <p>
+        This product may have been removed or is no longer available.
+      </p>
+
+      <a
+        href="marketplace.html"
+        class="btn primary"
+      >
+        Browse Marketplace
+      </a>
+
+    </div>
+
+
+    <div
+      id="product-area"
+      class="product-layout hidden"
+    >
+
+
+      <!-- PRODUCT IMAGE -->
+
+      <div>
+
+        <div class="product-image-card">
+
+          <img
+            id="product-image"
+            class="main-product-image"
+            src=""
+            alt=""
+          >
+
+        </div>
+
+
+        <!-- SELLER -->
+
+        <div class="seller-card">
+
+          <div class="seller-label">
+            Sold by
+          </div>
+
+          <div
+            id="seller-name"
+            class="seller-name"
+          >
+            EarnGig Vendor
+          </div>
+
+          <div class="seller-actions">
+
+            <a
+              id="store-button"
+              href="#"
+              class="btn outline"
+            >
+              Visit Store
+            </a>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- PRODUCT INFORMATION -->
+
+      <div class="product-info-card">
+
+        <span
+          id="product-category"
+          class="product-category"
+        >
+          Other
+        </span>
+
+
+        <h1
+          id="product-title"
+          class="product-title"
+        >
+          Product
+        </h1>
+
+
+        <div
+          id="product-price"
+          class="product-price"
+        >
+          ₦0
+        </div>
+
+
+        <div
+          id="product-stock"
+          class="stock"
+        >
+          Checking availability...
+        </div>
+
+
+        <div class="description-title">
+          Product Description
+        </div>
+
+
+        <div
+          id="product-description"
+          class="description"
+        >
+        </div>
+
+
+        <!-- CART -->
+
+        <div class="purchase-area">
+
+          <div class="quantity-row">
+
+            <label for="quantity">
+              Quantity
+            </label>
+
+            <input
+              id="quantity"
+              class="quantity-input"
+              type="number"
+              min="1"
+              value="1"
+            >
+
+          </div>
+
+
+          <button
+            id="add-to-cart"
+            class="cart-btn"
+            type="button"
+          >
+            Add to Cart
+          </button>
+
+
+          <div
+            id="message"
+            class="message"
+          ></div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</main>
+
+
+<footer>
+
+  <div class="container copy">
+    © 2026 EarnGig. All rights reserved.
+  </div>
+
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+
+
+<script>
+
+let currentUser = null;
+let currentProduct = null;
+let currentStore = null;
+
+
+/* ==========================================================
+   HELPERS
+========================================================== */
+
+function escapeHtml(value) {
+
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+
+}
+
+
+function formatNaira(amount) {
+
+  return "₦" +
+    Number(amount || 0).toLocaleString(
+      "en-NG",
+      {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+      }
+    );
+
+}
+
+
+function showMessage(
+  message,
+  type
+) {
+
+  const box =
+    document.getElementById(
+      "message"
+    );
+
+  box.textContent =
+    message;
+
+  box.className =
+    "message " +
+    type;
+
+}
+
+
+function getProductId() {
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+  return params.get("id");
+
+}
+
+
+/* ==========================================================
+   LOAD PRODUCT
+========================================================== */
+
+async function loadProduct() {
+
+  const productId =
+    getProductId();
+
+
+  if (!productId) {
+
+    showNotFound();
+
+    return;
+
+  }
+
+
+  const {
+    data: product,
+    error
+  } = await supabaseClient
+    .from("marketplace_listings")
+    .select(`
+      id,
+      seller_id,
+      title,
+      category,
+      description,
+      price,
+      delivery_type,
+      image_url,
+      status,
+      created_at
+    `)
+    .eq(
+      "id",
+      productId
+    )
+    .maybeSingle();
+
+
+  if (error) {
+
+    console.error(
+      "Product loading error:",
+      error
+    );
+
+    showNotFound();
+
+    return;
+
+  }
+
+
+  if (!product) {
+
+    showNotFound();
+
+    return;
+
+  }
+
+
+  const status =
+    String(
+      product.status || ""
+    ).toLowerCase();
+
+
+  if (
+    status &&
+    ![
+      "active",
+      "approved",
+      "published",
+      "available"
+    ].includes(status)
+  ) {
+
+    showNotFound();
+
+    return;
+
+  }
+
+
+  if (!product.image_url) {
+
+    showNotFound();
+
+    return;
+
+  }
+
+
+  currentProduct =
+    product;
+
+
+  renderProduct();
+
+
+  await loadStore();
+
+}
+
+
+/* ==========================================================
+   RENDER PRODUCT
+========================================================== */
+
+function renderProduct() {
+
+  const product =
+    currentProduct;
+
+
+  document.getElementById(
+    "product-image"
+  ).src =
+    product.image_url;
+
+
+  document.getElementById(
+    "product-image"
+  ).alt =
+    product.title;
+
+
+  document.getElementById(
+    "product-title"
+  ).textContent =
+    product.title;
+
+
+  document.getElementById(
+    "product-category"
+  ).textContent =
+    product.category ||
+    "Other";
+
+
+  document.getElementById(
+    "product-price"
+  ).textContent =
+    formatNaira(
+      product.price
+    );
+
+
+  document.getElementById(
+    "product-description"
+  ).textContent =
+    product.description ||
+    "No product description was provided.";
+
+
+  document.getElementById(
+    "product-stock"
+  ).textContent =
+    "Available";
+
+
+  showElement(
+    "product-area"
+  );
+
+  hideElement(
+    "loading-state"
+  );
+
+}
+
+
+/* ==========================================================
+   LOAD STORE
+========================================================== */
+
+async function loadStore() {
+
+  if (
+    !currentProduct ||
+    !currentProduct.seller_id
+  ) {
+
+    return;
+
+  }
+
+
+  const {
+    data: store,
+    error
+  } = await supabaseClient
+    .from("marketplace_stores")
+    .select(`
+      id,
+      vendor_id,
+      store_name,
+      store_slug,
+      store_logo_url,
+      status
+    `)
+    .eq(
+      "vendor_id",
+      currentProduct.seller_id
+    )
+    .eq(
+      "status",
+      "active"
+    )
+    .maybeSingle();
+
+
+  if (error) {
+
+    console.error(
+      "Store loading error:",
+      error
+    );
+
+    return;
+
+  }
+
+
+  if (!store) {
+
+    document.getElementById(
+      "seller-name"
+    ).textContent =
+      "EarnGig Vendor";
+
+
+    document.getElementById(
+      "store-button"
+    ).style.display =
+      "none";
+
+
+    return;
+
+  }
+
+
+  currentStore =
+    store;
+
+
+  document.getElementById(
+    "seller-name"
+  ).textContent =
+    store.store_name ||
+    "EarnGig Vendor";
+
+
+  if (store.store_slug) {
+
+    const storeButton =
+      document.getElementById(
+        "store-button"
+      );
+
+    storeButton.href =
+      `store.html?store=${encodeURIComponent(
+        store.store_slug
+      )}`;
+
+    storeButton.style.display =
+      "inline-flex";
+
+  }
+
+}
+
+
+/* ==========================================================
+   ADD TO CART
+========================================================== */
+
+async function addToCart() {
+
+  const button =
+    document.getElementById(
+      "add-to-cart"
+    );
+
+
+  if (!currentProduct) {
+
+    return;
+
+  }
+
+
+  const quantity =
+    Number(
+      document.getElementById(
+        "quantity"
+      ).value
+    );
+
+
+  if (
+    !Number.isInteger(quantity) ||
+    quantity < 1
+  ) {
+
+    showMessage(
+      "Please enter a valid quantity.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  button.disabled =
+    true;
+
+  button.textContent =
+    "Adding...";
+
+
+  try {
+
+    /*
+     * Buyer must be logged in before
+     * using the marketplace cart.
+     */
+
+    const {
+      data: {
+        user
+      },
+      error: userError
+    } =
+      await supabaseClient.auth.getUser();
+
+
+    if (
+      userError ||
+      !user
+    ) {
+
+      window.location.href =
+        "login.html?redirect=" +
+        encodeURIComponent(
+          window.location.href
+        );
+
+      return;
+
+    }
+
+
+    currentUser =
+      user;
+
+
+    /*
+     * Get or create the buyer's cart.
+     */
+
+    let {
+      data: cart,
+      error: cartError
+    } =
+      await supabaseClient
+        .from("marketplace_carts")
+        .select(`
+          id,
+          buyer_id,
+          status
+        `)
+        .eq(
+          "buyer_id",
+          user.id
+        )
+        .eq(
+          "status",
+          "active"
+        )
+        .maybeSingle();
+
+
+    if (cartError) {
+
+      throw cartError;
+
+    }
+
+
+    if (!cart) {
+
+      const {
+        data: newCart,
+        error: newCartError
+      } =
+        await supabaseClient
+          .from("marketplace_carts")
+          .insert({
+            buyer_id:
+              user.id,
+            status:
+              "active"
+          })
+          .select(`
+            id,
+            buyer_id,
+            status
+          `)
+          .single();
+
+
+      if (newCartError) {
+
+        throw newCartError;
+
+      }
+
+
+      cart =
+        newCart;
+
+    }
+
+
+    /*
+     * Check whether this product is
+     * already in the cart.
+     */
+
+    const {
+      data: existingItem,
+      error: existingItemError
+    } =
+      await supabaseClient
+        .from("marketplace_cart_items")
+        .select(`
+          id,
+          quantity
+        `)
+        .eq(
+          "cart_id",
+          cart.id
+        )
+        .eq(
+          "product_id",
+          currentProduct.id
+        )
+        .maybeSingle();
+
+
+    if (existingItemError) {
+
+      throw existingItemError;
+
+    }
+
+
+    if (existingItem) {
+
+      const newQuantity =
+        Number(
+          existingItem.quantity || 0
+        ) + quantity;
+
+
+      const {
+        error:
+          updateError
+      } =
+        await supabaseClient
+          .from("marketplace_cart_items")
+          .update({
+            quantity:
+              newQuantity
+          })
+          .eq(
+            "id",
+            existingItem.id
+          );
+
+
+      if (updateError) {
+
+        throw updateError;
+
+      }
+
+    } else {
+
+      const {
+        error:
+          insertError
+      } =
+        await supabaseClient
+          .from("marketplace_cart_items")
+          .insert({
+            cart_id:
+              cart.id,
+
+            product_id:
+              currentProduct.id,
+
+            quantity:
+              quantity
+          });
+
+
+      if (insertError) {
+
+        throw insertError;
+
+      }
+
+    }
+
+
+    showMessage(
+      "Product added to your cart successfully.",
+      "success"
+    );
+
+
+    button.textContent =
+      "Added to Cart ✓";
+
+
+    setTimeout(
+      function() {
+
+        button.disabled =
+          false;
+
+        button.textContent =
+          "Add to Cart";
+
+      },
+      1800
+    );
+
+
+  } catch (error) {
+
+    console.error(
+      "Add to cart error:",
+      error
+    );
+
+
+    showMessage(
+      error.message ||
+      "Unable to add this product to your cart.",
+      "error"
+    );
+
+
+    button.disabled =
+      false;
+
+    button.textContent =
+      "Add to Cart";
+
+  }
+
+}
+
+
+/* ==========================================================
+   NOT FOUND
+========================================================== */
+
+function showNotFound() {
+
+  hideElement(
+    "loading-state"
+  );
+
+  hideElement(
+    "product-area"
+  );
+
+  showElement(
+    "not-found"
+  );
+
+}
+
+
+/* ==========================================================
+   VISIBILITY
+========================================================== */
+
+function showElement(id) {
+
+  document
+    .getElementById(id)
+    .classList
+    .remove("hidden");
+
+}
+
+
+function hideElement(id) {
+
+  document
+    .getElementById(id)
+    .classList
+    .add("hidden");
+
+}
+
+
+/* ==========================================================
+   EVENTS
+========================================================== */
+
+document
+  .getElementById("add-to-cart")
+  .addEventListener(
+    "click",
+    addToCart
+  );
+
+
+/* ==========================================================
+   START
+========================================================== */
+
+loadProduct();
+
+</script>
+
+</body>
+
+</html>
