@@ -1,0 +1,1504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Watch & Earn - EarnGig</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #080b1d;
+      color: #fff;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    .topbar {
+      background: #10142d;
+      border-bottom: 1px solid #292f5c;
+      padding: 13px 15px;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .topbar-inner {
+      max-width: 700px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .logo {
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    .logo span {
+      color: #8b5cf6;
+    }
+
+    .back-btn {
+      border: 1px solid #343a6d;
+      background: #1a2040;
+      color: #fff;
+      border-radius: 9px;
+      padding: 8px 12px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: auto;
+      padding: 22px 14px 45px;
+    }
+
+    .intro {
+      text-align: center;
+      margin-bottom: 18px;
+    }
+
+    .intro h1 {
+      margin: 0 0 7px;
+      font-size: 25px;
+    }
+
+    .intro p {
+      margin: 0;
+      color: #aeb4d4;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .panel {
+      background: #111633;
+      border: 1px solid #292f5c;
+      border-radius: 15px;
+      overflow: hidden;
+      margin-bottom: 14px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .stat {
+      padding: 15px;
+      text-align: center;
+    }
+
+    .stat + .stat {
+      border-left: 1px solid #292f5c;
+    }
+
+    .stat-label {
+      color: #929abd;
+      font-size: 11px;
+      margin-bottom: 6px;
+    }
+
+    .stat-value {
+      font-size: 21px;
+      font-weight: 800;
+    }
+
+    .stat-value.reward {
+      color: #a78bfa;
+    }
+
+    .watch-area {
+      padding: 18px;
+    }
+
+    .video-header {
+      margin-bottom: 12px;
+    }
+
+    .video-type {
+      display: inline-block;
+      padding: 5px 8px;
+      border-radius: 999px;
+      background: #181d3b;
+      border: 1px solid #30365f;
+      color: #a5b4fc;
+      font-size: 10px;
+      font-weight: 700;
+      margin-bottom: 7px;
+    }
+
+    .video-type.advert {
+      color: #fbbf24;
+    }
+
+    .video-title {
+      font-size: 17px;
+      font-weight: 800;
+      line-height: 1.3;
+    }
+
+    .video-wrap {
+      position: relative;
+      width: 100%;
+      background: #000;
+      border-radius: 11px;
+      overflow: hidden;
+      border: 1px solid #292f5c;
+    }
+
+    video {
+      display: block;
+      width: 100%;
+      max-height: 430px;
+      background: #000;
+    }
+
+    .video-info {
+      padding: 11px 0 0;
+      color: #8f97b8;
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    .destination {
+      margin-top: 13px;
+      display: none;
+    }
+
+    .destination.show {
+      display: block;
+    }
+
+    .visit-btn {
+      display: block;
+      width: 100%;
+      text-align: center;
+      text-decoration: none;
+      background: #f59e0b;
+      color: #111;
+      border-radius: 9px;
+      padding: 11px;
+      font-weight: 800;
+      font-size: 13px;
+    }
+
+    .progress-area {
+      margin-top: 14px;
+    }
+
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      color: #949cbd;
+      font-size: 11px;
+      margin-bottom: 6px;
+    }
+
+    .progress-bar {
+      height: 7px;
+      border-radius: 999px;
+      background: #252b50;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      width: 0%;
+      height: 100%;
+      background: #7c3aed;
+      transition: width .2s linear;
+    }
+
+    .complete-box {
+      margin-top: 14px;
+      padding: 11px;
+      border-radius: 9px;
+      background: rgba(124, 58, 237, .10);
+      border: 1px solid rgba(139, 92, 246, .22);
+      color: #b9b0e9;
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .action-area {
+      margin-top: 15px;
+    }
+
+    .watch-btn {
+      width: 100%;
+      border: 0;
+      border-radius: 10px;
+      padding: 13px;
+      background: #7c3aed;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .watch-btn:hover {
+      background: #8b5cf6;
+    }
+
+    .watch-btn:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+    }
+
+    .message {
+      display: none;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 12px;
+      line-height: 1.5;
+      margin-bottom: 14px;
+    }
+
+    .message.show {
+      display: block;
+    }
+
+    .message.info {
+      background: rgba(59, 130, 246, .11);
+      border: 1px solid rgba(96, 165, 250, .25);
+      color: #bfdbfe;
+    }
+
+    .message.success {
+      background: rgba(34, 197, 94, .11);
+      border: 1px solid rgba(74, 222, 128, .25);
+      color: #86efac;
+    }
+
+    .message.error {
+      background: rgba(239, 68, 68, .11);
+      border: 1px solid rgba(248, 113, 113, .25);
+      color: #fca5a5;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 35px 18px;
+    }
+
+    .empty-icon {
+      font-size: 38px;
+      margin-bottom: 10px;
+    }
+
+    .empty-state h2 {
+      margin: 0 0 7px;
+      font-size: 18px;
+    }
+
+    .empty-state p {
+      margin: 0;
+      color: #929abd;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .description {
+      margin-top: 12px;
+      color: #a1a8c7;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .loading {
+      text-align: center;
+      color: #929abd;
+      padding: 30px;
+      font-size: 13px;
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 18px 10px 35px;
+      }
+
+      .intro h1 {
+        font-size: 22px;
+      }
+
+      .watch-area {
+        padding: 13px;
+      }
+
+      video {
+        max-height: 360px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="logo">Earn<span>Gig</span></div>
+
+      <button
+        class="back-btn"
+        type="button"
+        onclick="window.location.href='dashboard.html'"
+      >
+        ← Dashboard
+      </button>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <div class="intro">
+      <h1>🎬 Watch & Earn</h1>
+      <p>
+        Watch videos completely and earn ₦50 for each completed video.
+      </p>
+    </div>
+
+    <div id="message" class="message"></div>
+
+    <section class="panel">
+
+      <div class="stats">
+
+        <div class="stat">
+          <div class="stat-label">Today's Videos</div>
+          <div class="stat-value">
+            <span id="completedCount">0</span>/<span id="dailyLimit">20</span>
+          </div>
+        </div>
+
+        <div class="stat">
+          <div class="stat-label">Earned Today</div>
+          <div class="stat-value reward">
+            ₦<span id="todayEarnings">0</span>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- START SCREEN -->
+
+    <section
+      id="startPanel"
+      class="panel"
+    >
+
+      <div class="watch-area">
+
+        <div class="empty-state">
+
+          <div class="empty-icon">▶️</div>
+
+          <h2>Ready to Watch?</h2>
+
+          <p>
+            Tap the button below to get your next available video.
+            You don't need to choose a video yourself.
+          </p>
+
+          <div class="action-area">
+
+            <button
+              id="watchVideosBtn"
+              class="watch-btn"
+              type="button"
+            >
+              ▶ Watch Videos
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- VIDEO SCREEN -->
+
+    <section
+      id="videoPanel"
+      class="panel hidden"
+    >
+
+      <div class="watch-area">
+
+        <div class="video-header">
+
+          <div
+            id="videoType"
+            class="video-type"
+          >
+            🎬 EarnGig Video
+          </div>
+
+          <div
+            id="videoTitle"
+            class="video-title"
+          >
+            Loading...
+          </div>
+
+          <div
+            id="videoDescription"
+            class="description hidden"
+          ></div>
+
+        </div>
+
+
+        <div class="video-wrap">
+
+          <video
+            id="videoPlayer"
+            controls
+            playsinline
+            preload="metadata"
+          ></video>
+
+        </div>
+
+
+        <div class="video-info">
+          Watch the required portion of the video to complete this activity.
+        </div>
+
+
+        <div
+          id="destination"
+          class="destination"
+        >
+          <a
+            id="visitLink"
+            class="visit-btn"
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Visit Store →
+          </a>
+        </div>
+
+
+        <div class="progress-area">
+
+          <div class="progress-label">
+            <span>Watch progress</span>
+
+            <span>
+              <span id="watchedSeconds">0</span>s /
+              <span id="requiredSeconds">0</span>s
+            </span>
+          </div>
+
+          <div class="progress-bar">
+            <div
+              id="progressFill"
+              class="progress-fill"
+            ></div>
+          </div>
+
+        </div>
+
+
+        <div
+          id="completeBox"
+          class="complete-box"
+        >
+          Keep watching. Your ₦50 reward will become available after the required watch duration.
+        </div>
+
+
+        <div class="action-area">
+
+          <button
+            id="completeBtn"
+            class="watch-btn"
+            type="button"
+            disabled
+          >
+            🔒 Complete Video
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- FINISHED TODAY -->
+
+    <section
+      id="finishedPanel"
+      class="panel hidden"
+    >
+
+      <div class="empty-state">
+
+        <div class="empty-icon">🎉</div>
+
+        <h2>You've completed today's videos!</h2>
+
+        <p>
+          You have completed
+          <strong id="finishedCount">20</strong>
+          out of
+          <strong id="finishedLimit">20</strong>
+          videos today.
+        </p>
+
+        <p style="margin-top:8px;">
+          You've earned
+          <strong>₦<span id="finishedEarnings">1,000</span></strong>
+          today.
+        </p>
+
+        <p style="margin-top:10px;">
+          Come back tomorrow for more videos.
+        </p>
+
+      </div>
+
+    </section>
+
+
+    <!-- NO VIDEOS -->
+
+    <section
+      id="unavailablePanel"
+      class="panel hidden"
+    >
+
+      <div class="empty-state">
+
+        <div class="empty-icon">🚫</div>
+
+        <h2>No Videos Available</h2>
+
+        <p>
+          There are currently no videos available to watch.
+          Please check back later.
+        </p>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <script>
+
+    let currentUser = null;
+    let currentVideo = null;
+    let videoCompleted = false;
+    let requiredWatchSeconds = 0;
+
+
+    // =====================================================
+    // MESSAGE
+    // =====================================================
+
+    function showMessage(text, type = "info") {
+
+      const box =
+        document.getElementById("message");
+
+      box.textContent = text;
+
+      box.className =
+        "message show " + type;
+
+      setTimeout(() => {
+        box.classList.remove("show");
+      }, 5000);
+    }
+
+
+    // =====================================================
+    // AUTH
+    // =====================================================
+
+    async function checkUser() {
+
+      const {
+        data: { user },
+        error
+      } = await supabaseClient.auth.getUser();
+
+      if (error || !user) {
+
+        window.location.href = "index.html";
+
+        return false;
+      }
+
+      currentUser = user;
+
+      return true;
+    }
+
+
+    // =====================================================
+    // LOAD SETTINGS
+    // =====================================================
+
+    async function loadSettings() {
+
+      const {
+        data,
+        error
+      } = await supabaseClient
+        .from("watch_earn_settings")
+        .select("*")
+        .eq("id", 1)
+        .maybeSingle();
+
+      if (error) {
+
+        console.error(error);
+
+        showUnavailable(
+          "Watch & Earn settings could not be loaded."
+        );
+
+        return null;
+      }
+
+      if (!data) {
+
+        showUnavailable(
+          "Watch & Earn is currently unavailable."
+        );
+
+        return null;
+      }
+
+      document.getElementById("dailyLimit").textContent =
+        data.daily_video_limit;
+
+      return data;
+    }
+
+
+    // =====================================================
+    // LOAD TODAY'S COMPLETIONS
+    // =====================================================
+
+    async function loadTodayStats(settings) {
+
+      const start =
+        new Date();
+
+      start.setHours(0, 0, 0, 0);
+
+      const end =
+        new Date(start);
+
+      end.setDate(
+        end.getDate() + 1
+      );
+
+      const {
+        data,
+        error
+      } = await supabaseClient
+        .from("watch_earn_completions")
+        .select("reward_amount")
+        .eq("user_id", currentUser.id)
+        .gte("watched_at", start.toISOString())
+        .lt("watched_at", end.toISOString());
+
+      if (error) {
+
+        console.error(error);
+
+        showMessage(
+          "Could not load today's Watch & Earn progress.",
+          "error"
+        );
+
+        return {
+          count: 0,
+          earnings: 0
+        };
+      }
+
+      const rows = data || [];
+
+      const count =
+        rows.length;
+
+      const earnings =
+        rows.reduce(
+          (total, row) =>
+            total + Number(row.reward_amount || 0),
+          0
+        );
+
+      document.getElementById("completedCount").textContent =
+        count;
+
+      document.getElementById("todayEarnings").textContent =
+        earnings.toLocaleString();
+
+      if (
+        count >= Number(settings.daily_video_limit)
+      ) {
+
+        showFinished(
+          count,
+          Number(settings.daily_video_limit),
+          earnings
+        );
+      }
+
+      return {
+        count,
+        earnings
+      };
+    }
+
+
+    // =====================================================
+    // GET NEXT VIDEO
+    // =====================================================
+
+    async function getNextVideo(settings) {
+
+      if (!settings.is_enabled) {
+
+        showUnavailable(
+          "Watch & Earn is currently turned off."
+        );
+
+        return null;
+      }
+
+
+      const {
+        data: videos,
+        error
+      } = await supabaseClient
+        .from("watch_earn_videos")
+        .select("*")
+        .eq("is_active", true)
+        .lte("starts_at", new Date().toISOString())
+        .order("created_at", {
+          ascending: true
+        });
+
+      if (error) {
+
+        console.error(error);
+
+        showUnavailable(
+          "Unable to load available videos."
+        );
+
+        return null;
+      }
+
+
+      const now =
+        Date.now();
+
+      const activeVideos =
+        (videos || []).filter(video => {
+
+          if (!video.expires_at) {
+            return true;
+          }
+
+          return (
+            new Date(video.expires_at).getTime() > now
+          );
+        });
+
+
+      if (activeVideos.length === 0) {
+
+        showUnavailable(
+          "There are currently no videos available to watch."
+        );
+
+        return null;
+      }
+
+
+      // Randomly choose one of the currently available videos.
+      const randomIndex =
+        Math.floor(
+          Math.random() * activeVideos.length
+        );
+
+      return activeVideos[randomIndex];
+    }
+
+
+    // =====================================================
+    // GET SIGNED VIDEO URL
+    // =====================================================
+
+    async function getVideoUrl(path) {
+
+      const {
+        data,
+        error
+      } = await supabaseClient
+        .storage
+        .from("advert-videos")
+        .createSignedUrl(
+          path,
+          3600
+        );
+
+      if (error) {
+
+        console.error(error);
+
+        throw new Error(
+          "Could not load the video."
+        );
+      }
+
+      return data.signedUrl;
+    }
+
+
+    // =====================================================
+    // START WATCHING
+    // =====================================================
+
+    async function startWatching() {
+
+      const button =
+        document.getElementById("watchVideosBtn");
+
+      button.disabled = true;
+      button.textContent = "Loading video...";
+
+
+      try {
+
+        const settings =
+          await loadSettings();
+
+        if (!settings) {
+          return;
+        }
+
+
+        const stats =
+          await loadTodayStats(settings);
+
+        if (
+          stats.count >=
+          Number(settings.daily_video_limit)
+        ) {
+          return;
+        }
+
+
+        if (!settings.is_enabled) {
+
+          showUnavailable(
+            "Watch & Earn is currently turned off."
+          );
+
+          return;
+        }
+
+
+        const video =
+          await getNextVideo(settings);
+
+        if (!video) {
+          return;
+        }
+
+
+        currentVideo = video;
+
+        videoCompleted = false;
+
+        requiredWatchSeconds =
+          Number(video.required_watch_seconds || 0);
+
+
+        const videoUrl =
+          await getVideoUrl(
+            video.video_path
+          );
+
+
+        const player =
+          document.getElementById("videoPlayer");
+
+
+        document.getElementById("videoTitle").textContent =
+          video.title;
+
+
+        document.getElementById("requiredSeconds").textContent =
+          requiredWatchSeconds;
+
+
+        document.getElementById("watchedSeconds").textContent =
+          "0";
+
+
+        document.getElementById("progressFill").style.width =
+          "0%";
+
+
+        document.getElementById("completeBtn").disabled =
+          true;
+
+        document.getElementById("completeBtn").textContent =
+          "🔒 Complete Video";
+
+
+        document.getElementById("completeBox").textContent =
+          "Keep watching. Your ₦" +
+          Number(settings.reward_per_video).toLocaleString() +
+          " reward will become available after the required watch duration.";
+
+
+        const typeBadge =
+          document.getElementById("videoType");
+
+        if (video.video_type === "paid_advert") {
+
+          typeBadge.textContent =
+            "📢 Paid Advert";
+
+          typeBadge.className =
+            "video-type advert";
+
+
+          const destination =
+            document.getElementById("destination");
+
+          const visitLink =
+            document.getElementById("visitLink");
+
+          if (video.destination_url) {
+
+            visitLink.href =
+              video.destination_url;
+
+            visitLink.textContent =
+              (video.button_text || "Visit Store") +
+              " →";
+
+            destination.classList.add("show");
+
+          } else {
+
+            destination.classList.remove("show");
+          }
+
+        } else {
+
+          typeBadge.textContent =
+            "🎬 EarnGig Video";
+
+          typeBadge.className =
+            "video-type";
+
+          document
+            .getElementById("destination")
+            .classList.remove("show");
+        }
+
+
+        const description =
+          document.getElementById("videoDescription");
+
+        if (video.description) {
+
+          description.textContent =
+            video.description;
+
+          description.classList.remove("hidden");
+
+        } else {
+
+          description.textContent = "";
+
+          description.classList.add("hidden");
+        }
+
+
+        player.src =
+          videoUrl;
+
+        player.load();
+
+
+        document
+          .getElementById("startPanel")
+          .classList.add("hidden");
+
+        document
+          .getElementById("unavailablePanel")
+          .classList.add("hidden");
+
+        document
+          .getElementById("finishedPanel")
+          .classList.add("hidden");
+
+        document
+          .getElementById("videoPanel")
+          .classList.remove("hidden");
+
+
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth"
+        });
+
+      } catch (error) {
+
+        console.error(error);
+
+        showMessage(
+          error.message ||
+          "Unable to load the video.",
+          "error"
+        );
+
+      } finally {
+
+        button.disabled = false;
+        button.textContent = "▶ Watch Videos";
+      }
+    }
+
+
+    // =====================================================
+    // VIDEO PROGRESS
+    // =====================================================
+
+    function updateVideoProgress() {
+
+      if (!currentVideo) {
+        return;
+      }
+
+      const player =
+        document.getElementById("videoPlayer");
+
+      const currentTime =
+        Number(player.currentTime || 0);
+
+      const duration =
+        Number(
+          requiredWatchSeconds ||
+          player.duration ||
+          0
+        );
+
+
+      const watched =
+        Math.min(
+          currentTime,
+          requiredWatchSeconds
+        );
+
+
+      document.getElementById("watchedSeconds").textContent =
+        Math.floor(watched);
+
+
+      let percentage = 0;
+
+      if (requiredWatchSeconds > 0) {
+
+        percentage =
+          Math.min(
+            100,
+            (currentTime / requiredWatchSeconds) * 100
+          );
+
+      } else if (player.duration) {
+
+        percentage =
+          Math.min(
+            100,
+            (currentTime / player.duration) * 100
+          );
+      }
+
+
+      document.getElementById("progressFill").style.width =
+        percentage + "%";
+
+
+      if (
+        requiredWatchSeconds > 0 &&
+        currentTime >= requiredWatchSeconds
+      ) {
+
+        unlockCompletion();
+      }
+    }
+
+
+    // =====================================================
+    // UNLOCK COMPLETION
+    // =====================================================
+
+    function unlockCompletion() {
+
+      if (videoCompleted) {
+        return;
+      }
+
+      const button =
+        document.getElementById("completeBtn");
+
+      button.disabled = false;
+
+      button.textContent =
+        "✓ Complete Video & Earn ₦50";
+
+
+      document.getElementById("completeBox").textContent =
+        "Video requirement completed. You can now claim your ₦50 reward.";
+    }
+
+
+    // =====================================================
+    // COMPLETE VIDEO
+    // =====================================================
+
+    async function completeVideo() {
+
+      if (
+        !currentVideo ||
+        videoCompleted
+      ) {
+        return;
+      }
+
+
+      const player =
+        document.getElementById("videoPlayer");
+
+
+      if (
+        Number(player.currentTime || 0) <
+        requiredWatchSeconds
+      ) {
+
+        showMessage(
+          "Please complete the required watch duration first.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      const button =
+        document.getElementById("completeBtn");
+
+      button.disabled = true;
+      button.textContent = "Processing ₦50...";
+
+
+      try {
+
+        const {
+          data,
+          error
+        } = await supabaseClient.rpc(
+          "complete_watch_earn_video",
+          {
+            p_video_id: currentVideo.id
+          }
+        );
+
+
+        if (error) {
+          throw error;
+        }
+
+
+        if (
+          !data ||
+          data.success !== true
+        ) {
+          throw new Error(
+            "The video reward could not be processed."
+          );
+        }
+
+
+        videoCompleted = true;
+
+
+        showMessage(
+          "₦" +
+          Number(data.reward || 50).toLocaleString() +
+          " has been added to your wallet.",
+          "success"
+        );
+
+
+        document.getElementById("completedCount").textContent =
+          data.videos_completed_today;
+
+
+        document.getElementById("todayEarnings").textContent =
+          Number(
+            data.videos_completed_today *
+            Number(data.reward || 50)
+          ).toLocaleString();
+
+
+        document.getElementById("videoPanel")
+          .classList.add("hidden");
+
+
+        if (
+          Number(data.videos_completed_today) >=
+          Number(data.daily_limit)
+        ) {
+
+          showFinished(
+            data.videos_completed_today,
+            data.daily_limit,
+            data.videos_completed_today *
+            Number(data.reward || 50)
+          );
+
+        } else {
+
+          document
+            .getElementById("startPanel")
+            .classList.remove("hidden");
+
+          document.getElementById("watchVideosBtn")
+            .textContent = "▶ Watch Next Video";
+        }
+
+
+        player.pause();
+
+        player.removeAttribute("src");
+
+        player.load();
+
+        currentVideo = null;
+
+
+      } catch (error) {
+
+        console.error(error);
+
+        showMessage(
+          error.message ||
+          "Unable to process your video reward.",
+          "error"
+        );
+
+        button.disabled = false;
+
+        button.textContent =
+          "✓ Complete Video & Earn ₦50";
+      }
+    }
+
+
+    // =====================================================
+    // FINISHED
+    // =====================================================
+
+    function showFinished(
+      count,
+      limit,
+      earnings
+    ) {
+
+      document
+        .getElementById("startPanel")
+        .classList.add("hidden");
+
+      document
+        .getElementById("videoPanel")
+        .classList.add("hidden");
+
+      document
+        .getElementById("unavailablePanel")
+        .classList.add("hidden");
+
+      document
+        .getElementById("finishedPanel")
+        .classList.remove("hidden");
+
+
+      document.getElementById("finishedCount").textContent =
+        count;
+
+      document.getElementById("finishedLimit").textContent =
+        limit;
+
+      document.getElementById("finishedEarnings").textContent =
+        Number(earnings).toLocaleString();
+    }
+
+
+    // =====================================================
+    // NO VIDEOS
+    // =====================================================
+
+    function showUnavailable(reason) {
+
+      document
+        .getElementById("startPanel")
+        .classList.add("hidden");
+
+      document
+        .getElementById("videoPanel")
+        .classList.add("hidden");
+
+      document
+        .getElementById("finishedPanel")
+        .classList.add("hidden");
+
+      document
+        .getElementById("unavailablePanel")
+        .classList.remove("hidden");
+
+      const paragraph =
+        document.querySelector(
+          "#unavailablePanel .empty-state p"
+        );
+
+      paragraph.textContent =
+        reason ||
+        "There are currently no videos available to watch. Please check back later.";
+    }
+
+
+    // =====================================================
+    // EVENTS
+    // =====================================================
+
+    document
+      .getElementById("watchVideosBtn")
+      .addEventListener(
+        "click",
+        startWatching
+      );
+
+
+    document
+      .getElementById("completeBtn")
+      .addEventListener(
+        "click",
+        completeVideo
+      );
+
+
+    document
+      .getElementById("videoPlayer")
+      .addEventListener(
+        "timeupdate",
+        updateVideoProgress
+      );
+
+
+    document
+      .getElementById("videoPlayer")
+      .addEventListener(
+        "ended",
+        updateVideoProgress
+      );
+
+
+    // =====================================================
+    // INITIALIZE
+    // =====================================================
+
+    async function init() {
+
+      const loggedIn =
+        await checkUser();
+
+      if (!loggedIn) {
+        return;
+      }
+
+
+      const settings =
+        await loadSettings();
+
+      if (!settings) {
+        return;
+      }
+
+
+      const stats =
+        await loadTodayStats(settings);
+
+
+      if (
+        stats.count >=
+        Number(settings.daily_video_limit)
+      ) {
+        return;
+      }
+
+
+      if (!settings.is_enabled) {
+
+        showUnavailable(
+          "Watch & Earn is currently turned off."
+        );
+
+        return;
+      }
+
+
+      // Don't show a catalogue.
+      // The member only sees the Watch Videos button.
+
+    }
+
+    init();
+
+  </script>
+
+</body>
+</html>
