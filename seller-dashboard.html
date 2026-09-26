@@ -3,105 +3,257 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>Seller Dashboard | EarnGig</title>
 
   <link rel="stylesheet" href="styles.css">
 
   <style>
+
+    body {
+      background:
+        radial-gradient(
+          circle at top right,
+          rgba(92, 60, 180, 0.12),
+          transparent 35%
+        ),
+        #070b2b;
+    }
+
     .seller-page {
-      padding: 35px 0 70px;
+      padding: 25px 0 70px;
     }
 
     .seller-header {
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      align-items: flex-start;
       gap: 20px;
-      margin-bottom: 30px;
+      margin-bottom: 25px;
+    }
+
+    .seller-header h1 {
+      margin: 7px 0;
+    }
+
+    .seller-header p {
+      color: #929bb8;
+      margin: 0;
+      line-height: 1.6;
     }
 
     .seller-actions {
       display: flex;
-      gap: 10px;
+      gap: 9px;
       flex-wrap: wrap;
     }
 
     .seller-store-card {
-      background: linear-gradient(
-        135deg,
-        rgba(124, 58, 237, 0.18),
-        rgba(37, 99, 235, 0.10)
-      );
-      border: 1px solid rgba(139, 92, 246, 0.22);
-      border-radius: 18px;
+      background:
+        linear-gradient(
+          135deg,
+          rgba(124, 58, 237, 0.20),
+          rgba(37, 99, 235, 0.08)
+        );
+
+      border: 1px solid rgba(139, 92, 246, 0.24);
+      border-radius: 20px;
       padding: 20px;
-      margin-bottom: 25px;
+      margin-bottom: 22px;
+    }
+
+    .store-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 18px;
+    }
+
+    .store-information {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      min-width: 0;
+    }
+
+    .store-logo {
+      width: 68px;
+      height: 68px;
+      border-radius: 14px;
+      object-fit: contain;
+      background: #090d31;
+      border: 1px solid #343963;
+      padding: 5px;
+      flex-shrink: 0;
+    }
+
+    .store-logo-fallback {
+      width: 68px;
+      height: 68px;
+      border-radius: 14px;
+      background:
+        linear-gradient(
+          135deg,
+          #6d28d9,
+          #9333ea
+        );
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 26px;
+      font-weight: 900;
+      flex-shrink: 0;
     }
 
     .store-status {
       display: inline-flex;
-      padding: 6px 10px;
-      border-radius: 8px;
+      padding: 5px 9px;
+      border-radius: 7px;
       background: rgba(139, 92, 246, 0.14);
       color: #bda7ff;
-      font-size: 12px;
-      font-weight: 700;
+      font-size: 10px;
+      font-weight: 800;
       text-transform: uppercase;
     }
 
     .store-name {
       font-size: 22px;
       font-weight: 800;
-      margin: 10px 0 5px;
+      margin: 7px 0 4px;
     }
 
-    .store-slug {
+    .store-description {
       color: #9da7c0;
       font-size: 13px;
+      line-height: 1.55;
+      max-width: 650px;
+    }
+
+    .store-link-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 15px;
     }
 
     .store-link {
-      margin-top: 14px;
       display: inline-flex;
-      padding: 9px 13px;
+      max-width: 100%;
+      padding: 9px 12px;
       border-radius: 9px;
-      background: #171f38;
+      background: #111738;
       color: #c9bcff;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 700;
+      word-break: break-all;
+    }
+
+    .small-action {
+      border: 1px solid #353c69;
+      background: #111738;
+      color: #d4d8ed;
+      padding: 8px 11px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .small-action:hover {
+      border-color: #7565df;
+    }
+
+    .subscription-box {
+      margin-top: 17px;
+      padding-top: 15px;
+      border-top: 1px solid rgba(125, 135, 180, 0.14);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .subscription-label {
+      color: #8f99b4;
+      font-size: 12px;
+    }
+
+    .subscription-value {
+      color: #fff;
+      font-size: 13px;
+      font-weight: 800;
+      margin-top: 4px;
+    }
+
+    .subscription-active {
+      color: #86efac;
+    }
+
+    .subscription-expired {
+      color: #fca5a5;
     }
 
     .dashboard-stats {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 15px;
-      margin-bottom: 30px;
+      grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 28px;
     }
 
     .dashboard-stat {
       background: #10172b;
       border: 1px solid #222b47;
       border-radius: 15px;
-      padding: 18px;
+      padding: 17px;
     }
 
     .dashboard-stat small {
       display: block;
       color: #8f99b4;
       margin-bottom: 8px;
-      font-size: 12px;
+      font-size: 11px;
     }
 
     .dashboard-stat strong {
-      font-size: 22px;
+      font-size: 21px;
+    }
+
+    .dashboard-section {
+      margin-bottom: 30px;
+    }
+
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .section-title h2 {
+      margin: 4px 0 0;
+      font-size: 19px;
+    }
+
+    .text-link {
+      color: #a99cff;
+      font-size: 12px;
+      font-weight: 800;
     }
 
     .seller-products {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 15px;
+      grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+      gap: 14px;
     }
 
     .seller-product {
@@ -120,74 +272,183 @@
     }
 
     .seller-product-content {
-      padding: 15px;
+      padding: 13px;
     }
 
     .seller-product-title {
-      font-size: 16px;
+      color: #fff;
+      font-size: 14px;
       font-weight: 800;
+      line-height: 1.4;
       margin-bottom: 7px;
     }
 
     .seller-product-price {
       color: #a78bfa;
-      font-size: 18px;
-      font-weight: 800;
-      margin-bottom: 10px;
+      font-size: 17px;
+      font-weight: 900;
+      margin-bottom: 9px;
     }
 
     .product-meta {
       color: #8f99b4;
-      font-size: 12px;
-      line-height: 1.7;
+      font-size: 11px;
+      line-height: 1.8;
+    }
+
+    .product-actions {
+      display: flex;
+      gap: 7px;
+      margin-top: 11px;
+    }
+
+    .product-actions a,
+    .product-actions button {
+      flex: 1;
+      text-align: center;
+      border: 1px solid #30385e;
+      background: #171e39;
+      color: #d9dded;
+      border-radius: 8px;
+      padding: 8px 7px;
+      font-size: 11px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .product-actions a:hover,
+    .product-actions button:hover {
+      border-color: #7565df;
+    }
+
+    .product-actions .danger {
+      color: #fca5a5;
     }
 
     .status-pill {
       display: inline-flex;
-      padding: 5px 9px;
+      padding: 5px 8px;
       border-radius: 7px;
       background: #19213a;
       color: #cbd3e8;
-      font-size: 11px;
-      font-weight: 700;
+      font-size: 10px;
+      font-weight: 800;
       text-transform: uppercase;
+    }
+
+    .status-active {
+      color: #86efac;
+      background: rgba(34, 197, 94, 0.10);
+    }
+
+    .status-out {
+      color: #fca5a5;
+      background: rgba(239, 68, 68, 0.10);
+    }
+
+    .orders-grid {
+      display: grid;
+      grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+      gap: 13px;
     }
 
     .order-card {
       background: #10172b;
       border: 1px solid #222b47;
       border-radius: 15px;
-      padding: 17px;
+      padding: 16px;
     }
 
-    .order-card h3 {
-      margin: 0 0 10px;
-      font-size: 15px;
+    .order-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .order-number {
+      color: #fff;
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .order-date {
+      color: #78829f;
+      font-size: 10px;
+      margin-top: 3px;
     }
 
     .order-card p {
       color: #9da7c0;
-      font-size: 13px;
+      font-size: 12px;
       margin: 6px 0;
+      line-height: 1.5;
+    }
+
+    .order-total {
+      color: #a78bfa;
+      font-size: 17px;
+      font-weight: 900;
+    }
+
+    .order-items {
+      margin: 11px 0;
+      padding-top: 10px;
+      border-top: 1px solid #222b47;
+    }
+
+    .order-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      color: #aab2c9;
+      font-size: 11px;
+      padding: 4px 0;
+    }
+
+    .order-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 13px;
+    }
+
+    .order-actions button {
+      flex: 1;
+      border: 1px solid #343c67;
+      background: #171e39;
+      color: #dce0ef;
+      border-radius: 8px;
+      padding: 9px;
+      font-size: 11px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .order-actions button:hover {
+      border-color: #7565df;
     }
 
     .earning-box {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 15px;
+      grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+      gap: 13px;
     }
 
     .earning-item {
       background: #10172b;
       border: 1px solid #222b47;
       border-radius: 15px;
-      padding: 20px;
+      padding: 19px;
     }
 
     .earning-item small {
       display: block;
       color: #8f99b4;
       margin-bottom: 8px;
+      font-size: 11px;
     }
 
     .earning-item strong {
@@ -198,7 +459,7 @@
       background: #10172b;
       border: 1px solid #222b47;
       border-radius: 15px;
-      padding: 30px;
+      padding: 30px 20px;
       text-align: center;
       color: #929cb5;
       grid-column: 1 / -1;
@@ -209,18 +470,30 @@
       margin: 0 0 8px;
     }
 
+    .empty-box p {
+      margin: 0 0 16px;
+      line-height: 1.6;
+      font-size: 13px;
+    }
+
     .error-message {
       color: #fca5a5;
     }
 
-    @media (max-width: 850px) {
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 900px) {
 
       .dashboard-stats {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns:
+          repeat(2, minmax(0, 1fr));
       }
 
       .seller-products {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns:
+          repeat(2, minmax(0, 1fr));
       }
 
       .earning-box {
@@ -229,78 +502,126 @@
 
     }
 
-    @media (max-width: 600px) {
+    @media (max-width: 650px) {
 
       .seller-page {
-        padding: 20px 0 50px;
+        padding: 18px 0 50px;
       }
 
       .seller-header {
-        align-items: flex-start;
         flex-direction: column;
       }
 
+      .seller-actions {
+        width: 100%;
+      }
+
+      .seller-actions a {
+        flex: 1;
+        text-align: center;
+      }
+
+      .store-top {
+        flex-direction: column;
+      }
+
+      .store-information {
+        align-items: flex-start;
+      }
+
       .dashboard-stats {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
+        grid-template-columns:
+          repeat(2, minmax(0, 1fr));
+        gap: 9px;
       }
 
       .dashboard-stat {
-        padding: 14px;
+        padding: 13px;
       }
 
       .dashboard-stat strong {
-        font-size: 18px;
+        font-size: 17px;
       }
 
       .seller-products {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
+        grid-template-columns:
+          repeat(2, minmax(0, 1fr));
+        gap: 9px;
       }
 
       .seller-product-content {
-        padding: 11px;
+        padding: 10px;
       }
 
       .seller-product-title {
-        font-size: 13px;
+        font-size: 12px;
       }
 
       .seller-product-price {
         font-size: 15px;
       }
 
+      .orders-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .section-title {
+        align-items: flex-start;
+      }
+
     }
+
   </style>
+
 </head>
 
 
 <body>
 
+
 <header>
 
   <div class="container nav">
 
-    <a class="logo" href="index.html">
-      <span class="logo-mark">E</span>
+    <a
+      class="logo"
+      href="index.html"
+    >
+
+      <span class="logo-mark">
+        E
+      </span>
+
       Earn<span>Gig</span>
+
     </a>
+
 
     <span class="admin-badge">
       SELLER
     </span>
 
-    <div style="display:flex; gap:8px; flex-wrap:wrap;">
+
+    <div
+      style="
+        display:flex;
+        gap:8px;
+        flex-wrap:wrap;
+      "
+    >
 
       <a
         class="btn outline"
-        href="marketplace.html">
+        href="marketplace.html"
+      >
         Marketplace
       </a>
 
+
       <a
         class="btn primary"
-        href="create-listing.html">
+        href="create-listing.html"
+      >
         + Add Product
       </a>
 
@@ -326,6 +647,7 @@
           SELLER CENTER
         </span>
 
+
         <h1>
           Welcome,
           <span id="seller-name">
@@ -333,23 +655,28 @@
           </span>
         </h1>
 
+
         <p>
-          Manage your products, orders and marketplace earnings.
+          Manage your store, products, orders and marketplace earnings.
         </p>
 
       </div>
+
 
       <div class="seller-actions">
 
         <a
           class="btn outline"
-          href="marketplace.html">
+          href="marketplace.html"
+        >
           View Marketplace
         </a>
 
+
         <a
           class="btn primary"
-          href="create-listing.html">
+          href="create-listing.html"
+        >
           + Add Product
         </a>
 
@@ -362,31 +689,130 @@
 
     <section
       class="seller-store-card"
-      id="store-card">
+      id="store-card"
+    >
 
-      <span class="store-status">
-        STORE
-      </span>
+      <div class="store-top">
 
-      <div
-        class="store-name"
-        id="store-name">
-        Loading store...
+        <div class="store-information">
+
+          <div>
+
+            <div
+              id="store-logo-fallback"
+              class="store-logo-fallback"
+            >
+              S
+            </div>
+
+
+            <img
+              id="store-logo"
+              class="store-logo hidden"
+              src=""
+              alt=""
+            >
+
+          </div>
+
+
+          <div>
+
+            <span
+              id="store-status"
+              class="store-status"
+            >
+              LOADING
+            </span>
+
+
+            <div
+              id="store-name"
+              class="store-name"
+            >
+              Loading store...
+            </div>
+
+
+            <div
+              id="store-description"
+              class="store-description"
+            >
+              Checking your marketplace store...
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <a
+          id="view-store-button"
+          class="btn outline hidden"
+          href="#"
+        >
+          View Store
+        </a>
+
       </div>
 
-      <div
-        class="store-slug"
-        id="store-description">
-        Checking your marketplace store...
+
+      <div class="store-link-box">
+
+        <span
+          id="store-link"
+          class="store-link"
+        >
+          Store link loading...
+        </span>
+
+
+        <button
+          id="copy-store-link"
+          class="small-action"
+          type="button"
+        >
+          Copy Link
+        </button>
+
+
+        <button
+          id="share-store"
+          class="small-action"
+          type="button"
+        >
+          Share
+        </button>
+
       </div>
 
-      <a
-        id="store-link"
-        class="store-link"
-        href="#"
-        style="display:none;">
-        Visit My Store →
-      </a>
+
+      <div class="subscription-box">
+
+        <div>
+
+          <div class="subscription-label">
+            Store subscription
+          </div>
+
+          <div
+            id="subscription-status"
+            class="subscription-value"
+          >
+            Checking...
+          </div>
+
+        </div>
+
+
+        <a
+          href="marketplace-subscription.html"
+          class="small-action"
+        >
+          Manage Subscription
+        </a>
+
+      </div>
 
     </section>
 
@@ -401,7 +827,7 @@
           Active Products
         </small>
 
-        <strong id="active-listings">
+        <strong id="active-products">
           0
         </strong>
 
@@ -437,7 +863,7 @@
       <div class="dashboard-stat">
 
         <small>
-          Available Earnings
+          Marketplace Available
         </small>
 
         <strong id="available-earnings">
@@ -462,14 +888,16 @@
           </span>
 
           <h2>
-            Your marketplace products
+            Store products
           </h2>
 
         </div>
 
+
         <a
           href="create-listing.html"
-          class="text-link">
+          class="text-link"
+        >
           Add product →
         </a>
 
@@ -477,8 +905,9 @@
 
 
       <div
-        id="seller-listings"
-        class="seller-products">
+        id="seller-products"
+        class="seller-products"
+      >
 
         <div class="empty-box">
 
@@ -487,7 +916,7 @@
           </h3>
 
           <p>
-            Your marketplace products are being loaded.
+            Your store products are being loaded.
           </p>
 
         </div>
@@ -506,11 +935,11 @@
         <div>
 
           <span class="eyebrow">
-            RECENT ORDERS
+            CUSTOMER ORDERS
           </span>
 
           <h2>
-            Customer orders
+            Recent orders
           </h2>
 
         </div>
@@ -520,7 +949,8 @@
 
       <div
         id="seller-orders"
-        class="task-grid">
+        class="orders-grid"
+      >
 
         <div class="empty-box">
 
@@ -552,7 +982,7 @@
           </span>
 
           <h2>
-            Financial summary
+            Marketplace financial summary
           </h2>
 
         </div>
@@ -565,7 +995,7 @@
         <div class="earning-item">
 
           <small>
-            Available earnings
+            Marketplace available
           </small>
 
           <strong id="earning-balance">
@@ -578,7 +1008,7 @@
         <div class="earning-item">
 
           <small>
-            Pending earnings
+            Pending delivery
           </small>
 
           <strong id="pending-earnings">
@@ -591,7 +1021,7 @@
         <div class="earning-item">
 
           <small>
-            Total sales
+            Total marketplace sales
           </small>
 
           <strong id="summary-total-sales">
@@ -622,219 +1052,139 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
 
+
 <script>
 
-  let currentSeller = null;
+let currentSeller = null;
+let currentStore = null;
+let currentSubscription = null;
+let sellerOrders = [];
 
 
-  function formatNaira(amount) {
+/* ==========================================================
+   HELPERS
+========================================================== */
 
-    return "₦" +
-      Number(amount || 0).toLocaleString(
-        "en-NG"
-      );
+function formatNaira(amount) {
+
+  return "₦" +
+    Number(amount || 0).toLocaleString(
+      "en-NG",
+      {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+      }
+    );
+
+}
+
+
+function escapeHtml(value) {
+
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+
+}
+
+
+function formatDate(value) {
+
+  if (!value) {
+    return "—";
+  }
+
+  const date =
+    new Date(value);
+
+  if (
+    Number.isNaN(
+      date.getTime()
+    )
+  ) {
+    return "—";
+  }
+
+  return date.toLocaleDateString(
+    "en-NG",
+    {
+      day: "numeric",
+      month: "short",
+      year: "numeric"
+    }
+  );
+
+}
+
+
+function getOrderStatusLabel(
+  status
+) {
+
+  const value =
+    String(
+      status || ""
+    )
+      .toLowerCase()
+      .replace(/_/g, " ");
+
+
+  return value
+    .replace(
+      /\b\w/g,
+      function(letter) {
+        return letter.toUpperCase();
+      }
+    );
+
+}
+
+
+/* ==========================================================
+   SELLER ACCESS
+========================================================== */
+
+async function checkSellerAccess() {
+
+  const {
+    data: {
+      user
+    },
+    error
+  } =
+    await supabaseClient.auth.getUser();
+
+
+  if (
+    error ||
+    !user
+  ) {
+
+    window.location.href =
+      "login.html";
+
+    return false;
 
   }
 
 
-  function escapeHtml(value) {
-
-    return String(value ?? "")
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
-
-  }
+  currentSeller =
+    user;
 
 
-  async function checkSellerAccess() {
+  /*
+   * A vendor dashboard requires
+   * an active marketplace store.
+   */
 
-    const {
-      data: { user },
-      error: userError
-    } = await supabaseClient.auth.getUser();
-
-
-    if (userError || !user) {
-
-      window.location.href =
-        "login.html";
-
-      return false;
-
-    }
-
-
-    currentSeller = user;
-
-
-    /*
-     * First confirm that the member
-     * has an active EarnGig membership.
-     */
-
-    const {
-      data: membership,
-      error: membershipError
-    } = await supabaseClient
-      .from("membership_payments")
-      .select("id")
-      .eq("user_id", user.id)
-      .eq("payment_type", "first_payment")
-      .eq("status", "confirmed")
-      .eq("amount", 9000)
-      .limit(1)
-      .maybeSingle();
-
-
-    if (membershipError) {
-
-      console.error(
-        "Membership verification error:",
-        membershipError
-      );
-
-      alert(
-        "Unable to verify your EarnGig membership."
-      );
-
-      return false;
-
-    }
-
-
-    if (!membership) {
-
-      alert(
-        "You must have an active EarnGig membership before becoming a seller."
-      );
-
-      window.location.href =
-        "login.html";
-
-      return false;
-
-    }
-
-
-    /*
-     * Check the seller's current monthly
-     * subscription.
-     *
-     * IMPORTANT:
-     *
-     * We no longer show the old
-     * "Seller access requires..." popup.
-     *
-     * A member who has not yet completed
-     * the seller approval/subscription
-     * process is sent to the vendor
-     * application page instead.
-     */
-
-    const thirtyDaysAgo =
-      new Date(
-        Date.now() -
-        30 * 24 * 60 * 60 * 1000
-      ).toISOString();
-
-
-    const {
-      data: sellerPayment,
-      error: sellerPaymentError
-    } = await supabaseClient
-      .from("membership_payments")
-      .select("id, paid_at")
-      .eq("user_id", user.id)
-      .eq("payment_type", "seller")
-      .eq("status", "confirmed")
-      .eq("amount", 2500)
-      .gte("paid_at", thirtyDaysAgo)
-      .order("paid_at", {
-        ascending: false
-      })
-      .limit(1)
-      .maybeSingle();
-
-
-    if (sellerPaymentError) {
-
-      console.error(
-        "Seller subscription error:",
-        sellerPaymentError
-      );
-
-      alert(
-        "Unable to verify your seller subscription."
-      );
-
-      return false;
-
-    }
-
-
-    if (!sellerPayment) {
-
-      /*
-       * Do NOT show the old subscription
-       * popup.
-       *
-       * Send the member into the normal
-       * seller application flow.
-       */
-
-      window.location.href =
-        "vendor-application.html";
-
-      return false;
-
-    }
-
-
-    return true;
-
-  }
-
-
-  async function loadSellerProfile() {
-
-    const {
-      data: profile,
-      error
-    } = await supabaseClient
-      .from("profiles")
-      .select("full_name")
-      .eq("id", currentSeller.id)
-      .maybeSingle();
-
-
-    if (error) {
-
-      console.error(
-        "Profile error:",
-        error
-      );
-
-    }
-
-
-    document.getElementById(
-      "seller-name"
-    ).textContent =
-      profile?.full_name ||
-      "Seller";
-
-  }
-
-
-  async function loadSellerStore() {
-
-    const {
-      data: store,
-      error
-    } = await supabaseClient
+  const {
+    data: store,
+    error: storeError
+  } =
+    await supabaseClient
       .from("marketplace_stores")
       .select(`
         id,
@@ -847,219 +1197,893 @@
       `)
       .eq(
         "vendor_id",
+        user.id
+      )
+      .maybeSingle();
+
+
+  if (storeError) {
+
+    console.error(
+      "Store access error:",
+      storeError
+    );
+
+    alert(
+      "Unable to verify your marketplace store."
+    );
+
+    return false;
+
+  }
+
+
+  if (!store) {
+
+    window.location.href =
+      "vendor-application.html";
+
+    return false;
+
+  }
+
+
+  currentStore =
+    store;
+
+
+  /*
+   * Store must be active before the
+   * seller dashboard becomes available.
+   */
+
+  if (
+    String(
+      store.status || ""
+    ).toLowerCase() !==
+    "active"
+  ) {
+
+    alert(
+      "Your vendor store is not active yet."
+    );
+
+    window.location.href =
+      "vendor-application.html";
+
+    return false;
+
+  }
+
+
+  /*
+   * Check the dedicated vendor store
+   * subscription table.
+   */
+
+  const {
+    data: subscription,
+    error: subscriptionError
+  } =
+    await supabaseClient
+      .from(
+        "marketplace_store_subscriptions"
+      )
+      .select(`
+        id,
+        store_id,
+        vendor_id,
+        amount,
+        status,
+        payment_method,
+        payment_reference,
+        starts_at,
+        expires_at
+      `)
+      .eq(
+        "store_id",
+        store.id
+      )
+      .eq(
+        "vendor_id",
+        user.id
+      )
+      .order(
+        "expires_at",
+        {
+          ascending: false
+        }
+      )
+      .limit(1)
+      .maybeSingle();
+
+
+  if (subscriptionError) {
+
+    console.error(
+      "Store subscription error:",
+      subscriptionError
+    );
+
+    /*
+     * Don't silently grant vendor access
+     * when subscription verification fails.
+     */
+
+    alert(
+      "Unable to verify your store subscription."
+    );
+
+    return false;
+
+  }
+
+
+  currentSubscription =
+    subscription;
+
+
+  const subscriptionActive =
+    subscription &&
+    String(
+      subscription.status || ""
+    ).toLowerCase() ===
+      "active" &&
+    subscription.expires_at &&
+    new Date(
+      subscription.expires_at
+    ).getTime() > Date.now();
+
+
+  if (!subscriptionActive) {
+
+    window.location.href =
+      "marketplace-subscription.html";
+
+    return false;
+
+  }
+
+
+  return true;
+
+}
+
+
+/* ==========================================================
+   PROFILE
+========================================================== */
+
+async function loadSellerProfile() {
+
+  const {
+    data: profile,
+    error
+  } =
+    await supabaseClient
+      .from("profiles")
+      .select("full_name")
+      .eq(
+        "id",
         currentSeller.id
       )
       .maybeSingle();
 
 
-    if (error) {
+  if (error) {
 
-      console.error(
-        "Store error:",
-        error
+    console.error(
+      "Profile error:",
+      error
+    );
+
+  }
+
+
+  document.getElementById(
+    "seller-name"
+  ).textContent =
+    profile?.full_name ||
+    "Seller";
+
+}
+
+
+/* ==========================================================
+   STORE
+========================================================== */
+
+function renderStore() {
+
+  const store =
+    currentStore;
+
+
+  document.getElementById(
+    "store-name"
+  ).textContent =
+    store.store_name ||
+    "EarnGig Store";
+
+
+  document.getElementById(
+    "store-description"
+  ).textContent =
+    store.description ||
+    "Your EarnGig marketplace store.";
+
+
+  document.getElementById(
+    "store-status"
+  ).textContent =
+    String(
+      store.status ||
+      "active"
+    ).toUpperCase();
+
+
+  /*
+   * Logo
+   */
+
+  const logo =
+    document.getElementById(
+      "store-logo"
+    );
+
+  const fallback =
+    document.getElementById(
+      "store-logo-fallback"
+    );
+
+
+  if (
+    store.store_logo_url &&
+    String(
+      store.store_logo_url
+    ).trim()
+  ) {
+
+    logo.src =
+      store.store_logo_url;
+
+    logo.alt =
+      store.store_name ||
+      "Store logo";
+
+    logo.classList.remove(
+      "hidden"
+    );
+
+    fallback.classList.add(
+      "hidden"
+    );
+
+  } else {
+
+    const firstLetter =
+      String(
+        store.store_name ||
+        "S"
+      )
+        .trim()
+        .charAt(0)
+        .toUpperCase();
+
+
+    fallback.textContent =
+      firstLetter;
+
+    fallback.classList.remove(
+      "hidden"
+    );
+
+    logo.classList.add(
+      "hidden"
+    );
+
+  }
+
+
+  /*
+   * Permanent store URL
+   */
+
+  const storeUrl =
+    `${window.location.origin}${window.location.pathname.replace(
+      "seller-dashboard.html",
+      "store.html"
+    )}?store=${encodeURIComponent(
+      store.store_slug
+    )}`;
+
+
+  document.getElementById(
+    "store-link"
+  ).textContent =
+    storeUrl;
+
+
+  const viewButton =
+    document.getElementById(
+      "view-store-button"
+    );
+
+
+  viewButton.href =
+    `store.html?store=${encodeURIComponent(
+      store.store_slug
+    )}`;
+
+
+  viewButton.classList.remove(
+    "hidden"
+  );
+
+
+  /*
+   * Subscription
+   */
+
+  renderSubscription();
+
+}
+
+
+function renderSubscription() {
+
+  const element =
+    document.getElementById(
+      "subscription-status"
+    );
+
+
+  if (
+    !currentSubscription
+  ) {
+
+    element.textContent =
+      "No active subscription";
+
+    element.className =
+      "subscription-value subscription-expired";
+
+    return;
+
+  }
+
+
+  const expires =
+    currentSubscription.expires_at
+      ? new Date(
+          currentSubscription.expires_at
+        )
+      : null;
+
+
+  const active =
+    String(
+      currentSubscription.status ||
+      ""
+    ).toLowerCase() ===
+      "active" &&
+    expires &&
+    expires.getTime() >
+      Date.now();
+
+
+  if (active) {
+
+    element.textContent =
+      `Active • expires ${formatDate(
+        currentSubscription.expires_at
+      )}`;
+
+    element.className =
+      "subscription-value subscription-active";
+
+  } else {
+
+    element.textContent =
+      "Subscription expired";
+
+    element.className =
+      "subscription-value subscription-expired";
+
+  }
+
+}
+
+
+/* ==========================================================
+   COPY / SHARE STORE
+========================================================== */
+
+function getStoreUrl() {
+
+  return (
+    document.getElementById(
+      "view-store-button"
+    ).href ||
+    ""
+  );
+
+}
+
+
+async function copyStoreLink() {
+
+  const url =
+    getStoreUrl();
+
+
+  if (!url) {
+    return;
+  }
+
+
+  try {
+
+    await navigator.clipboard.writeText(
+      url
+    );
+
+
+    const button =
+      document.getElementById(
+        "copy-store-link"
       );
 
-      document.getElementById(
-        "store-name"
-      ).textContent =
-        "Store unavailable";
 
-      document.getElementById(
-        "store-description"
-      ).textContent =
-        "Your store information could not be loaded.";
+    const original =
+      button.textContent;
 
-      return;
 
+    button.textContent =
+      "Copied ✓";
+
+
+    setTimeout(
+      function() {
+
+        button.textContent =
+          original;
+
+      },
+      1800
+    );
+
+  } catch (error) {
+
+    window.prompt(
+      "Copy your store link:",
+      url
+    );
+
+  }
+
+}
+
+
+async function shareStore() {
+
+  const url =
+    getStoreUrl();
+
+
+  if (!url) {
+    return;
+  }
+
+
+  const storeName =
+    currentStore?.store_name ||
+    "EarnGig Store";
+
+
+  if (
+    navigator.share
+  ) {
+
+    try {
+
+      await navigator.share({
+
+        title:
+          storeName,
+
+        text:
+          `Shop ${storeName} on EarnGig Marketplace.`,
+
+        url:
+          url
+
+      });
+
+    } catch (error) {
+      /*
+       * User cancelled sharing.
+       */
     }
 
+    return;
 
-    if (!store) {
-
-      document.getElementById(
-        "store-name"
-      ).textContent =
-        "No store yet";
-
-      document.getElementById(
-        "store-description"
-      ).textContent =
-        "Your marketplace store will appear here after approval.";
-
-      return;
-
-    }
+  }
 
 
+  await copyStoreLink();
+
+}
+
+
+/* ==========================================================
+   LOAD PRODUCTS
+========================================================== */
+
+async function loadSellerProducts() {
+
+  const container =
     document.getElementById(
-      "store-name"
-    ).textContent =
-      store.store_name;
+      "seller-products"
+    );
 
 
-    document.getElementById(
-      "store-description"
-    ).textContent =
-      store.description ||
-      `Store status: ${store.status}`;
+  const {
+    data: products,
+    error
+  } =
+    await supabaseClient
+      .from(
+        "marketplace_products"
+      )
+      .select(`
+        id,
+        store_id,
+        vendor_id,
+        title,
+        category,
+        description,
+        price,
+        stock_quantity,
+        delivery_type,
+        status,
+        created_at,
+        updated_at
+      `)
+      .eq(
+        "store_id",
+        currentStore.id
+      )
+      .eq(
+        "vendor_id",
+        currentSeller.id
+      )
+      .order(
+        "created_at",
+        {
+          ascending: false
+        }
+      );
 
 
-    if (store.store_slug) {
+  if (error) {
 
-      const link =
-        document.getElementById(
-          "store-link"
+    console.error(
+      "Products error:",
+      error
+    );
+
+
+    container.innerHTML = `
+
+      <div class="empty-box">
+
+        <h3>
+          Unable to load products
+        </h3>
+
+        <p class="error-message">
+          ${escapeHtml(
+            error.message
+          )}
+        </p>
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  const productRows =
+    products || [];
+
+
+  const productIds =
+    productRows.map(
+      function(product) {
+        return product.id;
+      }
+    );
+
+
+  /*
+   * Load product images separately.
+   */
+
+  let images = [];
+
+
+  if (productIds.length) {
+
+    const {
+      data,
+      error: imageError
+    } =
+      await supabaseClient
+        .from(
+          "marketplace_product_images"
+        )
+        .select(`
+          id,
+          product_id,
+          image_url,
+          is_primary,
+          sort_order
+        `)
+        .in(
+          "product_id",
+          productIds
+        )
+        .order(
+          "sort_order",
+          {
+            ascending: true
+          }
         );
 
-      link.href =
-        `store.html?store=${encodeURIComponent(
-          store.store_slug
-        )}`;
 
-      link.style.display =
-        "inline-flex";
+    if (imageError) {
+
+      console.error(
+        "Product images error:",
+        imageError
+      );
+
+    } else {
+
+      images =
+        data || [];
 
     }
 
   }
 
 
-  async function loadSellerListings() {
-
-    const {
-      data: listings,
-      error
-    } = await supabaseClient
-      .from("marketplace_listings")
-      .select(`
-        id,
-        title,
-        category,
-        description,
-        price,
-        delivery_type,
-        image_url,
-        status,
-        created_at
-      `)
-      .eq(
-        "seller_id",
-        currentSeller.id
-      )
-      .order("created_at", {
-        ascending: false
-      });
+  const imageMap = {};
 
 
-    const container =
-      document.getElementById(
-        "seller-listings"
+  images.forEach(
+    function(image) {
+
+      if (
+        !imageMap[
+          image.product_id
+        ]
+      ) {
+
+        imageMap[
+          image.product_id
+        ] = [];
+
+      }
+
+
+      imageMap[
+        image.product_id
+      ].push(
+        image
       );
 
-
-    if (error) {
-
-      console.error(
-        "Listings error:",
-        error
-      );
-
-      container.innerHTML = `
-        <div class="empty-box">
-
-          <h3>
-            Unable to load products
-          </h3>
-
-          <p class="error-message">
-            ${escapeHtml(error.message)}
-          </p>
-
-        </div>
-      `;
-
-      return [];
-
     }
+  );
 
 
-    const products =
-      listings || [];
+  const productsWithImages =
+    productRows.map(
+      function(product) {
+
+        const productImages =
+          imageMap[
+            product.id
+          ] || [];
 
 
-    const activeProducts =
-      products.filter(function(item) {
+        let primary =
+          productImages.find(
+            function(image) {
 
-        return String(
-          item.status || ""
-        ).toLowerCase() === "active";
+              return (
+                image.is_primary === true
+              );
 
-      });
-
-
-    document.getElementById(
-      "active-listings"
-    ).textContent =
-      activeProducts.length;
+            }
+          );
 
 
-    if (!products.length) {
-
-      container.innerHTML = `
-        <div class="empty-box">
-
-          <h3>
-            No products yet
-          </h3>
-
-          <p>
-            Add your first physical product to the EarnGig marketplace.
-          </p>
-
-          <a
-            href="create-listing.html"
-            class="btn primary">
-            + Add Product
-          </a>
-
-        </div>
-      `;
-
-      return products;
-
-    }
+        if (!primary) {
+          primary =
+            productImages[0];
+        }
 
 
-    container.innerHTML =
-      products.map(function(product) {
+        return {
+          ...product,
+          primary_image_url:
+            primary?.image_url ||
+            null
+        };
+
+      }
+    );
+
+
+  const activeCount =
+    productsWithImages.filter(
+      function(product) {
+
+        return (
+          String(
+            product.status || ""
+          ).toLowerCase() ===
+            "active" &&
+          Number(
+            product.stock_quantity || 0
+          ) > 0
+        );
+
+      }
+    ).length;
+
+
+  document.getElementById(
+    "active-products"
+  ).textContent =
+    activeCount;
+
+
+  if (!productsWithImages.length) {
+
+    container.innerHTML = `
+
+      <div class="empty-box">
+
+        <h3>
+          No products yet
+        </h3>
+
+        <p>
+          Add your first product to your approved EarnGig store.
+        </p>
+
+        <a
+          href="create-listing.html"
+          class="btn primary"
+        >
+          + Add Product
+        </a>
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  container.innerHTML =
+    productsWithImages.map(
+      function(product) {
 
         const image =
-          product.image_url ||
-          "https://placehold.co/600x600/11182e/ffffff?text=Product";
+          product.primary_image_url ||
+          "";
+
+
+        const stock =
+          Number(
+            product.stock_quantity || 0
+          );
+
+
+        const status =
+          String(
+            product.status ||
+            "draft"
+          ).toLowerCase();
+
+
+        const active =
+          status === "active";
+
+
+        const stockClass =
+          stock <= 0
+            ? "status-pill status-out"
+            : "status-pill";
+
+
+        const statusClass =
+          active
+            ? "status-pill status-active"
+            : "status-pill";
 
 
         return `
 
-          <article class="seller-product">
+          <article
+            class="seller-product"
+          >
 
-            <img
-              src="${escapeHtml(image)}"
-              alt="${escapeHtml(product.title)}"
-              class="seller-product-image"
-              loading="lazy"
+            ${
+              image
+                ? `
+                  <img
+                    src="${escapeHtml(
+                      image
+                    )}"
+                    alt="${escapeHtml(
+                      product.title
+                    )}"
+                    class="seller-product-image"
+                    loading="lazy"
+                  >
+                `
+                : `
+                  <div
+                    class="seller-product-image"
+                    style="
+                      display:flex;
+                      align-items:center;
+                      justify-content:center;
+                      color:#737d9c;
+                      font-size:12px;
+                    "
+                  >
+                    No image
+                  </div>
+                `
+            }
+
+
+            <div
+              class="seller-product-content"
             >
 
-            <div class="seller-product-content">
-
-              <div class="seller-product-title">
-                ${escapeHtml(product.title)}
+              <div
+                class="seller-product-title"
+              >
+                ${escapeHtml(
+                  product.title
+                )}
               </div>
 
-              <div class="seller-product-price">
-                ${formatNaira(product.price)}
+
+              <div
+                class="seller-product-price"
+              >
+                ${formatNaira(
+                  product.price
+                )}
               </div>
 
-              <div class="product-meta">
+
+              <div
+                class="product-meta"
+              >
 
                 <div>
                   Category:
@@ -1069,24 +2093,50 @@
                   )}
                 </div>
 
+
                 <div>
-                  Delivery:
-                  ${escapeHtml(
-                    product.delivery_type ||
-                    "Not specified"
-                  )}
+                  Stock:
+                  <span
+                    class="${stockClass}"
+                  >
+                    ${stock}
+                  </span>
                 </div>
 
-                <div style="margin-top:7px;">
 
-                  <span class="status-pill">
+                <div style="margin-top:5px;">
+                  Status:
+                  <span
+                    class="${statusClass}"
+                  >
                     ${escapeHtml(
                       product.status ||
-                      "unknown"
+                      "draft"
                     )}
                   </span>
-
                 </div>
+
+              </div>
+
+
+              <div class="product-actions">
+
+                <a
+                  href="product.html?id=${encodeURIComponent(
+                    product.id
+                  )}"
+                >
+                  View
+                </a>
+
+
+                <a
+                  href="create-listing.html?edit=${encodeURIComponent(
+                    product.id
+                  )}"
+                >
+                  Edit
+                </a>
 
               </div>
 
@@ -1096,288 +2146,729 @@
 
         `;
 
-      }).join("");
+      }
+    ).join("");
+
+}
 
 
-    return products;
+/* ==========================================================
+   LOAD ORDERS
+========================================================== */
+
+async function loadSellerOrders() {
+
+  const container =
+    document.getElementById(
+      "seller-orders"
+    );
+
+
+  const {
+    data: orders,
+    error
+  } =
+    await supabaseClient
+      .from(
+        "marketplace_store_orders"
+      )
+      .select(`
+        id,
+        order_number,
+        buyer_id,
+        store_id,
+        vendor_id,
+        subtotal,
+        delivery_fee,
+        total_amount,
+        payment_method,
+        payment_reference,
+        payment_status,
+        order_status,
+        buyer_full_name,
+        buyer_phone_1,
+        buyer_phone_2,
+        delivery_state,
+        delivery_lga,
+        delivery_city,
+        delivery_area,
+        delivery_street,
+        delivery_address,
+        delivery_landmark,
+        delivery_instructions,
+        sent_at,
+        delivered_at,
+        vendor_credited_at,
+        created_at,
+        updated_at
+      `)
+      .eq(
+        "store_id",
+        currentStore.id
+      )
+      .eq(
+        "vendor_id",
+        currentSeller.id
+      )
+      .order(
+        "created_at",
+        {
+          ascending: false
+        }
+      )
+      .limit(30);
+
+
+  if (error) {
+
+    console.error(
+      "Orders error:",
+      error
+    );
+
+
+    container.innerHTML = `
+
+      <div class="empty-box">
+
+        <h3>
+          Unable to load orders
+        </h3>
+
+        <p class="error-message">
+          ${escapeHtml(
+            error.message
+          )}
+        </p>
+
+      </div>
+
+    `;
+
+    return;
 
   }
 
 
-  async function loadSellerOrders() {
+  sellerOrders =
+    orders || [];
 
-    const {
-      data: orders,
-      error
-    } = await supabaseClient
-      .from("marketplace_orders")
+
+  document.getElementById(
+    "total-orders"
+  ).textContent =
+    sellerOrders.length;
+
+
+  if (!sellerOrders.length) {
+
+    container.innerHTML = `
+
+      <div class="empty-box">
+
+        <h3>
+          No orders yet
+        </h3>
+
+        <p>
+          Customer orders will appear here when buyers purchase your products.
+        </p>
+
+      </div>
+
+    `;
+
+    updateEarnings(
+      []
+    );
+
+    return;
+
+  }
+
+
+  /*
+   * Load order items.
+   */
+
+  const orderIds =
+    sellerOrders.map(
+      function(order) {
+        return order.id;
+      }
+    );
+
+
+  const {
+    data: items,
+    error: itemsError
+  } =
+    await supabaseClient
+      .from(
+        "marketplace_store_order_items"
+      )
       .select(`
         id,
-        listing_id,
-        buyer_id,
-        amount,
-        status,
+        order_id,
+        product_id,
+        product_title,
+        product_price,
+        quantity,
+        line_total,
         created_at
       `)
-      .eq(
-        "seller_id",
-        currentSeller.id
-      )
-      .order("created_at", {
-        ascending: false
-      });
-
-
-    const container =
-      document.getElementById(
-        "seller-orders"
+      .in(
+        "order_id",
+        orderIds
       );
 
 
-    if (error) {
+  if (itemsError) {
 
-      console.error(
-        "Orders error:",
-        error
+    console.error(
+      "Order items error:",
+      itemsError
+    );
+
+  }
+
+
+  const itemsByOrder = {};
+
+
+  (items || []).forEach(
+    function(item) {
+
+      if (
+        !itemsByOrder[
+          item.order_id
+        ]
+      ) {
+
+        itemsByOrder[
+          item.order_id
+        ] = [];
+
+      }
+
+
+      itemsByOrder[
+        item.order_id
+      ].push(
+        item
       );
-
-      container.innerHTML = `
-        <div class="empty-box">
-
-          <h3>
-            Unable to load orders
-          </h3>
-
-          <p class="error-message">
-            ${escapeHtml(error.message)}
-          </p>
-
-        </div>
-      `;
-
-      return [];
 
     }
+  );
 
 
-    const sellerOrders =
-      orders || [];
+  container.innerHTML =
+    sellerOrders.map(
+      function(order) {
+
+        const orderItems =
+          itemsByOrder[
+            order.id
+          ] || [];
 
 
-    document.getElementById(
-      "total-orders"
-    ).textContent =
-      sellerOrders.length;
+        const status =
+          String(
+            order.order_status ||
+            ""
+          ).toLowerCase();
 
 
-    const completedOrders =
-      sellerOrders.filter(function(order) {
-
-        return String(
-          order.status || ""
-        ).toLowerCase() ===
-          "completed";
-
-      });
-
-
-    const totalSales =
-      completedOrders.reduce(
-        function(total, order) {
-
-          return total +
-            Number(
-              order.amount || 0
-            );
-
-        },
-        0
-      );
+        const canDispatch =
+          (
+            status ===
+              "paid_pending_fulfillment" ||
+            status ===
+              "paid" ||
+            status ===
+              "pending_delivery"
+          );
 
 
-    document.getElementById(
-      "total-sales"
-    ).textContent =
-      formatNaira(totalSales);
+        const statusClass =
+          status ===
+            "delivered"
+            ? "status-pill status-active"
+            : "status-pill";
 
 
-    document.getElementById(
-      "summary-total-sales"
-    ).textContent =
-      formatNaira(totalSales);
+        const itemsHtml =
+          orderItems.length
+            ? orderItems.map(
+                function(item) {
+
+                  return `
+
+                    <div
+                      class="order-item"
+                    >
+
+                      <span>
+                        ${escapeHtml(
+                          item.product_title
+                        )}
+                        ×
+                        ${Number(
+                          item.quantity || 0
+                        )}
+                      </span>
+
+                      <strong>
+                        ${formatNaira(
+                          item.line_total
+                        )}
+                      </strong>
+
+                    </div>
+
+                  `;
+
+                }
+              ).join("")
+            : `
+                <div
+                  class="order-item"
+                >
+                  <span>
+                    Order items unavailable
+                  </span>
+                </div>
+              `;
 
 
-    if (!sellerOrders.length) {
+        const deliveryAddress = [
+          order.delivery_street,
+          order.delivery_area,
+          order.delivery_city,
+          order.delivery_lga,
+          order.delivery_state
+        ]
+          .filter(Boolean)
+          .join(", ");
 
-      container.innerHTML = `
-        <div class="empty-box">
-
-          <h3>
-            No orders yet
-          </h3>
-
-          <p>
-            Customer orders will appear here when buyers purchase your products.
-          </p>
-
-        </div>
-      `;
-
-      return sellerOrders;
-
-    }
-
-
-    container.innerHTML =
-      sellerOrders.map(function(order) {
 
         return `
 
-          <article class="order-card">
+          <article
+            class="order-card"
+          >
 
-            <h3>
-              Order #${escapeHtml(
-                String(order.id).slice(0, 8)
-              )}
-            </h3>
+            <div
+              class="order-head"
+            >
+
+              <div>
+
+                <div
+                  class="order-number"
+                >
+                  ${escapeHtml(
+                    order.order_number ||
+                    "Marketplace Order"
+                  )}
+                </div>
+
+
+                <div
+                  class="order-date"
+                >
+                  ${formatDate(
+                    order.created_at
+                  )}
+                </div>
+
+              </div>
+
+
+              <span
+                class="${statusClass}"
+              >
+                ${escapeHtml(
+                  getOrderStatusLabel(
+                    order.order_status
+                  )
+                )}
+              </span>
+
+            </div>
+
 
             <p>
-              Amount:
-              <strong style="color:#a78bfa;">
-                ${formatNaira(order.amount)}
+              Buyer:
+              <strong>
+                ${escapeHtml(
+                  order.buyer_full_name ||
+                  "Customer"
+                )}
               </strong>
             </p>
 
-            <p>
-              Status:
-              <span class="status-pill">
-                ${escapeHtml(
-                  order.status ||
-                  "pending"
-                )}
-              </span>
-            </p>
 
             <p>
-              Date:
-              ${new Date(
-                order.created_at
-              ).toLocaleString(
-                "en-NG"
+              Phone:
+              ${escapeHtml(
+                order.buyer_phone_1 ||
+                "—"
               )}
             </p>
+
+
+            <p>
+              Delivery:
+              ${escapeHtml(
+                deliveryAddress ||
+                order.delivery_address ||
+                "—"
+              )}
+            </p>
+
+
+            <div
+              class="order-items"
+            >
+
+              ${itemsHtml}
+
+            </div>
+
+
+            <p>
+              Order total:
+            </p>
+
+            <div
+              class="order-total"
+            >
+              ${formatNaira(
+                order.total_amount
+              )}
+            </div>
+
+
+            <div
+              class="order-actions"
+            >
+
+              ${
+                canDispatch
+                  ? `
+                    <button
+                      type="button"
+                      onclick="markOrderDispatched('${escapeHtml(
+                        order.id
+                      )}')"
+                    >
+                      Mark Sent / Dispatched
+                    </button>
+                  `
+                  : ""
+              }
+
+
+              ${
+                status === "delivered"
+                  ? `
+                    <button
+                      type="button"
+                      disabled
+                    >
+                      Delivery Confirmed
+                    </button>
+                  `
+                  : ""
+              }
+
+
+              ${
+                order.vendor_credited_at
+                  ? `
+                    <button
+                      type="button"
+                      disabled
+                    >
+                      Vendor Credited
+                    </button>
+                  `
+                  : ""
+              }
+
+            </div>
 
           </article>
 
         `;
 
-      }).join("");
+      }
+    ).join("");
 
 
-    return sellerOrders;
+  updateEarnings(
+    sellerOrders
+  );
 
+}
+
+
+/* ==========================================================
+   EARNINGS
+========================================================== */
+
+function updateEarnings(
+  orders
+) {
+
+  let totalSales = 0;
+  let pending = 0;
+  let available = 0;
+
+
+  (orders || []).forEach(
+    function(order) {
+
+      const amount =
+        Number(
+          order.total_amount || 0
+        );
+
+
+      const status =
+        String(
+          order.order_status ||
+          ""
+        ).toLowerCase();
+
+
+      /*
+       * Total sales includes paid orders
+       * and later stages.
+       */
+
+      if (
+        String(
+          order.payment_status ||
+          ""
+        ).toLowerCase() ===
+          "paid"
+      ) {
+
+        totalSales +=
+          amount;
+
+      }
+
+
+      /*
+       * Once the buyer confirms delivery
+       * and vendor credit has occurred,
+       * the amount is marketplace available.
+       */
+
+      if (
+        order.vendor_credited_at
+      ) {
+
+        available +=
+          amount;
+
+        return;
+
+      }
+
+
+      /*
+       * Paid but not yet credited:
+       * money remains pending.
+       */
+
+      if (
+        String(
+          order.payment_status ||
+          ""
+        ).toLowerCase() ===
+          "paid" &&
+        status !== "cancelled" &&
+        status !== "refunded"
+      ) {
+
+        pending +=
+          amount;
+
+      }
+
+    }
+  );
+
+
+  document.getElementById(
+    "total-sales"
+  ).textContent =
+    formatNaira(
+      totalSales
+    );
+
+
+  document.getElementById(
+    "summary-total-sales"
+  ).textContent =
+    formatNaira(
+      totalSales
+    );
+
+
+  document.getElementById(
+    "pending-earnings"
+  ).textContent =
+    formatNaira(
+      pending
+    );
+
+
+  document.getElementById(
+    "available-earnings"
+  ).textContent =
+    formatNaira(
+      available
+    );
+
+
+  document.getElementById(
+    "earning-balance"
+  ).textContent =
+    formatNaira(
+      available
+    );
+
+}
+
+
+/* ==========================================================
+   MARK ORDER DISPATCHED
+========================================================== */
+
+async function markOrderDispatched(
+  orderId
+) {
+
+  const confirmed =
+    window.confirm(
+      "Mark this order as sent/dispatched?"
+    );
+
+
+  if (!confirmed) {
+    return;
   }
 
 
-  async function loadSellerWallet() {
-
-    const {
-      data: wallet,
-      error
-    } = await supabaseClient
-      .from("wallets")
-      .select(`
-        balance,
-        total_earned
-      `)
-      .eq(
-        "user_id",
-        currentSeller.id
+  const {
+    error
+  } =
+    await supabaseClient
+      .from(
+        "marketplace_store_orders"
       )
-      .maybeSingle();
-
-
-    if (error) {
-
-      console.error(
-        "Wallet error:",
-        error
-      );
-
-      return;
-
-    }
-
-
-    if (!wallet) {
-
-      return;
-
-    }
-
-
-    document.getElementById(
-      "available-earnings"
-    ).textContent =
-      formatNaira(
-        wallet.balance
+      .update({
+        order_status:
+          "sent",
+        sent_at:
+          new Date().toISOString(),
+        updated_at:
+          new Date().toISOString()
+      })
+      .eq(
+        "id",
+        orderId
+      )
+      .eq(
+        "store_id",
+        currentStore.id
+      )
+      .eq(
+        "vendor_id",
+        currentSeller.id
       );
 
 
-    document.getElementById(
-      "earning-balance"
-    ).textContent =
-      formatNaira(
-        wallet.balance
-      );
+  if (error) {
+
+    console.error(
+      "Dispatch update error:",
+      error
+    );
 
 
-    /*
-     * Pending marketplace earnings will be
-     * connected to marketplace_store_orders
-     * after the new delivery-confirmation
-     * checkout system is activated.
-     */
+    alert(
+      "The order could not be updated. Please try again."
+    );
 
-    document.getElementById(
-      "pending-earnings"
-    ).textContent =
-      "₦0";
+    return;
 
   }
 
 
-  async function loadSellerDashboard() {
+  alert(
+    "Order marked as sent/dispatched."
+  );
 
-    await loadSellerProfile();
 
-    await loadSellerStore();
+  await loadSellerOrders();
 
-    await loadSellerListings();
+}
 
-    await loadSellerOrders();
 
-    await loadSellerWallet();
+/* ==========================================================
+   EVENTS
+========================================================== */
 
+document
+  .getElementById(
+    "copy-store-link"
+  )
+  .addEventListener(
+    "click",
+    copyStoreLink
+  );
+
+
+document
+  .getElementById(
+    "share-store"
+  )
+  .addEventListener(
+    "click",
+    shareStore
+  );
+
+
+/* ==========================================================
+   START DASHBOARD
+========================================================== */
+
+(async function() {
+
+  const allowed =
+    await checkSellerAccess();
+
+
+  if (!allowed) {
+    return;
   }
 
 
-  (async function() {
+  renderStore();
 
-    const allowed =
-      await checkSellerAccess();
+  await loadSellerProfile();
 
+  await loadSellerProducts();
 
-    if (!allowed) {
+  await loadSellerOrders();
 
-      return;
-
-    }
-
-
-    await loadSellerDashboard();
-
-  })();
+})();
 
 </script>
 
