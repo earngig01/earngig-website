@@ -1,21 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
+
+  <meta charset="UTF-8">
+
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0"
-  />
+  >
 
-  <title>My Cart | EarnGig</title>
+  <title>My Cart | EarnGig Marketplace</title>
+
+
+  <link
+    rel="stylesheet"
+    href="styles.css"
+  >
+
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <script src="supabase.js"></script>
 
+
   <style>
+
     * {
       box-sizing: border-box;
     }
+
 
     body {
       margin: 0;
@@ -24,15 +38,18 @@
       color: #ffffff;
     }
 
+
     a {
       color: inherit;
       text-decoration: none;
     }
 
+
     button,
     input {
       font: inherit;
     }
+
 
     .page {
       max-width: 1100px;
@@ -40,7 +57,10 @@
       padding: 18px;
     }
 
-    /* HEADER */
+
+    /* ======================================================
+       HEADER
+    ====================================================== */
 
     .topbar {
       display: flex;
@@ -52,6 +72,7 @@
       margin-bottom: 25px;
     }
 
+
     .brand {
       display: flex;
       align-items: center;
@@ -60,6 +81,7 @@
       font-weight: 800;
     }
 
+
     .brand-icon {
       width: 46px;
       height: 46px;
@@ -67,18 +89,21 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: linear-gradient(
-        135deg,
-        #4f46e5,
-        #7c3aed
-      );
+      background:
+        linear-gradient(
+          135deg,
+          #4f46e5,
+          #7c3aed
+        );
       font-size: 21px;
       font-weight: 900;
     }
 
+
     .brand-text span {
       color: #8b5cf6;
     }
+
 
     .continue-btn {
       border: 1px solid #354064;
@@ -91,12 +116,16 @@
       cursor: pointer;
     }
 
+
     .continue-btn:hover {
       background: #19244a;
       border-color: #6d4bd2;
     }
 
-    /* PAGE HEADER */
+
+    /* ======================================================
+       PAGE HEADER
+    ====================================================== */
 
     .eyebrow {
       color: #9f83ff;
@@ -107,11 +136,13 @@
       margin-bottom: 12px;
     }
 
+
     .page-title {
       margin: 0 0 7px;
       font-size: 30px;
       font-weight: 800;
     }
+
 
     .page-subtitle {
       margin: 0 0 24px;
@@ -119,16 +150,24 @@
       font-size: 14px;
     }
 
-    /* LAYOUT */
+
+    /* ======================================================
+       LAYOUT
+    ====================================================== */
 
     .cart-layout {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) 330px;
+      grid-template-columns:
+        minmax(0, 1fr)
+        330px;
       gap: 18px;
       align-items: start;
     }
 
-    /* STORE GROUP */
+
+    /* ======================================================
+       STORE GROUP
+    ====================================================== */
 
     .store-group {
       background: #11182e;
@@ -137,6 +176,7 @@
       overflow: hidden;
       margin-bottom: 15px;
     }
+
 
     .store-header {
       padding: 14px 16px;
@@ -148,10 +188,32 @@
       gap: 10px;
     }
 
+
+    .store-header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+
+    .store-logo {
+      width: 38px;
+      height: 38px;
+      border-radius: 9px;
+      object-fit: cover;
+      background: #090d31;
+      border: 1px solid #343963;
+      flex-shrink: 0;
+    }
+
+
     .store-name {
       font-size: 14px;
       font-weight: 800;
+      word-break: break-word;
     }
+
 
     .store-label {
       color: #8994b1;
@@ -159,24 +221,51 @@
       margin-top: 3px;
     }
 
+
+    .store-link {
+      color: #a99cff;
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+
+    .store-link:hover {
+      color: #c9c1ff;
+    }
+
+
     .store-products {
       padding: 0 15px;
     }
 
-    /* CART ITEM */
+
+    /* ======================================================
+       CART ITEM
+    ====================================================== */
 
     .cart-item {
       display: grid;
-      grid-template-columns: 82px minmax(0, 1fr) auto;
+      grid-template-columns:
+        82px
+        minmax(0, 1fr)
+        auto;
       gap: 13px;
       align-items: center;
       padding: 15px 0;
       border-bottom: 1px solid #202943;
     }
 
+
     .cart-item:last-child {
       border-bottom: 0;
     }
+
+
+    .item-image-link {
+      display: block;
+    }
+
 
     .item-image {
       width: 82px;
@@ -187,12 +276,21 @@
       display: block;
     }
 
+
     .item-title {
+      display: block;
+      color: #fff;
       font-size: 14px;
       font-weight: 700;
       line-height: 1.35;
       margin-bottom: 6px;
     }
+
+
+    .item-title:hover {
+      color: #c4b8ff;
+    }
+
 
     .item-category {
       display: inline-block;
@@ -209,22 +307,43 @@
       margin-bottom: 7px;
     }
 
+
     .item-price {
       color: #a78bfa;
       font-size: 14px;
       font-weight: 800;
     }
 
+
+    .item-stock {
+      color: #7f8aa8;
+      font-size: 11px;
+      margin-top: 5px;
+    }
+
+
+    .item-stock.warning {
+      color: #f5c77a;
+    }
+
+
+    .item-stock.error {
+      color: #f0aaaa;
+    }
+
+
     .item-right {
       text-align: right;
-      min-width: 100px;
+      min-width: 110px;
     }
+
 
     .line-total {
       font-size: 15px;
       font-weight: 800;
       margin-bottom: 9px;
     }
+
 
     .quantity-control {
       display: inline-flex;
@@ -234,6 +353,7 @@
       border-radius: 8px;
       overflow: hidden;
     }
+
 
     .quantity-btn {
       width: 29px;
@@ -245,9 +365,17 @@
       font-size: 16px;
     }
 
+
     .quantity-btn:hover {
       background: #202943;
     }
+
+
+    .quantity-btn:disabled {
+      opacity: .35;
+      cursor: not-allowed;
+    }
+
 
     .quantity-value {
       min-width: 29px;
@@ -255,6 +383,7 @@
       font-size: 12px;
       font-weight: 700;
     }
+
 
     .remove-btn {
       display: block;
@@ -267,11 +396,15 @@
       padding: 0;
     }
 
+
     .remove-btn:hover {
       color: #ff9ba5;
     }
 
-    /* SUMMARY */
+
+    /* ======================================================
+       SUMMARY
+    ====================================================== */
 
     .summary {
       position: sticky;
@@ -282,11 +415,13 @@
       padding: 18px;
     }
 
+
     .summary-title {
       font-size: 17px;
       font-weight: 800;
       margin-bottom: 18px;
     }
+
 
     .summary-row {
       display: flex;
@@ -297,15 +432,18 @@
       margin-bottom: 11px;
     }
 
+
     .summary-row strong {
       color: #fff;
     }
+
 
     .summary-divider {
       height: 1px;
       background: #292f4c;
       margin: 16px 0;
     }
+
 
     .summary-total {
       display: flex;
@@ -315,35 +453,47 @@
       margin-bottom: 16px;
     }
 
+
     .summary-total span {
       font-size: 14px;
       color: #c5ccdd;
     }
+
 
     .summary-total strong {
       font-size: 21px;
       color: #a78bfa;
     }
 
+
     .checkout-btn {
       width: 100%;
       border: 0;
       border-radius: 11px;
       padding: 13px;
-      background: linear-gradient(
-        135deg,
-        #7c3aed,
-        #9333ea
-      );
+      background:
+        linear-gradient(
+          135deg,
+          #7c3aed,
+          #9333ea
+        );
       color: #fff;
       font-size: 14px;
       font-weight: 800;
       cursor: pointer;
     }
 
+
     .checkout-btn:hover {
       opacity: 0.93;
     }
+
+
+    .checkout-btn:disabled {
+      opacity: .45;
+      cursor: not-allowed;
+    }
+
 
     .checkout-note {
       color: #7f8aa8;
@@ -353,7 +503,38 @@
       margin-top: 10px;
     }
 
-    /* STATES */
+
+    .validation-note {
+      margin-top: 12px;
+      padding: 10px 11px;
+      border-radius: 9px;
+      background: rgba(
+        190,
+        60,
+        70,
+        0.08
+      );
+      border: 1px solid rgba(
+        210,
+        70,
+        80,
+        0.25
+      );
+      color: #f0aaaa;
+      font-size: 11px;
+      line-height: 1.5;
+      display: none;
+    }
+
+
+    .validation-note.visible {
+      display: block;
+    }
+
+
+    /* ======================================================
+       STATES
+    ====================================================== */
 
     .state-box {
       background: #11182e;
@@ -363,10 +544,12 @@
       text-align: center;
     }
 
+
     .state-icon {
       font-size: 42px;
       margin-bottom: 12px;
     }
+
 
     .state-title {
       font-size: 18px;
@@ -374,12 +557,14 @@
       margin-bottom: 7px;
     }
 
+
     .state-text {
       color: #929db8;
       font-size: 13px;
       line-height: 1.5;
       margin-bottom: 18px;
     }
+
 
     .state-btn {
       display: inline-block;
@@ -392,6 +577,7 @@
       font-weight: 700;
     }
 
+
     .error-box {
       border-color: rgba(
         239,
@@ -401,11 +587,15 @@
       );
     }
 
+
     .error-text {
       color: #f3a0a7;
     }
 
-    /* MOBILE */
+
+    /* ======================================================
+       MOBILE
+    ====================================================== */
 
     @media (max-width: 800px) {
 
@@ -413,11 +603,13 @@
         grid-template-columns: 1fr;
       }
 
+
       .summary {
         position: static;
       }
 
     }
+
 
     @media (max-width: 600px) {
 
@@ -425,13 +617,16 @@
         padding: 12px;
       }
 
+
       .topbar {
         margin-bottom: 20px;
       }
 
+
       .brand {
         font-size: 20px;
       }
+
 
       .brand-icon {
         width: 40px;
@@ -439,14 +634,17 @@
         font-size: 18px;
       }
 
+
       .continue-btn {
         padding: 10px 12px;
         font-size: 11px;
       }
 
+
       .page-title {
         font-size: 25px;
       }
+
 
       .cart-item {
         grid-template-columns:
@@ -455,10 +653,12 @@
         gap: 10px;
       }
 
+
       .item-image {
         width: 65px;
         height: 65px;
       }
+
 
       .item-right {
         grid-column: 2;
@@ -466,920 +666,1317 @@
         min-width: 0;
       }
 
+
       .remove-btn {
         margin-left: 0;
       }
+
 
       .line-total {
         margin-bottom: 7px;
       }
 
+
+      .store-header {
+        align-items: flex-start;
+      }
+
+
+      .store-link {
+        align-self: center;
+      }
+
     }
 
   </style>
+
 </head>
+
 
 <body>
 
-  <div class="page">
 
-    <!-- HEADER -->
-
-    <div class="topbar">
-
-      <a
-        href="index.html"
-        class="brand"
-      >
-
-        <div class="brand-icon">
-          E
-        </div>
-
-        <div class="brand-text">
-          Earn <span>Gig</span>
-        </div>
-
-      </a>
-
-      <button
-        type="button"
-        class="continue-btn"
-        onclick="window.location.href='marketplace.html'"
-      >
-        Continue Shopping
-      </button>
-
-    </div>
+<div class="page">
 
 
-    <!-- TITLE -->
+  <!-- HEADER -->
 
-    <div class="eyebrow">
-      EarnGig Marketplace
-    </div>
+  <div class="topbar">
 
-    <h1 class="page-title">
-      My Cart
-    </h1>
-
-    <p class="page-subtitle">
-      Review your products before checkout.
-    </p>
-
-
-    <!-- CONTENT -->
-
-    <div
-      id="mainContent"
-      class="cart-layout"
+    <a
+      href="index.html"
+      class="brand"
     >
 
-      <div id="cartProducts">
-
-        <div class="state-box">
-
-          <div class="state-icon">
-            🛒
-          </div>
-
-          <div class="state-title">
-            Loading your cart
-          </div>
-
-          <div class="state-text">
-            Please wait while we load your products.
-          </div>
-
-        </div>
-
+      <div class="brand-icon">
+        E
       </div>
 
+      <div class="brand-text">
+        Earn <span>Gig</span>
+      </div>
 
-      <aside
-        id="summary"
-        class="summary"
-        style="display:none;"
-      >
+    </a>
 
-        <div class="summary-title">
-          Cart Summary
-        </div>
 
-        <div class="summary-row">
-
-          <span>
-            Items
-          </span>
-
-          <strong id="summaryItems">
-            0
-          </strong>
-
-        </div>
-
-        <div class="summary-row">
-
-          <span>
-            Vendors
-          </span>
-
-          <strong id="summaryVendors">
-            0
-          </strong>
-
-        </div>
-
-        <div class="summary-row">
-
-          <span>
-            Product total
-          </span>
-
-          <strong id="summarySubtotal">
-            ₦0
-          </strong>
-
-        </div>
-
-        <div class="summary-divider"></div>
-
-        <div class="summary-total">
-
-          <span>
-            Subtotal
-          </span>
-
-          <strong id="summaryTotal">
-            ₦0
-          </strong>
-
-        </div>
-
-        <button
-          id="checkoutButton"
-          type="button"
-          class="checkout-btn"
-        >
-          Proceed to Checkout
-        </button>
-
-        <div class="checkout-note">
-          Delivery details and payment method will
-          be collected securely at checkout.
-        </div>
-
-      </aside>
-
-    </div>
+    <button
+      type="button"
+      class="continue-btn"
+      onclick="window.location.href='marketplace.html'"
+    >
+      Continue Shopping
+    </button>
 
   </div>
 
 
-  <script>
+  <!-- TITLE -->
 
-    const cartProducts =
-      document.getElementById(
-        "cartProducts"
-      );
-
-    const summary =
-      document.getElementById(
-        "summary"
-      );
-
-    const summaryItems =
-      document.getElementById(
-        "summaryItems"
-      );
-
-    const summaryVendors =
-      document.getElementById(
-        "summaryVendors"
-      );
-
-    const summarySubtotal =
-      document.getElementById(
-        "summarySubtotal"
-      );
-
-    const summaryTotal =
-      document.getElementById(
-        "summaryTotal"
-      );
-
-    const checkoutButton =
-      document.getElementById(
-        "checkoutButton"
-      );
+  <div class="eyebrow">
+    EarnGig Marketplace
+  </div>
 
 
-    let currentUser = null;
-
-    let currentCart = null;
-
-    let cartItems = [];
-
-    let productsById = {};
-
-    let storesById = {};
+  <h1 class="page-title">
+    My Cart
+  </h1>
 
 
-    /* ======================================================
-       HELPERS
-    ====================================================== */
-
-    function formatNaira(amount) {
-
-      const value =
-        Number(amount || 0);
-
-      return "₦" +
-        value.toLocaleString(
-          "en-NG",
-          {
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 2
-          }
-        );
-
-    }
+  <p class="page-subtitle">
+    Review your products before checkout.
+  </p>
 
 
-    function escapeHtml(value) {
+  <!-- CONTENT -->
 
-      return String(value ?? "")
-        .replace(
-          /&/g,
-          "&amp;"
-        )
-        .replace(
-          /</g,
-          "&lt;"
-        )
-        .replace(
-          />/g,
-          "&gt;"
-        )
-        .replace(
-          /"/g,
-          "&quot;"
-        )
-        .replace(
-          /'/g,
-          "&#039;"
-        );
-
-    }
+  <div
+    id="mainContent"
+    class="cart-layout"
+  >
 
 
-    /* ======================================================
-       LOAD USER
-    ====================================================== */
+    <div id="cartProducts">
 
-    async function loadUser() {
+      <div class="state-box">
 
-      const {
-        data: {
-          user
-        },
-        error
-      } =
-        await supabaseClient.auth.getUser();
+        <div class="state-icon">
+          🛒
+        </div>
+
+        <div class="state-title">
+          Loading your cart
+        </div>
+
+        <div class="state-text">
+          Please wait while we load your products.
+        </div>
+
+      </div>
+
+    </div>
 
 
-      if (error) {
-        throw error;
+    <!-- SUMMARY -->
+
+    <aside
+      id="summary"
+      class="summary"
+      style="display:none;"
+    >
+
+      <div class="summary-title">
+        Cart Summary
+      </div>
+
+
+      <div class="summary-row">
+
+        <span>
+          Items
+        </span>
+
+        <strong id="summaryItems">
+          0
+        </strong>
+
+      </div>
+
+
+      <div class="summary-row">
+
+        <span>
+          Vendors
+        </span>
+
+        <strong id="summaryVendors">
+          0
+        </strong>
+
+      </div>
+
+
+      <div class="summary-row">
+
+        <span>
+          Product total
+        </span>
+
+        <strong id="summarySubtotal">
+          ₦0
+        </strong>
+
+      </div>
+
+
+      <div class="summary-divider"></div>
+
+
+      <div class="summary-total">
+
+        <span>
+          Subtotal
+        </span>
+
+        <strong id="summaryTotal">
+          ₦0
+        </strong>
+
+      </div>
+
+
+      <button
+        id="checkoutButton"
+        type="button"
+        class="checkout-btn"
+        disabled
+      >
+        Proceed to Checkout
+      </button>
+
+
+      <div class="checkout-note">
+        Delivery details and payment method will
+        be collected securely at checkout.
+      </div>
+
+
+      <div
+        id="validationNote"
+        class="validation-note"
+      ></div>
+
+
+    </aside>
+
+
+  </div>
+
+</div>
+
+
+<script>
+
+
+let currentUser = null;
+
+let currentCart = null;
+
+let cartItems = [];
+
+let productsById = {};
+
+let storesById = {};
+
+let imagesByProduct = {};
+
+
+/* ==========================================================
+   DOM
+========================================================== */
+
+
+const cartProducts =
+  document.getElementById(
+    "cartProducts"
+  );
+
+
+const summary =
+  document.getElementById(
+    "summary"
+  );
+
+
+const summaryItems =
+  document.getElementById(
+    "summaryItems"
+  );
+
+
+const summaryVendors =
+  document.getElementById(
+    "summaryVendors"
+  );
+
+
+const summarySubtotal =
+  document.getElementById(
+    "summarySubtotal"
+  );
+
+
+const summaryTotal =
+  document.getElementById(
+    "summaryTotal"
+  );
+
+
+const checkoutButton =
+  document.getElementById(
+    "checkoutButton"
+  );
+
+
+const validationNote =
+  document.getElementById(
+    "validationNote"
+  );
+
+
+/* ==========================================================
+   HELPERS
+========================================================== */
+
+
+function formatNaira(
+  amount
+) {
+
+  return "₦" +
+    Number(
+      amount || 0
+    ).toLocaleString(
+      "en-NG",
+      {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
       }
+    );
+
+}
 
 
-      if (!user) {
+function escapeHtml(
+  value
+) {
 
-        cartProducts.innerHTML = `
+  return String(
+    value ?? ""
+  )
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+    .replace(
+      /</g,
+      "&lt;"
+    )
+    .replace(
+      />/g,
+      "&gt;"
+    )
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+    .replace(
+      /'/g,
+      "&#039;"
+    );
 
-          <div class="state-box">
-
-            <div class="state-icon">
-              🔐
-            </div>
-
-            <div class="state-title">
-              Please log in
-            </div>
-
-            <div class="state-text">
-              You need to be logged in to view
-              your marketplace cart.
-            </div>
-
-            <a
-              href="login.html"
-              class="state-btn"
-            >
-              Log In
-            </a>
-
-          </div>
-
-        `;
-
-        summary.style.display =
-          "none";
-
-        return false;
-
-      }
+}
 
 
-      currentUser = user;
-
-      return true;
-
-    }
+/* ==========================================================
+   LOAD USER
+========================================================== */
 
 
-    /* ======================================================
-       LOAD / CREATE CART
-    ====================================================== */
+async function loadUser() {
 
-    async function loadCart() {
-
-      /*
-       * IMPORTANT:
-       * marketplace_carts uses user_id.
-       * It does NOT use buyer_id.
-       */
-
-      const {
-        data: cart,
-        error: cartError
-      } =
-        await supabaseClient
-          .from("marketplace_carts")
-          .select(`
-            id,
-            user_id,
-            created_at,
-            updated_at
-          `)
-          .eq(
-            "user_id",
-            currentUser.id
-          )
-          .maybeSingle();
+  const {
+    data: {
+      user
+    },
+    error
+  } =
+    await supabaseClient
+      .auth
+      .getUser();
 
 
-      if (cartError) {
-        throw cartError;
-      }
+  if (error) {
+
+    throw error;
+
+  }
 
 
-      if (cart) {
+  if (!user) {
 
-        currentCart = cart;
+    cartProducts.innerHTML = `
 
-        return;
+      <div class="state-box">
 
-      }
+        <div class="state-icon">
+          🔐
+        </div>
 
+        <div class="state-title">
+          Please log in
+        </div>
 
-      /*
-       * No cart exists yet.
-       * Create one for this user.
-       */
+        <div class="state-text">
+          You need to be logged in to view
+          your marketplace cart.
+        </div>
 
-      const {
-        data: newCart,
-        error: createError
-      } =
-        await supabaseClient
-          .from("marketplace_carts")
-          .insert({
-            user_id:
-              currentUser.id
-          })
-          .select(`
-            id,
-            user_id,
-            created_at,
-            updated_at
-          `)
-          .single();
+        <a
+          href="login.html?redirect=${encodeURIComponent(
+            window.location.href
+          )}"
+          class="state-btn"
+        >
+          Log In
+        </a>
 
+      </div>
 
-      if (createError) {
-        throw createError;
-      }
+    `;
 
 
-      currentCart = newCart;
-
-    }
-
-
-    /* ======================================================
-       LOAD CART ITEMS
-    ====================================================== */
-
-    async function loadCartItems() {
-
-      const {
-        data: items,
-        error
-      } =
-        await supabaseClient
-          .from(
-            "marketplace_cart_items"
-          )
-          .select(`
-            id,
-            cart_id,
-            product_id,
-            quantity,
-            created_at
-          `)
-          .eq(
-            "cart_id",
-            currentCart.id
-          )
-          .order(
-            "created_at",
-            {
-              ascending: true
-            }
-          );
+    summary.style.display =
+      "none";
 
 
-      if (error) {
-        throw error;
-      }
+    return false;
+
+  }
 
 
-      cartItems =
-        items || [];
-
-    }
+  currentUser =
+    user;
 
 
-    /* ======================================================
-       LOAD PRODUCTS
-    ====================================================== */
+  return true;
 
-    async function loadProducts() {
-
-      productsById = {};
+}
 
 
-      const productIds =
-        [
-          ...new Set(
-            cartItems
-              .map(
-                item =>
-                  item.product_id
-              )
-              .filter(Boolean)
-          )
-        ];
+/* ==========================================================
+   LOAD / CREATE CART
+========================================================== */
 
 
-      if (!productIds.length) {
-        return;
-      }
+async function loadCart() {
+
+  /*
+   * New schema:
+   *
+   * marketplace_carts
+   * user_id
+   *
+   * NOT buyer_id.
+   */
+
+  const {
+    data: cart,
+    error
+  } =
+    await supabaseClient
+      .from(
+        "marketplace_carts"
+      )
+      .select(`
+        id,
+        user_id,
+        created_at,
+        updated_at
+      `)
+      .eq(
+        "user_id",
+        currentUser.id
+      )
+      .maybeSingle();
 
 
-      /*
-       * Cart product_id correctly references
-       * marketplace_products.id.
-       */
+  if (error) {
 
-      const {
-        data: products,
-        error
-      } =
-        await supabaseClient
-          .from(
-            "marketplace_products"
-          )
-          .select(`
-            id,
-            store_id,
-            vendor_id,
-            title,
-            category,
-            description,
-            price,
-            stock_quantity,
-            delivery_type,
-            status
-          `)
-          .in(
-            "id",
-            productIds
-          );
+    throw error;
+
+  }
 
 
-      if (error) {
-        throw error;
-      }
+  if (cart) {
+
+    currentCart =
+      cart;
+
+    return;
+
+  }
 
 
-      (
-        products || []
-      ).forEach(
-        product => {
+  const {
+    data: newCart,
+    error: createError
+  } =
+    await supabaseClient
+      .from(
+        "marketplace_carts"
+      )
+      .insert({
+        user_id:
+          currentUser.id
+      })
+      .select(`
+        id,
+        user_id,
+        created_at,
+        updated_at
+      `)
+      .single();
 
-          productsById[
-            product.id
-          ] = product;
 
+  if (createError) {
+
+    throw createError;
+
+  }
+
+
+  currentCart =
+    newCart;
+
+}
+
+
+/* ==========================================================
+   LOAD CART ITEMS
+========================================================== */
+
+
+async function loadCartItems() {
+
+  const {
+    data: items,
+    error
+  } =
+    await supabaseClient
+      .from(
+        "marketplace_cart_items"
+      )
+      .select(`
+        id,
+        cart_id,
+        product_id,
+        quantity,
+        created_at
+      `)
+      .eq(
+        "cart_id",
+        currentCart.id
+      )
+      .order(
+        "created_at",
+        {
+          ascending: true
         }
       );
 
-    }
+
+  if (error) {
+
+    throw error;
+
+  }
 
 
-    /* ======================================================
-       LOAD PRODUCT IMAGES
-    ====================================================== */
+  cartItems =
+    items || [];
 
-    async function loadProductImages() {
-
-      const productIds =
-        Object.keys(
-          productsById
-        );
+}
 
 
-      if (!productIds.length) {
-        return;
-      }
+/* ==========================================================
+   LOAD PRODUCTS
+========================================================== */
 
 
-      const {
-        data: images,
-        error
-      } =
-        await supabaseClient
-          .from(
-            "marketplace_product_images"
-          )
-          .select(`
-            product_id,
-            image_url,
-            is_primary,
-            sort_order
-          `)
-          .in(
-            "product_id",
-            productIds
-          )
-          .order(
-            "is_primary",
-            {
-              ascending: false
-            }
-          )
-          .order(
-            "sort_order",
-            {
-              ascending: true
-            }
-          );
+async function loadProducts() {
+
+  productsById = {};
 
 
-      if (error) {
-        throw error;
-      }
-
-
-      const imageByProduct =
-        {};
-
-
-      (
-        images || []
-      ).forEach(
-        image => {
-
-          if (
-            !imageByProduct[
-              image.product_id
-            ]
-          ) {
-
-            imageByProduct[
-              image.product_id
-            ] =
-              image.image_url;
-
-          }
-
-        }
-      );
-
-
-      Object.keys(
-        productsById
-      ).forEach(
-        productId => {
-
-          productsById[
-            productId
-          ].image_url =
-            imageByProduct[
-              productId
-            ] || "";
-
-        }
-      );
-
-    }
-
-
-    /* ======================================================
-       LOAD STORES
-    ====================================================== */
-
-    async function loadStores() {
-
-      storesById = {};
-
-
-      const storeIds =
-        [
-          ...new Set(
-            Object.values(
-              productsById
-            )
-              .map(
-                product =>
-                  product.store_id
-              )
-              .filter(Boolean)
-          )
-        ];
-
-
-      if (!storeIds.length) {
-        return;
-      }
-
-
-      const {
-        data: stores,
-        error
-      } =
-        await supabaseClient
-          .from(
-            "marketplace_stores"
-          )
-          .select(`
-            id,
-            vendor_id,
-            store_name,
-            store_slug,
-            store_logo_url,
-            status
-          `)
-          .in(
-            "id",
-            storeIds
-          );
-
-
-      if (error) {
-        throw error;
-      }
-
-
-      (
-        stores || []
-      ).forEach(
-        store => {
-
-          storesById[
-            store.id
-          ] = store;
-
-        }
-      );
-
-    }
-
-
-    /* ======================================================
-       GROUP CART BY STORE
-    ====================================================== */
-
-    function getGroupedItems() {
-
-      const groups = {};
-
-
-      cartItems.forEach(
-        item => {
-
-          const product =
-            productsById[
+  const productIds =
+    [
+      ...new Set(
+        cartItems
+          .map(
+            item =>
               item.product_id
-            ];
+          )
+          .filter(Boolean)
+      )
+    ];
 
 
-          if (!product) {
-            return;
-          }
+  if (!productIds.length) {
+
+    return;
+
+  }
 
 
-          const storeId =
-            product.store_id ||
-            "unknown-store";
+  const {
+    data: products,
+    error
+  } =
+    await supabaseClient
+      .from(
+        "marketplace_products"
+      )
+      .select(`
+        id,
+        store_id,
+        vendor_id,
+        title,
+        category,
+        description,
+        price,
+        stock_quantity,
+        delivery_type,
+        status
+      `)
+      .in(
+        "id",
+        productIds
+      );
 
 
-          if (!groups[storeId]) {
+  if (error) {
 
-            groups[storeId] = {
-              store:
-                storesById[
-                  storeId
-                ] || null,
+    throw error;
 
-              items: []
-            };
-
-          }
+  }
 
 
-          groups[
-            storeId
-          ].items.push({
-            ...item,
-            product
-          });
+  (
+    products || []
+  ).forEach(
+    function(product) {
 
+      productsById[
+        product.id
+      ] =
+        product;
+
+    }
+  );
+
+}
+
+
+/* ==========================================================
+   LOAD BRANDED IMAGES
+========================================================== */
+
+
+async function loadProductImages() {
+
+  imagesByProduct = {};
+
+
+  const productIds =
+    Object.keys(
+      productsById
+    );
+
+
+  if (!productIds.length) {
+
+    return;
+
+  }
+
+
+  /*
+   * Only branded images are allowed
+   * in the buyer-facing marketplace.
+   */
+
+  const {
+    data: images,
+    error
+  } =
+    await supabaseClient
+      .from(
+        "marketplace_product_images"
+      )
+      .select(`
+        product_id,
+        image_url,
+        is_primary,
+        sort_order,
+        watermark_applied
+      `)
+      .in(
+        "product_id",
+        productIds
+      )
+      .eq(
+        "watermark_applied",
+        true
+      )
+      .order(
+        "is_primary",
+        {
+          ascending: false
+        }
+      )
+      .order(
+        "sort_order",
+        {
+          ascending: true
         }
       );
 
 
-      return Object.values(
-        groups
-      );
+  if (error) {
+
+    throw error;
+
+  }
+
+
+  (
+    images || []
+  ).forEach(
+    function(image) {
+
+      /*
+       * First image wins because the
+       * query is ordered primary first.
+       */
+
+      if (
+        !imagesByProduct[
+          image.product_id
+        ]
+      ) {
+
+        imagesByProduct[
+          image.product_id
+        ] =
+          image.image_url;
+
+      }
 
     }
+  );
+
+}
 
 
-    /* ======================================================
-       RENDER CART
-    ====================================================== */
-
-    function renderCart() {
-
-      const groups =
-        getGroupedItems();
+/* ==========================================================
+   LOAD STORES
+========================================================== */
 
 
-      if (!groups.length) {
+async function loadStores() {
 
-        summary.style.display =
-          "none";
+  storesById = {};
 
 
-        cartProducts.innerHTML = `
+  const storeIds =
+    [
+      ...new Set(
+        Object.values(
+          productsById
+        )
+          .map(
+            product =>
+              product.store_id
+          )
+          .filter(Boolean)
+      )
+    ];
 
-          <div class="state-box">
 
-            <div class="state-icon">
-              🛒
-            </div>
+  if (!storeIds.length) {
 
-            <div class="state-title">
-              Your cart is empty
-            </div>
+    return;
 
-            <div class="state-text">
-              Add products from the marketplace
-              and they will appear here.
-            </div>
+  }
 
-            <a
-              href="marketplace.html"
-              class="state-btn"
-            >
-              Start Shopping
-            </a>
 
-          </div>
+  const {
+    data: stores,
+    error
+  } =
+    await supabaseClient
+      .from(
+        "marketplace_stores"
+      )
+      .select(`
+        id,
+        vendor_id,
+        store_name,
+        store_slug,
+        store_logo_url,
+        status,
+        accepts_delivery,
+        accepts_pickup
+      `)
+      .in(
+        "id",
+        storeIds
+      );
 
-        `;
+
+  if (error) {
+
+    throw error;
+
+  }
+
+
+  (
+    stores || []
+  ).forEach(
+    function(store) {
+
+      storesById[
+        store.id
+      ] =
+        store;
+
+    }
+  );
+
+}
+
+
+/* ==========================================================
+   GROUP CART BY STORE
+========================================================== */
+
+
+function getGroupedItems() {
+
+  const groups = {};
+
+
+  cartItems.forEach(
+    function(item) {
+
+      const product =
+        productsById[
+          item.product_id
+        ];
+
+
+      /*
+       * Product was deleted or is no
+       * longer accessible.
+       */
+
+      if (!product) {
 
         return;
 
       }
 
 
-      let totalItems = 0;
+      const storeId =
+        product.store_id;
 
-      let subtotal = 0;
+
+      if (!storeId) {
+
+        return;
+
+      }
 
 
-      groups.forEach(
-        group => {
+      if (!groups[storeId]) {
 
-          group.items.forEach(
-            item => {
+        groups[storeId] = {
 
-              const quantity =
-                Number(
-                  item.quantity || 0
-                );
+          store:
+            storesById[
+              storeId
+            ] || null,
 
-              const price =
-                Number(
-                  item.product.price || 0
-                );
+          items: []
 
-              totalItems +=
-                quantity;
+        };
 
-              subtotal +=
-                price *
-                quantity;
+      }
 
-            }
-          );
+
+      groups[
+        storeId
+      ].items.push({
+
+        ...item,
+
+        product
+
+      });
+
+    }
+  );
+
+
+  return Object.values(
+    groups
+  );
+
+}
+
+
+/* ==========================================================
+   VALIDATE CART
+========================================================== */
+
+
+function validateCart() {
+
+  const problems = [];
+
+
+  cartItems.forEach(
+    function(item) {
+
+      const product =
+        productsById[
+          item.product_id
+        ];
+
+
+      if (!product) {
+
+        problems.push(
+          "One or more products in your cart are no longer available."
+        );
+
+        return;
+
+      }
+
+
+      const status =
+        String(
+          product.status || ""
+        ).toLowerCase();
+
+
+      if (
+        status !== "approved"
+      ) {
+
+        problems.push(
+          `"${product.title}" is no longer available.`
+        );
+
+        return;
+
+      }
+
+
+      const stock =
+        Number(
+          product.stock_quantity || 0
+        );
+
+
+      const quantity =
+        Number(
+          item.quantity || 0
+        );
+
+
+      if (
+        stock <= 0
+      ) {
+
+        problems.push(
+          `"${product.title}" is out of stock.`
+        );
+
+        return;
+
+      }
+
+
+      if (
+        quantity > stock
+      ) {
+
+        problems.push(
+          `"${product.title}" only has ${stock} available.`
+        );
+
+      }
+
+
+      if (
+        !imagesByProduct[
+          product.id
+        ]
+      ) {
+
+        problems.push(
+          `"${product.title}" no longer has a valid marketplace image.`
+        );
+
+      }
+
+
+      const store =
+        storesById[
+          product.store_id
+        ];
+
+
+      if (
+        !store ||
+        String(
+          store.status || ""
+        ).toLowerCase() !==
+        "active"
+      ) {
+
+        problems.push(
+          `"${product.title}" seller store is no longer active.`
+        );
+
+      }
+
+    }
+  );
+
+
+  return [
+    ...new Set(
+      problems
+    )
+  ];
+
+}
+
+
+/* ==========================================================
+   UPDATE CHECKOUT STATE
+========================================================== */
+
+
+function updateCheckoutState() {
+
+  const problems =
+    validateCart();
+
+
+  if (
+    !cartItems.length
+  ) {
+
+    checkoutButton.disabled =
+      true;
+
+    validationNote.classList.remove(
+      "visible"
+    );
+
+    return;
+
+  }
+
+
+  if (
+    problems.length
+  ) {
+
+    checkoutButton.disabled =
+      true;
+
+
+    validationNote.innerHTML =
+      problems
+        .slice(0, 3)
+        .map(
+          problem =>
+            `• ${escapeHtml(
+              problem
+            )}`
+        )
+        .join("<br>");
+
+
+    if (
+      problems.length > 3
+    ) {
+
+      validationNote.innerHTML +=
+        `<br>• And ${
+          problems.length - 3
+        } more issue${
+          problems.length - 3 === 1
+            ? ""
+            : "s"
+        }.`;
+
+    }
+
+
+    validationNote.classList.add(
+      "visible"
+    );
+
+
+    return;
+
+  }
+
+
+  checkoutButton.disabled =
+    false;
+
+
+  validationNote.classList.remove(
+    "visible"
+  );
+
+}
+
+
+/* ==========================================================
+   RENDER CART
+========================================================== */
+
+
+function renderCart() {
+
+  const groups =
+    getGroupedItems();
+
+
+  if (
+    !groups.length
+  ) {
+
+    summary.style.display =
+      "none";
+
+
+    cartProducts.innerHTML = `
+
+      <div class="state-box">
+
+        <div class="state-icon">
+          🛒
+        </div>
+
+        <div class="state-title">
+          Your cart is empty
+        </div>
+
+        <div class="state-text">
+          Add products from the marketplace
+          and they will appear here.
+        </div>
+
+        <a
+          href="marketplace.html"
+          class="state-btn"
+        >
+          Start Shopping
+        </a>
+
+      </div>
+
+    `;
+
+
+    return;
+
+  }
+
+
+  let totalItems =
+    0;
+
+
+  let subtotal =
+    0;
+
+
+  groups.forEach(
+    function(group) {
+
+      group.items.forEach(
+        function(item) {
+
+          const quantity =
+            Number(
+              item.quantity || 0
+            );
+
+
+          const price =
+            Number(
+              item.product.price || 0
+            );
+
+
+          totalItems +=
+            quantity;
+
+
+          subtotal +=
+            price *
+            quantity;
 
         }
       );
 
-
-      summaryItems.textContent =
-        totalItems;
-
-      summaryVendors.textContent =
-        groups.length;
-
-      summarySubtotal.textContent =
-        formatNaira(
-          subtotal
-        );
-
-      summaryTotal.textContent =
-        formatNaira(
-          subtotal
-        );
-
-      summary.style.display =
-        "block";
+    }
+  );
 
 
-      cartProducts.innerHTML =
-        groups.map(
-          group => {
-
-            const store =
-              group.store;
+  summaryItems.textContent =
+    totalItems;
 
 
-            const storeName =
-              store?.store_name ||
-              "EarnGig Vendor";
+  summaryVendors.textContent =
+    groups.length;
 
 
-            const storeSlug =
-              store?.store_slug ||
-              "";
+  summarySubtotal.textContent =
+    formatNaira(
+      subtotal
+    );
 
 
-            const storeUrl =
-              storeSlug
-                ? `store.html?store=${
-                    encodeURIComponent(
-                      storeSlug
-                    )
-                  }`
-                : "marketplace.html";
+  summaryTotal.textContent =
+    formatNaira(
+      subtotal
+    );
 
 
-            return `
+  summary.style.display =
+    "block";
 
-              <section
-                class="store-group"
+
+  cartProducts.innerHTML =
+    groups
+      .map(
+        function(group) {
+
+          const store =
+            group.store;
+
+
+          const storeName =
+            store?.store_name ||
+            "EarnGig Vendor";
+
+
+          const storeSlug =
+            store?.store_slug ||
+            "";
+
+
+          const storeUrl =
+            storeSlug
+              ? `store.html?store=${
+                  encodeURIComponent(
+                    storeSlug
+                  )
+                }`
+              : "marketplace.html";
+
+
+          const storeLogo =
+            store?.store_logo_url ||
+            "";
+
+
+          return `
+
+            <section
+              class="store-group"
+            >
+
+
+              <div
+                class="store-header"
               >
 
                 <div
-                  class="store-header"
+                  class="store-header-left"
                 >
+
+                  ${
+                    storeLogo
+                      ? `
+                        <img
+                          src="${escapeHtml(
+                            storeLogo
+                          )}"
+                          alt="${escapeHtml(
+                            storeName
+                          )}"
+                          class="store-logo"
+                        >
+                      `
+                      : `
+                        <div
+                          class="store-logo"
+                          style="
+                            display:flex;
+                            align-items:center;
+                            justify-content:center;
+                            font-weight:900;
+                            color:#fff;
+                            background:linear-gradient(
+                              135deg,
+                              #6d28d9,
+                              #9333ea
+                            );
+                          "
+                        >
+                          ${escapeHtml(
+                            storeName
+                              .charAt(0)
+                              .toUpperCase()
+                          )}
+                        </div>
+                      `
+                  }
+
 
                   <div>
 
                     <div class="store-name">
 
-                      🏪
                       ${escapeHtml(
                         storeName
                       )}
 
                     </div>
+
 
                     <div class="store-label">
                       Products from this store
@@ -1387,517 +1984,643 @@
 
                   </div>
 
-
-                  <a
-                    href="${storeUrl}"
-                    class="store-label"
-                  >
-                    Visit Store →
-                  </a>
-
                 </div>
 
 
-                <div
-                  class="store-products"
+                <a
+                  href="${storeUrl}"
+                  class="store-link"
                 >
-
-                  ${group.items.map(
-                    item => {
-
-                      const product =
-                        item.product;
+                  Visit Store →
+                </a>
 
 
-                      const quantity =
-                        Number(
-                          item.quantity || 1
-                        );
+              </div>
 
 
-                      const price =
-                        Number(
-                          product.price || 0
-                        );
+              <div
+                class="store-products"
+              >
 
+                ${group.items
+                  .map(
+                    function(item) {
 
-                      const lineTotal =
-                        price *
-                        quantity;
-
-
-                      const image =
-                        product.image_url ||
-                        "";
-
-
-                      return `
-
-                        <article
-                          class="cart-item"
-                        >
-
-                          <a
-                            href="product.html?id=${
-                              encodeURIComponent(
-                                product.id
-                              )
-                            }"
-                          >
-
-                            ${
-                              image
-                                ? `
-                                  <img
-                                    src="${escapeHtml(
-                                      image
-                                    )}"
-                                    alt="${escapeHtml(
-                                      product.title
-                                    )}"
-                                    class="item-image"
-                                  />
-                                `
-                                : `
-                                  <div
-                                    class="item-image"
-                                    style="
-                                      display:flex;
-                                      align-items:center;
-                                      justify-content:center;
-                                      font-size:26px;
-                                    "
-                                  >
-                                    🛍️
-                                  </div>
-                                `
-                            }
-
-                          </a>
-
-
-                          <div>
-
-                            <a
-                              href="product.html?id=${
-                                encodeURIComponent(
-                                  product.id
-                                )
-                              }"
-                              class="item-title"
-                            >
-                              ${escapeHtml(
-                                product.title
-                              )}
-                            </a>
-
-
-                            <div>
-                              <span
-                                class="item-category"
-                              >
-                                ${escapeHtml(
-                                  product.category ||
-                                  "Other"
-                                )}
-                              </span>
-                            </div>
-
-
-                            <div
-                              class="item-price"
-                            >
-                              ${formatNaira(
-                                price
-                              )}
-                            </div>
-
-                          </div>
-
-
-                          <div
-                            class="item-right"
-                          >
-
-                            <div
-                              class="line-total"
-                            >
-                              ${formatNaira(
-                                lineTotal
-                              )}
-                            </div>
-
-
-                            <div
-                              class="quantity-control"
-                            >
-
-                              <button
-                                type="button"
-                                class="quantity-btn"
-                                onclick="changeQuantity(
-                                  '${item.id}',
-                                  ${quantity - 1}
-                                )"
-                                aria-label="Decrease quantity"
-                              >
-                                −
-                              </button>
-
-
-                              <span
-                                class="quantity-value"
-                              >
-                                ${quantity}
-                              </span>
-
-
-                              <button
-                                type="button"
-                                class="quantity-btn"
-                                onclick="changeQuantity(
-                                  '${item.id}',
-                                  ${quantity + 1}
-                                )"
-                                aria-label="Increase quantity"
-                              >
-                                +
-                              </button>
-
-                            </div>
-
-
-                            <button
-                              type="button"
-                              class="remove-btn"
-                              onclick="removeItem(
-                                '${item.id}'
-                              )"
-                            >
-                              Remove
-                            </button>
-
-                          </div>
-
-                        </article>
-
-                      `;
+                      return renderCartItem(
+                        item
+                      );
 
                     }
-                  ).join("")}
+                  )
+                  .join("")}
 
-                </div>
-
-              </section>
-
-            `;
-
-          }
-        ).join("");
-
-    }
+              </div>
 
 
-    /* ======================================================
-       CHANGE QUANTITY
-    ====================================================== */
+            </section>
 
-    async function changeQuantity(
-      itemId,
-      newQuantity
-    ) {
-
-      try {
-
-        const quantity =
-          Number(
-            newQuantity
-          );
-
-
-        if (
-          quantity <= 0
-        ) {
-
-          await removeItem(
-            itemId
-          );
-
-          return;
+          `;
 
         }
+      )
+      .join("");
 
 
-        const item =
-          cartItems.find(
-            current =>
-              current.id ===
-              itemId
-          );
+  updateCheckoutState();
+
+}
 
 
-        if (!item) {
-          return;
-        }
+/* ==========================================================
+   RENDER CART ITEM
+========================================================== */
 
 
-        const product =
-          productsById[
-            item.product_id
-          ];
+function renderCartItem(
+  item
+) {
+
+  const product =
+    item.product;
 
 
-        if (!product) {
-
-          alert(
-            "This product is no longer available."
-          );
-
-          return;
-
-        }
-
-
-        const stock =
-          Number(
-            product.stock_quantity
-          );
-
-
-        if (
-          stock > 0 &&
-          quantity > stock
-        ) {
-
-          alert(
-            `Only ${stock} item${
-              stock === 1
-                ? ""
-                : "s"
-            } currently available.`
-          );
-
-          return;
-
-        }
-
-
-        const {
-          error
-        } =
-          await supabaseClient
-            .from(
-              "marketplace_cart_items"
-            )
-            .update({
-              quantity:
-                quantity
-            })
-            .eq(
-              "id",
-              itemId
-            )
-            .eq(
-              "cart_id",
-              currentCart.id
-            );
-
-
-        if (error) {
-          throw error;
-        }
-
-
-        await refreshCart();
-
-      } catch (error) {
-
-        console.error(
-          "Quantity update error:",
-          error
-        );
-
-        alert(
-          "Could not update the quantity. Please try again."
-        );
-
-      }
-
-    }
-
-
-    /* ======================================================
-       REMOVE ITEM
-    ====================================================== */
-
-    async function removeItem(
-      itemId
-    ) {
-
-      try {
-
-        const {
-          error
-        } =
-          await supabaseClient
-            .from(
-              "marketplace_cart_items"
-            )
-            .delete()
-            .eq(
-              "id",
-              itemId
-            )
-            .eq(
-              "cart_id",
-              currentCart.id
-            );
-
-
-        if (error) {
-          throw error;
-        }
-
-
-        await refreshCart();
-
-      } catch (error) {
-
-        console.error(
-          "Remove cart item error:",
-          error
-        );
-
-        alert(
-          "Could not remove this item. Please try again."
-        );
-
-      }
-
-    }
-
-
-    /* ======================================================
-       REFRESH CART
-    ====================================================== */
-
-    async function refreshCart() {
-
-      await loadCart();
-
-      await loadCartItems();
-
-      await loadProducts();
-
-      await loadProductImages();
-
-      await loadStores();
-
-      renderCart();
-
-    }
-
-
-    /* ======================================================
-       CHECKOUT
-    ====================================================== */
-
-    checkoutButton.addEventListener(
-      "click",
-      function () {
-
-        if (
-          !cartItems.length
-        ) {
-
-          return;
-
-        }
-
-
-        window.location.href =
-          "checkout.html";
-
-      }
+  const quantity =
+    Number(
+      item.quantity || 1
     );
 
 
-    /* ======================================================
-       INITIALIZE
-    ====================================================== */
-
-    async function initializeCart() {
-
-      try {
-
-        const loggedIn =
-          await loadUser();
+  const price =
+    Number(
+      product.price || 0
+    );
 
 
-        if (!loggedIn) {
-          return;
-        }
+  const stock =
+    Number(
+      product.stock_quantity || 0
+    );
 
 
-        await loadCart();
-
-        await loadCartItems();
-
-        await loadProducts();
-
-        await loadProductImages();
-
-        await loadStores();
-
-        renderCart();
-
-      } catch (error) {
-
-        console.error(
-          "Cart loading error:",
-          error
-        );
+  const lineTotal =
+    price *
+    quantity;
 
 
-        summary.style.display =
-          "none";
+  const image =
+    imagesByProduct[
+      product.id
+    ] || "";
 
 
-        cartProducts.innerHTML = `
+  let stockText =
+    `${stock.toLocaleString(
+      "en-NG"
+    )} available`;
 
-          <div
-            class="state-box error-box"
+
+  let stockClass =
+    "";
+
+
+  if (
+    stock <= 0
+  ) {
+
+    stockText =
+      "Out of stock";
+
+    stockClass =
+      "error";
+
+  } else if (
+    stock <= 5
+  ) {
+
+    stockText =
+      `${stock} available`;
+
+    stockClass =
+      "warning";
+
+  }
+
+
+  const minusDisabled =
+    quantity <= 1
+      ? ""
+      : "";
+
+
+  const plusDisabled =
+    stock <= quantity
+      ? "disabled"
+      : "";
+
+
+  return `
+
+    <article
+      class="cart-item"
+    >
+
+
+      <a
+        href="product.html?id=${
+          encodeURIComponent(
+            product.id
+          )
+        }"
+        class="item-image-link"
+      >
+
+        <img
+          src="${escapeHtml(
+            image
+          )}"
+          alt="${escapeHtml(
+            product.title
+          )}"
+          class="item-image"
+        >
+
+      </a>
+
+
+      <div>
+
+
+        <a
+          href="product.html?id=${
+            encodeURIComponent(
+              product.id
+            )
+          }"
+          class="item-title"
+        >
+          ${escapeHtml(
+            product.title
+          )}
+        </a>
+
+
+        <div>
+
+          <span
+            class="item-category"
           >
+            ${escapeHtml(
+              product.category ||
+              "Other"
+            )}
+          </span>
 
-            <div class="state-icon">
-              ⚠️
-            </div>
+        </div>
 
-            <div class="state-title">
-              Cart could not be loaded
-            </div>
 
-            <div
-              class="state-text error-text"
-            >
-              ${escapeHtml(
-                error.message ||
-                "Please refresh the page and try again."
-              )}
-            </div>
+        <div class="item-price">
+          ${formatNaira(
+            price
+          )}
+        </div>
 
-          </div>
 
-        `;
+        <div
+          class="item-stock ${stockClass}"
+        >
+          ${escapeHtml(
+            stockText
+          )}
+        </div>
 
-      }
+
+      </div>
+
+
+      <div
+        class="item-right"
+      >
+
+
+        <div
+          class="line-total"
+        >
+          ${formatNaira(
+            lineTotal
+          )}
+        </div>
+
+
+        <div
+          class="quantity-control"
+        >
+
+          <button
+            type="button"
+            class="quantity-btn"
+            onclick="changeQuantity(
+              '${item.id}',
+              ${quantity - 1}
+            )"
+            aria-label="Decrease quantity"
+          >
+            −
+          </button>
+
+
+          <span
+            class="quantity-value"
+          >
+            ${quantity}
+          </span>
+
+
+          <button
+            type="button"
+            class="quantity-btn"
+            ${plusDisabled}
+            onclick="changeQuantity(
+              '${item.id}',
+              ${quantity + 1}
+            )"
+            aria-label="Increase quantity"
+          >
+            +
+          </button>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="remove-btn"
+          onclick="removeItem(
+            '${item.id}'
+          )"
+        >
+          Remove
+        </button>
+
+
+      </div>
+
+
+    </article>
+
+  `;
+
+}
+
+
+/* ==========================================================
+   CHANGE QUANTITY
+========================================================== */
+
+
+async function changeQuantity(
+  itemId,
+  newQuantity
+) {
+
+  try {
+
+    const quantity =
+      Number(
+        newQuantity
+      );
+
+
+    if (
+      quantity <= 0
+    ) {
+
+      await removeItem(
+        itemId
+      );
+
+      return;
 
     }
 
 
-    initializeCart();
+    const item =
+      cartItems.find(
+        function(current) {
 
-  </script>
+          return (
+            current.id ===
+            itemId
+          );
+
+        }
+      );
+
+
+    if (!item) {
+
+      return;
+
+    }
+
+
+    const product =
+      productsById[
+        item.product_id
+      ];
+
+
+    if (!product) {
+
+      alert(
+        "This product is no longer available."
+      );
+
+      return;
+
+    }
+
+
+    const stock =
+      Number(
+        product.stock_quantity || 0
+      );
+
+
+    if (
+      stock <= 0
+    ) {
+
+      alert(
+        "This product is out of stock."
+      );
+
+      return;
+
+    }
+
+
+    if (
+      quantity > stock
+    ) {
+
+      alert(
+        `Only ${stock} item${
+          stock === 1
+            ? ""
+            : "s"
+        } currently available.`
+      );
+
+      return;
+
+    }
+
+
+    const {
+      error
+    } =
+      await supabaseClient
+        .from(
+          "marketplace_cart_items"
+        )
+        .update({
+          quantity:
+            quantity
+        })
+        .eq(
+          "id",
+          itemId
+        )
+        .eq(
+          "cart_id",
+          currentCart.id
+        );
+
+
+    if (error) {
+
+      throw error;
+
+    }
+
+
+    await refreshCart();
+
+  } catch (error) {
+
+    console.error(
+      "Quantity update error:",
+      error
+    );
+
+
+    alert(
+      "Could not update the quantity. Please try again."
+    );
+
+  }
+
+}
+
+
+/* ==========================================================
+   REMOVE ITEM
+========================================================== */
+
+
+async function removeItem(
+  itemId
+) {
+
+  try {
+
+    const {
+      error
+    } =
+      await supabaseClient
+        .from(
+          "marketplace_cart_items"
+        )
+        .delete()
+        .eq(
+          "id",
+          itemId
+        )
+        .eq(
+          "cart_id",
+          currentCart.id
+        );
+
+
+    if (error) {
+
+      throw error;
+
+    }
+
+
+    await refreshCart();
+
+  } catch (error) {
+
+    console.error(
+      "Remove cart item error:",
+      error
+    );
+
+
+    alert(
+      "Could not remove this item. Please try again."
+    );
+
+  }
+
+}
+
+
+/* ==========================================================
+   REFRESH
+========================================================== */
+
+
+async function refreshCart() {
+
+  await loadCart();
+
+  await loadCartItems();
+
+  await loadProducts();
+
+  await loadProductImages();
+
+  await loadStores();
+
+  renderCart();
+
+}
+
+
+/* ==========================================================
+   CHECKOUT
+========================================================== */
+
+
+checkoutButton.addEventListener(
+  "click",
+  function() {
+
+    const problems =
+      validateCart();
+
+
+    if (
+      problems.length
+    ) {
+
+      updateCheckoutState();
+
+      return;
+
+    }
+
+
+    if (
+      !cartItems.length
+    ) {
+
+      return;
+
+    }
+
+
+    window.location.href =
+      "checkout.html";
+
+  }
+);
+
+
+/* ==========================================================
+   INITIALIZE
+========================================================== */
+
+
+async function initializeCart() {
+
+  try {
+
+    const loggedIn =
+      await loadUser();
+
+
+    if (!loggedIn) {
+
+      return;
+
+    }
+
+
+    await loadCart();
+
+    await loadCartItems();
+
+    await loadProducts();
+
+    await loadProductImages();
+
+    await loadStores();
+
+    renderCart();
+
+  } catch (error) {
+
+    console.error(
+      "Cart loading error:",
+      error
+    );
+
+
+    summary.style.display =
+      "none";
+
+
+    cartProducts.innerHTML = `
+
+      <div
+        class="state-box error-box"
+      >
+
+        <div class="state-icon">
+          ⚠️
+        </div>
+
+        <div class="state-title">
+          Cart could not be loaded
+        </div>
+
+        <div
+          class="state-text error-text"
+        >
+          ${escapeHtml(
+            error.message ||
+            "Please refresh the page and try again."
+          )}
+        </div>
+
+      </div>
+
+    `;
+
+  }
+
+}
+
+
+initializeCart();
+
+</script>
+
 
 </body>
+
 </html>
