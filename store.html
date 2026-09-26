@@ -16,7 +16,7 @@
       min-height: 100vh;
       background:
         radial-gradient(circle at top, #24104f 0%, #10133d 43%, #07091e 100%);
-      color: #fff;
+      color: #ffffff;
       font-family: Arial, Helvetica, sans-serif;
     }
 
@@ -52,12 +52,6 @@
 
     .brand span {
       color: #8068ff;
-    }
-
-    .top-actions {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
     }
 
     .top-button {
@@ -450,13 +444,11 @@
 <main class="page">
 
   <header class="topbar">
-
     <div class="brand">
       Earn<span>Gig</span>
     </div>
 
     <div class="top-actions">
-
       <button
         class="top-button"
         type="button"
@@ -464,9 +456,7 @@
       >
         Marketplace
       </button>
-
     </div>
-
   </header>
 
 
@@ -475,12 +465,17 @@
   </div>
 
 
-  <div id="errorBox" class="error-box" style="display:none;"></div>
+  <div
+    id="errorBox"
+    class="error-box"
+    style="display:none;"
+  ></div>
 
 
-  <div id="storeContent" style="display:none;">
-
-    <!-- STORE HEADER -->
+  <div
+    id="storeContent"
+    style="display:none;"
+  >
 
     <section class="store-card">
 
@@ -489,24 +484,36 @@
         <div class="store-main">
 
           <div id="logoWrap" class="logo-wrap">
-            <div class="logo-fallback">M</div>
+            <div class="logo-fallback">E</div>
           </div>
 
           <div>
 
-            <div id="storeName" class="store-name">
+            <div
+              id="storeName"
+              class="store-name"
+            >
               Store
             </div>
 
-            <div id="storeDescription" class="store-description"></div>
+            <div
+              id="storeDescription"
+              class="store-description"
+            ></div>
 
-            <div id="storeLocation" class="store-location"></div>
+            <div
+              id="storeLocation"
+              class="store-location"
+            ></div>
 
             <div class="store-type">
               EarnGig Vendor Store
             </div>
 
-            <div id="badges" class="badges"></div>
+            <div
+              id="badges"
+              class="badges"
+            ></div>
 
           </div>
 
@@ -536,7 +543,10 @@
       </div>
 
 
-      <div id="shareBox" class="share-box">
+      <div
+        id="shareBox"
+        class="share-box"
+      >
 
         <div class="share-label">
           Permanent store link
@@ -565,8 +575,6 @@
     </section>
 
 
-    <!-- PRODUCTS -->
-
     <div class="section-title">
       Products
     </div>
@@ -585,7 +593,9 @@
         id="categoryFilter"
         onchange="filterProducts()"
       >
-        <option value="">All Categories</option>
+        <option value="">
+          All Categories
+        </option>
       </select>
 
     </div>
@@ -619,8 +629,12 @@
 const SUPABASE_URL =
   "https://ytvtdelwefykeqwztcyo.supabase.co";
 
+/*
+ * IMPORTANT:
+ * This is the working legacy Supabase anon key.
+ */
 const SUPABASE_ANON_KEY =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ5dHZ0ZGVsd2VmeWtld3d0Y3lvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYzMDkwMjUsImV4cCI6MjEwMTg4NTAyNX0.qzT3lYrTFupgGAxQ0VZl26hqblLQDs0vc9ZNiwBU9tA";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl0dnRkZWx3ZWZ5a2Vxd3p0Y3lvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYzMDkwMjUsImV4cCI6MjEwMTg4NTAyNX0.qzT3lYrTFupgGAxQ0VZl26hqblLQDs0vc9ZNiwBU9tA";
 
 const REST_BASE =
   SUPABASE_URL + "/rest/v1";
@@ -664,6 +678,7 @@ async function restGet(path) {
       REST_BASE + path,
       {
         method: "GET",
+
         headers: {
           "apikey": SUPABASE_ANON_KEY,
           "Authorization":
@@ -672,16 +687,22 @@ async function restGet(path) {
       }
     );
 
+
   const text =
     await response.text();
+
 
   let data = null;
 
   try {
-    data = text ? JSON.parse(text) : null;
+    data =
+      text
+        ? JSON.parse(text)
+        : null;
   } catch {
     data = text;
   }
+
 
   if (!response.ok) {
 
@@ -693,6 +714,7 @@ async function restGet(path) {
       "Supabase request failed."
     );
   }
+
 
   return data;
 }
@@ -712,7 +734,7 @@ function getStoreSlug() {
 }
 
 
-function getCurrentStoreUrl() {
+function getStoreUrl() {
 
   return window.location.href;
 }
@@ -724,19 +746,24 @@ function showError(message) {
     "loadingBox"
   ).style.display = "none";
 
+
   document.getElementById(
     "storeContent"
   ).style.display = "none";
+
 
   const errorBox =
     document.getElementById(
       "errorBox"
     );
 
-  errorBox.style.display = "block";
 
-  errorBox.innerHTML =
-    escapeHtml(message);
+  errorBox.style.display =
+    "block";
+
+
+  errorBox.textContent =
+    message;
 }
 
 
@@ -749,6 +776,7 @@ async function loadStore() {
   const slug =
     getStoreSlug();
 
+
   if (!slug) {
 
     showError(
@@ -760,7 +788,7 @@ async function loadStore() {
 
 
   /*
-   * First try the exact store slug from the URL.
+   * Exact store_slug lookup.
    */
   let stores =
     await restGet(
@@ -772,33 +800,30 @@ async function loadStore() {
 
 
   /*
-   * Some older store links may use a slug that
-   * was generated differently. If the exact lookup
-   * fails, try matching the final identifier/name
-   * more broadly.
+   * If the exact slug isn't found, check active
+   * stores and compare their actual slug.
+   *
+   * This helps if an old share link is being used.
    */
   if (
     !Array.isArray(stores) ||
     stores.length === 0
   ) {
 
-    const possibleStores =
+    const activeStores =
       await restGet(
         "/marketplace_stores" +
-        "?select=*" +
-        "&store_name=ilike." +
-        encodeURIComponent(
-          "The Mia Mart"
-        )
+        "?status=eq.active" +
+        "&select=*"
       );
 
+
     if (
-      Array.isArray(possibleStores) &&
-      possibleStores.length > 0
+      Array.isArray(activeStores)
     ) {
 
-      const exact =
-        possibleStores.find(
+      const matchingStore =
+        activeStores.find(
           store =>
             String(
               store.store_slug || ""
@@ -806,19 +831,9 @@ async function loadStore() {
             slug.toLowerCase()
         );
 
-      if (exact) {
-        stores = [exact];
-      } else {
-        /*
-         * Only use the fallback if the requested
-         * URL contains the Mia Mart identifier.
-         */
-        if (
-          slug.toLowerCase()
-            .includes("the-mia-mart")
-        ) {
-          stores = [possibleStores[0]];
-        }
+
+      if (matchingStore) {
+        stores = [matchingStore];
       }
     }
   }
@@ -830,7 +845,7 @@ async function loadStore() {
   ) {
 
     showError(
-      "Store not found. The store link does not currently match an active marketplace store."
+      "Store not found. Please check that the store link is correct and that the store is active."
     );
 
     return;
@@ -856,6 +871,7 @@ async function loadStore() {
 
   renderStore();
 
+
   await loadProducts();
 
 
@@ -863,9 +879,11 @@ async function loadStore() {
     "loadingBox"
   ).style.display = "none";
 
+
   document.getElementById(
     "errorBox"
   ).style.display = "none";
+
 
   document.getElementById(
     "storeContent"
@@ -874,7 +892,7 @@ async function loadStore() {
 
 
 /* =========================================================
-   STORE DISPLAY
+   RENDER STORE
    ========================================================= */
 
 function renderStore() {
@@ -919,7 +937,7 @@ function renderStore() {
   document.getElementById(
     "storeLink"
   ).value =
-    getCurrentStoreUrl();
+    getStoreUrl();
 
 
   const logoWrap =
@@ -937,7 +955,10 @@ function renderStore() {
         class="store-logo"
         src="${escapeHtml(currentStore.store_logo_url)}"
         alt="${escapeHtml(currentStore.store_name || "Store")}"
-        onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='flex';"
+        onerror="
+          this.style.display='none';
+          this.nextElementSibling.style.display='flex';
+        "
       >
 
       <div
@@ -972,6 +993,7 @@ function renderStore() {
     document.getElementById(
       "badges"
     );
+
 
   let badgeHtml = "";
 
@@ -1028,9 +1050,6 @@ function renderStore() {
 
 async function loadProducts() {
 
-  /*
-   * Products belonging to this store.
-   */
   const products =
     await restGet(
       "/marketplace_products" +
@@ -1038,6 +1057,7 @@ async function loadProducts() {
       encodeURIComponent(
         currentStore.id
       ) +
+      "&status=eq.active" +
       "&select=*" +
       "&order=created_at.desc"
     );
@@ -1050,13 +1070,16 @@ async function loadProducts() {
 
 
   /*
-   * Load product images.
+   * Load images for all products.
    */
   if (allProducts.length) {
 
-    const ids =
+    const productIds =
       allProducts
-        .map(product => product.id)
+        .map(
+          product =>
+            product.id
+        )
         .join(",");
 
 
@@ -1064,32 +1087,35 @@ async function loadProducts() {
       await restGet(
         "/marketplace_product_images" +
         "?product_id=in.(" +
-        ids +
+        productIds +
         ")" +
         "&select=*" +
         "&order=sort_order.asc"
       );
 
 
-    for (
-      const product of allProducts
-    ) {
+    const imageList =
+      Array.isArray(images)
+        ? images
+        : [];
 
-      product.images =
-        (
-          Array.isArray(images)
-            ? images
-            : []
-        ).filter(
-          image =>
-            image.product_id ===
-            product.id
-        );
-    }
+
+    allProducts.forEach(
+      product => {
+
+        product.images =
+          imageList.filter(
+            image =>
+              image.product_id ===
+              product.id
+          );
+      }
+    );
   }
 
 
   buildCategories();
+
 
   renderProducts(
     allProducts
@@ -1098,7 +1124,7 @@ async function loadProducts() {
 
 
 /* =========================================================
-   CATEGORIES
+   CATEGORY FILTER
    ========================================================= */
 
 function buildCategories() {
@@ -1144,11 +1170,14 @@ function buildCategories() {
           "option"
         );
 
+
       option.value =
         category;
 
+
       option.textContent =
         category;
+
 
       select.appendChild(
         option
@@ -1159,7 +1188,7 @@ function buildCategories() {
 
 
 /* =========================================================
-   FILTER
+   FILTER PRODUCTS
    ========================================================= */
 
 function filterProducts() {
@@ -1182,7 +1211,7 @@ function filterProducts() {
     allProducts.filter(
       product => {
 
-        const text =
+        const searchable =
           [
             product.title,
             product.description,
@@ -1193,20 +1222,22 @@ function filterProducts() {
             .toLowerCase();
 
 
-        const matchesSearch =
+        const searchMatches =
           !search ||
-          text.includes(search);
+          searchable.includes(
+            search
+          );
 
 
-        const matchesCategory =
+        const categoryMatches =
           !category ||
           product.category ===
           category;
 
 
         return (
-          matchesSearch &&
-          matchesCategory
+          searchMatches &&
+          categoryMatches
         );
       }
     );
@@ -1263,12 +1294,14 @@ function renderProducts(
 
 
   grid.innerHTML =
-    products.map(
-      product =>
-        createProductCard(
-          product
-        )
-    ).join("");
+    products
+      .map(
+        product =>
+          createProductCard(
+            product
+          )
+      )
+      .join("");
 }
 
 
@@ -1280,20 +1313,25 @@ function createProductCard(
   product
 ) {
 
+  const images =
+    Array.isArray(
+      product.images
+    )
+      ? product.images
+      : [];
+
+
   const primaryImage =
-    (
-      product.images ||
-      []
-    ).find(
+    images.find(
       image =>
         image.is_primary === true
     ) ||
-    (
-      product.images ||
-      []
-    )[0];
+    images[0];
 
 
+  /*
+   * Prefer the watermarked image if one exists.
+   */
   const imageUrl =
     primaryImage?.watermarked_file_path ||
     primaryImage?.image_url ||
@@ -1302,8 +1340,7 @@ function createProductCard(
 
   const stock =
     Number(
-      product.stock_quantity ||
-      0
+      product.stock_quantity || 0
     );
 
 
@@ -1320,7 +1357,10 @@ function createProductCard(
                 src="${escapeHtml(imageUrl)}"
                 alt="${escapeHtml(product.title || "Product")}"
                 loading="lazy"
-                onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                onerror="
+                  this.style.display='none';
+                  this.nextElementSibling.style.display='flex';
+                "
               >
 
               <div
@@ -1359,7 +1399,9 @@ function createProductCard(
           product.category
             ? `
               <span class="product-category">
-                ${escapeHtml(product.category)}
+                ${escapeHtml(
+                  product.category
+                )}
               </span>
             `
             : ""
@@ -1388,7 +1430,7 @@ function createProductCard(
         <button
           class="product-button"
           type="button"
-          onclick="viewProduct('${encodeURIComponent(product.id)}')"
+          onclick="viewProduct('${escapeHtml(product.id)}')"
         >
           View Product
         </button>
@@ -1401,20 +1443,18 @@ function createProductCard(
 
 
 /* =========================================================
-   PRODUCT VIEW
+   PRODUCT PAGE
    ========================================================= */
 
 function viewProduct(
   productId
 ) {
 
-  /*
-   * Use product.html if it exists.
-   * The product ID is passed safely through the URL.
-   */
   window.location.href =
     "product.html?id=" +
-    productId;
+    encodeURIComponent(
+      productId
+    );
 }
 
 
@@ -1439,7 +1479,7 @@ function toggleShare() {
 async function copyStoreLink() {
 
   const link =
-    getCurrentStoreUrl();
+    getStoreUrl();
 
 
   try {
@@ -1460,12 +1500,15 @@ async function copyStoreLink() {
         "storeLink"
       );
 
+
     input.focus();
     input.select();
+
 
     document.execCommand(
       "copy"
     );
+
 
     alert(
       "Store link copied."
@@ -1497,6 +1540,7 @@ loadStore()
         "Store loading error:",
         error
       );
+
 
       showError(
         error.message ||
