@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+  <title>Vendor Subscription Payment</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top, #26104f 0%, #100a24 42%, #070612 100%);
+      color: #ffffff;
+      font-family: Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 460px;
+      background: rgba(20, 14, 42, 0.96);
+      border: 1px solid rgba(139, 92, 246, 0.35);
+      border-radius: 22px;
+      padding: 30px 22px;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+    }
+
+    .logo {
+      width: 62px;
+      height: 62px;
+      border-radius: 18px;
+      margin: 0 auto 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #7c3aed, #4f46e5);
+      font-size: 28px;
+      font-weight: 800;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 23px;
+    }
+
+    p {
+      color: #b9b2d6;
+      line-height: 1.6;
+      margin: 8px 0;
+    }
+
+    .status {
+      margin-top: 22px;
+      padding: 16px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.05);
+      color: #ddd6fe;
+    }
+
+    .spinner {
+      width: 42px;
+      height: 42px;
+      margin: 0 auto 18px;
+      border: 4px solid rgba(255,255,255,0.15);
+      border-top-color: #8b5cf6;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .success {
+      color: #86efac;
+    }
+
+    .error {
+      color: #fca5a5;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 20px;
+      border: 0;
+      border-radius: 13px;
+      padding: 14px;
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+      background: linear-gradient(135deg, #7c3aed, #4f46e5);
+      cursor: pointer;
+    }
+
+    button:hover {
+      opacity: 0.92;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="card">
+    <div class="logo">E</div>
+
+    <h1 id="title">Verifying Payment</h1>
+
+    <div id="loading">
+      <div class="spinner"></div>
+      <p>Please wait while we verify your Flutterwave payment.</p>
+    </div>
+
+    <div id="result" class="status" style="display:none;"></div>
+
+    <button
+      id="continueBtn"
+      style="display:none;"
+      onclick="goToDashboard()"
+    >
+      Continue to Vendor Dashboard
+    </button>
+  </div>
+
+  <script>
+    const SUPABASE_URL =
+      "https://ytvtdelwefykeqwztcyo.supabase.co";
+
+    const SUPABASE_PUBLISHABLE_KEY =
+      "sb_publishable_CLTeqgEB6JS7QKqq6rQARw_RV31Ccg3";
+
+    const supabaseClient =
+      window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+      );
+
+    function showResult(message, success) {
+      const loading = document.getElementById("loading");
+      const result = document.getElementById("result");
+      const title = document.getElementById("title");
+      const button = document.getElementById("continueBtn");
+
+      loading.style.display = "none";
+      result.style.display = "block";
+
+      result.className =
+        "status " + (success ? "success" : "error");
+
+      result.textContent = message;
+
+      if (success) {
+        title.textContent = "Payment Successful";
+        button.style.display = "block";
+      } else {
+        title.textContent = "Payment Verification";
+      }
+    }
+
+    function goToDashboard() {
+      window.location.href =
+        "vendor-dashboard.html";
+    }
+
+    async function verifyVendorPayment() {
+      try {
+        const { data: sessionData, error: sessionError } =
+          await supabaseClient.auth.getSession();
+
+        if (sessionError || !sessionData?.session) {
+          showResult(
+            "Your session has expired. Please sign in again.",
+            false
+          );
+          return;
+        }
+
+        const params =
+          new URLSearchParams(window.location.search);
+
+        const status =
+          params.get("status");
+
+        const transactionId =
+          params.get("transaction_id");
+
+        const txRef =
+          params.get("tx_ref");
+
+        /*
+         * Flutterwave can return a cancelled/failed status.
+         * Do not attempt to activate anything in that case.
+         */
+        if (
+          status &&
+          status.toLowerCase() !== "successful"
+        ) {
+          showResult(
+            "The Flutterwave payment was not completed. No vendor subscription was activated.",
+            false
+          );
+          return;
+        }
+
+        if (!transactionId && !txRef) {
+          showResult(
+            "No Flutterwave transaction reference was returned.",
+            false
+          );
+          return;
+        }
+
+        const { data, error } =
+          await supabaseClient.functions.invoke(
+            "flutterwave-vendor-subscription",
+            {
+              body: {
+                action: "verify",
+                transaction_id: transactionId,
+                tx_ref: txRef
+              }
+            }
+          );
+
+        if (error) {
+          throw new Error(
+            error.message ||
+            "Payment verification failed."
+          );
+        }
+
+        if (!data?.success || !data?.paid) {
+          throw new Error(
+            data?.message ||
+            data?.error ||
+            "Payment could not be verified."
+          );
+        }
+
+        showResult(
+          "Your ₦2,500 vendor subscription has been verified. Your marketplace store is now active.",
+          true
+        );
+
+      } catch (error) {
+        console.error(
+          "Vendor subscription verification error:",
+          error
+        );
+
+        showResult(
+          error?.message ||
+          "We could not verify your payment. Please contact EarnGig support before making another payment.",
+          false
+        );
+      }
+    }
+
+    verifyVendorPayment();
+  </script>
+
+</body>
+</html>
