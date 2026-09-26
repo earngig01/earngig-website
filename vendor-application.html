@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
   <meta charset="UTF-8">
 
   <meta
@@ -10,2044 +8,988 @@
     content="width=device-width, initial-scale=1.0"
   >
 
-  <title>Become a Vendor | EarnGig</title>
+  <title>Vendor Application | EarnGig</title>
 
-  <link
-    rel="stylesheet"
-    href="styles.css"
-  >
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
+    * {
+      box-sizing: border-box;
+    }
 
     body {
+      margin: 0;
+      min-height: 100vh;
+
       background:
         radial-gradient(
-          circle at top right,
-          rgba(92, 60, 180, 0.12),
-          transparent 35%
-        ),
-        #070b2b;
+          circle at top,
+          #24104f 0%,
+          #10133d 45%,
+          #07091e 100%
+        );
+
+      color: #ffffff;
+      font-family: Arial, sans-serif;
     }
 
-    .vendor-page {
-      padding: 35px 0 70px;
-    }
-
-    .vendor-header {
-      margin-bottom: 25px;
-    }
-
-    .vendor-header h1 {
-      margin: 8px 0 10px;
-      font-size: 32px;
-    }
-
-    .vendor-header p {
-      max-width: 720px;
-      color: #9ca3c7;
-      line-height: 1.7;
-    }
-
-    .vendor-card {
-      background: rgba(14, 19, 57, 0.96);
-      border: 1px solid rgba(122, 105, 220, 0.22);
-      border-radius: 18px;
-      padding: 25px;
-      margin-bottom: 20px;
-      box-shadow: 0 12px 40px rgba(0,0,0,0.18);
-    }
-
-    .vendor-card h2 {
-      margin: 0 0 8px;
-      font-size: 21px;
-    }
-
-    .vendor-card-description {
-      margin: 0 0 22px;
-      color: #9ca3c7;
-      line-height: 1.6;
-    }
-
-    .form-grid {
-      display: grid;
-      grid-template-columns:
-        repeat(2, minmax(0, 1fr));
-      gap: 17px;
-    }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 7px;
-    }
-
-    .form-group.full {
-      grid-column: 1 / -1;
-    }
-
-    .form-group label {
-      color: #e7e9ff;
-      font-size: 14px;
-      font-weight: 700;
-    }
-
-    .optional {
-      color: #858baa;
-      font-weight: 400;
-    }
-
-    .required {
-      color: #bda7ff;
-    }
-
-    .form-group input,
-    .form-group textarea {
+    .page {
       width: 100%;
-      box-sizing: border-box;
-      border: 1px solid #303666;
-      background: #090d31;
-      color: #fff;
-      border-radius: 10px;
-      padding: 13px 14px;
-      font-size: 14px;
-      outline: none;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 18px;
     }
 
-    .form-group input:focus,
-    .form-group textarea:focus {
-      border-color: #7565df;
-      box-shadow:
-        0 0 0 3px
-        rgba(117,101,223,0.12);
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 22px;
     }
 
-    .form-group textarea {
-      min-height: 115px;
-      resize: vertical;
-      font-family: inherit;
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 11px;
     }
 
-    .file-box {
-      border: 1px dashed #4b477b;
-      background: #090d31;
-      border-radius: 12px;
-      padding: 16px;
-    }
-
-    .file-box input {
-      border: 0;
-      padding: 0;
-      background: transparent;
-      box-shadow: none;
-    }
-
-    .file-help {
-      margin-top: 8px;
-      color: #858baa;
-      font-size: 12px;
-      line-height: 1.5;
-    }
-
-    .photo-preview {
-      width: 110px;
-      height: 110px;
+    .brand-icon {
+      width: 48px;
+      height: 48px;
       border-radius: 14px;
-      object-fit: cover;
-      margin-top: 12px;
-      display: none;
-      border: 2px solid #5147a3;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background:
+        linear-gradient(
+          135deg,
+          #6d5dfc,
+          #4f46e5
+        );
+
+      font-size: 22px;
+      font-weight: 900;
     }
 
-    .logo-preview {
-      max-width: 150px;
-      max-height: 100px;
+    .brand {
+      font-size: 20px;
+      font-weight: 900;
+    }
+
+    .brand span {
+      color: #7568ff;
+    }
+
+    .account-btn {
+      padding: 11px 15px;
+
       border-radius: 12px;
-      object-fit: contain;
-      margin-top: 12px;
-      display: none;
-      border: 1px solid #383d6c;
-      background: #070a25;
-      padding: 8px;
+
+      border:
+        1px solid
+        rgba(255,255,255,0.14);
+
+      background:
+        rgba(255,255,255,0.04);
+
+      color: #ffffff;
+
+      font-weight: 700;
+
+      cursor: pointer;
     }
 
-    .notice {
-      padding: 14px 16px;
-      border-radius: 12px;
-      margin-bottom: 20px;
-      line-height: 1.6;
-      font-size: 14px;
-    }
+    .card {
+      background:
+        rgba(12,16,52,0.95);
 
-    .notice.info {
-      background: rgba(70, 80, 170, 0.12);
-      border: 1px solid rgba(103,112,207,0.3);
-      color: #c7ccff;
-    }
+      border:
+        1px solid
+        rgba(124,108,255,0.24);
 
-    .notice.warning {
-      background: rgba(180,130,40,0.1);
-      border: 1px solid rgba(210,160,60,0.3);
-      color: #ead39a;
-    }
+      border-radius: 24px;
 
-    .notice.success {
-      background: rgba(35,150,100,0.1);
-      border: 1px solid rgba(35,150,100,0.3);
-      color: #9ee0c1;
-    }
+      padding: 32px 22px;
 
-    .notice.danger {
-      background: rgba(190,60,70,0.1);
-      border: 1px solid rgba(210,70,80,0.3);
-      color: #f0aaaa;
-    }
-
-    .status-card {
       text-align: center;
-      padding: 42px 24px;
+
+      box-shadow:
+        0 25px 70px
+        rgba(0,0,0,0.35);
     }
 
     .status-icon {
-      font-size: 42px;
-      margin-bottom: 12px;
-    }
+      width: 82px;
+      height: 82px;
 
-    .status-card h2 {
-      margin-bottom: 10px;
-    }
-
-    .status-card p {
-      max-width: 600px;
       margin: 0 auto 20px;
-      color: #9ca3c7;
+
+      border-radius: 50%;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background:
+        rgba(34,197,94,0.12);
+
+      border:
+        1px solid
+        rgba(34,197,94,0.30);
+
+      color: #86efac;
+
+      font-size: 42px;
+      font-weight: 900;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+
+      font-size: 28px;
+    }
+
+    .description {
+      max-width: 570px;
+
+      margin: 0 auto;
+
+      color: #aaa8c4;
+
+      font-size: 15px;
+
       line-height: 1.7;
     }
 
-    .form-actions {
-      display: flex;
-      gap: 12px;
-      justify-content: flex-end;
-      align-items: center;
+    .store-card {
       margin-top: 25px;
-      flex-wrap: wrap;
+
+      padding: 19px;
+
+      border-radius: 17px;
+
+      background:
+        rgba(255,255,255,0.045);
+
+      border:
+        1px solid
+        rgba(255,255,255,0.08);
+
+      text-align: left;
+    }
+
+    .store-label {
+      color: #777391;
+
+      font-size: 11px;
+
+      text-transform: uppercase;
+
+      letter-spacing: .7px;
+    }
+
+    .store-name {
+      margin-top: 7px;
+
+      font-size: 20px;
+      font-weight: 900;
+    }
+
+    .store-location {
+      margin-top: 6px;
+
+      color: #aaa8c4;
+
+      font-size: 13px;
+    }
+
+    .active-badge {
+      display: inline-flex;
+
+      align-items: center;
+      gap: 7px;
+
+      margin-top: 14px;
+
+      padding: 8px 12px;
+
+      border-radius: 999px;
+
+      background:
+        rgba(34,197,94,0.10);
+
+      border:
+        1px solid
+        rgba(34,197,94,0.25);
+
+      color: #86efac;
+
+      font-size: 12px;
+
+      font-weight: 800;
+    }
+
+    .active-dot {
+      width: 7px;
+      height: 7px;
+
+      border-radius: 50%;
+
+      background: #4ade80;
+    }
+
+    .payment-confirmed {
+      margin-top: 15px;
+
+      padding: 14px;
+
+      border-radius: 13px;
+
+      background:
+        rgba(124,92,246,0.08);
+
+      border:
+        1px solid
+        rgba(124,92,246,0.20);
+
+      color: #c4b5fd;
+
+      font-size: 13px;
+
+      line-height: 1.5;
+    }
+
+    .button {
+      width: 100%;
+
+      margin-top: 22px;
+
+      padding: 16px;
+
+      border: 0;
+
+      border-radius: 14px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #6d4aff,
+          #8b3ffc
+        );
+
+      color: #ffffff;
+
+      font-size: 15px;
+
+      font-weight: 800;
+
+      cursor: pointer;
+    }
+
+    .secondary-button {
+      margin-top: 10px;
+
+      background:
+        rgba(255,255,255,0.05);
+
+      border:
+        1px solid
+        rgba(255,255,255,0.12);
     }
 
     .loading {
-      text-align: center;
-      padding: 60px 20px;
-      color: #9ca3c7;
+      color: #aaa8c4;
+
+      font-size: 14px;
+
+      line-height: 1.6;
     }
 
-    .hidden {
-      display: none !important;
+    .spinner {
+      display: inline-block;
+
+      width: 16px;
+      height: 16px;
+
+      margin-right: 7px;
+
+      border:
+        2px solid
+        rgba(255,255,255,0.25);
+
+      border-top-color:
+        #ffffff;
+
+      border-radius: 50%;
+
+      vertical-align: -3px;
+
+      animation:
+        spin .7s linear infinite;
     }
 
-    @media (max-width: 700px) {
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
 
-      .vendor-page {
-        padding: 22px 0 50px;
+    .error {
+      display: none;
+
+      margin-top: 18px;
+
+      padding: 14px;
+
+      border-radius: 13px;
+
+      background:
+        rgba(239,68,68,0.08);
+
+      border:
+        1px solid
+        rgba(239,68,68,0.25);
+
+      color: #fca5a5;
+
+      font-size: 13px;
+
+      line-height: 1.5;
+
+      word-break: break-word;
+    }
+
+    @media (max-width: 500px) {
+
+      .page {
+        padding: 14px 12px 30px;
       }
 
-      .vendor-header h1 {
-        font-size: 27px;
+      .card {
+        padding: 27px 17px;
       }
 
-      .vendor-card {
-        padding: 18px;
-        border-radius: 14px;
+      h1 {
+        font-size: 24px;
       }
 
-      .form-grid {
-        grid-template-columns: 1fr;
+      .brand {
+        font-size: 18px;
       }
 
-      .form-group.full {
-        grid-column: auto;
-      }
-
-      .form-actions {
-        justify-content: stretch;
-      }
-
-      .form-actions .btn {
-        width: 100%;
+      .account-btn {
+        padding: 9px 11px;
+        font-size: 12px;
       }
 
     }
-
   </style>
-
 </head>
-
 
 <body>
 
+<main class="page">
 
-<header>
+  <div class="topbar">
 
-  <div class="container nav">
+    <div class="brand-wrap">
 
-    <a
-      class="logo"
-      href="index.html"
-    >
-
-      <span class="logo-mark">
+      <div class="brand-icon">
         E
-      </span>
+      </div>
 
-      Earn<span>Gig</span>
+      <div class="brand">
+        Earn<span>Gig</span>
+      </div>
 
-    </a>
+    </div>
 
-
-    <nav>
-
-      <a href="dashboard.html">
-        Dashboard
-      </a>
-
-      <a href="marketplace.html">
-        Marketplace
-      </a>
-
-    </nav>
-
-
-    <a
-      class="btn outline"
-      href="dashboard.html"
+    <button
+      class="account-btn"
+      type="button"
+      onclick="goToAccount()"
     >
       My Account
-    </a>
+    </button>
 
   </div>
 
-</header>
 
-
-
-<main class="dashboard-page vendor-page">
-
-  <div class="container">
-
+  <section class="card">
 
     <div
-      id="loading-state"
-      class="loading"
+      id="statusIcon"
+      class="status-icon"
     >
-      Checking your vendor application...
+      <span id="statusIconText">✓</span>
     </div>
 
 
+    <h1 id="pageTitle">
+      Checking Store Status
+    </h1>
 
-    <!-- ==================================================
-         APPLICATION AREA
-    =================================================== -->
+
+    <p
+      id="pageDescription"
+      class="description"
+    >
+      <span class="loading">
+        <span class="spinner"></span>
+        Checking your marketplace store...
+      </span>
+    </p>
+
 
     <div
-      id="application-area"
-      class="hidden"
+      id="storeCard"
+      class="store-card"
+      style="display:none;"
     >
 
+      <div class="store-label">
+        Your Marketplace Store
+      </div>
 
-      <div class="vendor-header">
+      <div
+        id="storeName"
+        class="store-name"
+      >
+        —
+      </div>
 
-        <span class="eyebrow">
-          EARNGIG MARKETPLACE
+      <div
+        id="storeLocation"
+        class="store-location"
+      >
+        —
+      </div>
+
+      <div class="active-badge">
+
+        <span class="active-dot"></span>
+
+        <span>
+          Store Active
         </span>
 
-
-        <h1>
-          Become a Vendor
-        </h1>
-
-
-        <p>
-          Apply to open your own EarnGig marketplace store.
-          Your application will be reviewed before you can
-          activate your store.
-        </p>
-
       </div>
-
-
-
-      <div class="notice info">
-
-        <strong>
-          How it works:
-        </strong>
-
-        Submit your application →
-        EarnGig reviews it →
-        if approved, pay the ₦2,500 monthly vendor
-        subscription →
-        activate your store.
-
-      </div>
-
-
-
-      <form id="vendor-form">
-
-
-        <!-- =================================================
-             PERSONAL INFORMATION
-        ================================================== -->
-
-        <section class="vendor-card">
-
-          <h2>
-            Personal Information
-          </h2>
-
-
-          <p class="vendor-card-description">
-            These details help EarnGig identify and verify
-            the person responsible for the store.
-          </p>
-
-
-          <div class="form-grid">
-
-
-            <div class="form-group">
-
-              <label for="full-name">
-
-                Full Name
-                <span class="required">*</span>
-
-              </label>
-
-
-              <input
-                id="full-name"
-                type="text"
-                autocomplete="name"
-                required
-              >
-
-            </div>
-
-
-
-            <div class="form-group">
-
-              <label for="email">
-
-                Email Address
-                <span class="required">*</span>
-
-              </label>
-
-
-              <input
-                id="email"
-                type="email"
-                autocomplete="email"
-                required
-              >
-
-            </div>
-
-
-
-            <div class="form-group">
-
-              <label for="phone-number">
-
-                Phone Number
-                <span class="required">*</span>
-
-              </label>
-
-
-              <input
-                id="phone-number"
-                type="tel"
-                placeholder="08012345678"
-                autocomplete="tel"
-                required
-              >
-
-            </div>
-
-
-
-            <div class="form-group">
-
-              <label for="residential-address">
-
-                Residential Address
-                <span class="required">*</span>
-
-              </label>
-
-
-              <input
-                id="residential-address"
-                type="text"
-                placeholder="Your residential address"
-                autocomplete="street-address"
-                required
-              >
-
-            </div>
-
-
-
-            <div class="form-group full">
-
-              <label for="vendor-photo">
-
-                Personal Photograph
-                <span class="required">*</span>
-
-              </label>
-
-
-              <div class="file-box">
-
-                <input
-                  id="vendor-photo"
-                  type="file"
-                  accept="image/jpeg,image/png,image/webp"
-                  required
-                >
-
-
-                <div class="file-help">
-
-                  Upload a clear recent photograph of yourself.
-                  This file is stored privately and is only
-                  used for EarnGig verification.
-
-                  Maximum size: 5MB.
-
-                </div>
-
-
-                <img
-                  id="photo-preview"
-                  class="photo-preview"
-                  alt="Personal photograph preview"
-                >
-
-              </div>
-
-            </div>
-
-
-          </div>
-
-        </section>
-
-
-
-        <!-- =================================================
-             BUSINESS INFORMATION
-        ================================================== -->
-
-        <section class="vendor-card">
-
-          <h2>
-            Business / Store Information
-          </h2>
-
-
-          <p class="vendor-card-description">
-
-            Your store can sell products from multiple
-            categories. Product categories are selected
-            separately when products are added.
-
-          </p>
-
-
-          <div class="form-grid">
-
-
-            <div class="form-group">
-
-              <label for="store-name">
-
-                Business / Store Name
-                <span class="required">*</span>
-
-              </label>
-
-
-              <input
-                id="store-name"
-                type="text"
-                placeholder="Your store name"
-                required
-              >
-
-            </div>
-
-
-
-            <div class="form-group">
-
-              <label for="business-phone">
-
-                Business Phone
-                <span class="optional">
-                  (optional)
-                </span>
-
-              </label>
-
-
-              <input
-                id="business-phone"
-                type="tel"
-                placeholder="Business contact number"
-              >
-
-            </div>
-
-
-
-            <div class="form-group">
-
-              <label for="state">
-
-                State
-                <span class="required">*</span>
-
-              </label>
-
-
-              <input
-                id="state"
-                type="text"
-                placeholder="e.g. Rivers"
-                required
-              >
-
-            </div>
-
-
-
-            <div class="form-group">
-
-              <label for="lga">
-
-                LGA
-                <span class="optional">
-                  (optional)
-                </span>
-
-              </label>
-
-
-              <input
-                id="lga"
-                type="text"
-                placeholder="Local Government Area"
-              >
-
-            </div>
-
-
-
-            <div class="form-group full">
-
-              <label for="business-location">
-
-                City / Town / Area
-                <span class="required">*</span>
-
-              </label>
-
-
-              <input
-                id="business-location"
-                type="text"
-                placeholder="City, town or area"
-                required
-              >
-
-            </div>
-
-
-
-            <div class="form-group full">
-
-              <label for="business-address">
-
-                Business Address
-                <span class="required">*</span>
-
-              </label>
-
-
-              <textarea
-                id="business-address"
-                placeholder="Enter your full business or operating address"
-                required
-              ></textarea>
-
-            </div>
-
-
-
-            <div class="form-group full">
-
-              <label for="business-description">
-
-                About Your Business
-                <span class="required">*</span>
-
-              </label>
-
-
-              <textarea
-                id="business-description"
-                placeholder="Tell us about your business and the products you intend to sell."
-                required
-              ></textarea>
-
-            </div>
-
-
-
-            <div class="form-group full">
-
-              <label for="business-logo">
-
-                Business Logo
-                <span class="optional">
-                  (optional)
-                </span>
-
-              </label>
-
-
-              <div class="file-box">
-
-                <input
-                  id="business-logo"
-                  type="file"
-                  accept="image/jpeg,image/png,image/webp"
-                >
-
-
-                <div class="file-help">
-
-                  Upload your business or store logo.
-                  Maximum size: 5MB.
-
-                </div>
-
-
-                <img
-                  id="logo-preview"
-                  class="logo-preview"
-                  alt="Business logo preview"
-                >
-
-              </div>
-
-            </div>
-
-
-          </div>
-
-        </section>
-
-
-
-        <!-- =================================================
-             ONLINE PRESENCE
-        ================================================== -->
-
-        <section class="vendor-card">
-
-          <h2>
-            Business Verification
-          </h2>
-
-
-          <p class="vendor-card-description">
-
-            These links help EarnGig verify your business.
-            Provide the ones you have.
-
-          </p>
-
-
-          <div class="notice warning">
-
-            You can provide an Instagram page, TikTok page,
-            Facebook page, WhatsApp Business link, website,
-            or another public business presence.
-
-          </div>
-
-
-          <div class="form-grid">
-
-
-            <div class="form-group">
-
-              <label for="whatsapp-url">
-
-                WhatsApp
-                <span class="optional">
-                  (optional)
-                </span>
-
-              </label>
-
-
-              <input
-                id="whatsapp-url"
-                type="url"
-                placeholder="https://wa.me/..."
-              >
-
-            </div>
-
-
-
-            <div class="form-group">
-
-              <label for="instagram-url">
-
-                Instagram
-                <span class="optional">
-                  (optional)
-                </span>
-
-              </label>
-
-
-              <input
-                id="instagram-url"
-                type="url"
-                placeholder="https://instagram.com/..."
-              >
-
-            </div>
-
-
-
-            <div class="form-group">
-
-              <label for="tiktok-url">
-
-                TikTok
-                <span class="optional">
-                  (optional)
-                </span>
-
-              </label>
-
-
-              <input
-                id="tiktok-url"
-                type="url"
-                placeholder="https://tiktok.com/@..."
-              >
-
-            </div>
-
-
-
-            <div class="form-group">
-
-              <label for="facebook-url">
-
-                Facebook
-                <span class="optional">
-                  (optional)
-                </span>
-
-              </label>
-
-
-              <input
-                id="facebook-url"
-                type="url"
-                placeholder="https://facebook.com/..."
-              >
-
-            </div>
-
-
-
-            <div class="form-group full">
-
-              <label for="website-url">
-
-                Website
-                <span class="optional">
-                  (optional)
-                </span>
-
-              </label>
-
-
-              <input
-                id="website-url"
-                type="url"
-                placeholder="https://..."
-              >
-
-            </div>
-
-
-
-            <div class="form-group full">
-
-              <label for="additional-information">
-
-                Additional Information
-                <span class="optional">
-                  (optional)
-                </span>
-
-              </label>
-
-
-              <textarea
-                id="additional-information"
-                placeholder="Anything else that can help us verify your business."
-              ></textarea>
-
-            </div>
-
-
-          </div>
-
-        </section>
-
-
-
-        <!-- =================================================
-             SUBMIT
-        ================================================== -->
-
-        <section class="vendor-card">
-
-
-          <div class="notice info">
-
-            Submitting this application does <strong>not</strong>
-            charge the ₦2,500 monthly vendor subscription.
-            The subscription is only requested after your
-            application has been approved.
-
-          </div>
-
-
-          <div
-            id="form-error"
-            class="notice danger hidden"
-          ></div>
-
-
-          <div class="form-actions">
-
-            <a
-              class="btn outline"
-              href="marketplace.html"
-            >
-              Cancel
-            </a>
-
-
-            <button
-              id="submit-button"
-              type="submit"
-              class="btn primary"
-            >
-              Submit for Review
-            </button>
-
-          </div>
-
-
-        </section>
-
-
-      </form>
 
     </div>
 
 
+    <div
+      id="paymentConfirmed"
+      class="payment-confirmed"
+      style="display:none;"
+    >
+      ✓ Your ₦2,500 vendor subscription has been
+      received and confirmed. Your store is now
+      active on EarnGig Marketplace.
+    </div>
 
-    <!-- ==================================================
-         STATUS AREA
-    =================================================== -->
+
+    <button
+      id="primaryButton"
+      class="button"
+      type="button"
+      style="display:none;"
+      onclick="openStore()"
+    >
+      Open Vendor Store
+    </button>
+
+
+    <button
+      id="secondaryButton"
+      class="button secondary-button"
+      type="button"
+      onclick="goToMarketplace()"
+    >
+      Back to Marketplace
+    </button>
+
 
     <div
-      id="status-area"
-      class="hidden"
+      id="errorBox"
+      class="error"
     ></div>
 
-
-  </div>
+  </section>
 
 </main>
 
 
-
-<footer>
-
-  <div class="container copy">
-    © 2026 EarnGig. All rights reserved.
-  </div>
-
-</footer>
-
-
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase.js"></script>
-
-
 <script>
 
+const SUPABASE_URL =
+  "https://ytvtdelwefykeqwztcyo.supabase.co";
+
+
+const SUPABASE_ANON_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl0dnRkZWx3ZWZ5a2Vxd3p0Y3lvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYzMDkwMjUsImV4cCI6MjEwMTg4NTAyNX0.qzT3lYrTFupgGAxQ0VZl26hqblLQDs0vc9ZNiwBU9tA";
+
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+  );
+
+
 let currentUser = null;
-let existingApplication = null;
+let currentStore = null;
 
 
-/* ==========================================================
-   HELPERS
-========================================================== */
+function goToMarketplace() {
 
-function escapeHtml(value) {
-
-  return String(value ?? "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
+  window.location.href =
+    "marketplace.html";
 
 }
 
 
-function show(id) {
+function goToAccount() {
 
-  document
-    .getElementById(id)
-    .classList
-    .remove("hidden");
+  window.location.href =
+    "account.html";
 
 }
 
 
-function hide(id) {
+function getStoreLocation(
+  store
+) {
 
-  document
-    .getElementById(id)
-    .classList
-    .add("hidden");
+  return (
+    store.location_display ||
+
+    [
+      store.business_area,
+      store.business_city,
+      store.business_lga,
+      store.business_state
+    ]
+      .filter(Boolean)
+      .join(", ")
+  ) ||
+  "Store location not provided";
 
 }
 
 
-function showFormError(message) {
+function showError(
+  message
+) {
 
   const box =
     document.getElementById(
-      "form-error"
+      "errorBox"
     );
 
   box.textContent =
     message;
 
-  box.classList.remove(
-    "hidden"
-  );
-
-  box.scrollIntoView({
-    behavior: "smooth",
-    block: "center"
-  });
+  box.style.display =
+    "block";
 
 }
 
 
-function clearFormError() {
+function showActiveStore() {
 
-  const box =
-    document.getElementById(
-      "form-error"
+  document.getElementById(
+    "pageTitle"
+  ).textContent =
+    "Store Activated";
+
+
+  document.getElementById(
+    "pageDescription"
+  ).textContent =
+    "Your vendor application and ₦2,500 subscription have been successfully processed. Your marketplace store is now active.";
+
+
+  document.getElementById(
+    "storeCard"
+  ).style.display =
+    "block";
+
+
+  document.getElementById(
+    "storeName"
+  ).textContent =
+    currentStore.store_name ||
+    "Your Marketplace Store";
+
+
+  document.getElementById(
+    "storeLocation"
+  ).textContent =
+    getStoreLocation(
+      currentStore
     );
 
-  box.textContent = "";
 
-  box.classList.add(
-    "hidden"
-  );
+  document.getElementById(
+    "paymentConfirmed"
+  ).style.display =
+    "block";
+
+
+  document.getElementById(
+    "primaryButton"
+  ).style.display =
+    "block";
+
+
+  document.getElementById(
+    "primaryButton"
+  ).textContent =
+    "Open Vendor Store";
+
+
+  document.getElementById(
+    "statusIconText"
+  ).textContent =
+    "✓";
 
 }
 
 
-/* ==========================================================
-   AUTH
-========================================================== */
+function showPendingPayment() {
 
-async function initializePage() {
+  document.getElementById(
+    "pageTitle"
+  ).textContent =
+    "Application Approved";
 
-  const {
-    data: {
-      user
-    },
-    error
-  } =
-    await supabaseClient.auth.getUser();
 
+  document.getElementById(
+    "pageDescription"
+  ).textContent =
+    "Your vendor application has been approved. Complete your ₦2,500 monthly vendor subscription to activate your marketplace store.";
+
+
+  document.getElementById(
+    "storeCard"
+  ).style.display =
+    "block";
+
+
+  document.getElementById(
+    "storeName"
+  ).textContent =
+    currentStore.store_name ||
+    "Your Marketplace Store";
+
+
+  document.getElementById(
+    "storeLocation"
+  ).textContent =
+    getStoreLocation(
+      currentStore
+    );
+
+
+  document.getElementById(
+    "primaryButton"
+  ).style.display =
+    "block";
+
+
+  document.getElementById(
+    "primaryButton"
+  ).textContent =
+    "Continue to Subscription";
+
+
+  document.getElementById(
+    "primaryButton"
+  ).onclick =
+    function() {
+
+      window.location.href =
+        "vendor-subscription.html";
+
+    };
+
+}
+
+
+function showOtherStatus() {
+
+  document.getElementById(
+    "pageTitle"
+  ).textContent =
+    "Marketplace Store Status";
+
+
+  document.getElementById(
+    "pageDescription"
+  ).textContent =
+    "Your marketplace store is currently being processed.";
+
+
+  document.getElementById(
+    "storeCard"
+  ).style.display =
+    "block";
+
+
+  document.getElementById(
+    "storeName"
+  ).textContent =
+    currentStore.store_name ||
+    "Your Marketplace Store";
+
+
+  document.getElementById(
+    "storeLocation"
+  ).textContent =
+    getStoreLocation(
+      currentStore
+    );
+
+
+  document.querySelector(
+    ".active-badge"
+  ).innerHTML =
+    '<span class="active-dot"></span><span>' +
+    (
+      currentStore.status ||
+      "Pending"
+    ) +
+    "</span>";
+
+}
+
+
+function openStore() {
 
   if (
-    error ||
-    !user
+    currentStore &&
+    currentStore.store_slug
   ) {
 
     window.location.href =
-      "login.html?redirect=vendor-application.html";
-
-    return;
-
-  }
-
-
-  currentUser =
-    user;
-
-
-  await loadExistingApplication();
-
-}
-
-
-/* ==========================================================
-   LOAD CURRENT MARKETPLACE APPLICATION
-========================================================== */
-
-async function loadExistingApplication() {
-
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
-      .from(
-        "marketplace_vendor_applications"
-      )
-      .select("*")
-      .eq(
-        "user_id",
-        currentUser.id
-      )
-      .order(
-        "created_at",
-        {
-          ascending: false
-        }
-      )
-      .limit(1)
-      .maybeSingle();
-
-
-  if (error) {
-
-    console.error(
-      "Marketplace vendor application error:",
-      error
-    );
-
-
-    hide(
-      "loading-state"
-    );
-
-
-    document.getElementById(
-      "status-area"
-    ).innerHTML = `
-
-      <section class="vendor-card status-card">
-
-        <div class="status-icon">
-          ⚠️
-        </div>
-
-        <h2>
-          Unable to load application
-        </h2>
-
-        <p>
-          ${escapeHtml(error.message)}
-        </p>
-
-        <a
-          href="marketplace.html"
-          class="btn outline"
-        >
-          Back to Marketplace
-        </a>
-
-      </section>
-
-    `;
-
-
-    show(
-      "status-area"
-    );
-
-    return;
-
-  }
-
-
-  existingApplication =
-    data;
-
-
-  hide(
-    "loading-state"
-  );
-
-
-  if (!data) {
-
-    prepareNewApplication();
-
-    return;
-
-  }
-
-
-  if (
-    data.status ===
-      "more_information_required" ||
-    data.status ===
-      "revision_required"
-  ) {
-
-    prepareRevision(
-      data
-    );
-
-    return;
-
-  }
-
-
-  showApplicationStatus(
-    data
-  );
-
-}
-
-
-/* ==========================================================
-   NEW APPLICATION
-========================================================== */
-
-function prepareNewApplication() {
-
-  show(
-    "application-area"
-  );
-
-
-  document.getElementById(
-    "email"
-  ).value =
-    currentUser.email || "";
-
-
-  document.getElementById(
-    "submit-button"
-  ).textContent =
-    "Submit for Review";
-
-}
-
-
-/* ==========================================================
-   REVISION
-========================================================== */
-
-function prepareRevision(
-  application
-) {
-
-  show(
-    "application-area"
-  );
-
-
-  populateForm(
-    application
-  );
-
-
-  const notice =
-    document.createElement(
-      "div"
-    );
-
-
-  notice.className =
-    "notice warning";
-
-
-  notice.innerHTML = `
-
-    <strong>
-      More Information / Revision Required
-    </strong>
-
-    <br><br>
-
-    Your application requires
-    changes or additional information
-    before it can be approved.
-
-    ${
-      application.admin_note
-        ? `
-          <br><br>
-
-          <strong>
-            Admin note:
-          </strong>
-
-          ${escapeHtml(
-            application.admin_note
-          )}
-        `
-        : ""
-    }
-
-  `;
-
-
-  const header =
-    document.querySelector(
-      ".vendor-header"
-    );
-
-
-  header.parentNode.insertBefore(
-    notice,
-    header.nextSibling
-  );
-
-
-  document.getElementById(
-    "submit-button"
-  ).textContent =
-    "Resubmit Application";
-
-
-  /*
-    Existing private files are retained.
-    The applicant can select new files if
-    they want to replace them.
-  */
-
-  document.getElementById(
-    "vendor-photo"
-  ).required = false;
-
-}
-
-
-/* ==========================================================
-   POPULATE FORM
-========================================================== */
-
-function populateForm(
-  application
-) {
-
-  document.getElementById(
-    "full-name"
-  ).value =
-    application.full_name || "";
-
-
-  document.getElementById(
-    "email"
-  ).value =
-    application.email ||
-    currentUser.email ||
-    "";
-
-
-  document.getElementById(
-    "phone-number"
-  ).value =
-    application.phone_number || "";
-
-
-  document.getElementById(
-    "residential-address"
-  ).value =
-    application.residential_address || "";
-
-
-  document.getElementById(
-    "store-name"
-  ).value =
-    application.store_name || "";
-
-
-  document.getElementById(
-    "business-phone"
-  ).value =
-    application.business_phone || "";
-
-
-  document.getElementById(
-    "state"
-  ).value =
-    application.state || "";
-
-
-  document.getElementById(
-    "lga"
-  ).value =
-    application.lga || "";
-
-
-  document.getElementById(
-    "business-location"
-  ).value =
-    application.business_location || "";
-
-
-  document.getElementById(
-    "business-address"
-  ).value =
-    application.business_address || "";
-
-
-  document.getElementById(
-    "business-description"
-  ).value =
-    application.business_description || "";
-
-
-  document.getElementById(
-    "whatsapp-url"
-  ).value =
-    application.whatsapp_url || "";
-
-
-  document.getElementById(
-    "instagram-url"
-  ).value =
-    application.instagram_url || "";
-
-
-  document.getElementById(
-    "tiktok-url"
-  ).value =
-    application.tiktok_url || "";
-
-
-  document.getElementById(
-    "facebook-url"
-  ).value =
-    application.facebook_url || "";
-
-
-  document.getElementById(
-    "website-url"
-  ).value =
-    application.website_url || "";
-
-
-  document.getElementById(
-    "additional-information"
-  ).value =
-    application.additional_information || "";
-
-}
-
-
-/* ==========================================================
-   STATUS
-========================================================== */
-
-function showApplicationStatus(
-  application
-) {
-
-  hide(
-    "application-area"
-  );
-
-
-  const status =
-    String(
-      application.status || ""
-    ).toLowerCase();
-
-
-  let icon = "⏳";
-
-  let title =
-    "Application Under Review";
-
-  let message =
-    "Your vendor application has been submitted and is currently being reviewed by EarnGig.";
-
-  let noticeClass =
-    "info";
-
-  let action = "";
-
-
-  if (
-    status ===
-    "approved"
-  ) {
-
-    icon = "✓";
-
-    title =
-      "Application Approved";
-
-    noticeClass =
-      "success";
-
-    message =
-      "Your vendor application has been approved. Complete your ₦2,500 monthly vendor subscription to continue to store activation.";
-
-
-    action = `
-
-      <a
-        href="vendor-subscription.html"
-        class="btn primary"
-      >
-        Continue to Subscription
-      </a>
-
-    `;
-
-  }
-
-
-  if (
-    status ===
-    "rejected"
-  ) {
-
-    icon = "✕";
-
-    title =
-      "Application Not Approved";
-
-    noticeClass =
-      "danger";
-
-    message =
-      "Your vendor application was not approved at this time.";
-
-  }
-
-
-  if (
-    status ===
-    "more_information_required" ||
-    status ===
-    "revision_required"
-  ) {
-
-    icon = "⚠️";
-
-    title =
-      "More Information Required";
-
-    noticeClass =
-      "warning";
-
-    message =
-      "EarnGig needs additional information or changes before your application can continue.";
-
-    action = `
-
-      <a
-        href="javascript:void(0)"
-        onclick="prepareRevision(existingApplication)"
-        class="btn primary"
-      >
-        Update Application
-      </a>
-
-    `;
-
-  }
-
-
-  const statusArea =
-    document.getElementById(
-      "status-area"
-    );
-
-
-  statusArea.innerHTML = `
-
-    <section class="vendor-card status-card">
-
-      <div class="status-icon">
-        ${icon}
-      </div>
-
-      <h2>
-        ${title}
-      </h2>
-
-      <p>
-        ${message}
-      </p>
-
-
-      ${
-        application.admin_note
-          ? `
-
-            <div
-              class="notice ${noticeClass}"
-            >
-
-              <strong>
-                EarnGig Note
-              </strong>
-
-              <br><br>
-
-              ${escapeHtml(
-                application.admin_note
-              )}
-
-            </div>
-
-          `
-          : ""
-      }
-
-
-      ${action}
-
-
-      <div style="margin-top:20px;">
-
-        <a
-          href="marketplace.html"
-          class="btn outline"
-        >
-          Back to Marketplace
-        </a>
-
-      </div>
-
-    </section>
-
-  `;
-
-
-  show(
-    "status-area"
-  );
-
-}
-
-
-/* ==========================================================
-   IMAGE PREVIEWS
-========================================================== */
-
-document
-  .getElementById(
-    "vendor-photo"
-  )
-  .addEventListener(
-    "change",
-    function() {
-
-      const file =
-        this.files[0];
-
-
-      const preview =
-        document.getElementById(
-          "photo-preview"
-        );
-
-
-      if (!file) {
-
-        preview.src = "";
-
-        preview.style.display =
-          "none";
-
-        return;
-
-      }
-
-
-      if (
-        ![
-          "image/jpeg",
-          "image/png",
-          "image/webp"
-        ].includes(
-          file.type
-        )
-      ) {
-
-        this.value = "";
-
-        preview.src = "";
-
-        preview.style.display =
-          "none";
-
-        showFormError(
-          "Please select a JPG, PNG, or WEBP image."
-        );
-
-        return;
-
-      }
-
-
-      if (
-        file.size >
-        5 * 1024 * 1024
-      ) {
-
-        this.value = "";
-
-        preview.src = "";
-
-        preview.style.display =
-          "none";
-
-        showFormError(
-          "Personal photograph must be 5MB or smaller."
-        );
-
-        return;
-
-      }
-
-
-      preview.src =
-        URL.createObjectURL(
-          file
-        );
-
-      preview.style.display =
-        "block";
-
-    }
-  );
-
-
-document
-  .getElementById(
-    "business-logo"
-  )
-  .addEventListener(
-    "change",
-    function() {
-
-      const file =
-        this.files[0];
-
-
-      const preview =
-        document.getElementById(
-          "logo-preview"
-        );
-
-
-      if (!file) {
-
-        preview.src = "";
-
-        preview.style.display =
-          "none";
-
-        return;
-
-      }
-
-
-      if (
-        ![
-          "image/jpeg",
-          "image/png",
-          "image/webp"
-        ].includes(
-          file.type
-        )
-      ) {
-
-        this.value = "";
-
-        preview.src = "";
-
-        preview.style.display =
-          "none";
-
-        showFormError(
-          "Please select a JPG, PNG, or WEBP logo."
-        );
-
-        return;
-
-      }
-
-
-      if (
-        file.size >
-        5 * 1024 * 1024
-      ) {
-
-        this.value = "";
-
-        preview.src = "";
-
-        preview.style.display =
-          "none";
-
-        showFormError(
-          "Business logo must be 5MB or smaller."
-        );
-
-        return;
-
-      }
-
-
-      preview.src =
-        URL.createObjectURL(
-          file
-        );
-
-      preview.style.display =
-        "block";
-
-    }
-  );
-
-
-/* ==========================================================
-   STORAGE UPLOAD
-========================================================== */
-
-async function uploadVendorFile(
-  file,
-  bucketName,
-  required
-) {
-
-  if (!file) {
-
-    if (required) {
-
-      throw new Error(
-        "Please upload your personal photograph."
+      "store.html?store=" +
+      encodeURIComponent(
+        currentStore.store_slug
       );
 
-    }
-
-    return null;
+    return;
 
   }
 
 
-  const allowedTypes = [
-    "image/jpeg",
-    "image/png",
-    "image/webp"
-  ];
-
-
-  if (
-    !allowedTypes.includes(
-      file.type
-    )
-  ) {
-
-    throw new Error(
-      "Please upload a JPG, PNG, or WEBP image."
-    );
-
-  }
-
-
-  if (
-    file.size >
-    5 * 1024 * 1024
-  ) {
-
-    throw new Error(
-      "Each image must be 5MB or smaller."
-    );
-
-  }
-
-
-  const extension =
-    file.name
-      .split(".")
-      .pop()
-      .toLowerCase();
-
-
-  const filePath =
-    currentUser.id +
-    "/" +
-    crypto.randomUUID() +
-    "." +
-    extension;
-
-
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
-      .storage
-      .from(
-        bucketName
-      )
-      .upload(
-        filePath,
-        file,
-        {
-          cacheControl:
-            "3600",
-          upsert:
-            false,
-          contentType:
-            file.type
-        }
-      );
-
-
-  if (error) {
-
-    console.error(
-      "Storage upload failed:",
-      bucketName,
-      error
-    );
-
-
-    throw new Error(
-      "Unable to upload image to " +
-      bucketName +
-      ": " +
-      error.message
-    );
-
-  }
-
-
-  if (
-    !data ||
-    !data.path
-  ) {
-
-    throw new Error(
-      "The image upload did not return a valid storage path."
-    );
-
-  }
-
-
-  /*
-    Store bucket/path together in the application table.
-    The admin review page already knows how to remove
-    the bucket prefix when creating the signed URL.
-  */
-
-  return (
-    bucketName +
-    "/" +
-    data.path
-  );
+  window.location.href =
+    "vendor-dashboard.html";
 
 }
 
 
-/* ==========================================================
-   DELETE UPLOADED FILE IF DATABASE SAVE FAILS
-========================================================== */
-
-async function removeUploadedFile(
-  bucketName,
-  storedPath
-) {
-
-  if (!storedPath) {
-    return;
-  }
-
-
-  let cleanPath =
-    String(
-      storedPath
-    );
-
-
-  const prefix =
-    bucketName +
-    "/";
-
-
-  if (
-    cleanPath.startsWith(
-      prefix
-    )
-  ) {
-
-    cleanPath =
-      cleanPath.substring(
-        prefix.length
-      );
-
-  }
-
+async function loadStoreStatus() {
 
   try {
 
-    await supabaseClient
-      .storage
-      .from(
-        bucketName
-      )
-      .remove([
-        cleanPath
-      ]);
+    const {
+      data: sessionData,
+      error: sessionError
+    } =
+      await supabaseClient.auth.getSession();
+
+
+    if (sessionError) {
+
+      throw new Error(
+        "Session error: " +
+        sessionError.message
+      );
+
+    }
+
+
+    if (
+      !sessionData ||
+      !sessionData.session ||
+      !sessionData.session.user
+    ) {
+
+      window.location.href =
+        "login.html";
+
+      return;
+
+    }
+
+
+    currentUser =
+      sessionData.session.user;
+
+
+    /*
+     * Use the same direct REST approach that
+     * we already confirmed works for this
+     * Supabase project.
+     */
+
+    const accessToken =
+      sessionData.session.access_token;
+
+
+    const storeUrl =
+      SUPABASE_URL +
+      "/rest/v1/marketplace_stores" +
+      "?select=" +
+      encodeURIComponent(
+        "id,vendor_id,store_name,store_slug,status,business_state,business_lga,business_city,business_area,location_display,created_at"
+      ) +
+      "&vendor_id=eq." +
+      encodeURIComponent(
+        currentUser.id
+      ) +
+      "&order=created_at.desc" +
+      "&limit=1";
+
+
+    const response =
+      await fetch(
+        storeUrl,
+        {
+          method: "GET",
+
+          headers: {
+            "apikey":
+              SUPABASE_ANON_KEY,
+
+            "Authorization":
+              "Bearer " +
+              accessToken,
+
+            "Content-Type":
+              "application/json"
+          }
+        }
+      );
+
+
+    const responseText =
+      await response.text();
+
+
+    let data;
+
+
+    try {
+
+      data =
+        JSON.parse(
+          responseText
+        );
+
+    } catch {
+
+      data =
+        null;
+
+    }
+
+
+    if (!response.ok) {
+
+      throw new Error(
+        "Store lookup failed: HTTP " +
+        response.status +
+        " - " +
+        (
+          data?.message ||
+          data?.error ||
+          responseText ||
+          "Unknown error."
+        )
+      );
+
+    }
+
+
+    if (
+      !Array.isArray(data) ||
+      data.length === 0
+    ) {
+
+      throw new Error(
+        "No marketplace store was found for your account."
+      );
+
+    }
+
+
+    currentStore =
+      data[0];
+
+
+    /*
+     * THIS IS THE IMPORTANT PART.
+     *
+     * If the database says active,
+     * the page acknowledges the payment
+     * and removes the payment request.
+     */
+
+    if (
+      currentStore.status ===
+      "active"
+    ) {
+
+      showActiveStore();
+
+      return;
+
+    }
+
+
+    if (
+      currentStore.status ===
+      "pending_payment"
+    ) {
+
+      showPendingPayment();
+
+      return;
+
+    }
+
+
+    showOtherStatus();
+
 
   } catch (error) {
 
-    console.warn(
-      "Unable to clean up uploaded file:",
+    console.error(
+      "Application status error:",
       error
+    );
+
+
+    document.getElementById(
+      "pageTitle"
+    ).textContent =
+    "Unable to Check Store";
+
+
+    document.getElementById(
+      "pageDescription"
+    ).textContent =
+      "We could not retrieve your marketplace store status right now.";
+
+
+    showError(
+      error?.message ||
+      "Could not load your marketplace store."
     );
 
   }
@@ -2055,575 +997,9 @@ async function removeUploadedFile(
 }
 
 
-/* ==========================================================
-   FORM SUBMISSION
-========================================================== */
-
-document
-  .getElementById(
-    "vendor-form"
-  )
-  .addEventListener(
-    "submit",
-    async function(event) {
-
-      event.preventDefault();
-
-      clearFormError();
-
-
-      const button =
-        document.getElementById(
-          "submit-button"
-        );
-
-
-      button.disabled =
-        true;
-
-      button.textContent =
-        "Uploading & Submitting...";
-
-
-      let newlyUploadedPhoto =
-        null;
-
-      let newlyUploadedLogo =
-        null;
-
-
-      try {
-
-        /* -----------------------------------------------
-           AUTH CHECK
-        ------------------------------------------------ */
-
-        if (!currentUser) {
-
-          throw new Error(
-            "Your login session has expired. Please log in again."
-          );
-
-        }
-
-
-        /* -----------------------------------------------
-           FORM VALUES
-        ------------------------------------------------ */
-
-        const fullName =
-          document
-            .getElementById(
-              "full-name"
-            )
-            .value
-            .trim();
-
-
-        const email =
-          document
-            .getElementById(
-              "email"
-            )
-            .value
-            .trim();
-
-
-        const phoneNumber =
-          document
-            .getElementById(
-              "phone-number"
-            )
-            .value
-            .trim();
-
-
-        const residentialAddress =
-          document
-            .getElementById(
-              "residential-address"
-            )
-            .value
-            .trim();
-
-
-        const storeName =
-          document
-            .getElementById(
-              "store-name"
-            )
-            .value
-            .trim();
-
-
-        const businessPhone =
-          document
-            .getElementById(
-              "business-phone"
-            )
-            .value
-            .trim();
-
-
-        const state =
-          document
-            .getElementById(
-              "state"
-            )
-            .value
-            .trim();
-
-
-        const lga =
-          document
-            .getElementById(
-              "lga"
-            )
-            .value
-            .trim();
-
-
-        const businessLocation =
-          document
-            .getElementById(
-              "business-location"
-            )
-            .value
-            .trim();
-
-
-        const businessAddress =
-          document
-            .getElementById(
-              "business-address"
-            )
-            .value
-            .trim();
-
-
-        const businessDescription =
-          document
-            .getElementById(
-              "business-description"
-            )
-            .value
-            .trim();
-
-
-        const whatsappUrl =
-          document
-            .getElementById(
-              "whatsapp-url"
-            )
-            .value
-            .trim();
-
-
-        const instagramUrl =
-          document
-            .getElementById(
-              "instagram-url"
-            )
-            .value
-            .trim();
-
-
-        const tiktokUrl =
-          document
-            .getElementById(
-              "tiktok-url"
-            )
-            .value
-            .trim();
-
-
-        const facebookUrl =
-          document
-            .getElementById(
-              "facebook-url"
-            )
-            .value
-            .trim();
-
-
-        const websiteUrl =
-          document
-            .getElementById(
-              "website-url"
-            )
-            .value
-            .trim();
-
-
-        const additionalInformation =
-          document
-            .getElementById(
-              "additional-information"
-            )
-            .value
-            .trim();
-
-
-        /* -----------------------------------------------
-           REQUIRED VALIDATION
-        ------------------------------------------------ */
-
-        if (
-          !fullName ||
-          !email ||
-          !phoneNumber ||
-          !residentialAddress ||
-          !storeName ||
-          !state ||
-          !businessLocation ||
-          !businessAddress ||
-          !businessDescription
-        ) {
-
-          throw new Error(
-            "Please complete all required fields."
-          );
-
-        }
-
-
-        /* -----------------------------------------------
-           FILES
-        ------------------------------------------------ */
-
-        const photoFile =
-          document
-            .getElementById(
-              "vendor-photo"
-            )
-            .files[0];
-
-
-        const logoFile =
-          document
-            .getElementById(
-              "business-logo"
-            )
-            .files[0];
-
-
-        /* -----------------------------------------------
-           KEEP EXISTING FILES DURING REVISION
-        ------------------------------------------------ */
-
-        let personalPhotoUrl =
-          existingApplication
-            ?.personal_photo_url ||
-          null;
-
-
-        let storeLogoUrl =
-          existingApplication
-            ?.store_logo_url ||
-          null;
-
-
-        /* -----------------------------------------------
-           PERSONAL PHOTO
-        ------------------------------------------------ */
-
-        if (photoFile) {
-
-          newlyUploadedPhoto =
-            await uploadVendorFile(
-              photoFile,
-              "vendor-photos",
-              true
-            );
-
-          personalPhotoUrl =
-            newlyUploadedPhoto;
-
-        }
-
-
-        if (!personalPhotoUrl) {
-
-          throw new Error(
-            "Please upload your personal photograph."
-          );
-
-        }
-
-
-        /* -----------------------------------------------
-           BUSINESS LOGO
-        ------------------------------------------------ */
-
-        if (logoFile) {
-
-          newlyUploadedLogo =
-            await uploadVendorFile(
-              logoFile,
-              "business-logos",
-              false
-            );
-
-          storeLogoUrl =
-            newlyUploadedLogo;
-
-        }
-
-
-        /* -----------------------------------------------
-           APPLICATION DATA
-        ------------------------------------------------ */
-
-        const applicationData = {
-
-          user_id:
-            currentUser.id,
-
-          full_name:
-            fullName,
-
-          phone_number:
-            phoneNumber,
-
-          email:
-            email,
-
-          personal_photo_url:
-            personalPhotoUrl,
-
-          residential_address:
-            residentialAddress,
-
-          state:
-            state,
-
-          lga:
-            lga ||
-            null,
-
-          store_name:
-            storeName,
-
-          business_description:
-            businessDescription,
-
-          business_location:
-            businessLocation,
-
-          business_address:
-            businessAddress,
-
-          business_phone:
-            businessPhone ||
-            null,
-
-          store_logo_url:
-            storeLogoUrl ||
-            null,
-
-          tiktok_url:
-            tiktokUrl ||
-            null,
-
-          instagram_url:
-            instagramUrl ||
-            null,
-
-          facebook_url:
-            facebookUrl ||
-            null,
-
-          whatsapp_url:
-            whatsappUrl ||
-            null,
-
-          website_url:
-            websiteUrl ||
-            null,
-
-          additional_information:
-            additionalInformation ||
-            null,
-
-          status:
-            "pending",
-
-          admin_note:
-            null,
-
-          reviewed_by:
-            null,
-
-          reviewed_at:
-            null,
-
-          updated_at:
-            new Date().toISOString()
-
-        };
-
-
-        /* -----------------------------------------------
-           SAVE APPLICATION
-        ------------------------------------------------ */
-
-        let result;
-
-
-        if (
-          existingApplication &&
-          (
-            existingApplication.status ===
-              "more_information_required" ||
-            existingApplication.status ===
-              "revision_required"
-          )
-        ) {
-
-          result =
-            await supabaseClient
-              .from(
-                "marketplace_vendor_applications"
-              )
-              .update(
-                applicationData
-              )
-              .eq(
-                "id",
-                existingApplication.id
-              )
-              .eq(
-                "user_id",
-                currentUser.id
-              )
-              .select()
-              .single();
-
-        } else {
-
-          result =
-            await supabaseClient
-              .from(
-                "marketplace_vendor_applications"
-              )
-              .insert(
-                applicationData
-              )
-              .select()
-              .single();
-
-        }
-
-
-        if (result.error) {
-
-          throw new Error(
-            result.error.message
-          );
-
-        }
-
-
-        existingApplication =
-          result.data;
-
-
-        /* -----------------------------------------------
-           SUCCESS
-        ------------------------------------------------ */
-
-        hide(
-          "application-area"
-        );
-
-
-        showApplicationStatus(
-          result.data
-        );
-
-
-      } catch (error) {
-
-        console.error(
-          "Vendor application submission error:",
-          error
-        );
-
-
-        /*
-          If the database save failed after a NEW file
-          was uploaded, remove that new file so we don't
-          leave unnecessary orphaned files in Storage.
-        */
-
-        if (
-          newlyUploadedPhoto &&
-          (
-            !existingApplication ||
-            !existingApplication.personal_photo_url
-          )
-        ) {
-
-          await removeUploadedFile(
-            "vendor-photos",
-            newlyUploadedPhoto
-          );
-
-        }
-
-
-        if (
-          newlyUploadedLogo &&
-          (
-            !existingApplication ||
-            !existingApplication.store_logo_url
-          )
-        ) {
-
-          await removeUploadedFile(
-            "business-logos",
-            newlyUploadedLogo
-          );
-
-        }
-
-
-        showFormError(
-          error.message ||
-          "Unable to submit your vendor application."
-        );
-
-
-        button.disabled =
-          false;
-
-
-        button.textContent =
-          existingApplication &&
-          (
-            existingApplication.status ===
-              "more_information_required" ||
-            existingApplication.status ===
-              "revision_required"
-          )
-            ? "Resubmit Application"
-            : "Submit for Review";
-
-      }
-
-    }
-  );
-
-
-/* ==========================================================
-   START
-========================================================== */
-
-initializePage();
+loadStoreStatus();
 
 </script>
 
-
 </body>
-
 </html>
