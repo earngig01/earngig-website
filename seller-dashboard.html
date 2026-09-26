@@ -10,9 +10,6 @@
 
   <title>Seller Dashboard | EarnGig</title>
 
-  <!-- Supabase MUST load before the dashboard script -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
   <style>
     * {
       box-sizing: border-box;
@@ -49,8 +46,6 @@
       padding: 18px;
     }
 
-    /* HEADER */
-
     .topbar {
       display: flex;
       align-items: center;
@@ -72,11 +67,12 @@
       align-items: center;
       justify-content: center;
       border-radius: 14px;
-      background: linear-gradient(
-        135deg,
-        #704cff,
-        #5146e5
-      );
+      background:
+        linear-gradient(
+          135deg,
+          #704cff,
+          #5146e5
+        );
       font-size: 22px;
       font-weight: 900;
     }
@@ -94,8 +90,6 @@
       display: flex;
       gap: 8px;
     }
-
-    /* BUTTONS */
 
     .btn {
       border: 0;
@@ -116,19 +110,11 @@
     }
 
     .btn-secondary {
-      background: rgba(255,255,255,0.05);
-      border:
-        1px solid
-        rgba(255,255,255,0.12);
-    }
-
-    .btn-danger {
       background:
-        rgba(239,68,68,0.12);
+        rgba(255,255,255,.05);
       border:
         1px solid
-        rgba(239,68,68,0.25);
-      color: #fca5a5;
+        rgba(255,255,255,.12);
     }
 
     .btn:disabled {
@@ -240,8 +226,6 @@
       justify-content: flex-end;
     }
 
-    /* TITLES */
-
     .section-title {
       margin: 24px 0 11px;
       font-size: 18px;
@@ -287,7 +271,7 @@
       font-size: 11px;
     }
 
-    /* GRID */
+    /* PANELS */
 
     .grid {
       display: grid;
@@ -322,7 +306,7 @@
       line-height: 1.5;
     }
 
-    /* MANAGEMENT BUTTONS */
+    /* MANAGEMENT */
 
     .menu-grid {
       display: grid;
@@ -369,13 +353,13 @@
       line-height: 1.4;
     }
 
-    /* COLLAPSIBLE PANELS */
+    /* HIDDEN PANELS */
 
     .hidden-panel {
       display: none;
     }
 
-    /* FORM */
+    /* FORMS */
 
     .field {
       margin-top: 14px;
@@ -455,7 +439,7 @@
       display: none;
     }
 
-    /* STORE LINK */
+    /* LINK */
 
     .link-row {
       display: flex;
@@ -497,7 +481,7 @@
       line-height: 1.4;
     }
 
-    /* MESSAGE */
+    /* MESSAGES */
 
     .message {
       display: none;
@@ -528,12 +512,6 @@
         rgba(239,68,68,.20);
     }
 
-    .loading {
-      color: #85819e;
-    }
-
-    /* FOOTER */
-
     .footer {
       margin-top: 30px;
       padding: 20px 0;
@@ -544,8 +522,6 @@
       text-align: center;
       font-size: 11px;
     }
-
-    /* MOBILE */
 
     @media (max-width: 800px) {
 
@@ -571,7 +547,6 @@
         width: 100%;
         justify-content: flex-start;
       }
-
     }
 
     @media (max-width: 520px) {
@@ -615,7 +590,6 @@
         align-items: flex-start;
         flex-direction: column;
       }
-
     }
   </style>
 </head>
@@ -644,16 +618,16 @@
 
       <button
         class="btn btn-secondary"
-        type="button"
         onclick="openStore()"
+        type="button"
       >
         View Store
       </button>
 
       <button
         class="btn btn-secondary"
-        type="button"
         onclick="goMarketplace()"
+        type="button"
       >
         Marketplace
       </button>
@@ -663,7 +637,7 @@
   </header>
 
 
-  <!-- STORE HERO -->
+  <!-- STORE -->
 
   <section class="hero">
 
@@ -696,8 +670,11 @@
           </div>
 
           <div class="active-badge">
+
             <span class="active-dot"></span>
+
             Store Active
+
           </div>
 
         </div>
@@ -709,16 +686,16 @@
 
         <button
           class="btn btn-primary"
-          type="button"
           onclick="addProduct()"
+          type="button"
         >
           + Add Product
         </button>
 
         <button
           class="btn btn-secondary"
-          type="button"
           onclick="openStore()"
+          type="button"
         >
           View Store
         </button>
@@ -730,11 +707,12 @@
   </section>
 
 
-  <!-- STATS -->
+  <!-- OVERVIEW -->
 
   <div class="section-title">
     Store Overview
   </div>
+
 
   <section class="stats">
 
@@ -792,7 +770,7 @@
       </div>
 
       <div class="stat-note">
-        Awaiting delivery
+        Awaiting completion
       </div>
 
     </div>
@@ -829,8 +807,6 @@
 
   <section class="grid">
 
-    <!-- MANAGEMENT MENU -->
-
     <div class="panel">
 
       <div class="panel-title">
@@ -846,8 +822,8 @@
 
         <button
           class="menu-button"
-          type="button"
           onclick="togglePanel('storeSettings')"
+          type="button"
         >
 
           <div class="menu-icon">
@@ -867,8 +843,8 @@
 
         <button
           class="menu-button"
-          type="button"
           onclick="togglePanel('fulfillmentSettings')"
+          type="button"
         >
 
           <div class="menu-icon">
@@ -888,8 +864,8 @@
 
         <button
           class="menu-button"
-          type="button"
           onclick="addProduct()"
+          type="button"
         >
 
           <div class="menu-icon">
@@ -909,8 +885,8 @@
 
         <button
           class="menu-button"
-          type="button"
           onclick="openProducts()"
+          type="button"
         >
 
           <div class="menu-icon">
@@ -930,8 +906,8 @@
 
         <button
           class="menu-button"
-          type="button"
           onclick="openOrders()"
+          type="button"
         >
 
           <div class="menu-icon">
@@ -951,8 +927,8 @@
 
         <button
           class="menu-button"
-          type="button"
           onclick="openEarnings()"
+          type="button"
         >
 
           <div class="menu-icon">
@@ -998,8 +974,8 @@
 
         <button
           class="btn btn-secondary"
-          type="button"
           onclick="copyStoreLink()"
+          type="button"
         >
           Copy
         </button>
@@ -1010,8 +986,8 @@
       <button
         class="btn btn-primary"
         style="width:100%;margin-top:12px;"
-        type="button"
         onclick="openStore()"
+        type="button"
       >
         Open Public Store
       </button>
@@ -1089,8 +1065,8 @@
         id="saveStoreBtn"
         class="btn btn-primary"
         style="width:100%;margin-top:15px;"
-        type="button"
         onclick="saveStore()"
+        type="button"
       >
         Save Store Details
       </button>
@@ -1104,7 +1080,7 @@
     </div>
 
 
-    <!-- DELIVERY / PICKUP -->
+    <!-- DELIVERY -->
 
     <div
       id="fulfillmentSettings"
@@ -1116,7 +1092,7 @@
       </div>
 
       <div class="panel-subtitle">
-        Select the ways customers can receive orders from your store.
+        Choose how customers can receive orders from your store.
       </div>
 
 
@@ -1132,7 +1108,8 @@
           >
 
           <label for="deliveryOnly">
-            🚚<br><br>
+            🚚
+            <br><br>
             Delivery Only
           </label>
 
@@ -1149,7 +1126,8 @@
           >
 
           <label for="pickupOnly">
-            📍<br><br>
+            📍
+            <br><br>
             Pickup Only
           </label>
 
@@ -1166,7 +1144,8 @@
           >
 
           <label for="deliveryAndPickup">
-            🚚📍<br><br>
+            🚚📍
+            <br><br>
             Both
           </label>
 
@@ -1215,8 +1194,8 @@
         id="saveFulfillmentBtn"
         class="btn btn-primary"
         style="width:100%;margin-top:15px;"
-        type="button"
         onclick="saveFulfillment()"
+        type="button"
       >
         Save Delivery & Pickup Settings
       </button>
@@ -1248,7 +1227,7 @@
         <div>
 
           <div class="quick-title">
-            1. Configure Delivery / Pickup
+            1. Set Delivery / Pickup
           </div>
 
           <div class="quick-description">
@@ -1259,8 +1238,8 @@
 
         <button
           class="btn btn-secondary"
-          type="button"
           onclick="togglePanel('fulfillmentSettings')"
+          type="button"
         >
           Configure
         </button>
@@ -1273,19 +1252,19 @@
         <div>
 
           <div class="quick-title">
-            2. Add Your Products
+            2. Add Your First Product
           </div>
 
           <div class="quick-description">
-            Add your products with their required images, price, stock and category.
+            Add your product image, price, stock and category.
           </div>
 
         </div>
 
         <button
           class="btn btn-primary"
-          type="button"
           onclick="addProduct()"
+          type="button"
         >
           Add Product
         </button>
@@ -1309,8 +1288,8 @@
 
         <button
           class="btn btn-secondary"
-          type="button"
           onclick="copyStoreLink()"
+          type="button"
         >
           Copy Link
         </button>
@@ -1337,17 +1316,19 @@
 
 <script>
 
+/*
+==================================================
+EARNGIG SELLER DASHBOARD
+DIRECT REST VERSION
+NO SUPABASE JAVASCRIPT LIBRARY REQUIRED
+==================================================
+*/
+
+
 const SUPABASE_URL =
   "https://ytvtdelwefykeqwztcyo.supabase.co";
 
-const SUPABASE_ANON_KEY =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6MTc4NjMwOTAyNSwiZXhwIjoyMTAxODg1MDI1fQ.qzT3lYrTFupgGAxQ0VZl26hqblLQDs0vc9ZNiwBU9tA";
 
-
-/*
-  IMPORTANT:
-  The real legacy anon key is used below.
-*/
 const ANON_KEY =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl0dnRkZWx3ZWZ5a2Vxd3p0Y3lvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYzMDkwMjUsImV4cCI6MjEwMTg4NTAyNX0.qzT3lYrTFupgGAxQ0VZl26hqblLQDs0vc9ZNiwBU9tA";
 
@@ -1357,15 +1338,14 @@ const REST_BASE =
   "/rest/v1";
 
 
-let supabaseClient = null;
 let currentSession = null;
 let currentUser = null;
 let currentStore = null;
 
 
-/* ------------------------------
-   BASIC HELPERS
------------------------------- */
+/* ==========================================
+   HELPERS
+========================================== */
 
 function money(amount) {
 
@@ -1406,7 +1386,8 @@ function showMessage(
 
   if (!element) return;
 
-  element.textContent = text;
+  element.textContent =
+    text;
 
   element.className =
     "message " + type;
@@ -1421,7 +1402,8 @@ function hideMessage(id) {
 
   if (!element) return;
 
-  element.textContent = "";
+  element.textContent =
+    "";
 
   element.className =
     "message";
@@ -1429,10 +1411,308 @@ function hideMessage(id) {
 }
 
 
+/* ==========================================
+   SESSION
+========================================== */
+
+function getSessionStorageKey() {
+
+  return (
+    "sb-" +
+    "ytvtdelwefykeqwztcyo" +
+    "-auth-token"
+  );
+
+}
+
+
+function readStoredSession() {
+
+  try {
+
+    const raw =
+      localStorage.getItem(
+        getSessionStorageKey()
+      );
+
+
+    if (!raw) {
+
+      return null;
+
+    }
+
+
+    const parsed =
+      JSON.parse(raw);
+
+
+    /*
+     * Supabase normally stores the session
+     * directly in this object.
+     */
+
+    if (
+      parsed &&
+      parsed.access_token
+    ) {
+
+      return parsed;
+
+    }
+
+
+    /*
+     * Support another possible structure.
+     */
+
+    if (
+      parsed &&
+      parsed.currentSession &&
+      parsed.currentSession.access_token
+    ) {
+
+      return parsed.currentSession;
+
+    }
+
+
+    return null;
+
+  } catch (error) {
+
+    console.error(
+      "Session storage error:",
+      error
+    );
+
+    return null;
+
+  }
+
+}
+
+
+async function refreshSession(
+  session
+) {
+
+  if (
+    !session ||
+    !session.refresh_token
+  ) {
+
+    return null;
+
+  }
+
+
+  const response =
+    await fetch(
+      SUPABASE_URL +
+      "/auth/v1/token?grant_type=refresh_token",
+      {
+        method: "POST",
+
+        headers: {
+          "apikey":
+            ANON_KEY,
+
+          "Content-Type":
+            "application/json"
+        },
+
+        body:
+          JSON.stringify({
+            refresh_token:
+              session.refresh_token
+          })
+      }
+    );
+
+
+  if (!response.ok) {
+
+    return null;
+
+  }
+
+
+  const refreshed =
+    await response.json();
+
+
+  if (
+    !refreshed.access_token
+  ) {
+
+    return null;
+
+  }
+
+
+  try {
+
+    localStorage.setItem(
+      getSessionStorageKey(),
+      JSON.stringify(
+        refreshed
+      )
+    );
+
+  } catch (error) {
+
+    console.warn(
+      "Could not save refreshed session.",
+      error
+    );
+
+  }
+
+
+  return refreshed;
+
+}
+
+
+async function initializeSession() {
+
+  let session =
+    readStoredSession();
+
+
+  if (!session) {
+
+    redirectToLogin();
+
+    return false;
+
+  }
+
+
+  /*
+   * Test the current access token against
+   * Supabase Auth.
+   */
+
+  let response =
+    await fetch(
+      SUPABASE_URL +
+      "/auth/v1/user",
+      {
+        method: "GET",
+
+        headers: {
+          "apikey":
+            ANON_KEY,
+
+          "Authorization":
+            "Bearer " +
+            session.access_token
+        }
+      }
+    );
+
+
+  /*
+   * If expired, refresh it.
+   */
+
+  if (!response.ok) {
+
+    const refreshed =
+      await refreshSession(
+        session
+      );
+
+
+    if (!refreshed) {
+
+      redirectToLogin();
+
+      return false;
+
+    }
+
+
+    session =
+      refreshed;
+
+
+    response =
+      await fetch(
+        SUPABASE_URL +
+        "/auth/v1/user",
+        {
+          method: "GET",
+
+          headers: {
+            "apikey":
+              ANON_KEY,
+
+            "Authorization":
+              "Bearer " +
+              session.access_token
+          }
+        }
+      );
+
+  }
+
+
+  if (!response.ok) {
+
+    redirectToLogin();
+
+    return false;
+
+  }
+
+
+  const user =
+    await response.json();
+
+
+  currentSession =
+    session;
+
+  currentUser =
+    user;
+
+
+  return true;
+
+}
+
+
+function redirectToLogin() {
+
+  const currentPage =
+    window.location.pathname
+      .split("/")
+      .pop() ||
+    "seller-dashboard.html";
+
+
+  window.location.href =
+    "login.html?redirect=" +
+    encodeURIComponent(
+      currentPage
+    );
+
+}
+
+
+/* ==========================================
+   REST HEADERS
+========================================== */
+
 function authHeaders() {
 
   return {
-    "apikey": ANON_KEY,
+
+    "apikey":
+      ANON_KEY,
 
     "Authorization":
       "Bearer " +
@@ -1443,90 +1723,32 @@ function authHeaders() {
 
     "Prefer":
       "return=representation"
+
   };
 
 }
 
 
-/* ------------------------------
-   SUPABASE SESSION
------------------------------- */
+/* ==========================================
+   REST REQUEST
+========================================== */
 
-async function initializeSupabase() {
-
-  if (
-    !window.supabase ||
-    !window.supabase.createClient
-  ) {
-
-    throw new Error(
-      "Supabase could not be loaded. Please refresh the page."
-    );
-
-  }
-
-
-  supabaseClient =
-    window.supabase.createClient(
-      SUPABASE_URL,
-      ANON_KEY
-    );
-
-
-  const {
-    data,
-    error
-  } =
-    await supabaseClient.auth.getSession();
-
-
-  if (error) {
-
-    throw new Error(
-      error.message
-    );
-
-  }
-
-
-  if (
-    !data ||
-    !data.session ||
-    !data.session.user
-  ) {
-
-    window.location.href =
-      "login.html?redirect=seller-dashboard.html";
-
-    return false;
-
-  }
-
-
-  currentSession =
-    data.session;
-
-  currentUser =
-    data.session.user;
-
-
-  return true;
-
-}
-
-
-/* ------------------------------
-   REST
------------------------------- */
-
-async function restGet(url) {
+async function restRequest(
+  url,
+  options = {}
+) {
 
   const response =
     await fetch(
       url,
       {
-        method: "GET",
-        headers: authHeaders()
+        ...options,
+
+        headers: {
+          ...authHeaders(),
+
+          ...(options.headers || {})
+        }
       }
     );
 
@@ -1535,12 +1757,15 @@ async function restGet(url) {
     await response.text();
 
 
-  let data;
+  let data = null;
+
 
   try {
 
     data =
-      JSON.parse(text);
+      text
+        ? JSON.parse(text)
+        : null;
 
   } catch {
 
@@ -1556,6 +1781,7 @@ async function restGet(url) {
       data?.message ||
       data?.hint ||
       data?.error ||
+      data?.details ||
       (
         "Request failed: HTTP " +
         response.status
@@ -1570,100 +1796,43 @@ async function restGet(url) {
 }
 
 
-async function restPatch(
-  url,
-  body
-) {
-
-  const response =
-    await fetch(
-      url,
-      {
-        method: "PATCH",
-
-        headers: authHeaders(),
-
-        body:
-          JSON.stringify(body)
-      }
-    );
-
-
-  const text =
-    await response.text();
-
-
-  let data;
-
-  try {
-
-    data =
-      JSON.parse(text);
-
-  } catch {
-
-    data =
-      text;
-
-  }
-
-
-  if (!response.ok) {
-
-    throw new Error(
-      data?.message ||
-      data?.hint ||
-      data?.error ||
-      (
-        "Update failed: HTTP " +
-        response.status
-      )
-    );
-
-  }
-
-
-  return data;
-
-}
-
-
-/* ------------------------------
+/* ==========================================
    LOAD STORE
------------------------------- */
+========================================== */
 
 async function loadStore() {
+
+  const fields = [
+    "id",
+    "vendor_id",
+    "application_id",
+    "store_name",
+    "store_slug",
+    "description",
+    "store_logo_url",
+    "business_phone",
+    "business_location",
+    "business_address",
+    "business_state",
+    "business_lga",
+    "business_city",
+    "business_area",
+    "location_display",
+    "status",
+    "accepts_delivery",
+    "accepts_pickup",
+    "pickup_location",
+    "pickup_instructions",
+    "created_at",
+    "updated_at"
+  ].join(",");
+
 
   const url =
     REST_BASE +
     "/marketplace_stores" +
     "?select=" +
-    encodeURIComponent(
-      [
-        "id",
-        "vendor_id",
-        "application_id",
-        "store_name",
-        "store_slug",
-        "description",
-        "store_logo_url",
-        "business_phone",
-        "business_location",
-        "business_address",
-        "business_state",
-        "business_lga",
-        "business_city",
-        "business_area",
-        "location_display",
-        "status",
-        "accepts_delivery",
-        "accepts_pickup",
-        "pickup_location",
-        "pickup_instructions",
-        "created_at",
-        "updated_at"
-      ].join(",")
-    ) +
+    encodeURIComponent(fields) +
     "&vendor_id=eq." +
     encodeURIComponent(
       currentUser.id
@@ -1673,7 +1842,12 @@ async function loadStore() {
 
 
   const stores =
-    await restGet(url);
+    await restRequest(
+      url,
+      {
+        method: "GET"
+      }
+    );
 
 
   if (
@@ -1712,9 +1886,9 @@ async function loadStore() {
 }
 
 
-/* ------------------------------
+/* ==========================================
    STORE DISPLAY
------------------------------- */
+========================================== */
 
 function getStoreLocation() {
 
@@ -1767,6 +1941,10 @@ function getStoreUrl() {
 
   }
 
+
+  /*
+   * This preserves the actual store slug.
+   */
 
   return (
     window.location.origin +
@@ -1879,9 +2057,9 @@ function renderStore() {
 }
 
 
-/* ------------------------------
+/* ==========================================
    FULFILLMENT
------------------------------- */
+========================================== */
 
 function renderFulfillment() {
 
@@ -1927,12 +2105,12 @@ function renderFulfillment() {
     "";
 
 
-  updatePickupVisibility();
+  updatePickupFields();
 
 }
 
 
-function updatePickupVisibility() {
+function updatePickupFields() {
 
   const selected =
     document.querySelector(
@@ -1967,29 +2145,26 @@ function updatePickupVisibility() {
 }
 
 
-/* ------------------------------
-   STATS
------------------------------- */
+/* ==========================================
+   STATISTICS
+========================================== */
 
 async function loadStatistics() {
 
-  /* PRODUCTS */
-
   try {
 
-    const productUrl =
-      REST_BASE +
-      "/marketplace_products" +
-      "?select=id" +
-      "&vendor_id=eq." +
-      encodeURIComponent(
-        currentUser.id
-      );
-
-
     const products =
-      await restGet(
-        productUrl
+      await restRequest(
+        REST_BASE +
+        "/marketplace_products" +
+        "?select=id" +
+        "&vendor_id=eq." +
+        encodeURIComponent(
+          currentUser.id
+        ),
+        {
+          method: "GET"
+        }
       );
 
 
@@ -2003,7 +2178,7 @@ async function loadStatistics() {
   } catch (error) {
 
     console.error(
-      "Product count:",
+      "Products:",
       error
     );
 
@@ -2015,23 +2190,20 @@ async function loadStatistics() {
   }
 
 
-  /* ORDERS */
-
   try {
 
-    const orderUrl =
-      REST_BASE +
-      "/marketplace_store_orders" +
-      "?select=id,order_status,total_amount,payment_status,vendor_credited_at" +
-      "&vendor_id=eq." +
-      encodeURIComponent(
-        currentUser.id
-      );
-
-
     const orders =
-      await restGet(
-        orderUrl
+      await restRequest(
+        REST_BASE +
+        "/marketplace_store_orders" +
+        "?select=id,order_status,total_amount,payment_status,vendor_credited_at" +
+        "&vendor_id=eq." +
+        encodeURIComponent(
+          currentUser.id
+        ),
+        {
+          method: "GET"
+        }
       );
 
 
@@ -2118,7 +2290,7 @@ async function loadStatistics() {
   } catch (error) {
 
     console.error(
-      "Order statistics:",
+      "Orders:",
       error
     );
 
@@ -2132,9 +2304,9 @@ async function loadStatistics() {
 }
 
 
-/* ------------------------------
-   TOGGLE PANELS
------------------------------- */
+/* ==========================================
+   PANELS
+========================================== */
 
 function togglePanel(id) {
 
@@ -2142,13 +2314,15 @@ function togglePanel(id) {
     document.getElementById(id);
 
 
-  const currentlyHidden =
-    target.style.display === "none" ||
-    target.style.display === "";
+  const wasHidden =
+    target.style.display === "" ||
+    target.style.display === "none";
 
 
   document
-    .querySelectorAll(".hidden-panel")
+    .querySelectorAll(
+      ".hidden-panel"
+    )
     .forEach(
       panel => {
 
@@ -2159,7 +2333,7 @@ function togglePanel(id) {
     );
 
 
-  if (currentlyHidden) {
+  if (wasHidden) {
 
     target.style.display =
       "block";
@@ -2182,9 +2356,9 @@ function togglePanel(id) {
 }
 
 
-/* ------------------------------
+/* ==========================================
    SAVE STORE
------------------------------- */
+========================================== */
 
 async function saveStore() {
 
@@ -2206,7 +2380,8 @@ async function saveStore() {
     ).value.trim();
 
 
-  button.disabled = true;
+  button.disabled =
+    true;
 
   button.textContent =
     "Saving...";
@@ -2219,31 +2394,32 @@ async function saveStore() {
 
   try {
 
-    const url =
-      REST_BASE +
-      "/marketplace_stores" +
-      "?id=eq." +
-      encodeURIComponent(
-        currentStore.id
-      ) +
-      "&vendor_id=eq." +
-      encodeURIComponent(
-        currentUser.id
-      );
-
-
     const updated =
-      await restPatch(
-        url,
+      await restRequest(
+        REST_BASE +
+        "/marketplace_stores" +
+        "?id=eq." +
+        encodeURIComponent(
+          currentStore.id
+        ) +
+        "&vendor_id=eq." +
+        encodeURIComponent(
+          currentUser.id
+        ),
         {
-          description:
-            description,
+          method: "PATCH",
 
-          business_phone:
-            phone,
+          body:
+            JSON.stringify({
+              description:
+                description,
 
-          updated_at:
-            new Date().toISOString()
+              business_phone:
+                phone,
+
+              updated_at:
+                new Date().toISOString()
+            })
         }
       );
 
@@ -2305,9 +2481,9 @@ async function saveStore() {
 }
 
 
-/* ------------------------------
+/* ==========================================
    SAVE DELIVERY / PICKUP
------------------------------- */
+========================================== */
 
 async function saveFulfillment() {
 
@@ -2321,7 +2497,7 @@ async function saveFulfillment() {
 
     showMessage(
       "fulfillmentMessage",
-      "Please select Delivery Only, Pickup Only, or Both.",
+      "Please choose Delivery Only, Pickup Only, or Both.",
       "error"
     );
 
@@ -2388,41 +2564,42 @@ async function saveFulfillment() {
 
   try {
 
-    const url =
-      REST_BASE +
-      "/marketplace_stores" +
-      "?id=eq." +
-      encodeURIComponent(
-        currentStore.id
-      ) +
-      "&vendor_id=eq." +
-      encodeURIComponent(
-        currentUser.id
-      );
-
-
     const updated =
-      await restPatch(
-        url,
+      await restRequest(
+        REST_BASE +
+        "/marketplace_stores" +
+        "?id=eq." +
+        encodeURIComponent(
+          currentStore.id
+        ) +
+        "&vendor_id=eq." +
+        encodeURIComponent(
+          currentUser.id
+        ),
         {
-          accepts_delivery:
-            acceptsDelivery,
+          method: "PATCH",
 
-          accepts_pickup:
-            acceptsPickup,
+          body:
+            JSON.stringify({
+              accepts_delivery:
+                acceptsDelivery,
 
-          pickup_location:
-            acceptsPickup
-              ? pickupLocation
-              : null,
+              accepts_pickup:
+                acceptsPickup,
 
-          pickup_instructions:
-            acceptsPickup
-              ? pickupInstructions
-              : null,
+              pickup_location:
+                acceptsPickup
+                  ? pickupLocation
+                  : null,
 
-          updated_at:
-            new Date().toISOString()
+              pickup_instructions:
+                acceptsPickup
+                  ? pickupInstructions
+                  : null,
+
+              updated_at:
+                new Date().toISOString()
+            })
         }
       );
 
@@ -2469,7 +2646,7 @@ async function saveFulfillment() {
   } catch (error) {
 
     console.error(
-      "Save fulfillment:",
+      "Fulfillment:",
       error
     );
 
@@ -2494,9 +2671,9 @@ async function saveFulfillment() {
 }
 
 
-/* ------------------------------
+/* ==========================================
    STORE LINK
------------------------------- */
+========================================== */
 
 async function copyStoreLink() {
 
@@ -2559,9 +2736,9 @@ async function copyStoreLink() {
 }
 
 
-/* ------------------------------
+/* ==========================================
    NAVIGATION
------------------------------- */
+========================================== */
 
 function openStore() {
 
@@ -2628,9 +2805,9 @@ function openEarnings() {
 }
 
 
-/* ------------------------------
-   RADIO EVENTS
------------------------------- */
+/* ==========================================
+   FULFILLMENT RADIO EVENTS
+========================================== */
 
 document
   .querySelectorAll(
@@ -2641,41 +2818,44 @@ document
 
       input.addEventListener(
         "change",
-        updatePickupVisibility
+        updatePickupFields
       );
 
     }
   );
 
 
-/* ------------------------------
+/* ==========================================
    START
------------------------------- */
+========================================== */
 
 async function startDashboard() {
 
   try {
 
     /*
-      Supabase is already loaded because
-      its script is in <head>.
-    */
+     * No Supabase JS library is required.
+     */
 
     const loggedIn =
-      await initializeSupabase();
+      await initializeSession();
 
 
     if (!loggedIn) {
+
       return;
+
     }
 
 
-    const storeLoaded =
+    const loaded =
       await loadStore();
 
 
-    if (!storeLoaded) {
+    if (!loaded) {
+
       return;
+
     }
 
 
@@ -2685,7 +2865,7 @@ async function startDashboard() {
   } catch (error) {
 
     console.error(
-      "Dashboard startup error:",
+      "Seller dashboard:",
       error
     );
 
