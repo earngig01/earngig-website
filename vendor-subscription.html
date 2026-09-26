@@ -563,31 +563,17 @@
 
 <script>
 
-/* =========================================================
-   EARNGIG SUPABASE CONNECTION
-   ========================================================= */
-
 const SUPABASE_URL =
   "https://ytvtdelwefykeqwztcyo.supabase.co";
 
-
 /*
- * IMPORTANT:
+ * Current Supabase legacy ANON key.
  *
- * In Supabase:
- * Project Settings
- * → API Keys
- * → Publishable key
- * → default
- *
- * Copy that key and paste it between these quotes.
- *
- * DO NOT use the sb_secret_ key.
+ * This is the browser/client key.
+ * It is NOT the service_role/secret key.
  */
-
 const SUPABASE_PUBLISHABLE_KEY =
-  "PASTE_YOUR_CURRENT_SUPABASE_PUBLISHABLE_KEY_HERE";
-
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzIiwicmVmIjoieXR2dGRlbHdleWZ5a2Vxd3p0Y3lvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYzMDkwMjUsImV4cCI6MjEwMTg4NTAyNX0.qzT3lYrTFupgGAxQ0VZl26hqblLQDs0vc9ZNiwBU9tA";
 
 const supabaseClient =
   window.supabase.createClient(
@@ -595,15 +581,10 @@ const supabaseClient =
     SUPABASE_PUBLISHABLE_KEY
   );
 
-
 let currentUser = null;
 let currentStore = null;
 let paymentProcessing = false;
 
-
-/* =========================================================
-   MESSAGES
-   ========================================================= */
 
 function showMessage(
   message,
@@ -633,10 +614,6 @@ function clearMessage() {
 }
 
 
-/* =========================================================
-   BACK BUTTON
-   ========================================================= */
-
 function goBack() {
 
   if (window.history.length > 1) {
@@ -649,12 +626,9 @@ function goBack() {
       "marketplace.html";
 
   }
+
 }
 
-
-/* =========================================================
-   MONEY FORMAT
-   ========================================================= */
 
 function formatNaira(amount) {
 
@@ -672,10 +646,6 @@ function formatNaira(amount) {
 }
 
 
-/* =========================================================
-   SELECTED PAYMENT METHOD
-   ========================================================= */
-
 function getSelectedPaymentMethod() {
 
   const selected =
@@ -689,10 +659,6 @@ function getSelectedPaymentMethod() {
 
 }
 
-
-/* =========================================================
-   PAYMENT BUTTON
-   ========================================================= */
 
 function updatePaymentButton() {
 
@@ -748,10 +714,6 @@ function updatePaymentButton() {
 }
 
 
-/* =========================================================
-   LOAD VENDOR STORE
-   ========================================================= */
-
 async function loadVendorStore() {
 
   const button =
@@ -761,10 +723,6 @@ async function loadVendorStore() {
 
 
   try {
-
-    /*
-     * CHECK LOGIN
-     */
 
     const {
       data: sessionData,
@@ -800,10 +758,6 @@ async function loadVendorStore() {
     currentUser =
       sessionData.session.user;
 
-
-    /*
-     * LOAD STORE
-     */
 
     const {
       data: store,
@@ -886,10 +840,6 @@ async function loadVendorStore() {
       "Store location not provided";
 
 
-    /*
-     * STORE ALREADY ACTIVE
-     */
-
     if (store.status === "active") {
 
       button.disabled = false;
@@ -915,10 +865,6 @@ async function loadVendorStore() {
 
     }
 
-
-    /*
-     * STORE NEEDS PAYMENT
-     */
 
     button.disabled = true;
 
@@ -966,16 +912,10 @@ async function loadVendorStore() {
 }
 
 
-/* =========================================================
-   LOAD WALLET
-   ========================================================= */
-
 async function loadWallet() {
 
   if (!currentUser) {
-
     return;
-
   }
 
 
@@ -1025,15 +965,13 @@ async function loadWallet() {
 
 
     statusElement.textContent =
-      "Balance could not be displayed. You can still use Flutterwave.";
+      "Balance could not be displayed. Flutterwave is still available.";
 
-    /*
-     * Flutterwave remains available.
-     */
 
     document.getElementById(
       "flutterwavePayment"
     ).checked = true;
+
 
     updatePaymentButton();
 
@@ -1077,10 +1015,6 @@ async function loadWallet() {
 
 }
 
-
-/* =========================================================
-   PAY WITH EARNGIG WALLET
-   ========================================================= */
 
 async function payWithWallet() {
 
@@ -1196,10 +1130,6 @@ async function payWithWallet() {
 }
 
 
-/* =========================================================
-   PAY WITH FLUTTERWAVE
-   ========================================================= */
-
 async function payWithFlutterwave() {
 
   if (
@@ -1225,14 +1155,6 @@ async function payWithFlutterwave() {
 
 
   try {
-
-    /*
-     * THIS IS THE ORIGINAL FLUTTERWAVE FLOW.
-     *
-     * Flutterwave is NOT called when the page loads.
-     * It is only called when the vendor selects
-     * Flutterwave and presses the payment button.
-     */
 
     const {
       data,
@@ -1327,16 +1249,10 @@ async function payWithFlutterwave() {
 }
 
 
-/* =========================================================
-   MAIN PAYMENT BUTTON
-   ========================================================= */
-
 async function startPayment() {
 
   if (paymentProcessing) {
-
     return;
-
   }
 
 
@@ -1376,10 +1292,6 @@ async function startPayment() {
 }
 
 
-/* =========================================================
-   PAYMENT METHOD CHANGES
-   ========================================================= */
-
 document
   .getElementById(
     "walletPayment"
@@ -1411,10 +1323,6 @@ document
     }
   );
 
-
-/* =========================================================
-   START PAGE
-   ========================================================= */
 
 loadVendorStore();
 
