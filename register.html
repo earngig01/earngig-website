@@ -41,11 +41,11 @@
     <h1>Create your account</h1>
 
     <p class="auth-subtitle">
-      Create your account and start exploring EarnGig.
+      Create your account and complete your ₦9,000 membership payment.
     </p>
 
 
-    <form>
+    <form id="registerForm">
 
       <label for="fullname">
         Full Name
@@ -131,6 +131,7 @@
 
         <input
           type="checkbox"
+          id="terms"
           required
         >
 
@@ -145,11 +146,29 @@
       <button
         type="submit"
         class="btn primary auth-button"
+        id="registerButton"
       >
-        Create Account
+        Create Account & Continue to Payment
       </button>
 
     </form>
+
+
+    <div
+      id="paymentNotice"
+      style="
+        display:none;
+        margin-top:18px;
+        padding:14px;
+        border-radius:12px;
+        background:rgba(124,58,237,0.12);
+        border:1px solid rgba(139,92,246,0.25);
+        color:#cfc8e8;
+        font-size:14px;
+        line-height:1.5;
+        text-align:center;
+      "
+    ></div>
 
 
     <div class="auth-divider">
@@ -177,86 +196,348 @@
   </div>
 
 </footer>
+
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
-  <script>
-  const registerForm = document.querySelector("form");
-    
-  const referralInput = document.getElementById("referral");
 
-const urlParams = new URLSearchParams(window.location.search);
-const referralFromUrl = urlParams.get("ref");
+<script>
 
-if (referralFromUrl) {
-  referralInput.value = referralFromUrl.toUpperCase();
-}
+  const registerForm =
+    document.getElementById("registerForm");
 
-  registerForm.addEventListener("submit", async function(event) {
+  const registerButton =
+    document.getElementById("registerButton");
 
-    event.preventDefault();
+  const paymentNotice =
+    document.getElementById("paymentNotice");
 
-    const fullname =
-      document.getElementById("fullname").value.trim();
-
-    const email =
-      document.getElementById("email").value.trim();
-
-    const phone =
-      document.getElementById("phone").value.trim();
-
-    const referral =
-      document.getElementById("referral").value.trim();
-
-    const password =
-      document.getElementById("password").value;
-
-    const confirmPassword =
-      document.getElementById("confirm-password").value;
+  const referralInput =
+    document.getElementById("referral");
 
 
-    if (password !== confirmPassword) {
+  /*
+   * Automatically fill referral code
+   * when the visitor arrives through
+   * a referral link.
+   */
+  const urlParams =
+    new URLSearchParams(window.location.search);
 
-      alert("Passwords do not match.");
+  const referralFromUrl =
+    urlParams.get("ref");
 
-      return;
-    }
+  if (referralFromUrl) {
+    referralInput.value =
+      referralFromUrl.toUpperCase();
+  }
 
 
-    const { data, error } =
-  await supabaseClient.auth.signUp({
-    email: email,
-    password: password,
-    options: {
-      emailRedirectTo:
-        "https://earngig01.github.io/earngig-website/login.html",
+  function showNotice(message) {
 
+    paymentNotice.textContent =
+      message;
+
+    paymentNotice.style.display =
+      "block";
+  }
+
+
+  function hideNotice() {
+
+    paymentNotice.textContent = "";
+
+    paymentNotice.style.display =
+      "none";
+  }
+
+
+  async function startMembershipPayment() {
+
+    /*
+     * Get the currently authenticated
+     * EarnGig session.
+     */
+    const {
       data: {
-        full_name: fullname,
-        phone: phone,
-        referral_code: referral || null
+        session
+      },
+      error: sessionError
+    } = await supabaseClient.auth.getSession();
+
+
+    if (sessionError) {
+
+      throw new Error(
+        "Unable to confirm your account session."
+      );
+    }
+
+
+    /*
+     * If email confirmation is enabled
+     * in Supabase, signUp may return no
+     * active session.
+     */
+    if (!session) {
+
+      throw new Error(
+        "Your account was created, but EarnGig requires email verification before payment. Please check your email, verify your account, then log in to continue with the ₦9,000 membership payment."
+      );
+    }
+
+
+    /*
+     * Ask our secure Edge Function to
+     * create the ₦9,000 Flutterwave
+     * checkout.
+     */
+    const response =
+      await fetch(
+        "https://ytvtdelwefykeqwztcyo.supabase.co/functions/v1/flutterwave-payment",
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "application/json",
+
+            "Authorization":
+              `Bearer ${session.access_token}`
+          },
+
+          body: JSON.stringify({
+            action: "initialize",
+            payment_type: "membership",
+            membership_stage: "initial"
+          })
+        }
+      );
+
+
+    const result =
+      await response.json();
+
+
+    if (!response.ok || !result?.success) {
+
+      throw new Error(
+        result?.error ||
+        "Unable to start Flutterwave payment."
+      );
+    }
+
+
+    if (!result.payment_url) {
+
+      throw new Error(
+        "Flutterwave did not return a payment link."
+      );
+    }
+
+
+    /*
+     * Send the customer to Flutterwave.
+     */
+    window.location.href =
+      result.payment_url;
+  }
+
+
+  registerForm.addEventListener(
+    "submit",
+    async function(event) {
+
+      event.preventDefault();
+
+      hideNotice();
+
+
+      const fullname =
+        document
+          .getElementById("fullname")
+          .value
+          .trim();
+
+
+      const email =
+        document
+          .getElementById("email")
+          .value
+          .trim()
+          .toLowerCase();
+
+
+      const phone =
+        document
+          .getElementById("phone")
+          .value
+          .trim();
+
+
+      const referral =
+        document
+          .getElementById("referral")
+          .value
+          .trim()
+          .toUpperCase();
+
+
+      const password =
+        document
+          .getElementById("password")
+          .value;
+
+
+      const confirmPassword =
+        document
+          .getElementById("confirm-password")
+          .value;
+
+
+      if (password !== confirmPassword) {
+
+        alert(
+          "Passwords do not match."
+        );
+
+        return;
       }
+
+
+      if (password.length < 6) {
+
+        alert(
+          "Password must be at least 6 characters."
+        );
+
+        return;
+      }
+
+
+      /*
+       * Prevent double submission.
+       */
+      registerButton.disabled =
+        true;
+
+      registerButton.textContent =
+        "Creating Account...";
+
+
+      try {
+
+        /*
+         * Create the Supabase account.
+         */
+        const {
+          data,
+          error
+        } =
+          await supabaseClient.auth.signUp({
+
+            email: email,
+
+            password: password,
+
+            options: {
+
+              emailRedirectTo:
+                "https://earngig01.github.io/earngig-website/login.html",
+
+              data: {
+                full_name: fullname,
+                phone: phone,
+                referral_code:
+                  referral || null
+              }
+
+            }
+
+          });
+
+
+        if (error) {
+
+          console.error(
+            "Registration error:",
+            error
+          );
+
+          throw new Error(
+            error.message
+          );
+        }
+
+
+        /*
+         * Supabase may return an existing
+         * session when email confirmation
+         * is disabled.
+         */
+        if (data?.session) {
+
+          registerButton.textContent =
+            "Starting Payment...";
+
+          showNotice(
+            "Account created. Redirecting you to the secure ₦9,000 Flutterwave membership payment..."
+          );
+
+
+          await startMembershipPayment();
+
+          return;
+        }
+
+
+        /*
+         * If email confirmation is enabled,
+         * Supabase normally returns a user
+         * but no session.
+         */
+        registerButton.disabled =
+          false;
+
+        registerButton.textContent =
+          "Create Account & Continue to Payment";
+
+
+        showNotice(
+          "Your account has been created. Please check your email and click the verification link. After verification, log in to continue with your ₦9,000 membership payment."
+        );
+
+        alert(
+          "Account created successfully. Please check your email and verify your account before continuing to payment."
+        );
+
+
+      } catch (error) {
+
+        console.error(
+          "EarnGig registration/payment error:",
+          error
+        );
+
+
+        registerButton.disabled =
+          false;
+
+        registerButton.textContent =
+          "Create Account & Continue to Payment";
+
+
+        showNotice(
+          error?.message ||
+          "Something went wrong. Please try again."
+        );
+
+      }
+
     }
-  });
+  );
 
+</script>
 
-    if (error) {
-
-      console.error("Registration error:", error);
-
-      alert(error.message);
-
-      return;
-    }
-
-
-    alert(
-      "Account created! Please check your email and click the verification link before logging in."
-    );
-
-    window.location.href = "login.html";
-
-  });
-  </script>
-  
 </body>
 </html>
