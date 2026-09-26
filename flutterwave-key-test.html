@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Flutterwave Key Test | EarnGig</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background:
+        radial-gradient(
+          circle at top,
+          #26104f 0%,
+          #100a24 45%,
+          #070612 100%
+        );
+
+      color: #fff;
+      font-family: Arial, sans-serif;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 520px;
+
+      background: rgba(20, 14, 42, 0.97);
+
+      border: 1px solid rgba(139, 92, 246, 0.35);
+
+      border-radius: 22px;
+
+      padding: 25px;
+
+      box-shadow:
+        0 20px 60px rgba(0,0,0,0.45);
+    }
+
+    .logo {
+      width: 58px;
+      height: 58px;
+
+      border-radius: 17px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background:
+        linear-gradient(
+          135deg,
+          #7c3aed,
+          #4f46e5
+        );
+
+      font-size: 27px;
+      font-weight: 900;
+
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 23px;
+    }
+
+    .description {
+      color: #aaa3c4;
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .result {
+      margin-top: 22px;
+      padding: 18px;
+
+      border-radius: 15px;
+
+      background: rgba(255,255,255,0.045);
+
+      border:
+        1px solid rgba(255,255,255,0.08);
+    }
+
+    .row {
+      padding: 11px 0;
+
+      border-bottom:
+        1px solid rgba(255,255,255,0.06);
+    }
+
+    .row:last-child {
+      border-bottom: 0;
+    }
+
+    .label {
+      color: #9189a9;
+      font-size: 12px;
+      margin-bottom: 5px;
+    }
+
+    .value {
+      font-size: 15px;
+      font-weight: 700;
+      word-break: break-word;
+    }
+
+    .success {
+      color: #86efac;
+    }
+
+    .error {
+      color: #fca5a5;
+    }
+
+    .warning {
+      color: #fcd34d;
+    }
+
+    .loading {
+      color: #c4b5fd;
+    }
+
+    .note {
+      margin-top: 20px;
+
+      padding: 14px;
+
+      border-radius: 13px;
+
+      background:
+        rgba(124,58,237,0.10);
+
+      border:
+        1px solid rgba(139,92,246,0.22);
+
+      color: #c4b5fd;
+
+      font-size: 13px;
+
+      line-height: 1.5;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="card">
+
+    <div class="logo">E</div>
+
+    <h1>Flutterwave API Key Test</h1>
+
+    <div class="description">
+      This page only checks whether the
+      EarnGig Supabase Edge Function can
+      authenticate with Flutterwave.
+      No payment will be created.
+    </div>
+
+    <div id="result" class="result">
+
+      <div class="row">
+        <div class="label">
+          Status
+        </div>
+
+        <div
+          id="status"
+          class="value loading"
+        >
+          Testing...
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="label">
+          Flutterwave HTTP Status
+        </div>
+
+        <div
+          id="httpStatus"
+          class="value"
+        >
+          —
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="label">
+          Flutterwave Response
+        </div>
+
+        <div
+          id="flwMessage"
+          class="value"
+        >
+          —
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="label">
+          Secret Key Detected by Supabase
+        </div>
+
+        <div
+          id="keyDetected"
+          class="value"
+        >
+          —
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="label">
+          Key Preview
+        </div>
+
+        <div
+          id="keyPreview"
+          class="value"
+        >
+          —
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="label">
+          Key Length
+        </div>
+
+        <div
+          id="keyLength"
+          class="value"
+        >
+          —
+        </div>
+      </div>
+
+    </div>
+
+    <div
+      id="note"
+      class="note"
+    >
+      Running secure diagnostic...
+    </div>
+
+  </div>
+
+
+  <script>
+
+    const SUPABASE_URL =
+      "https://ytvtdelwefykeqwztcyo.supabase.co";
+
+
+    const SUPABASE_PUBLISHABLE_KEY =
+      "sb_publishable_CLTeqgEB6JSQ7Kqq6rQARw_RV31Ccg3";
+
+
+    const supabaseClient =
+      window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+      );
+
+
+    function setValue(
+      id,
+      value,
+      className = ""
+    ) {
+
+      const element =
+        document.getElementById(id);
+
+      element.textContent =
+        value ?? "—";
+
+      element.className =
+        "value " + className;
+    }
+
+
+    async function runTest() {
+
+      try {
+
+        /*
+         * The user must already be logged
+         * into EarnGig.
+         */
+        const {
+          data: sessionData,
+          error: sessionError
+        } =
+          await supabaseClient.auth.getSession();
+
+
+        if (
+          sessionError ||
+          !sessionData?.session
+        ) {
+
+          setValue(
+            "status",
+            "Not logged in",
+            "error"
+          );
+
+          document.getElementById(
+            "note"
+          ).textContent =
+            "Please log into EarnGig first, then open this test page again.";
+
+          return;
+        }
+
+
+        /*
+         * Ask the Edge Function to test
+         * Flutterwave authentication.
+         */
+        const {
+          data,
+          error
+        } =
+          await supabaseClient.functions.invoke(
+            "flutterwave-vendor-subscription",
+            {
+              body: {
+                action: "diagnose"
+              }
+            }
+          );
+
+
+        if (error) {
+
+          setValue(
+            "status",
+            "Edge Function Error",
+            "error"
+          );
+
+          document.getElementById(
+            "note"
+          ).textContent =
+            error.message ||
+            "The Edge Function could not be reached.";
+
+          return;
+        }
+
+
+        if (!data) {
+
+          setValue(
+            "status",
+            "No response",
+            "error"
+          );
+
+          return;
+        }
+
+
+        /*
+         * Display only safe diagnostic
+         * information.
+         *
+         * The actual Secret Key is NEVER
+         * displayed.
+         */
+        setValue(
+          "httpStatus",
+          data.flutterwave_http_status ||
+          "—"
+        );
+
+
+        setValue(
+          "flwMessage",
+          data.flutterwave_message ||
+          "—"
+        );
+
+
+        setValue(
+          "keyDetected",
+          data.key_detected
+            ? "YES"
+            : "NO",
+          data.key_detected
+            ? "success"
+            : "error"
+        );
+
+
+        setValue(
+          "keyPreview",
+          data.key_prefix_suffix ||
+          "Not available"
+        );
+
+
+        setValue(
+          "keyLength",
+          data.key_length ||
+          "0"
+        );
+
+
+        if (data.success) {
+
+          setValue(
+            "status",
+            "Flutterwave accepted the key",
+            "success"
+          );
+
+          document.getElementById(
+            "note"
+          ).textContent =
+            "The V3 Live Secret Key is being recognized by Flutterwave. We can move on to payment initialization.";
+
+        } else {
+
+          setValue(
+            "status",
+            "Flutterwave rejected the key",
+            "error"
+          );
+
+          document.getElementById(
+            "note"
+          ).textContent =
+            data.message ||
+            "Flutterwave rejected the Secret Key.";
+
+        }
+
+      } catch (error) {
+
+        console.error(error);
+
+        setValue(
+          "status",
+          "Test failed",
+          "error"
+        );
+
+        document.getElementById(
+          "note"
+        ).textContent =
+          error?.message ||
+          "Unexpected diagnostic error.";
+      }
+    }
+
+
+    runTest();
+
+  </script>
+
+</body>
+</html>
