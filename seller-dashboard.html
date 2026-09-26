@@ -2,11 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Seller Dashboard - EarnGig</title>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <title>Vendor Dashboard | EarnGig</title>
 
   <style>
     * {
@@ -15,1464 +17,2931 @@
 
     body {
       margin: 0;
+      min-height: 100vh;
+
+      background:
+        radial-gradient(
+          circle at top,
+          #24104f 0%,
+          #10133d 43%,
+          #07091e 100%
+        );
+
+      color: #ffffff;
       font-family: Arial, sans-serif;
-      background: #070b2b;
-      color: #fff;
     }
 
-    header {
-      background: #0c1240;
-      border-bottom: 1px solid #292f67;
-      padding: 16px 18px;
+    .page {
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 18px;
+    }
+
+    .topbar {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      gap: 12px;
-      position: sticky;
-      top: 0;
-      z-index: 20;
+      justify-content: space-between;
+      gap: 15px;
+
+      margin-bottom: 20px;
+    }
+
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+    }
+
+    .brand-icon {
+      width: 48px;
+      height: 48px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 14px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #6d5dfc,
+          #4f46e5
+        );
+
+      font-size: 22px;
+      font-weight: 900;
     }
 
     .brand {
-      font-size: 21px;
-      font-weight: 800;
+      font-size: 20px;
+      font-weight: 900;
     }
 
     .brand span {
-      color: #6d5dfc;
+      color: #7568ff;
     }
 
-    .header-btn {
-      background: transparent;
-      border: 1px solid #41487e;
-      color: #fff;
-      padding: 9px 13px;
-      border-radius: 9px;
+    .top-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .small-button {
+      padding: 10px 13px;
+
+      border-radius: 11px;
+
+      border:
+        1px solid
+        rgba(255,255,255,0.12);
+
+      background:
+        rgba(255,255,255,0.04);
+
+      color: #ffffff;
+
+      font-weight: 700;
+
       cursor: pointer;
     }
 
-    main {
-      max-width: 1150px;
-      margin: auto;
-      padding: 22px 16px 50px;
+    .hero {
+      padding: 22px;
+
+      border-radius: 22px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(76,45,150,0.52),
+          rgba(18,21,67,0.94)
+        );
+
+      border:
+        1px solid
+        rgba(139,92,246,0.28);
+
+      margin-bottom: 16px;
     }
 
-    .store-header {
-      background: #101640;
-      border: 1px solid #292f67;
-      border-radius: 18px;
-      padding: 18px;
+    .hero-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .store-main {
       display: flex;
       align-items: center;
       gap: 15px;
-      margin-bottom: 18px;
+      min-width: 0;
     }
 
     .store-logo {
-      width: 68px;
-      height: 68px;
-      border-radius: 14px;
+      width: 72px;
+      height: 72px;
+
+      border-radius: 18px;
+
       object-fit: cover;
-      background: #080d30;
-      border: 1px solid #343b76;
+
+      background:
+        rgba(255,255,255,0.08);
+
+      border:
+        1px solid
+        rgba(255,255,255,0.12);
+
+      flex-shrink: 0;
     }
 
-    .store-info h1 {
-      margin: 0 0 5px;
-      font-size: 22px;
+    .store-logo-fallback {
+      width: 72px;
+      height: 72px;
+
+      border-radius: 18px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background:
+        linear-gradient(
+          135deg,
+          #6d4aff,
+          #4f46e5
+        );
+
+      font-size: 27px;
+      font-weight: 900;
+
+      flex-shrink: 0;
     }
 
-    .store-info p {
-      margin: 3px 0;
-      color: #9da5d4;
+    .store-title {
+      font-size: 25px;
+      font-weight: 900;
+
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .store-location {
+      margin-top: 6px;
+
+      color: #aaa8c4;
+
       font-size: 13px;
     }
 
-    .store-link {
-      margin-top: 7px;
-      color: #9d91ff;
-      font-size: 13px;
-      word-break: break-all;
+    .active-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+
+      margin-top: 10px;
+
+      padding: 7px 11px;
+
+      border-radius: 999px;
+
+      background:
+        rgba(34,197,94,0.10);
+
+      border:
+        1px solid
+        rgba(34,197,94,0.25);
+
+      color: #86efac;
+
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .active-dot {
+      width: 7px;
+      height: 7px;
+
+      border-radius: 50%;
+
+      background: #4ade80;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 9px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .primary-button {
+      border: 0;
+
+      padding: 13px 17px;
+
+      border-radius: 12px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #6d4aff,
+          #8b3ffc
+        );
+
+      color: #ffffff;
+
+      font-weight: 800;
+
+      cursor: pointer;
+    }
+
+    .secondary-button {
+      padding: 13px 17px;
+
+      border-radius: 12px;
+
+      border:
+        1px solid
+        rgba(255,255,255,0.13);
+
+      background:
+        rgba(255,255,255,0.04);
+
+      color: #ffffff;
+
+      font-weight: 700;
+
+      cursor: pointer;
+    }
+
+    .section-title {
+      margin: 25px 0 11px;
+
+      font-size: 18px;
+      font-weight: 900;
     }
 
     .stats {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-      margin-bottom: 18px;
+
+      grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+      gap: 11px;
     }
 
     .stat {
-      background: #111746;
-      border: 1px solid #292f67;
-      border-radius: 14px;
-      padding: 15px;
+      padding: 17px;
+
+      border-radius: 17px;
+
+      background:
+        rgba(16,17,55,0.92);
+
+      border:
+        1px solid
+        rgba(124,108,255,0.18);
     }
 
     .stat-label {
-      color: #9098c5;
-      font-size: 12px;
-      margin-bottom: 7px;
+      color: #85819e;
+
+      font-size: 11px;
+
+      text-transform: uppercase;
+
+      letter-spacing: .5px;
     }
 
     .stat-value {
-      font-size: 22px;
-      font-weight: 800;
+      margin-top: 8px;
+
+      font-size: 23px;
+
+      font-weight: 900;
     }
 
-    .section {
-      background: #0f143b;
-      border: 1px solid #292f67;
-      border-radius: 17px;
-      margin-bottom: 18px;
-      overflow: hidden;
+    .stat-note {
+      margin-top: 4px;
+
+      color: #777391;
+
+      font-size: 11px;
     }
 
-    .section-header {
-      padding: 16px 17px;
-      border-bottom: 1px solid #292f67;
+    .grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+      gap: 15px;
+    }
+
+    .panel {
+      padding: 20px;
+
+      border-radius: 19px;
+
+      background:
+        rgba(13,16,51,0.94);
+
+      border:
+        1px solid
+        rgba(124,108,255,0.19);
+    }
+
+    .panel.full {
+      grid-column: 1 / -1;
+    }
+
+    .panel-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
+
       gap: 10px;
+
+      margin-bottom: 15px;
     }
 
-    .section-header h2 {
-      margin: 0;
+    .panel-title {
       font-size: 17px;
+      font-weight: 900;
     }
 
-    .section-body {
-      padding: 17px;
-    }
+    .panel-subtitle {
+      margin-top: 4px;
 
-    .fulfillment-options {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-bottom: 16px;
-    }
+      color: #85819e;
 
-    .option {
-      background: #111746;
-      border: 1px solid #343b76;
-      border-radius: 13px;
-      padding: 15px;
-      cursor: pointer;
-      transition: .15s;
-    }
-
-    .option.selected {
-      border-color: #7566ff;
-      background: #171d4d;
-    }
-
-    .option input {
-      width: 18px;
-      height: 18px;
-      accent-color: #6757f5;
-      vertical-align: middle;
-      margin-right: 7px;
-    }
-
-    .option-title {
-      font-weight: 700;
-      margin-bottom: 5px;
-    }
-
-    .option-description {
-      color: #8f97c4;
       font-size: 12px;
       line-height: 1.5;
     }
 
+    .menu-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+      gap: 10px;
+    }
+
+    .menu-button {
+      min-height: 90px;
+
+      padding: 15px;
+
+      text-align: left;
+
+      border-radius: 15px;
+
+      border:
+        1px solid
+        rgba(255,255,255,0.08);
+
+      background:
+        rgba(255,255,255,0.035);
+
+      color: #ffffff;
+
+      cursor: pointer;
+    }
+
+    .menu-icon {
+      font-size: 22px;
+      margin-bottom: 9px;
+    }
+
+    .menu-name {
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .menu-description {
+      margin-top: 4px;
+
+      color: #85819e;
+
+      font-size: 11px;
+
+      line-height: 1.4;
+    }
+
+    .settings-row {
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      gap: 15px;
+
+      padding: 14px 0;
+
+      border-bottom:
+        1px solid
+        rgba(255,255,255,0.07);
+    }
+
+    .settings-row:last-child {
+      border-bottom: 0;
+    }
+
+    .setting-name {
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .setting-description {
+      margin-top: 4px;
+
+      color: #85819e;
+
+      font-size: 11px;
+
+      line-height: 1.4;
+    }
+
+    .radio-group {
+      display: grid;
+
+      grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+      gap: 8px;
+
+      margin-top: 12px;
+    }
+
+    .radio-option input {
+      display: none;
+    }
+
+    .radio-option label {
+      display: block;
+
+      padding: 13px 8px;
+
+      text-align: center;
+
+      border-radius: 12px;
+
+      border:
+        1px solid
+        rgba(255,255,255,0.10);
+
+      background:
+        rgba(255,255,255,0.035);
+
+      color: #d8d4e5;
+
+      font-size: 12px;
+
+      font-weight: 700;
+
+      cursor: pointer;
+    }
+
+    .radio-option input:checked + label {
+      border-color: #8b5cf6;
+
+      background:
+        rgba(124,58,237,0.16);
+
+      color: #ffffff;
+    }
+
     .field {
-      margin-top: 13px;
+      margin-top: 14px;
     }
 
     .field label {
       display: block;
-      color: #aeb5d9;
-      font-size: 13px;
+
       margin-bottom: 7px;
+
+      color: #aaa8c4;
+
+      font-size: 12px;
+
+      font-weight: 700;
     }
 
-    input,
-    textarea {
+    .field input,
+    .field textarea {
       width: 100%;
-      background: #080d30;
-      border: 1px solid #363d78;
-      color: #fff;
-      border-radius: 10px;
-      padding: 11px 12px;
+
+      padding: 13px;
+
+      border-radius: 11px;
+
+      border:
+        1px solid
+        rgba(255,255,255,0.10);
+
+      background:
+        rgba(255,255,255,0.04);
+
+      color: #ffffff;
+
       outline: none;
+
       font-family: inherit;
+
+      font-size: 13px;
     }
 
-    textarea {
+    .field textarea {
       min-height: 90px;
       resize: vertical;
     }
 
-    input:focus,
-    textarea:focus {
-      border-color: #6757f5;
+    .field input:focus,
+    .field textarea:focus {
+      border-color: #7c5cff;
     }
 
-    .save-btn {
+    .save-button {
+      width: 100%;
+
       margin-top: 16px;
-      width: 100%;
-      background: #6757f5;
-      color: #fff;
+
+      padding: 14px;
+
       border: 0;
-      border-radius: 10px;
-      padding: 13px;
-      font-weight: 700;
-      cursor: pointer;
-    }
 
-    .save-btn:disabled {
-      opacity: .55;
-      cursor: not-allowed;
-    }
-
-    .notice {
-      margin-top: 12px;
-      padding: 11px 12px;
-      border-radius: 9px;
-      font-size: 13px;
-      display: none;
-    }
-
-    .notice.success {
-      display: block;
-      background: #123d2d;
-      color: #6ee7b7;
-    }
-
-    .notice.error {
-      display: block;
-      background: #421d2a;
-      color: #ff9db1;
-    }
-
-    .products {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-    }
-
-    .product {
-      background: #111746;
-      border: 1px solid #292f67;
-      border-radius: 13px;
-      overflow: hidden;
-    }
-
-    .product-image {
-      width: 100%;
-      height: 150px;
-      object-fit: cover;
-      background: #080d30;
-    }
-
-    .product-body {
-      padding: 12px;
-    }
-
-    .product-title {
-      font-weight: 700;
-      margin-bottom: 5px;
-    }
-
-    .product-price {
-      color: #a79dff;
-      font-weight: 700;
-      margin-bottom: 6px;
-    }
-
-    .product-meta {
-      color: #858dbb;
-      font-size: 12px;
-    }
-
-    .orders {
-      display: grid;
-      gap: 10px;
-    }
-
-    .order {
-      background: #111746;
-      border: 1px solid #292f67;
       border-radius: 12px;
-      padding: 13px;
-    }
 
-    .order-top {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-    }
+      background:
+        linear-gradient(
+          135deg,
+          #6d4aff,
+          #8b3ffc
+        );
 
-    .order-number {
-      font-weight: 700;
-    }
+      color: #ffffff;
 
-    .order-status {
-      color: #a79dff;
-      font-size: 12px;
-    }
+      font-weight: 800;
 
-    .order-info {
-      margin-top: 7px;
-      color: #9098c5;
-      font-size: 12px;
-    }
-
-    .order-btn {
-      margin-top: 10px;
-      background: #202653;
-      border: 1px solid #41487e;
-      color: #fff;
-      border-radius: 8px;
-      padding: 8px 11px;
       cursor: pointer;
+    }
+
+    .store-link {
+      display: flex;
+
+      gap: 8px;
+    }
+
+    .store-link input {
+      flex: 1;
+    }
+
+    .copy-button {
+      padding: 0 15px;
+
+      border-radius: 11px;
+
+      border:
+        1px solid
+        rgba(255,255,255,0.10);
+
+      background:
+        rgba(255,255,255,0.05);
+
+      color: #ffffff;
+
+      font-weight: 700;
+
+      cursor: pointer;
+    }
+
+    .message {
+      display: none;
+
+      margin-top: 14px;
+
+      padding: 13px;
+
+      border-radius: 12px;
+
+      font-size: 12px;
+
+      line-height: 1.5;
+    }
+
+    .message.success {
+      display: block;
+
+      background:
+        rgba(34,197,94,0.08);
+
+      border:
+        1px solid
+        rgba(34,197,94,0.20);
+
+      color: #86efac;
+    }
+
+    .message.error {
+      display: block;
+
+      background:
+        rgba(239,68,68,0.08);
+
+      border:
+        1px solid
+        rgba(239,68,68,0.22);
+
+      color: #fca5a5;
     }
 
     .empty {
-      color: #858dbb;
+      padding: 18px;
+
+      border-radius: 13px;
+
+      background:
+        rgba(255,255,255,0.03);
+
+      color: #85819e;
+
+      font-size: 13px;
+
       text-align: center;
-      padding: 25px;
     }
 
     .loading {
-      color: #9da5d4;
-      padding: 25px;
+      color: #85819e;
+    }
+
+    .footer {
+      margin-top: 30px;
+
+      padding: 20px 0;
+
+      border-top:
+        1px solid
+        rgba(255,255,255,0.08);
+
+      color: #65617b;
+
       text-align: center;
+
+      font-size: 11px;
     }
 
     @media (max-width: 800px) {
+
       .stats {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns:
+          repeat(2, minmax(0, 1fr));
       }
 
-      .products {
-        grid-template-columns: 1fr 1fr;
-      }
-    }
-
-    @media (max-width: 520px) {
-      .fulfillment-options {
+      .grid {
         grid-template-columns: 1fr;
       }
 
-      .products {
-        grid-template-columns: 1fr 1fr;
+      .panel.full {
+        grid-column: auto;
       }
 
-      .store-header {
+      .hero-row {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .hero-buttons {
+        width: 100%;
+        justify-content: flex-start;
+      }
+
+    }
+
+    @media (max-width: 520px) {
+
+      .page {
+        padding: 12px;
+      }
+
+      .topbar {
         align-items: flex-start;
       }
 
-      .store-logo {
-        width: 58px;
-        height: 58px;
+      .top-actions {
+        display: none;
       }
+
+      .store-title {
+        font-size: 21px;
+      }
+
+      .store-logo,
+      .store-logo-fallback {
+        width: 60px;
+        height: 60px;
+      }
+
+      .stats {
+        grid-template-columns:
+          repeat(2, minmax(0, 1fr));
+      }
+
+      .menu-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .radio-group {
+        grid-template-columns: 1fr;
+      }
+
+      .store-link {
+        flex-direction: column;
+      }
+
+      .copy-button {
+        min-height: 43px;
+      }
+
     }
   </style>
 </head>
 
 <body>
 
-<header>
+<main class="page">
 
-  <div class="brand">
-    Earn<span>Gig</span> Seller
-  </div>
+  <header class="topbar">
 
-  <button
-    class="header-btn"
-    onclick="location.href='dashboard.html'"
-  >
-    ← Account
-  </button>
+    <div class="brand-wrap">
 
-</header>
+      <div class="brand-icon">
+        E
+      </div>
 
+      <div class="brand">
+        Earn<span>Gig</span>
+      </div>
 
-<main>
-
-  <div id="pageContent">
-    <div class="loading">
-      Loading seller dashboard...
     </div>
+
+    <div class="top-actions">
+
+      <button
+        class="small-button"
+        type="button"
+        onclick="openPublicStore()"
+      >
+        View Store
+      </button>
+
+      <button
+        class="small-button"
+        type="button"
+        onclick="goMarketplace()"
+      >
+        Marketplace
+      </button>
+
+    </div>
+
+  </header>
+
+
+  <section class="hero">
+
+    <div class="hero-row">
+
+      <div class="store-main">
+
+        <div id="logoContainer">
+
+          <div class="store-logo-fallback">
+            M
+          </div>
+
+        </div>
+
+        <div>
+
+          <div
+            id="storeName"
+            class="store-title"
+          >
+            Loading Store...
+          </div>
+
+          <div
+            id="storeLocation"
+            class="store-location"
+          >
+            Loading location...
+          </div>
+
+          <div class="active-badge">
+
+            <span class="active-dot"></span>
+
+            <span>
+              Store Active
+            </span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="hero-buttons">
+
+        <button
+          class="primary-button"
+          type="button"
+          onclick="addProduct()"
+        >
+          + Add Product
+        </button>
+
+        <button
+          class="secondary-button"
+          type="button"
+          onclick="openPublicStore()"
+        >
+          View Store
+        </button>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <div class="section-title">
+    Store Overview
   </div>
+
+
+  <section class="stats">
+
+    <div class="stat">
+
+      <div class="stat-label">
+        Products
+      </div>
+
+      <div
+        id="productCount"
+        class="stat-value"
+      >
+        —
+      </div>
+
+      <div class="stat-note">
+        Marketplace products
+      </div>
+
+    </div>
+
+
+    <div class="stat">
+
+      <div class="stat-label">
+        New Orders
+      </div>
+
+      <div
+        id="newOrderCount"
+        class="stat-value"
+      >
+        —
+      </div>
+
+      <div class="stat-note">
+        Awaiting fulfillment
+      </div>
+
+    </div>
+
+
+    <div class="stat">
+
+      <div class="stat-label">
+        Pending Earnings
+      </div>
+
+      <div
+        id="pendingEarnings"
+        class="stat-value"
+      >
+        ₦0.00
+      </div>
+
+      <div class="stat-note">
+        Awaiting completion
+      </div>
+
+    </div>
+
+
+    <div class="stat">
+
+      <div class="stat-label">
+        Available Earnings
+      </div>
+
+      <div
+        id="availableEarnings"
+        class="stat-value"
+      >
+        ₦0.00
+      </div>
+
+      <div class="stat-note">
+        Available to withdraw
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <div class="section-title">
+    Vendor Management
+  </div>
+
+
+  <section class="grid">
+
+
+    <div class="panel">
+
+      <div class="panel-header">
+
+        <div>
+
+          <div class="panel-title">
+            Store Management
+          </div>
+
+          <div class="panel-subtitle">
+            Manage your public marketplace store.
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="menu-grid">
+
+        <button
+          class="menu-button"
+          type="button"
+          onclick="showStoreSettings()"
+        >
+
+          <div class="menu-icon">
+            ✏️
+          </div>
+
+          <div class="menu-name">
+            Edit Store
+          </div>
+
+          <div class="menu-description">
+            Update description, phone and store details.
+          </div>
+
+        </button>
+
+
+        <button
+          class="menu-button"
+          type="button"
+          onclick="showFulfillmentSettings()"
+        >
+
+          <div class="menu-icon">
+            🚚
+          </div>
+
+          <div class="menu-name">
+            Delivery & Pickup
+          </div>
+
+          <div class="menu-description">
+            Choose how buyers can receive their orders.
+          </div>
+
+        </button>
+
+
+        <button
+          class="menu-button"
+          type="button"
+          onclick="addProduct()"
+        >
+
+          <div class="menu-icon">
+            ➕
+          </div>
+
+          <div class="menu-name">
+            Add Product
+          </div>
+
+          <div class="menu-description">
+            Create a new marketplace product.
+          </div>
+
+        </button>
+
+
+        <button
+          class="menu-button"
+          type="button"
+          onclick="viewProducts()"
+        >
+
+          <div class="menu-icon">
+            📦
+          </div>
+
+          <div class="menu-name">
+            My Products
+          </div>
+
+          <div class="menu-description">
+            View products and approval status.
+          </div>
+
+        </button>
+
+
+        <button
+          class="menu-button"
+          type="button"
+          onclick="viewOrders()"
+        >
+
+          <div class="menu-icon">
+            🛍️
+          </div>
+
+          <div class="menu-name">
+            Orders
+          </div>
+
+          <div class="menu-description">
+            Manage new and existing customer orders.
+          </div>
+
+        </button>
+
+
+        <button
+          class="menu-button"
+          type="button"
+          onclick="viewEarnings()"
+        >
+
+          <div class="menu-icon">
+            💰
+          </div>
+
+          <div class="menu-name">
+            Earnings
+          </div>
+
+          <div class="menu-description">
+            View sales and marketplace earnings.
+          </div>
+
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <div class="panel">
+
+      <div class="panel-header">
+
+        <div>
+
+          <div class="panel-title">
+            Store Link
+          </div>
+
+          <div class="panel-subtitle">
+            Your permanent public store address.
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="store-link">
+
+        <div
+          class="field"
+          style="margin-top:0; flex:1;"
+        >
+
+          <input
+            id="storeLink"
+            type="text"
+            readonly
+            value="Loading..."
+          >
+
+        </div>
+
+        <button
+          class="copy-button"
+          type="button"
+          onclick="copyStoreLink()"
+        >
+          Copy
+        </button>
+
+      </div>
+
+
+      <button
+        class="save-button"
+        type="button"
+        onclick="openPublicStore()"
+      >
+        Open Public Store
+      </button>
+
+
+      <div
+        id="linkMessage"
+        class="message"
+      ></div>
+
+    </div>
+
+
+    <div
+      id="storeSettingsPanel"
+      class="panel"
+      style="display:none;"
+    >
+
+      <div class="panel-header">
+
+        <div>
+
+          <div class="panel-title">
+            Edit Store
+          </div>
+
+          <div class="panel-subtitle">
+            Update your public store information.
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          Store Name
+        </label>
+
+        <input
+          id="editStoreName"
+          type="text"
+          readonly
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          Store Description
+        </label>
+
+        <textarea
+          id="editDescription"
+          placeholder="Tell buyers about your store..."
+        ></textarea>
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          Business Phone
+        </label>
+
+        <input
+          id="editBusinessPhone"
+          type="tel"
+          placeholder="Business phone"
+        >
+
+      </div>
+
+
+      <button
+        id="saveStoreButton"
+        class="save-button"
+        type="button"
+        onclick="saveStoreDetails()"
+      >
+        Save Store Details
+      </button>
+
+
+      <div
+        id="storeMessage"
+        class="message"
+      ></div>
+
+    </div>
+
+
+    <div
+      id="fulfillmentPanel"
+      class="panel"
+      style="display:none;"
+    >
+
+      <div class="panel-header">
+
+        <div>
+
+          <div class="panel-title">
+            Delivery & Pickup
+          </div>
+
+          <div class="panel-subtitle">
+            Choose the fulfillment methods buyers can use for your store.
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="radio-group">
+
+        <div class="radio-option">
+
+          <input
+            type="radio"
+            id="deliveryOnly"
+            name="fulfillment"
+            value="delivery"
+          >
+
+          <label for="deliveryOnly">
+            🚚<br>
+            Delivery Only
+          </label>
+
+        </div>
+
+
+        <div class="radio-option">
+
+          <input
+            type="radio"
+            id="pickupOnly"
+            name="fulfillment"
+            value="pickup"
+          >
+
+          <label for="pickupOnly">
+            📍<br>
+            Pickup Only
+          </label>
+
+        </div>
+
+
+        <div class="radio-option">
+
+          <input
+            type="radio"
+            id="deliveryPickup"
+            name="fulfillment"
+            value="both"
+          >
+
+          <label for="deliveryPickup">
+            🚚📍<br>
+            Both
+          </label>
+
+        </div>
+
+      </div>
+
+
+      <div
+        id="pickupFields"
+        style="display:none;"
+      >
+
+        <div class="field">
+
+          <label>
+            Pickup Location
+          </label>
+
+          <input
+            id="pickupLocation"
+            type="text"
+            placeholder="Where should buyers pick up?"
+          >
+
+        </div>
+
+
+        <div class="field">
+
+          <label>
+            Pickup Instructions
+          </label>
+
+          <textarea
+            id="pickupInstructions"
+            placeholder="Tell buyers when and how to pick up their order..."
+          ></textarea>
+
+        </div>
+
+      </div>
+
+
+      <button
+        id="saveFulfillmentButton"
+        class="save-button"
+        type="button"
+        onclick="saveFulfillmentSettings()"
+      >
+        Save Delivery & Pickup Settings
+      </button>
+
+
+      <div
+        id="fulfillmentMessage"
+        class="message"
+      ></div>
+
+    </div>
+
+
+    <div class="panel full">
+
+      <div class="panel-header">
+
+        <div>
+
+          <div class="panel-title">
+            Quick Start
+          </div>
+
+          <div class="panel-subtitle">
+            Complete these steps before selling.
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="settings-row">
+
+        <div>
+
+          <div class="setting-name">
+            1. Set Delivery / Pickup
+          </div>
+
+          <div class="setting-description">
+            Tell buyers whether your store delivers, supports pickup, or supports both.
+          </div>
+
+        </div>
+
+        <button
+          class="secondary-button"
+          type="button"
+          onclick="showFulfillmentSettings()"
+        >
+          Configure
+        </button>
+
+      </div>
+
+
+      <div class="settings-row">
+
+        <div>
+
+          <div class="setting-name">
+            2. Add Your First Product
+          </div>
+
+          <div class="setting-description">
+            Products require images and will go through the marketplace approval process.
+          </div>
+
+        </div>
+
+        <button
+          class="primary-button"
+          type="button"
+          onclick="addProduct()"
+        >
+          Add Product
+        </button>
+
+      </div>
+
+
+      <div class="settings-row">
+
+        <div>
+
+          <div class="setting-name">
+            3. Share Your Store
+          </div>
+
+          <div class="setting-description">
+            Share your permanent store link with customers.
+          </div>
+
+        </div>
+
+        <button
+          class="secondary-button"
+          type="button"
+          onclick="copyStoreLink()"
+        >
+          Copy Link
+        </button>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <div
+    id="pageMessage"
+    class="message"
+  ></div>
+
+
+  <footer class="footer">
+    © 2026 EarnGig. Marketplace Vendor Dashboard.
+  </footer>
 
 </main>
 
 
 <script>
 
-  const SUPABASE_URL =
-    "https://ytvtdelwefykeqwztcyo.supabase.co";
+const SUPABASE_URL =
+  "https://ytvtdelwefykeqwztcyo.supabase.co";
 
-  const SUPABASE_PUBLISHABLE_KEY =
-    "sb_publishable_CLTeqgEB6JSQ7Kqq6rQARw_RV31Ccg3";
 
-  const supabaseClient =
+const SUPABASE_ANON_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl0dnRkZWx3ZWZ5a2Vxd3p0Y3lvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYzMDkwMjUsImV4cCI6MjEwMTg4NTAyNX0.qzT3lYrTFupgGAxQ0VZl26hqblLQDs0vc9ZNiwBU9tA";
+
+
+const REST_BASE =
+  SUPABASE_URL +
+  "/rest/v1";
+
+
+let currentUser = null;
+let currentStore = null;
+
+
+function money(
+  amount
+) {
+
+  return new Intl.NumberFormat(
+    "en-NG",
+    {
+      style: "currency",
+      currency: "NGN",
+      minimumFractionDigits: 2
+    }
+  ).format(
+    Number(amount || 0)
+  );
+
+}
+
+
+function showMessage(
+  elementId,
+  message,
+  type
+) {
+
+  const element =
+    document.getElementById(
+      elementId
+    );
+
+  element.textContent =
+    message;
+
+  element.className =
+    "message " + type;
+
+}
+
+
+function hideMessage(
+  elementId
+) {
+
+  const element =
+    document.getElementById(
+      elementId
+    );
+
+  element.textContent = "";
+
+  element.className =
+    "message";
+
+}
+
+
+async function getSession() {
+
+  const response =
+    await fetch(
+      SUPABASE_URL +
+      "/auth/v1/session",
+      {
+        method: "GET",
+
+        headers: {
+          "apikey":
+            SUPABASE_ANON_KEY
+        }
+      }
+    );
+
+  /*
+   * The actual authenticated session is obtained
+   * from the Supabase JS client loaded below.
+   */
+
+}
+
+
+async function loadSession() {
+
+  if (
+    !window.supabase ||
+    !window.supabase.createClient
+  ) {
+
+    throw new Error(
+      "Supabase client could not load."
+    );
+
+  }
+
+
+  const client =
     window.supabase.createClient(
       SUPABASE_URL,
-      SUPABASE_PUBLISHABLE_KEY
+      SUPABASE_ANON_KEY
     );
 
 
-  let currentUser = null;
-  let currentStore = null;
+  const {
+    data,
+    error
+  } =
+    await client.auth.getSession();
 
 
-  function escapeHtml(value) {
+  if (error) {
 
-    if (
-      value === null ||
-      value === undefined
-    ) {
-      return "";
-    }
+    throw new Error(
+      "Session error: " +
+      error.message
+    );
 
-    return String(value)
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
   }
 
 
-  function money(value) {
-
-    return "₦" + Number(value || 0)
-      .toLocaleString("en-NG");
-  }
-
-
-  async function getCurrentUser() {
-
-    const {
-      data: {
-        user
-      },
-      error
-    } =
-      await supabaseClient.auth.getUser();
-
-    if (error || !user) {
-
-      location.href = "login.html";
-
-      return null;
-    }
-
-    return user;
-  }
-
-
-  async function loadStore() {
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .from("marketplace_stores")
-        .select("*")
-        .eq("vendor_id", currentUser.id)
-        .maybeSingle();
-
-
-    if (error) {
-      throw error;
-    }
-
-    if (!data) {
-
-      location.href =
-        "vendor-application.html";
-
-      return null;
-    }
-
-
-    if (data.status !== "active") {
-
-      document.getElementById("pageContent")
-        .innerHTML = `
-          <section class="section">
-            <div class="section-body">
-              <h2>Store Not Active</h2>
-              <p style="color:#9da5d4;">
-                Your marketplace store is not active yet.
-              </p>
-            </div>
-          </section>
-        `;
-
-      return null;
-    }
-
-
-    currentStore = data;
-
-    return data;
-  }
-
-
-  async function checkSubscription() {
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .from("marketplace_store_subscriptions")
-        .select("*")
-        .eq("store_id", currentStore.id)
-        .eq("status", "active")
-        .order("created_at", {
-          ascending: false
-        })
-        .limit(1)
-        .maybeSingle();
-
-
-    if (error) {
-      throw error;
-    }
-
-    return !!data;
-  }
-
-
-  async function loadProducts() {
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .from("marketplace_products")
-        .select(`
-          id,
-          title,
-          price,
-          category,
-          stock_quantity,
-          status,
-          marketplace_product_images (
-            image_url,
-            is_primary,
-            sort_order
-          )
-        `)
-        .eq("store_id", currentStore.id)
-        .order("created_at", {
-          ascending: false
-        });
-
-
-    if (error) {
-      throw error;
-    }
-
-    return data || [];
-  }
-
-
-  async function loadOrders() {
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .from("marketplace_store_orders")
-        .select(`
-          id,
-          order_number,
-          total_amount,
-          payment_status,
-          order_status,
-          fulfillment_method,
-          created_at
-        `)
-        .eq("vendor_id", currentUser.id)
-        .order("created_at", {
-          ascending: false
-        })
-        .limit(10);
-
-
-    if (error) {
-      throw error;
-    }
-
-    return data || [];
-  }
-
-
-  async function loadStats() {
-
-    const {
-      data: orders,
-      error: ordersError
-    } =
-      await supabaseClient
-        .from("marketplace_store_orders")
-        .select(
-          "total_amount, order_status, vendor_credited_at"
-        )
-        .eq("vendor_id", currentUser.id);
-
-
-    if (ordersError) {
-      throw ordersError;
-    }
-
-
-    let totalSales = 0;
-    let pending = 0;
-    let available = 0;
-
-
-    (orders || []).forEach(order => {
-
-      const amount =
-        Number(order.total_amount || 0);
-
-
-      if (
-        [
-          "paid_pending_fulfillment",
-          "sent",
-          "dispatched",
-          "delivered"
-        ].includes(order.order_status)
-      ) {
-        totalSales += amount;
-      }
-
-
-      if (!order.vendor_credited_at) {
-        pending += amount;
-      } else {
-        available += amount;
-      }
-
-    });
-
-
-    return {
-      totalSales,
-      pending,
-      available
-    };
-  }
-
-
-  function productImage(product) {
-
-    const images =
-      product.marketplace_product_images || [];
-
-
-    if (!images.length) {
-      return "";
-    }
-
-
-    const sorted =
-      [...images].sort((a, b) => {
-
-        if (
-          a.is_primary &&
-          !b.is_primary
-        ) {
-          return -1;
-        }
-
-        if (
-          !a.is_primary &&
-          b.is_primary
-        ) {
-          return 1;
-        }
-
-        return (
-          Number(a.sort_order || 0) -
-          Number(b.sort_order || 0)
-        );
-
-      });
-
-
-    return sorted[0].image_url || "";
-  }
-
-
-  function renderDashboard(
-    subscriptionActive,
-    products,
-    orders,
-    stats
+  if (
+    !data ||
+    !data.session ||
+    !data.session.user
   ) {
 
-    const storeLogo =
-      currentStore.store_logo_url ||
-      "https://via.placeholder.com/100";
+    window.location.href =
+      "login.html?redirect=vendor-dashboard.html";
+
+    return null;
+
+  }
 
 
-    const location =
-      currentStore.location_display ||
-      [
-        currentStore.business_city,
-        currentStore.business_lga,
-        currentStore.business_state
-      ]
+  currentUser =
+    data.session.user;
+
+
+  return {
+    client,
+    session:
+      data.session
+  };
+
+}
+
+
+function restHeaders(
+  accessToken
+) {
+
+  return {
+    "apikey":
+      SUPABASE_ANON_KEY,
+
+    "Authorization":
+      "Bearer " +
+      accessToken,
+
+    "Content-Type":
+      "application/json",
+
+    "Prefer":
+      "return=representation"
+  };
+
+}
+
+
+async function restRequest(
+  url,
+  options = {}
+) {
+
+  const response =
+    await fetch(
+      url,
+      options
+    );
+
+
+  const text =
+    await response.text();
+
+
+  let data = null;
+
+
+  try {
+
+    data =
+      JSON.parse(text);
+
+  } catch {
+
+    data =
+      text;
+
+  }
+
+
+  if (!response.ok) {
+
+    throw new Error(
+      data?.message ||
+      data?.hint ||
+      data?.error ||
+      (
+        "Request failed with HTTP " +
+        response.status
+      )
+    );
+
+  }
+
+
+  return data;
+
+}
+
+
+function storeLocation(
+  store
+) {
+
+  return (
+    store.location_display ||
+
+    [
+      store.business_area,
+      store.business_city,
+      store.business_lga,
+      store.business_state
+    ]
       .filter(Boolean)
-      .join(", ") ||
-      "Location not set";
+      .join(", ")
+  ) ||
+  "Location not provided";
+
+}
 
 
-    const storeUrl =
-      `${location.origin}/store.html?store=${
-        encodeURIComponent(
-          currentStore.store_slug
-        )
-      }`;
+function publicStoreUrl() {
+
+  if (
+    !currentStore ||
+    !currentStore.store_slug
+  ) {
+
+    return "";
+
+  }
 
 
-    document.getElementById("pageContent")
-      .innerHTML = `
+  return (
+    window.location.origin +
+    window.location.pathname
+      .replace(
+        "vendor-dashboard.html",
+        "store.html"
+      ) +
+    "?store=" +
+    encodeURIComponent(
+      currentStore.store_slug
+    )
+  );
 
-        <!-- STORE HEADER -->
-
-        <section class="store-header">
-
-          <img
-            class="store-logo"
-            src="${escapeHtml(storeLogo)}"
-            alt="Store logo"
-          >
-
-          <div class="store-info">
-
-            <h1>
-              ${escapeHtml(currentStore.store_name)}
-            </h1>
-
-            <p>
-              📍 ${escapeHtml(location)}
-            </p>
-
-            <p>
-              ${
-                currentStore.accepts_delivery
-                  ? "🚚 Delivery"
-                  : ""
-              }
-
-              ${
-                currentStore.accepts_delivery &&
-                currentStore.accepts_pickup
-                  ? " &nbsp; "
-                  : ""
-              }
-
-              ${
-                currentStore.accepts_pickup
-                  ? "📦 Pickup"
-                  : ""
-              }
-            </p>
-
-            <div class="store-link">
-              ${escapeHtml(storeUrl)}
-            </div>
-
-          </div>
-
-        </section>
+}
 
 
-        <!-- STATS -->
+function renderStore() {
 
-        <div class="stats">
+  document.getElementById(
+    "storeName"
+  ).textContent =
+    currentStore.store_name ||
+    "Marketplace Store";
 
-          <div class="stat">
-            <div class="stat-label">
-              Total Sales
-            </div>
-            <div class="stat-value">
-              ${money(stats.totalSales)}
-            </div>
-          </div>
 
-          <div class="stat">
-            <div class="stat-label">
-              Pending Earnings
-            </div>
-            <div class="stat-value">
-              ${money(stats.pending)}
-            </div>
-          </div>
+  document.getElementById(
+    "storeLocation"
+  ).textContent =
+    storeLocation(
+      currentStore
+    );
 
-          <div class="stat">
-            <div class="stat-label">
-              Available Earnings
-            </div>
-            <div class="stat-value">
-              ${money(stats.available)}
-            </div>
-          </div>
 
-          <div class="stat">
-            <div class="stat-label">
-              Products
-            </div>
-            <div class="stat-value">
-              ${products.length}
-            </div>
-          </div>
+  document.getElementById(
+    "storeLink"
+  ).value =
+    publicStoreUrl() ||
+    "Store link unavailable";
 
+
+  document.getElementById(
+    "editStoreName"
+  ).value =
+    currentStore.store_name ||
+    "";
+
+
+  document.getElementById(
+    "editDescription"
+  ).value =
+    currentStore.description ||
+    "";
+
+
+  document.getElementById(
+    "editBusinessPhone"
+  ).value =
+    currentStore.business_phone ||
+    "";
+
+
+  const logoContainer =
+    document.getElementById(
+      "logoContainer"
+    );
+
+
+  if (
+    currentStore.store_logo_url
+  ) {
+
+    logoContainer.innerHTML =
+      `
+        <img
+          class="store-logo"
+          src="${escapeAttribute(currentStore.store_logo_url)}"
+          alt="${escapeAttribute(currentStore.store_name || "Store")}"
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+        >
+
+        <div
+          class="store-logo-fallback"
+          style="display:none;"
+        >
+          ${escapeHtml(
+            (
+              currentStore.store_name ||
+              "M"
+            ).charAt(0).toUpperCase()
+          )}
         </div>
-
-
-        <!-- FULFILLMENT SETTINGS -->
-
-        <section class="section">
-
-          <div class="section-header">
-
-            <h2>
-              Order Fulfillment
-            </h2>
-
-          </div>
-
-          <div class="section-body">
-
-            <p style="
-              color:#9da5d4;
-              font-size:13px;
-              line-height:1.5;
-              margin-top:0;
-            ">
-              Choose how customers can receive
-              products from your store.
-            </p>
-
-
-            <div class="fulfillment-options">
-
-              <label
-                class="option ${
-                  currentStore.accepts_delivery
-                    ? "selected"
-                    : ""
-                }"
-                id="deliveryOption"
-              >
-
-                <div class="option-title">
-
-                  <input
-                    type="checkbox"
-                    id="acceptsDelivery"
-                    ${
-                      currentStore.accepts_delivery
-                        ? "checked"
-                        : ""
-                    }
-                  >
-
-                  🚚 Delivery
-                </div>
-
-                <div class="option-description">
-                  Customers can have their orders
-                  delivered to them.
-                </div>
-
-              </label>
-
-
-              <label
-                class="option ${
-                  currentStore.accepts_pickup
-                    ? "selected"
-                    : ""
-                }"
-                id="pickupOption"
-              >
-
-                <div class="option-title">
-
-                  <input
-                    type="checkbox"
-                    id="acceptsPickup"
-                    ${
-                      currentStore.accepts_pickup
-                        ? "checked"
-                        : ""
-                    }
-                  >
-
-                  📦 Customer Pickup
-                </div>
-
-                <div class="option-description">
-                  Customers can collect their
-                  orders from your designated
-                  pickup location.
-                </div>
-
-              </label>
-
-            </div>
-
-
-            <div
-              id="pickupFields"
-              style="
-                display:${
-                  currentStore.accepts_pickup
-                    ? "block"
-                    : "none"
-                };
-              "
-            >
-
-              <div class="field">
-
-                <label>
-                  Pickup Location
-                </label>
-
-                <input
-                  id="pickupLocation"
-                  value="${escapeHtml(
-                    currentStore.pickup_location || ""
-                  )}"
-                  placeholder="Example: Awka Main Market"
-                >
-
-              </div>
-
-
-              <div class="field">
-
-                <label>
-                  Pickup Instructions
-                </label>
-
-                <textarea
-                  id="pickupInstructions"
-                  placeholder="Tell customers where and how to collect their order."
-                >${escapeHtml(
-                  currentStore.pickup_instructions || ""
-                )}</textarea>
-
-              </div>
-
-            </div>
-
-
-            <button
-              class="save-btn"
-              id="saveFulfillment"
-            >
-              Save Fulfillment Settings
-            </button>
-
-            <div
-              class="notice"
-              id="fulfillmentNotice"
-            ></div>
-
-          </div>
-
-        </section>
-
-
-        <!-- PRODUCTS -->
-
-        <section class="section">
-
-          <div class="section-header">
-
-            <h2>
-              Your Products
-            </h2>
-
-            <button
-              class="header-btn"
-              onclick="location.href='create-listing.html'"
-            >
-              + Add Product
-            </button>
-
-          </div>
-
-          <div class="section-body">
-
-            ${
-              products.length
-
-              ? `
-                <div class="products">
-
-                  ${products.map(product => {
-
-                    const image =
-                      productImage(product);
-
-                    return `
-                      <div class="product">
-
-                        ${
-                          image
-                            ? `
-                              <img
-                                class="product-image"
-                                src="${escapeHtml(image)}"
-                                alt="${escapeHtml(product.title)}"
-                              >
-                            `
-                            : `
-                              <div
-                                class="product-image"
-                                style="
-                                  display:flex;
-                                  align-items:center;
-                                  justify-content:center;
-                                  color:#858dbb;
-                                "
-                              >
-                                No Image
-                              </div>
-                            `
-                        }
-
-                        <div class="product-body">
-
-                          <div class="product-title">
-                            ${escapeHtml(product.title)}
-                          </div>
-
-                          <div class="product-price">
-                            ${money(product.price)}
-                          </div>
-
-                          <div class="product-meta">
-                            ${escapeHtml(product.category)}
-                            · Stock:
-                            ${product.stock_quantity}
-                            · ${escapeHtml(product.status)}
-                          </div>
-
-                        </div>
-
-                      </div>
-                    `;
-
-                  }).join("")}
-
-                </div>
-              `
-
-              : `
-                <div class="empty">
-                  You have not added any products yet.
-                </div>
-              `
-            }
-
-          </div>
-
-        </section>
-
-
-        <!-- ORDERS -->
-
-        <section class="section">
-
-          <div class="section-header">
-
-            <h2>
-              Recent Orders
-            </h2>
-
-          </div>
-
-          <div class="section-body">
-
-            ${
-              orders.length
-
-              ? `
-                <div class="orders">
-
-                  ${orders.map(order => `
-                    <div class="order">
-
-                      <div class="order-top">
-
-                        <div class="order-number">
-                          ${escapeHtml(order.order_number)}
-                        </div>
-
-                        <div class="order-status">
-                          ${escapeHtml(
-                            order.order_status
-                          )}
-                        </div>
-
-                      </div>
-
-                      <div class="order-info">
-                        ${money(order.total_amount)}
-                        ·
-                        ${
-                          order.fulfillment_method
-                            ? escapeHtml(
-                                order.fulfillment_method
-                              )
-                            : "Fulfillment not selected"
-                        }
-                      </div>
-
-                      <button
-                        class="order-btn"
-                        onclick="
-                          location.href=
-                          'vendor-order-detail.html?id=${order.id}'
-                        "
-                      >
-                        View Order
-                      </button>
-
-                    </div>
-                  `).join("")}
-
-                </div>
-              `
-
-              : `
-                <div class="empty">
-                  No marketplace orders yet.
-                </div>
-              `
-            }
-
-          </div>
-
-        </section>
-
       `;
 
+  } else {
 
-    document
-      .getElementById("acceptsDelivery")
-      .addEventListener(
-        "change",
-        updateFulfillmentVisuals
-      );
+    logoContainer.innerHTML =
+      `
+        <div class="store-logo-fallback">
+          ${escapeHtml(
+            (
+              currentStore.store_name ||
+              "M"
+            ).charAt(0).toUpperCase()
+          )}
+        </div>
+      `;
 
-
-    document
-      .getElementById("acceptsPickup")
-      .addEventListener(
-        "change",
-        updateFulfillmentVisuals
-      );
-
-
-    document
-      .getElementById("saveFulfillment")
-      .addEventListener(
-        "click",
-        saveFulfillment
-      );
   }
 
 
-  function updateFulfillmentVisuals() {
+  renderFulfillment();
 
-    const delivery =
-      document.getElementById(
-        "acceptsDelivery"
-      );
-
-    const pickup =
-      document.getElementById(
-        "acceptsPickup"
-      );
+}
 
 
-    document
-      .getElementById("deliveryOption")
-      .classList.toggle(
-        "selected",
-        delivery.checked
-      );
+function escapeHtml(
+  value
+) {
+
+  return String(
+    value || ""
+  )
+    .replaceAll(
+      "&",
+      "&amp;"
+    )
+    .replaceAll(
+      "<",
+      "&lt;"
+    )
+    .replaceAll(
+      ">",
+      "&gt;"
+    )
+    .replaceAll(
+      '"',
+      "&quot;"
+    )
+    .replaceAll(
+      "'",
+      "&#039;"
+    );
+
+}
 
 
-    document
-      .getElementById("pickupOption")
-      .classList.toggle(
-        "selected",
-        pickup.checked
-      );
+function escapeAttribute(
+  value
+) {
+
+  return escapeHtml(
+    value
+  );
+
+}
 
 
-    document
-      .getElementById("pickupFields")
-      .style.display =
-        pickup.checked
-          ? "block"
-          : "none";
+function renderFulfillment() {
+
+  const delivery =
+    currentStore.accepts_delivery === true;
+
+  const pickup =
+    currentStore.accepts_pickup === true;
+
+
+  document.getElementById(
+    "deliveryOnly"
+  ).checked =
+    delivery &&
+    !pickup;
+
+
+  document.getElementById(
+    "pickupOnly"
+  ).checked =
+    pickup &&
+    !delivery;
+
+
+  document.getElementById(
+    "deliveryPickup"
+  ).checked =
+    delivery &&
+    pickup;
+
+
+  document.getElementById(
+    "pickupLocation"
+  ).value =
+    currentStore.pickup_location ||
+    "";
+
+
+  document.getElementById(
+    "pickupInstructions"
+  ).value =
+    currentStore.pickup_instructions ||
+    "";
+
+
+  updatePickupFields();
+
+}
+
+
+function updatePickupFields() {
+
+  const selected =
+    document.querySelector(
+      'input[name="fulfillment"]:checked'
+    );
+
+
+  const pickupFields =
+    document.getElementById(
+      "pickupFields"
+    );
+
+
+  if (
+    selected &&
+    (
+      selected.value === "pickup" ||
+      selected.value === "both"
+    )
+  ) {
+
+    pickupFields.style.display =
+      "block";
+
+  } else {
+
+    pickupFields.style.display =
+      "none";
+
   }
 
-
-  async function saveFulfillment() {
-
-    const delivery =
-      document.getElementById(
-        "acceptsDelivery"
-      ).checked;
-
-    const pickup =
-      document.getElementById(
-        "acceptsPickup"
-      ).checked;
+}
 
 
-    const notice =
-      document.getElementById(
-        "fulfillmentNotice"
-      );
+async function loadStore(
+  session
+) {
 
-
-    if (!delivery && !pickup) {
-
-      notice.className =
-        "notice error";
-
-      notice.textContent =
-        "Please select Delivery, Pickup, or both.";
-
-      return;
-    }
-
-
-    const pickupLocation =
-      document.getElementById(
-        "pickupLocation"
-      ).value.trim();
-
-
-    const pickupInstructions =
-      document.getElementById(
-        "pickupInstructions"
-      ).value.trim();
-
-
-    if (
-      pickup &&
-      !pickupLocation
-    ) {
-
-      notice.className =
-        "notice error";
-
-      notice.textContent =
-        "Please provide your pickup location.";
-
-      return;
-    }
-
-
-    const button =
-      document.getElementById(
-        "saveFulfillment"
-      );
-
-
-    button.disabled = true;
-    button.textContent = "Saving...";
-
-
-    const {
-      error
-    } = await supabaseClient
-      .from("marketplace_stores")
-      .update({
-
-        accepts_delivery:
-          delivery,
-
-        accepts_pickup:
-          pickup,
-
-        pickup_location:
-          pickup
-            ? pickupLocation
-            : null,
-
-        pickup_instructions:
-          pickup
-            ? pickupInstructions || null
-            : null,
-
-        updated_at:
-          new Date().toISOString()
-
-      })
-      .eq(
+  const url =
+    REST_BASE +
+    "/marketplace_stores" +
+    "?select=" +
+    encodeURIComponent(
+      [
         "id",
-        currentStore.id
-      )
-      .eq(
         "vendor_id",
+        "store_name",
+        "store_slug",
+        "description",
+        "store_logo_url",
+        "business_phone",
+        "business_state",
+        "business_lga",
+        "business_city",
+        "business_area",
+        "location_display",
+        "status",
+        "accepts_delivery",
+        "accepts_pickup",
+        "pickup_location",
+        "pickup_instructions",
+        "created_at"
+      ].join(",")
+    ) +
+    "&vendor_id=eq." +
+    encodeURIComponent(
+      currentUser.id
+    ) +
+    "&order=created_at.desc" +
+    "&limit=1";
+
+
+  const data =
+    await restRequest(
+      url,
+      {
+        method: "GET",
+
+        headers:
+          restHeaders(
+            session.access_token
+          )
+      }
+    );
+
+
+  if (
+    !Array.isArray(data) ||
+    data.length === 0
+  ) {
+
+    throw new Error(
+      "No marketplace store was found for your account."
+    );
+
+  }
+
+
+  currentStore =
+    data[0];
+
+
+  if (
+    currentStore.status !==
+    "active"
+  ) {
+
+    window.location.href =
+      "vendor-subscription.html";
+
+    return false;
+
+  }
+
+
+  renderStore();
+
+  return true;
+
+}
+
+
+async function loadStats(
+  session
+) {
+
+  /*
+   * Product count
+   */
+
+  try {
+
+    const productUrl =
+      REST_BASE +
+      "/marketplace_products" +
+      "?select=id,status" +
+      "&vendor_id=eq." +
+      encodeURIComponent(
         currentUser.id
       );
 
 
+    const products =
+      await restRequest(
+        productUrl,
+        {
+          method: "GET",
+
+          headers:
+            restHeaders(
+              session.access_token
+            )
+        }
+      );
+
+
+    document.getElementById(
+      "productCount"
+    ).textContent =
+      Array.isArray(products)
+        ? products.length
+        : 0;
+
+  } catch (error) {
+
+    console.error(
+      "Product stats error:",
+      error
+    );
+
+    document.getElementById(
+      "productCount"
+    ).textContent =
+      "0";
+
+  }
+
+
+  /*
+   * Orders
+   */
+
+  try {
+
+    const orderUrl =
+      REST_BASE +
+      "/marketplace_store_orders" +
+      "?select=id,order_status,total_amount" +
+      "&vendor_id=eq." +
+      encodeURIComponent(
+        currentUser.id
+      );
+
+
+    const orders =
+      await restRequest(
+        orderUrl,
+        {
+          method: "GET",
+
+          headers:
+            restHeaders(
+              session.access_token
+            )
+        }
+      );
+
+
+    const orderList =
+      Array.isArray(orders)
+        ? orders
+        : [];
+
+
+    const newOrders =
+      orderList.filter(
+        order =>
+          order.order_status ===
+          "paid_pending_fulfillment"
+      ).length;
+
+
+    document.getElementById(
+      "newOrderCount"
+    ).textContent =
+      newOrders;
+
+
+    /*
+     * For now, the database does not expose a
+     * dedicated vendor earnings ledger in the
+     * confirmed schema, so sales are calculated
+     * from completed marketplace orders.
+     */
+
+    const completedOrders =
+      orderList.filter(
+        order =>
+          order.order_status ===
+          "delivered"
+      );
+
+
+    const deliveredTotal =
+      completedOrders.reduce(
+        (
+          total,
+          order
+        ) =>
+          total +
+          Number(
+            order.total_amount ||
+            0
+          ),
+        0
+      );
+
+
+    document.getElementById(
+      "availableEarnings"
+    ).textContent =
+      money(
+        deliveredTotal
+      );
+
+
+    const pendingOrders =
+      orderList.filter(
+        order =>
+          order.order_status !==
+          "delivered"
+      );
+
+
+    const pendingTotal =
+      pendingOrders.reduce(
+        (
+          total,
+          order
+        ) =>
+          total +
+          Number(
+            order.total_amount ||
+            0
+          ),
+        0
+      );
+
+
+    document.getElementById(
+      "pendingEarnings"
+    ).textContent =
+      money(
+        pendingTotal
+      );
+
+
+  } catch (error) {
+
+    console.error(
+      "Order stats error:",
+      error
+    );
+
+    document.getElementById(
+      "newOrderCount"
+    ).textContent =
+      "0";
+
+    document.getElementById(
+      "pendingEarnings"
+    ).textContent =
+      "₦0.00";
+
+    document.getElementById(
+      "availableEarnings"
+    ).textContent =
+      "₦0.00";
+
+  }
+
+}
+
+
+function showStoreSettings() {
+
+  const panel =
+    document.getElementById(
+      "storeSettingsPanel"
+    );
+
+  panel.style.display =
+    panel.style.display ===
+    "none"
+      ? "block"
+      : "none";
+
+
+  document.getElementById(
+    "fulfillmentPanel"
+  ).style.display =
+    "none";
+
+
+  if (
+    panel.style.display ===
+    "block"
+  ) {
+
+    panel.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+
+  }
+
+}
+
+
+function showFulfillmentSettings() {
+
+  const panel =
+    document.getElementById(
+      "fulfillmentPanel"
+    );
+
+  panel.style.display =
+    panel.style.display ===
+    "none"
+      ? "block"
+      : "none";
+
+
+  document.getElementById(
+    "storeSettingsPanel"
+  ).style.display =
+    "none";
+
+
+  if (
+    panel.style.display ===
+    "block"
+  ) {
+
+    panel.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+
+  }
+
+}
+
+
+async function saveStoreDetails() {
+
+  if (!currentStore) {
+    return;
+  }
+
+
+  const button =
+    document.getElementById(
+      "saveStoreButton"
+    );
+
+
+  const description =
+    document.getElementById(
+      "editDescription"
+    ).value.trim();
+
+
+  const businessPhone =
+    document.getElementById(
+      "editBusinessPhone"
+    ).value.trim();
+
+
+  button.disabled = true;
+
+  button.textContent =
+    "Saving...";
+
+
+  hideMessage(
+    "storeMessage"
+  );
+
+
+  try {
+
+    const {
+      session
+    } =
+      await loadSession();
+
+
+    const url =
+      REST_BASE +
+      "/marketplace_stores" +
+      "?id=eq." +
+      encodeURIComponent(
+        currentStore.id
+      ) +
+      "&vendor_id=eq." +
+      encodeURIComponent(
+        currentUser.id
+      );
+
+
+    const data =
+      await restRequest(
+        url,
+        {
+          method: "PATCH",
+
+          headers:
+            restHeaders(
+              session.access_token
+            ),
+
+          body:
+            JSON.stringify({
+              description:
+                description,
+
+              business_phone:
+                businessPhone,
+
+              updated_at:
+                new Date().toISOString()
+            })
+        }
+      );
+
+
+    if (
+      Array.isArray(data) &&
+      data.length > 0
+    ) {
+
+      currentStore =
+        data[0];
+
+    } else {
+
+      currentStore.description =
+        description;
+
+      currentStore.business_phone =
+        businessPhone;
+
+    }
+
+
+    renderStore();
+
+
+    showMessage(
+      "storeMessage",
+      "Store details saved successfully.",
+      "success"
+    );
+
+
+  } catch (error) {
+
+    console.error(
+      "Save store error:",
+      error
+    );
+
+
+    showMessage(
+      "storeMessage",
+      error?.message ||
+      "Could not save store details.",
+      "error"
+    );
+
+
+  } finally {
+
     button.disabled = false;
+
     button.textContent =
-      "Save Fulfillment Settings";
+      "Save Store Details";
+
+  }
+
+}
 
 
-    if (error) {
+async function saveFulfillmentSettings() {
 
-      console.error(error);
+  if (!currentStore) {
+    return;
+  }
 
-      notice.className =
-        "notice error";
 
-      notice.textContent =
-        "Could not save settings: " +
-        error.message;
+  const selected =
+    document.querySelector(
+      'input[name="fulfillment"]:checked'
+    );
 
+
+  if (!selected) {
+
+    showMessage(
+      "fulfillmentMessage",
+      "Please choose Delivery Only, Pickup Only, or Both.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  const method =
+    selected.value;
+
+
+  const acceptsDelivery =
+    method === "delivery" ||
+    method === "both";
+
+
+  const acceptsPickup =
+    method === "pickup" ||
+    method === "both";
+
+
+  const pickupLocation =
+    document.getElementById(
+      "pickupLocation"
+    ).value.trim();
+
+
+  const pickupInstructions =
+    document.getElementById(
+      "pickupInstructions"
+    ).value.trim();
+
+
+  if (
+    acceptsPickup &&
+    !pickupLocation
+  ) {
+
+    showMessage(
+      "fulfillmentMessage",
+      "Please enter your pickup location.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  const button =
+    document.getElementById(
+      "saveFulfillmentButton"
+    );
+
+
+  button.disabled = true;
+
+  button.textContent =
+    "Saving...";
+
+
+  hideMessage(
+    "fulfillmentMessage"
+  );
+
+
+  try {
+
+    const {
+      session
+    } =
+      await loadSession();
+
+
+    const url =
+      REST_BASE +
+      "/marketplace_stores" +
+      "?id=eq." +
+      encodeURIComponent(
+        currentStore.id
+      ) +
+      "&vendor_id=eq." +
+      encodeURIComponent(
+        currentUser.id
+      );
+
+
+    const data =
+      await restRequest(
+        url,
+        {
+          method: "PATCH",
+
+          headers:
+            restHeaders(
+              session.access_token
+            ),
+
+          body:
+            JSON.stringify({
+              accepts_delivery:
+                acceptsDelivery,
+
+              accepts_pickup:
+                acceptsPickup,
+
+              pickup_location:
+                acceptsPickup
+                  ? pickupLocation
+                  : null,
+
+              pickup_instructions:
+                acceptsPickup
+                  ? pickupInstructions
+                  : null,
+
+              updated_at:
+                new Date().toISOString()
+            })
+        }
+      );
+
+
+    if (
+      Array.isArray(data) &&
+      data.length > 0
+    ) {
+
+      currentStore =
+        data[0];
+
+    } else {
+
+      currentStore.accepts_delivery =
+        acceptsDelivery;
+
+      currentStore.accepts_pickup =
+        acceptsPickup;
+
+      currentStore.pickup_location =
+        acceptsPickup
+          ? pickupLocation
+          : null;
+
+      currentStore.pickup_instructions =
+        acceptsPickup
+          ? pickupInstructions
+          : null;
+
+    }
+
+
+    renderFulfillment();
+
+
+    showMessage(
+      "fulfillmentMessage",
+      "Delivery and pickup settings saved successfully.",
+      "success"
+    );
+
+
+  } catch (error) {
+
+    console.error(
+      "Fulfillment save error:",
+      error
+    );
+
+
+    showMessage(
+      "fulfillmentMessage",
+      error?.message ||
+      "Could not save fulfillment settings.",
+      "error"
+    );
+
+
+  } finally {
+
+    button.disabled = false;
+
+    button.textContent =
+      "Save Delivery & Pickup Settings";
+
+  }
+
+}
+
+
+async function copyStoreLink() {
+
+  const link =
+    publicStoreUrl();
+
+
+  if (!link) {
+
+    showMessage(
+      "linkMessage",
+      "Your store link is not available yet.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  try {
+
+    await navigator.clipboard.writeText(
+      link
+    );
+
+
+    showMessage(
+      "linkMessage",
+      "Store link copied successfully.",
+      "success"
+    );
+
+
+  } catch {
+
+    const input =
+      document.getElementById(
+        "storeLink"
+      );
+
+    input.focus();
+    input.select();
+
+    document.execCommand(
+      "copy"
+    );
+
+
+    showMessage(
+      "linkMessage",
+      "Store link copied.",
+      "success"
+    );
+
+  }
+
+}
+
+
+function addProduct() {
+
+  /*
+   * Product creation will use the dedicated
+   * branded-image product workflow.
+   */
+
+  window.location.href =
+    "create-product.html";
+
+}
+
+
+function viewProducts() {
+
+  window.location.href =
+    "my-products.html";
+
+}
+
+
+function viewOrders() {
+
+  window.location.href =
+    "vendor-orders.html";
+
+}
+
+
+function viewEarnings() {
+
+  window.location.href =
+    "vendor-earnings.html";
+
+}
+
+
+function openPublicStore() {
+
+  const link =
+    publicStoreUrl();
+
+
+  if (link) {
+
+    window.location.href =
+      link;
+
+  } else {
+
+    showMessage(
+      "pageMessage",
+      "Your public store link is not available.",
+      "error"
+    );
+
+  }
+
+}
+
+
+function goMarketplace() {
+
+  window.location.href =
+    "marketplace.html";
+
+}
+
+
+async function initialize() {
+
+  try {
+
+    const result =
+      await loadSession();
+
+
+    if (!result) {
       return;
     }
 
 
-    currentStore.accepts_delivery =
-      delivery;
-
-    currentStore.accepts_pickup =
-      pickup;
-
-    currentStore.pickup_location =
-      pickup
-        ? pickupLocation
-        : null;
-
-    currentStore.pickup_instructions =
-      pickup
-        ? pickupInstructions || null
-        : null;
-
-
-    notice.className =
-      "notice success";
-
-    notice.textContent =
-      "Fulfillment settings saved successfully.";
-
-  }
-
-
-  async function init() {
-
-    try {
-
-      currentUser =
-        await getCurrentUser();
-
-      if (!currentUser) {
-        return;
-      }
-
-
-      const store =
-        await loadStore();
-
-      if (!store) {
-        return;
-      }
-
-
-      const subscriptionActive =
-        await checkSubscription();
-
-
-      if (!subscriptionActive) {
-
-        location.href =
-          "marketplace-subscription.html";
-
-        return;
-      }
-
-
-      const [
-        products,
-        orders,
-        stats
-      ] = await Promise.all([
-        loadProducts(),
-        loadOrders(),
-        loadStats()
-      ]);
-
-
-      renderDashboard(
-        subscriptionActive,
-        products,
-        orders,
-        stats
+    const storeLoaded =
+      await loadStore(
+        result.session
       );
 
 
-    } catch (error) {
-
-      console.error(error);
-
-      document.getElementById("pageContent")
-        .innerHTML = `
-          <section class="section">
-            <div class="section-body">
-
-              <h2>
-                Something went wrong
-              </h2>
-
-              <p style="color:#ff9db1;">
-                ${escapeHtml(error.message)}
-              </p>
-
-            </div>
-          </section>
-        `;
+    if (!storeLoaded) {
+      return;
     }
+
+
+    await loadStats(
+      result.session
+    );
+
+
+  } catch (error) {
+
+    console.error(
+      "Vendor dashboard error:",
+      error
+    );
+
+
+    showMessage(
+      "pageMessage",
+      error?.message ||
+      "Could not load your vendor dashboard.",
+      "error"
+    );
 
   }
 
+}
 
-  init();
+
+document
+  .querySelectorAll(
+    'input[name="fulfillment"]'
+  )
+  .forEach(
+    input => {
+
+      input.addEventListener(
+        "change",
+        updatePickupFields
+      );
+
+    }
+  );
+
+
+initialize();
 
 </script>
+
+<!-- Supabase client -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 </body>
 </html>
