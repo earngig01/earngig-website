@@ -478,20 +478,20 @@
 
             <div class="form-group">
 
-              <label for="alternate-phone">
+              <label for="residential-address">
 
-                Alternative Phone
-                <span class="optional">
-                  (optional)
-                </span>
+                Residential Address
+                <span class="required">*</span>
 
               </label>
 
 
               <input
-                id="alternate-phone"
-                type="tel"
-                placeholder="Optional second number"
+                id="residential-address"
+                type="text"
+                placeholder="Your residential address"
+                autocomplete="street-address"
+                required
               >
 
             </div>
@@ -514,13 +514,17 @@
                   id="vendor-photo"
                   type="file"
                   accept="image/jpeg,image/png,image/webp"
+                  required
                 >
 
 
                 <div class="file-help">
 
                   Upload a clear recent photograph of yourself.
-                  This is kept privately for EarnGig verification.
+                  This file is stored privately and is only
+                  used for EarnGig verification.
+
+                  Maximum size: 5MB.
 
                 </div>
 
@@ -556,8 +560,7 @@
           <p class="vendor-card-description">
 
             Your store can sell products from multiple
-            categories. You do not select a single business
-            category here. Product categories will be selected
+            categories. Product categories are selected
             separately when products are added.
 
           </p>
@@ -568,7 +571,7 @@
 
             <div class="form-group">
 
-              <label for="business-name">
+              <label for="store-name">
 
                 Business / Store Name
                 <span class="required">*</span>
@@ -577,7 +580,7 @@
 
 
               <input
-                id="business-name"
+                id="store-name"
                 type="text"
                 placeholder="Your store name"
                 required
@@ -603,28 +606,6 @@
                 id="business-phone"
                 type="tel"
                 placeholder="Business contact number"
-              >
-
-            </div>
-
-
-
-            <div class="form-group">
-
-              <label for="business-email">
-
-                Business Email
-                <span class="optional">
-                  (optional)
-                </span>
-
-              </label>
-
-
-              <input
-                id="business-email"
-                type="email"
-                placeholder="Business email"
               >
 
             </div>
@@ -674,7 +655,7 @@
 
 
 
-            <div class="form-group">
+            <div class="form-group full">
 
               <label for="business-location">
 
@@ -757,7 +738,10 @@
 
 
                 <div class="file-help">
+
                   Upload your business or store logo.
+                  Maximum size: 5MB.
+
                 </div>
 
 
@@ -1146,7 +1130,7 @@ async function initializePage() {
 
 
 /* ==========================================================
-   EXISTING APPLICATION
+   LOAD CURRENT MARKETPLACE APPLICATION
 ========================================================== */
 
 async function loadExistingApplication() {
@@ -1156,7 +1140,9 @@ async function loadExistingApplication() {
     error
   } =
     await supabaseClient
-      .from("vendor_applications")
+      .from(
+        "marketplace_vendor_applications"
+      )
       .select("*")
       .eq(
         "user_id",
@@ -1175,12 +1161,14 @@ async function loadExistingApplication() {
   if (error) {
 
     console.error(
-      "Vendor application error:",
+      "Marketplace vendor application error:",
       error
     );
 
 
-    hide("loading-state");
+    hide(
+      "loading-state"
+    );
 
 
     document.getElementById(
@@ -1213,7 +1201,9 @@ async function loadExistingApplication() {
     `;
 
 
-    show("status-area");
+    show(
+      "status-area"
+    );
 
     return;
 
@@ -1224,7 +1214,9 @@ async function loadExistingApplication() {
     data;
 
 
-  hide("loading-state");
+  hide(
+    "loading-state"
+  );
 
 
   if (!data) {
@@ -1238,7 +1230,9 @@ async function loadExistingApplication() {
 
   if (
     data.status ===
-    "revision_required"
+      "more_information_required" ||
+    data.status ===
+      "revision_required"
   ) {
 
     prepareRevision(
@@ -1275,12 +1269,6 @@ function prepareNewApplication() {
 
 
   document.getElementById(
-    "full-name"
-  ).value =
-    "";
-
-
-  document.getElementById(
     "submit-button"
   ).textContent =
     "Submit for Review";
@@ -1292,7 +1280,9 @@ function prepareNewApplication() {
    REVISION
 ========================================================== */
 
-function prepareRevision(application) {
+function prepareRevision(
+  application
+) {
 
   show(
     "application-area"
@@ -1317,18 +1307,20 @@ function prepareRevision(application) {
   notice.innerHTML = `
 
     <strong>
-      Revision Required
+      More Information / Revision Required
     </strong>
 
     <br><br>
 
     Your application requires
-    changes before it can be approved.
+    changes or additional information
+    before it can be approved.
 
     ${
       application.admin_note
         ? `
           <br><br>
+
           <strong>
             Admin note:
           </strong>
@@ -1360,6 +1352,17 @@ function prepareRevision(application) {
   ).textContent =
     "Resubmit Application";
 
+
+  /*
+    Existing private files are retained.
+    The applicant can select new files if
+    they want to replace them.
+  */
+
+  document.getElementById(
+    "vendor-photo"
+  ).required = false;
+
 }
 
 
@@ -1367,7 +1370,9 @@ function prepareRevision(application) {
    POPULATE FORM
 ========================================================== */
 
-function populateForm(application) {
+function populateForm(
+  application
+) {
 
   document.getElementById(
     "full-name"
@@ -1390,27 +1395,21 @@ function populateForm(application) {
 
 
   document.getElementById(
-    "alternate-phone"
+    "residential-address"
   ).value =
-    application.alternate_phone || "";
+    application.residential_address || "";
 
 
   document.getElementById(
-    "business-name"
+    "store-name"
   ).value =
-    application.business_name || "";
+    application.store_name || "";
 
 
   document.getElementById(
     "business-phone"
   ).value =
     application.business_phone || "";
-
-
-  document.getElementById(
-    "business-email"
-  ).value =
-    application.business_email || "";
 
 
   document.getElementById(
@@ -1564,6 +1563,39 @@ function showApplicationStatus(
   }
 
 
+  if (
+    status ===
+    "more_information_required" ||
+    status ===
+    "revision_required"
+  ) {
+
+    icon = "⚠️";
+
+    title =
+      "More Information Required";
+
+    noticeClass =
+      "warning";
+
+    message =
+      "EarnGig needs additional information or changes before your application can continue.";
+
+    action = `
+
+      <a
+        href="javascript:void(0)"
+        onclick="prepareRevision(existingApplication)"
+        class="btn primary"
+      >
+        Update Application
+      </a>
+
+    `;
+
+  }
+
+
   const statusArea =
     document.getElementById(
       "status-area"
@@ -1672,6 +1704,53 @@ document
       }
 
 
+      if (
+        ![
+          "image/jpeg",
+          "image/png",
+          "image/webp"
+        ].includes(
+          file.type
+        )
+      ) {
+
+        this.value = "";
+
+        preview.src = "";
+
+        preview.style.display =
+          "none";
+
+        showFormError(
+          "Please select a JPG, PNG, or WEBP image."
+        );
+
+        return;
+
+      }
+
+
+      if (
+        file.size >
+        5 * 1024 * 1024
+      ) {
+
+        this.value = "";
+
+        preview.src = "";
+
+        preview.style.display =
+          "none";
+
+        showFormError(
+          "Personal photograph must be 5MB or smaller."
+        );
+
+        return;
+
+      }
+
+
       preview.src =
         URL.createObjectURL(
           file
@@ -1714,6 +1793,53 @@ document
       }
 
 
+      if (
+        ![
+          "image/jpeg",
+          "image/png",
+          "image/webp"
+        ].includes(
+          file.type
+        )
+      ) {
+
+        this.value = "";
+
+        preview.src = "";
+
+        preview.style.display =
+          "none";
+
+        showFormError(
+          "Please select a JPG, PNG, or WEBP logo."
+        );
+
+        return;
+
+      }
+
+
+      if (
+        file.size >
+        5 * 1024 * 1024
+      ) {
+
+        this.value = "";
+
+        preview.src = "";
+
+        preview.style.display =
+          "none";
+
+        showFormError(
+          "Business logo must be 5MB or smaller."
+        );
+
+        return;
+
+      }
+
+
       preview.src =
         URL.createObjectURL(
           file
@@ -1727,12 +1853,12 @@ document
 
 
 /* ==========================================================
-   UPLOAD
+   STORAGE UPLOAD
 ========================================================== */
 
 async function uploadVendorFile(
   file,
-  folder,
+  bucketName,
   required
 ) {
 
@@ -1790,9 +1916,7 @@ async function uploadVendorFile(
       .toLowerCase();
 
 
-  const path =
-    folder +
-    "/" +
+  const filePath =
     currentUser.id +
     "/" +
     crypto.randomUUID() +
@@ -1801,36 +1925,132 @@ async function uploadVendorFile(
 
 
   const {
+    data,
     error
   } =
     await supabaseClient
       .storage
       .from(
-        "vendor-documents"
+        bucketName
       )
       .upload(
-        path,
+        filePath,
         file,
         {
           cacheControl:
             "3600",
           upsert:
-            false
+            false,
+          contentType:
+            file.type
         }
       );
 
 
   if (error) {
 
+    console.error(
+      "Storage upload failed:",
+      bucketName,
+      error
+    );
+
+
     throw new Error(
-      "Image upload failed: " +
+      "Unable to upload image to " +
+      bucketName +
+      ": " +
       error.message
     );
 
   }
 
 
-  return path;
+  if (
+    !data ||
+    !data.path
+  ) {
+
+    throw new Error(
+      "The image upload did not return a valid storage path."
+    );
+
+  }
+
+
+  /*
+    Store bucket/path together in the application table.
+    The admin review page already knows how to remove
+    the bucket prefix when creating the signed URL.
+  */
+
+  return (
+    bucketName +
+    "/" +
+    data.path
+  );
+
+}
+
+
+/* ==========================================================
+   DELETE UPLOADED FILE IF DATABASE SAVE FAILS
+========================================================== */
+
+async function removeUploadedFile(
+  bucketName,
+  storedPath
+) {
+
+  if (!storedPath) {
+    return;
+  }
+
+
+  let cleanPath =
+    String(
+      storedPath
+    );
+
+
+  const prefix =
+    bucketName +
+    "/";
+
+
+  if (
+    cleanPath.startsWith(
+      prefix
+    )
+  ) {
+
+    cleanPath =
+      cleanPath.substring(
+        prefix.length
+      );
+
+  }
+
+
+  try {
+
+    await supabaseClient
+      .storage
+      .from(
+        bucketName
+      )
+      .remove([
+        cleanPath
+      ]);
+
+  } catch (error) {
+
+    console.warn(
+      "Unable to clean up uploaded file:",
+      error
+    );
+
+  }
 
 }
 
@@ -1862,10 +2082,34 @@ document
         true;
 
       button.textContent =
-        "Submitting...";
+        "Uploading & Submitting...";
+
+
+      let newlyUploadedPhoto =
+        null;
+
+      let newlyUploadedLogo =
+        null;
 
 
       try {
+
+        /* -----------------------------------------------
+           AUTH CHECK
+        ------------------------------------------------ */
+
+        if (!currentUser) {
+
+          throw new Error(
+            "Your login session has expired. Please log in again."
+          );
+
+        }
+
+
+        /* -----------------------------------------------
+           FORM VALUES
+        ------------------------------------------------ */
 
         const fullName =
           document
@@ -1894,19 +2138,19 @@ document
             .trim();
 
 
-        const alternatePhone =
+        const residentialAddress =
           document
             .getElementById(
-              "alternate-phone"
+              "residential-address"
             )
             .value
             .trim();
 
 
-        const businessName =
+        const storeName =
           document
             .getElementById(
-              "business-name"
+              "store-name"
             )
             .value
             .trim();
@@ -1916,15 +2160,6 @@ document
           document
             .getElementById(
               "business-phone"
-            )
-            .value
-            .trim();
-
-
-        const businessEmail =
-          document
-            .getElementById(
-              "business-email"
             )
             .value
             .trim();
@@ -2029,11 +2264,16 @@ document
             .trim();
 
 
+        /* -----------------------------------------------
+           REQUIRED VALIDATION
+        ------------------------------------------------ */
+
         if (
           !fullName ||
           !email ||
           !phoneNumber ||
-          !businessName ||
+          !residentialAddress ||
+          !storeName ||
           !state ||
           !businessLocation ||
           !businessAddress ||
@@ -2046,6 +2286,10 @@ document
 
         }
 
+
+        /* -----------------------------------------------
+           FILES
+        ------------------------------------------------ */
 
         const photoFile =
           document
@@ -2063,31 +2307,42 @@ document
             .files[0];
 
 
-        let vendorPhotoPath =
+        /* -----------------------------------------------
+           KEEP EXISTING FILES DURING REVISION
+        ------------------------------------------------ */
+
+        let personalPhotoUrl =
           existingApplication
-            ?.vendor_photo_path ||
+            ?.personal_photo_url ||
           null;
 
 
-        let businessLogoPath =
+        let storeLogoUrl =
           existingApplication
-            ?.business_logo_path ||
+            ?.store_logo_url ||
           null;
 
+
+        /* -----------------------------------------------
+           PERSONAL PHOTO
+        ------------------------------------------------ */
 
         if (photoFile) {
 
-          vendorPhotoPath =
+          newlyUploadedPhoto =
             await uploadVendorFile(
               photoFile,
               "vendor-photos",
               true
             );
 
+          personalPhotoUrl =
+            newlyUploadedPhoto;
+
         }
 
 
-        if (!vendorPhotoPath) {
+        if (!personalPhotoUrl) {
 
           throw new Error(
             "Please upload your personal photograph."
@@ -2096,17 +2351,28 @@ document
         }
 
 
+        /* -----------------------------------------------
+           BUSINESS LOGO
+        ------------------------------------------------ */
+
         if (logoFile) {
 
-          businessLogoPath =
+          newlyUploadedLogo =
             await uploadVendorFile(
               logoFile,
               "business-logos",
               false
             );
 
+          storeLogoUrl =
+            newlyUploadedLogo;
+
         }
 
+
+        /* -----------------------------------------------
+           APPLICATION DATA
+        ------------------------------------------------ */
 
         const applicationData = {
 
@@ -2116,24 +2382,17 @@ document
           full_name:
             fullName,
 
-          email:
-            email,
-
           phone_number:
             phoneNumber,
 
-          alternate_phone:
-            alternatePhone ||
-            null,
+          email:
+            email,
 
-          vendor_photo_path:
-            vendorPhotoPath,
+          personal_photo_url:
+            personalPhotoUrl,
 
-          business_name:
-            businessName,
-
-          business_description:
-            businessDescription,
+          residential_address:
+            residentialAddress,
 
           state:
             state,
@@ -2141,6 +2400,12 @@ document
           lga:
             lga ||
             null,
+
+          store_name:
+            storeName,
+
+          business_description:
+            businessDescription,
 
           business_location:
             businessLocation,
@@ -2152,28 +2417,24 @@ document
             businessPhone ||
             null,
 
-          business_email:
-            businessEmail ||
-            null,
-
-          business_logo_path:
-            businessLogoPath ||
-            null,
-
-          whatsapp_url:
-            whatsappUrl ||
-            null,
-
-          instagram_url:
-            instagramUrl ||
+          store_logo_url:
+            storeLogoUrl ||
             null,
 
           tiktok_url:
             tiktokUrl ||
             null,
 
+          instagram_url:
+            instagramUrl ||
+            null,
+
           facebook_url:
             facebookUrl ||
+            null,
+
+          whatsapp_url:
+            whatsappUrl ||
             null,
 
           website_url:
@@ -2185,7 +2446,7 @@ document
             null,
 
           status:
-            "pending_review",
+            "pending",
 
           admin_note:
             null,
@@ -2202,19 +2463,27 @@ document
         };
 
 
+        /* -----------------------------------------------
+           SAVE APPLICATION
+        ------------------------------------------------ */
+
         let result;
 
 
         if (
           existingApplication &&
-          existingApplication.status ===
-            "revision_required"
+          (
+            existingApplication.status ===
+              "more_information_required" ||
+            existingApplication.status ===
+              "revision_required"
+          )
         ) {
 
           result =
             await supabaseClient
               .from(
-                "vendor_applications"
+                "marketplace_vendor_applications"
               )
               .update(
                 applicationData
@@ -2235,7 +2504,7 @@ document
           result =
             await supabaseClient
               .from(
-                "vendor_applications"
+                "marketplace_vendor_applications"
               )
               .insert(
                 applicationData
@@ -2259,6 +2528,10 @@ document
           result.data;
 
 
+        /* -----------------------------------------------
+           SUCCESS
+        ------------------------------------------------ */
+
         hide(
           "application-area"
         );
@@ -2277,6 +2550,44 @@ document
         );
 
 
+        /*
+          If the database save failed after a NEW file
+          was uploaded, remove that new file so we don't
+          leave unnecessary orphaned files in Storage.
+        */
+
+        if (
+          newlyUploadedPhoto &&
+          (
+            !existingApplication ||
+            !existingApplication.personal_photo_url
+          )
+        ) {
+
+          await removeUploadedFile(
+            "vendor-photos",
+            newlyUploadedPhoto
+          );
+
+        }
+
+
+        if (
+          newlyUploadedLogo &&
+          (
+            !existingApplication ||
+            !existingApplication.store_logo_url
+          )
+        ) {
+
+          await removeUploadedFile(
+            "business-logos",
+            newlyUploadedLogo
+          );
+
+        }
+
+
         showFormError(
           error.message ||
           "Unable to submit your vendor application."
@@ -2289,8 +2600,12 @@ document
 
         button.textContent =
           existingApplication &&
-          existingApplication.status ===
-            "revision_required"
+          (
+            existingApplication.status ===
+              "more_information_required" ||
+            existingApplication.status ===
+              "revision_required"
+          )
             ? "Resubmit Application"
             : "Submit for Review";
 
