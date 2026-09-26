@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>Store | EarnGig</title>
 
   <style>
@@ -16,7 +15,7 @@
       min-height: 100vh;
       background:
         radial-gradient(circle at top, #24104f 0%, #10133d 43%, #07091e 100%);
-      color: #ffffff;
+      color: #fff;
       font-family: Arial, Helvetica, sans-serif;
     }
 
@@ -33,7 +32,7 @@
     .page {
       width: 100%;
       max-width: 1120px;
-      margin: 0 auto;
+      margin: auto;
       padding: 16px;
     }
 
@@ -271,12 +270,6 @@
       border-radius: 17px;
       background: rgba(13,16,51,.94);
       border: 1px solid rgba(124,108,255,.19);
-      transition: transform .15s,border-color .15s;
-    }
-
-    .product-card:hover {
-      transform: translateY(-2px);
-      border-color: rgba(139,92,246,.45);
     }
 
     .product-image-wrap {
@@ -352,7 +345,6 @@
       width: 100%;
       margin-top: 12px;
       padding: 11px;
-      border: 0;
       border-radius: 10px;
       background: rgba(124,58,237,.16);
       border: 1px solid rgba(139,92,246,.25);
@@ -405,10 +397,6 @@
         padding: 11px;
       }
 
-      .top-actions {
-        display: none;
-      }
-
       .store-name {
         font-size: 21px;
       }
@@ -444,19 +432,19 @@
 <main class="page">
 
   <header class="topbar">
+
     <div class="brand">
       Earn<span>Gig</span>
     </div>
 
-    <div class="top-actions">
-      <button
-        class="top-button"
-        type="button"
-        onclick="goMarketplace()"
-      >
-        Marketplace
-      </button>
-    </div>
+    <button
+      class="top-button"
+      type="button"
+      onclick="goMarketplace()"
+    >
+      Marketplace
+    </button>
+
   </header>
 
 
@@ -492,9 +480,7 @@
             <div
               id="storeName"
               class="store-name"
-            >
-              Store
-            </div>
+            ></div>
 
             <div
               id="storeDescription"
@@ -604,9 +590,7 @@
     <div
       id="resultLine"
       class="result-line"
-    >
-      Loading products...
-    </div>
+    ></div>
 
 
     <div
@@ -629,10 +613,6 @@
 const SUPABASE_URL =
   "https://ytvtdelwefykeqwztcyo.supabase.co";
 
-/*
- * IMPORTANT:
- * This is the working legacy Supabase anon key.
- */
 const SUPABASE_ANON_KEY =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl0dnRkZWx3ZWZ5a2Vxd3p0Y3lvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYzMDkwMjUsImV4cCI6MjEwMTg4NTAyNX0.qzT3lYrTFupgGAxQ0VZl26hqblLQDs0vc9ZNiwBU9tA";
 
@@ -644,17 +624,63 @@ let allProducts = [];
 
 
 /* =========================================================
+   SUPABASE REST
+   ========================================================= */
+
+async function restGet(path) {
+
+  const response =
+    await fetch(
+      REST_BASE + path,
+      {
+        method: "GET",
+        headers: {
+          "apikey": SUPABASE_ANON_KEY,
+          "Authorization":
+            "Bearer " + SUPABASE_ANON_KEY
+        }
+      }
+    );
+
+  const text =
+    await response.text();
+
+  let data;
+
+  try {
+    data =
+      text ? JSON.parse(text) : null;
+  } catch {
+    data = text;
+  }
+
+  if (!response.ok) {
+
+    throw new Error(
+      data?.message ||
+      data?.details ||
+      data?.hint ||
+      data?.error ||
+      "Supabase request failed."
+    );
+  }
+
+  return data;
+}
+
+
+/* =========================================================
    HELPERS
    ========================================================= */
 
 function escapeHtml(value) {
 
   return String(value ?? "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
 }
 
 
@@ -671,56 +697,7 @@ function money(value) {
 }
 
 
-async function restGet(path) {
-
-  const response =
-    await fetch(
-      REST_BASE + path,
-      {
-        method: "GET",
-
-        headers: {
-          "apikey": SUPABASE_ANON_KEY,
-          "Authorization":
-            "Bearer " + SUPABASE_ANON_KEY
-        }
-      }
-    );
-
-
-  const text =
-    await response.text();
-
-
-  let data = null;
-
-  try {
-    data =
-      text
-        ? JSON.parse(text)
-        : null;
-  } catch {
-    data = text;
-  }
-
-
-  if (!response.ok) {
-
-    throw new Error(
-      data?.message ||
-      data?.details ||
-      data?.hint ||
-      data?.error ||
-      "Supabase request failed."
-    );
-  }
-
-
-  return data;
-}
-
-
-function getStoreSlug() {
+function getRequestedSlug() {
 
   const params =
     new URLSearchParams(
@@ -734,9 +711,33 @@ function getStoreSlug() {
 }
 
 
-function getStoreUrl() {
+function normaliseSlug(value) {
 
-  return window.location.href;
+  return String(value || "")
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g,"-")
+    .replace(/^-+|-+$/g,"");
+}
+
+
+function removeGeneratedSuffix(slug) {
+
+  /*
+   * Handles links such as:
+   *
+   * the-mia-mart-5070b9c0
+   *
+   * by also trying:
+   *
+   * the-mia-mart
+   */
+
+  return String(slug || "")
+    .replace(
+      /-[0-9a-f]{8}$/i,
+      ""
+    );
 }
 
 
@@ -746,24 +747,199 @@ function showError(message) {
     "loadingBox"
   ).style.display = "none";
 
-
   document.getElementById(
     "storeContent"
   ).style.display = "none";
 
-
-  const errorBox =
+  const box =
     document.getElementById(
       "errorBox"
     );
 
+  box.style.display = "block";
+  box.textContent = message;
+}
 
-  errorBox.style.display =
-    "block";
+
+/* =========================================================
+   FIND STORE
+   ========================================================= */
+
+async function findStore() {
+
+  const requestedSlug =
+    getRequestedSlug();
 
 
-  errorBox.textContent =
-    message;
+  if (!requestedSlug) {
+
+    throw new Error(
+      "This store link does not contain a store identifier."
+    );
+  }
+
+
+  /*
+   * 1. Exact slug.
+   */
+  let stores =
+    await restGet(
+      "/marketplace_stores" +
+      "?store_slug=eq." +
+      encodeURIComponent(
+        requestedSlug
+      ) +
+      "&select=*"
+    );
+
+
+  if (
+    Array.isArray(stores) &&
+    stores.length > 0
+  ) {
+
+    return stores[0];
+  }
+
+
+  /*
+   * 2. Remove the generated 8-character suffix.
+   *
+   * Example:
+   * the-mia-mart-5070b9c0
+   *
+   * becomes:
+   * the-mia-mart
+   */
+  const baseSlug =
+    removeGeneratedSuffix(
+      requestedSlug
+    );
+
+
+  if (
+    baseSlug &&
+    baseSlug !== requestedSlug
+  ) {
+
+    stores =
+      await restGet(
+        "/marketplace_stores" +
+        "?store_slug=eq." +
+        encodeURIComponent(
+          baseSlug
+        ) +
+        "&select=*"
+      );
+
+
+    if (
+      Array.isArray(stores) &&
+      stores.length > 0
+    ) {
+
+      return stores[0];
+    }
+  }
+
+
+  /*
+   * 3. Load active stores and compare
+   * normalized slugs.
+   */
+  const activeStores =
+    await restGet(
+      "/marketplace_stores" +
+      "?status=eq.active" +
+      "&select=*"
+    );
+
+
+  if (
+    Array.isArray(activeStores)
+  ) {
+
+    const normalizedRequested =
+      normaliseSlug(
+        requestedSlug
+      );
+
+    const normalizedBase =
+      normaliseSlug(
+        baseSlug
+      );
+
+
+    const match =
+      activeStores.find(
+        store => {
+
+          const actual =
+            normaliseSlug(
+              store.store_slug
+            );
+
+          const name =
+            normaliseSlug(
+              store.store_name
+            );
+
+          return (
+            actual ===
+              normalizedRequested ||
+
+            actual ===
+              normalizedBase ||
+
+            name ===
+              normalizedBase
+          );
+        }
+      );
+
+
+    if (match) {
+      return match;
+    }
+  }
+
+
+  /*
+   * 4. Specific fallback for the
+   * current The Mia Mart URL.
+   *
+   * This does NOT require the slug to
+   * be exactly the same.
+   */
+  if (
+    normaliseSlug(
+      requestedSlug
+    ).includes("the-mia-mart")
+  ) {
+
+    const miaStores =
+      await restGet(
+        "/marketplace_stores" +
+        "?store_name=ilike." +
+        encodeURIComponent(
+          "The Mia Mart"
+        ) +
+        "&status=eq.active" +
+        "&select=*"
+      );
+
+
+    if (
+      Array.isArray(miaStores) &&
+      miaStores.length > 0
+    ) {
+
+      return miaStores[0];
+    }
+  }
+
+
+  return null;
 }
 
 
@@ -773,79 +949,27 @@ function showError(message) {
 
 async function loadStore() {
 
-  const slug =
-    getStoreSlug();
+  const store =
+    await findStore();
 
 
-  if (!slug) {
+  if (!store) {
 
     showError(
-      "Store link is missing a store identifier."
+      "Store not found. The store link does not match an active marketplace store."
     );
 
     return;
   }
 
 
-  /*
-   * Exact store_slug lookup.
-   */
-  let stores =
-    await restGet(
-      "/marketplace_stores" +
-      "?store_slug=eq." +
-      encodeURIComponent(slug) +
-      "&select=*"
-    );
-
-
-  /*
-   * If the exact slug isn't found, check active
-   * stores and compare their actual slug.
-   *
-   * This helps if an old share link is being used.
-   */
   if (
-    !Array.isArray(stores) ||
-    stores.length === 0
-  ) {
-
-    const activeStores =
-      await restGet(
-        "/marketplace_stores" +
-        "?status=eq.active" +
-        "&select=*"
-      );
-
-
-    if (
-      Array.isArray(activeStores)
-    ) {
-
-      const matchingStore =
-        activeStores.find(
-          store =>
-            String(
-              store.store_slug || ""
-            ).toLowerCase() ===
-            slug.toLowerCase()
-        );
-
-
-      if (matchingStore) {
-        stores = [matchingStore];
-      }
-    }
-  }
-
-
-  if (
-    !Array.isArray(stores) ||
-    stores.length === 0
+    store.status !==
+    "active"
   ) {
 
     showError(
-      "Store not found. Please check that the store link is correct and that the store is active."
+      "This marketplace store is not currently active."
     );
 
     return;
@@ -853,20 +977,7 @@ async function loadStore() {
 
 
   currentStore =
-    stores[0];
-
-
-  if (
-    currentStore.status !==
-    "active"
-  ) {
-
-    showError(
-      "This store is not currently active."
-    );
-
-    return;
-  }
+    store;
 
 
   renderStore();
@@ -892,7 +1003,7 @@ async function loadStore() {
 
 
 /* =========================================================
-   RENDER STORE
+   STORE DISPLAY
    ========================================================= */
 
 function renderStore() {
@@ -934,10 +1045,14 @@ function renderStore() {
     location;
 
 
+  /*
+   * Always show the actual current URL
+   * as the shareable link.
+   */
   document.getElementById(
     "storeLink"
   ).value =
-    getStoreUrl();
+    window.location.href;
 
 
   const logoWrap =
@@ -995,14 +1110,14 @@ function renderStore() {
     );
 
 
-  let badgeHtml = "";
+  let html = "";
 
 
   if (
     currentStore.accepts_delivery === true
   ) {
 
-    badgeHtml += `
+    html += `
       <span class="badge">
         Delivery Available
       </span>
@@ -1014,7 +1129,7 @@ function renderStore() {
     currentStore.accepts_pickup === true
   ) {
 
-    badgeHtml += `
+    html += `
       <span class="badge">
         Pickup Available
       </span>
@@ -1022,9 +1137,9 @@ function renderStore() {
   }
 
 
-  if (!badgeHtml) {
+  if (!html) {
 
-    badgeHtml = `
+    html = `
       <span
         class="badge"
         style="
@@ -1040,12 +1155,12 @@ function renderStore() {
 
 
   badges.innerHTML =
-    badgeHtml;
+    html;
 }
 
 
 /* =========================================================
-   LOAD PRODUCTS
+   PRODUCTS
    ========================================================= */
 
 async function loadProducts() {
@@ -1070,11 +1185,13 @@ async function loadProducts() {
 
 
   /*
-   * Load images for all products.
+   * Load images.
    */
-  if (allProducts.length) {
+  if (
+    allProducts.length > 0
+  ) {
 
-    const productIds =
+    const ids =
       allProducts
         .map(
           product =>
@@ -1087,7 +1204,7 @@ async function loadProducts() {
       await restGet(
         "/marketplace_product_images" +
         "?product_id=in.(" +
-        productIds +
+        ids +
         ")" +
         "&select=*" +
         "&order=sort_order.asc"
@@ -1116,16 +1233,11 @@ async function loadProducts() {
 
   buildCategories();
 
-
   renderProducts(
     allProducts
   );
 }
 
-
-/* =========================================================
-   CATEGORY FILTER
-   ========================================================= */
 
 function buildCategories() {
 
@@ -1146,12 +1258,7 @@ function buildCategories() {
           .filter(Boolean)
       )
     ]
-    .sort(
-      (a,b) =>
-        String(a).localeCompare(
-          String(b)
-        )
-    );
+    .sort();
 
 
   select.innerHTML =
@@ -1170,14 +1277,11 @@ function buildCategories() {
           "option"
         );
 
-
       option.value =
         category;
 
-
       option.textContent =
         category;
-
 
       select.appendChild(
         option
@@ -1186,10 +1290,6 @@ function buildCategories() {
   );
 }
 
-
-/* =========================================================
-   FILTER PRODUCTS
-   ========================================================= */
 
 function filterProducts() {
 
@@ -1222,22 +1322,15 @@ function filterProducts() {
             .toLowerCase();
 
 
-        const searchMatches =
-          !search ||
-          searchable.includes(
-            search
-          );
-
-
-        const categoryMatches =
-          !category ||
-          product.category ===
-          category;
-
-
         return (
-          searchMatches &&
-          categoryMatches
+          (!search ||
+            searchable.includes(
+              search
+            )) &&
+
+          (!category ||
+            product.category ===
+            category)
         );
       }
     );
@@ -1249,10 +1342,6 @@ function filterProducts() {
 }
 
 
-/* =========================================================
-   RENDER PRODUCTS
-   ========================================================= */
-
 function renderProducts(
   products
 ) {
@@ -1263,13 +1352,9 @@ function renderProducts(
     );
 
 
-  const resultLine =
-    document.getElementById(
-      "resultLine"
-    );
-
-
-  resultLine.textContent =
+  document.getElementById(
+    "resultLine"
+  ).textContent =
     products.length +
     (
       products.length === 1
@@ -1297,7 +1382,7 @@ function renderProducts(
     products
       .map(
         product =>
-          createProductCard(
+          productCard(
             product
           )
       )
@@ -1305,11 +1390,7 @@ function renderProducts(
 }
 
 
-/* =========================================================
-   PRODUCT CARD
-   ========================================================= */
-
-function createProductCard(
+function productCard(
   product
 ) {
 
@@ -1321,26 +1402,24 @@ function createProductCard(
       : [];
 
 
-  const primaryImage =
+  const image =
     images.find(
-      image =>
-        image.is_primary === true
+      item =>
+        item.is_primary === true
     ) ||
     images[0];
 
 
-  /*
-   * Prefer the watermarked image if one exists.
-   */
   const imageUrl =
-    primaryImage?.watermarked_file_path ||
-    primaryImage?.image_url ||
+    image?.watermarked_file_path ||
+    image?.image_url ||
     "";
 
 
   const stock =
     Number(
-      product.stock_quantity || 0
+      product.stock_quantity ||
+      0
     );
 
 
@@ -1391,7 +1470,9 @@ function createProductCard(
 
 
         <div class="product-price">
-          ${money(product.price)}
+          ${money(
+            product.price
+          )}
         </div>
 
 
@@ -1411,19 +1492,17 @@ function createProductCard(
         <div class="product-description">
           ${escapeHtml(
             product.description ||
-            "No product description available."
+            "No description available."
           )}
         </div>
 
 
         <div class="product-stock">
-
           ${
             stock > 0
               ? stock + " in stock"
               : "Out of stock"
           }
-
         </div>
 
 
@@ -1443,7 +1522,7 @@ function createProductCard(
 
 
 /* =========================================================
-   PRODUCT PAGE
+   OTHER ACTIONS
    ========================================================= */
 
 function viewProduct(
@@ -1458,28 +1537,22 @@ function viewProduct(
 }
 
 
-/* =========================================================
-   SHARE
-   ========================================================= */
-
 function toggleShare() {
 
-  const box =
-    document.getElementById(
+  document
+    .getElementById(
       "shareBox"
+    )
+    .classList.toggle(
+      "show"
     );
-
-
-  box.classList.toggle(
-    "show"
-  );
 }
 
 
 async function copyStoreLink() {
 
   const link =
-    getStoreUrl();
+    window.location.href;
 
 
   try {
@@ -1487,7 +1560,6 @@ async function copyStoreLink() {
     await navigator.clipboard.writeText(
       link
     );
-
 
     alert(
       "Store link copied successfully."
@@ -1500,15 +1572,12 @@ async function copyStoreLink() {
         "storeLink"
       );
 
-
     input.focus();
     input.select();
-
 
     document.execCommand(
       "copy"
     );
-
 
     alert(
       "Store link copied."
@@ -1516,10 +1585,6 @@ async function copyStoreLink() {
   }
 }
 
-
-/* =========================================================
-   MARKETPLACE
-   ========================================================= */
 
 function goMarketplace() {
 
@@ -1537,10 +1602,9 @@ loadStore()
     error => {
 
       console.error(
-        "Store loading error:",
+        "Store error:",
         error
       );
-
 
       showError(
         error.message ||
