@@ -2,13 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
-
-  <title>Vendor Dashboard | EarnGig</title>
+  <title>Store | EarnGig</title>
 
   <style>
     * {
@@ -18,117 +14,75 @@
     body {
       margin: 0;
       min-height: 100vh;
-
       background:
-        radial-gradient(
-          circle at top,
-          #24104f 0%,
-          #10133d 43%,
-          #07091e 100%
-        );
+        radial-gradient(circle at top, #24104f 0%, #10133d 43%, #07091e 100%);
+      color: #fff;
+      font-family: Arial, Helvetica, sans-serif;
+    }
 
-      color: #ffffff;
-      font-family: Arial, sans-serif;
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
     }
 
     .page {
       width: 100%;
-      max-width: 1100px;
+      max-width: 1120px;
       margin: 0 auto;
-      padding: 18px;
+      padding: 16px;
     }
 
     .topbar {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 15px;
-
-      margin-bottom: 20px;
+      gap: 12px;
+      margin-bottom: 18px;
     }
 
-    .brand-wrap {
-      display: flex;
-      align-items: center;
-      gap: 11px;
-    }
-
-    .brand-icon {
-      width: 48px;
-      height: 48px;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      border-radius: 14px;
-
-      background:
-        linear-gradient(
-          135deg,
-          #6d5dfc,
-          #4f46e5
-        );
-
+    .brand {
       font-size: 22px;
       font-weight: 900;
     }
 
-    .brand {
-      font-size: 20px;
-      font-weight: 900;
-    }
-
     .brand span {
-      color: #7568ff;
+      color: #8068ff;
     }
 
     .top-actions {
       display: flex;
       gap: 8px;
       flex-wrap: wrap;
-      justify-content: flex-end;
     }
 
-    .small-button {
-      padding: 10px 13px;
-
+    .top-button {
+      padding: 10px 14px;
       border-radius: 11px;
-
-      border:
-        1px solid
-        rgba(255,255,255,0.12);
-
-      background:
-        rgba(255,255,255,0.04);
-
-      color: #ffffff;
-
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      color: #fff;
       font-weight: 700;
-
-      cursor: pointer;
     }
 
-    .hero {
+    .store-card {
       padding: 22px;
-
       border-radius: 22px;
-
       background:
         linear-gradient(
           135deg,
-          rgba(76,45,150,0.52),
-          rgba(18,21,67,0.94)
+          rgba(76,45,150,.52),
+          rgba(18,21,67,.94)
         );
-
-      border:
-        1px solid
-        rgba(139,92,246,0.28);
-
-      margin-bottom: 16px;
+      border: 1px solid rgba(139,92,246,.28);
+      margin-bottom: 18px;
     }
 
-    .hero-row {
+    .store-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -142,633 +96,351 @@
       min-width: 0;
     }
 
-    .store-logo {
-      width: 72px;
-      height: 72px;
-
-      border-radius: 18px;
-
-      object-fit: cover;
-
-      background:
-        rgba(255,255,255,0.08);
-
-      border:
-        1px solid
-        rgba(255,255,255,0.12);
-
+    .logo-wrap {
+      width: 82px;
+      height: 82px;
       flex-shrink: 0;
     }
 
-    .store-logo-fallback {
-      width: 72px;
-      height: 72px;
+    .store-logo,
+    .logo-fallback {
+      width: 82px;
+      height: 82px;
+      border-radius: 19px;
+    }
 
-      border-radius: 18px;
+    .store-logo {
+      object-fit: cover;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+    }
 
+    .logo-fallback {
       display: flex;
       align-items: center;
       justify-content: center;
-
-      background:
-        linear-gradient(
-          135deg,
-          #6d4aff,
-          #4f46e5
-        );
-
-      font-size: 27px;
+      background: linear-gradient(135deg,#6d4aff,#4f46e5);
+      font-size: 30px;
       font-weight: 900;
-
-      flex-shrink: 0;
     }
 
-    .store-title {
-      font-size: 25px;
+    .store-name {
+      font-size: 26px;
       font-weight: 900;
-
-      overflow: hidden;
-      text-overflow: ellipsis;
+      overflow-wrap: anywhere;
     }
 
-    .store-location {
-      margin-top: 6px;
-
-      color: #aaa8c4;
-
+    .store-description {
+      margin-top: 7px;
+      color: #b9b5cc;
+      line-height: 1.5;
       font-size: 13px;
     }
 
-    .active-badge {
+    .store-location {
+      margin-top: 7px;
+      color: #aaa8c4;
+      font-size: 13px;
+    }
+
+    .store-type {
       display: inline-flex;
-      align-items: center;
-      gap: 7px;
-
-      margin-top: 10px;
-
-      padding: 7px 11px;
-
+      margin-top: 9px;
+      padding: 6px 10px;
       border-radius: 999px;
-
-      background:
-        rgba(34,197,94,0.10);
-
-      border:
-        1px solid
-        rgba(34,197,94,0.25);
-
-      color: #86efac;
-
-      font-size: 12px;
+      background: rgba(124,58,237,.14);
+      border: 1px solid rgba(139,92,246,.25);
+      color: #c4b5fd;
+      font-size: 11px;
       font-weight: 800;
     }
 
-    .active-dot {
-      width: 7px;
-      height: 7px;
-
-      border-radius: 50%;
-
-      background: #4ade80;
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 9px;
     }
 
-    .hero-buttons {
+    .badge {
+      padding: 6px 9px;
+      border-radius: 999px;
+      background: rgba(34,197,94,.09);
+      border: 1px solid rgba(34,197,94,.20);
+      color: #86efac;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .store-actions {
       display: flex;
-      gap: 9px;
+      gap: 8px;
       flex-wrap: wrap;
       justify-content: flex-end;
     }
 
     .primary-button {
+      padding: 12px 15px;
       border: 0;
-
-      padding: 13px 17px;
-
-      border-radius: 12px;
-
-      background:
-        linear-gradient(
-          135deg,
-          #6d4aff,
-          #8b3ffc
-        );
-
-      color: #ffffff;
-
+      border-radius: 11px;
+      background: linear-gradient(135deg,#6d4aff,#8b3ffc);
+      color: #fff;
       font-weight: 800;
-
-      cursor: pointer;
     }
 
     .secondary-button {
-      padding: 13px 17px;
-
-      border-radius: 12px;
-
-      border:
-        1px solid
-        rgba(255,255,255,0.13);
-
-      background:
-        rgba(255,255,255,0.04);
-
-      color: #ffffff;
-
+      padding: 12px 15px;
+      border-radius: 11px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      color: #fff;
       font-weight: 700;
+    }
 
-      cursor: pointer;
+    .share-box {
+      display: none;
+      margin-top: 15px;
+      padding: 14px;
+      border-radius: 13px;
+      background: rgba(0,0,0,.18);
+      border: 1px solid rgba(255,255,255,.08);
+    }
+
+    .share-box.show {
+      display: block;
+    }
+
+    .share-label {
+      color: #aaa8c4;
+      font-size: 11px;
+      margin-bottom: 7px;
+    }
+
+    .share-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .share-row input {
+      flex: 1;
+      min-width: 0;
+      padding: 11px;
+      border-radius: 9px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.05);
+      color: #fff;
     }
 
     .section-title {
-      margin: 25px 0 11px;
+      margin: 23px 0 11px;
+      font-size: 19px;
+      font-weight: 900;
+    }
 
+    .filters {
+      display: grid;
+      grid-template-columns: 1fr 190px;
+      gap: 10px;
+      margin-bottom: 17px;
+    }
+
+    .filters input,
+    .filters select {
+      width: 100%;
+      padding: 13px;
+      border-radius: 11px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(13,16,51,.94);
+      color: #fff;
+      outline: none;
+    }
+
+    .filters input:focus,
+    .filters select:focus {
+      border-color: #7c5cff;
+    }
+
+    .result-line {
+      color: #85819e;
+      font-size: 12px;
+      margin-bottom: 12px;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(3,minmax(0,1fr));
+      gap: 14px;
+    }
+
+    .product-card {
+      overflow: hidden;
+      border-radius: 17px;
+      background: rgba(13,16,51,.94);
+      border: 1px solid rgba(124,108,255,.19);
+      transition: transform .15s,border-color .15s;
+    }
+
+    .product-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(139,92,246,.45);
+    }
+
+    .product-image-wrap {
+      width: 100%;
+      height: 215px;
+      background: #11152f;
+      overflow: hidden;
+    }
+
+    .product-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .image-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #777391;
+      font-size: 13px;
+    }
+
+    .product-body {
+      padding: 14px;
+    }
+
+    .product-title {
+      font-size: 16px;
+      font-weight: 900;
+      line-height: 1.3;
+    }
+
+    .product-price {
+      margin-top: 7px;
+      color: #bca8ff;
       font-size: 18px;
       font-weight: 900;
     }
 
-    .stats {
-      display: grid;
-
-      grid-template-columns:
-        repeat(4, minmax(0, 1fr));
-
-      gap: 11px;
-    }
-
-    .stat {
-      padding: 17px;
-
-      border-radius: 17px;
-
-      background:
-        rgba(16,17,55,0.92);
-
-      border:
-        1px solid
-        rgba(124,108,255,0.18);
-    }
-
-    .stat-label {
-      color: #85819e;
-
-      font-size: 11px;
-
-      text-transform: uppercase;
-
-      letter-spacing: .5px;
-    }
-
-    .stat-value {
+    .product-category {
+      display: inline-block;
       margin-top: 8px;
-
-      font-size: 23px;
-
-      font-weight: 900;
+      padding: 5px 8px;
+      border-radius: 999px;
+      background: rgba(124,58,237,.13);
+      color: #c4b5fd;
+      font-size: 10px;
+      font-weight: 800;
     }
 
-    .stat-note {
-      margin-top: 4px;
-
-      color: #777391;
-
-      font-size: 11px;
-    }
-
-    .grid {
-      display: grid;
-
-      grid-template-columns:
-        repeat(2, minmax(0, 1fr));
-
-      gap: 15px;
-    }
-
-    .panel {
-      padding: 20px;
-
-      border-radius: 19px;
-
-      background:
-        rgba(13,16,51,0.94);
-
-      border:
-        1px solid
-        rgba(124,108,255,0.19);
-    }
-
-    .panel.full {
-      grid-column: 1 / -1;
-    }
-
-    .panel-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      gap: 10px;
-
-      margin-bottom: 15px;
-    }
-
-    .panel-title {
-      font-size: 17px;
-      font-weight: 900;
-    }
-
-    .panel-subtitle {
-      margin-top: 4px;
-
+    .product-description {
+      margin-top: 9px;
       color: #85819e;
-
       font-size: 12px;
       line-height: 1.5;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
 
-    .menu-grid {
-      display: grid;
-
-      grid-template-columns:
-        repeat(2, minmax(0, 1fr));
-
-      gap: 10px;
-    }
-
-    .menu-button {
-      min-height: 90px;
-
-      padding: 15px;
-
-      text-align: left;
-
-      border-radius: 15px;
-
-      border:
-        1px solid
-        rgba(255,255,255,0.08);
-
-      background:
-        rgba(255,255,255,0.035);
-
-      color: #ffffff;
-
-      cursor: pointer;
-    }
-
-    .menu-icon {
-      font-size: 22px;
-      margin-bottom: 9px;
-    }
-
-    .menu-name {
-      font-size: 14px;
-      font-weight: 800;
-    }
-
-    .menu-description {
-      margin-top: 4px;
-
-      color: #85819e;
-
-      font-size: 11px;
-
-      line-height: 1.4;
-    }
-
-    .settings-row {
-      display: flex;
-
-      align-items: center;
-
-      justify-content: space-between;
-
-      gap: 15px;
-
-      padding: 14px 0;
-
-      border-bottom:
-        1px solid
-        rgba(255,255,255,0.07);
-    }
-
-    .settings-row:last-child {
-      border-bottom: 0;
-    }
-
-    .setting-name {
-      font-size: 14px;
-      font-weight: 800;
-    }
-
-    .setting-description {
-      margin-top: 4px;
-
-      color: #85819e;
-
-      font-size: 11px;
-
-      line-height: 1.4;
-    }
-
-    .radio-group {
-      display: grid;
-
-      grid-template-columns:
-        repeat(3, minmax(0, 1fr));
-
-      gap: 8px;
-
-      margin-top: 12px;
-    }
-
-    .radio-option input {
-      display: none;
-    }
-
-    .radio-option label {
-      display: block;
-
-      padding: 13px 8px;
-
-      text-align: center;
-
-      border-radius: 12px;
-
-      border:
-        1px solid
-        rgba(255,255,255,0.10);
-
-      background:
-        rgba(255,255,255,0.035);
-
-      color: #d8d4e5;
-
-      font-size: 12px;
-
-      font-weight: 700;
-
-      cursor: pointer;
-    }
-
-    .radio-option input:checked + label {
-      border-color: #8b5cf6;
-
-      background:
-        rgba(124,58,237,0.16);
-
-      color: #ffffff;
-    }
-
-    .field {
-      margin-top: 14px;
-    }
-
-    .field label {
-      display: block;
-
-      margin-bottom: 7px;
-
+    .product-stock {
+      margin-top: 8px;
       color: #aaa8c4;
-
-      font-size: 12px;
-
-      font-weight: 700;
+      font-size: 11px;
     }
 
-    .field input,
-    .field textarea {
+    .product-button {
       width: 100%;
-
-      padding: 13px;
-
-      border-radius: 11px;
-
-      border:
-        1px solid
-        rgba(255,255,255,0.10);
-
-      background:
-        rgba(255,255,255,0.04);
-
-      color: #ffffff;
-
-      outline: none;
-
-      font-family: inherit;
-
-      font-size: 13px;
-    }
-
-    .field textarea {
-      min-height: 90px;
-      resize: vertical;
-    }
-
-    .field input:focus,
-    .field textarea:focus {
-      border-color: #7c5cff;
-    }
-
-    .save-button {
-      width: 100%;
-
-      margin-top: 16px;
-
-      padding: 14px;
-
+      margin-top: 12px;
+      padding: 11px;
       border: 0;
-
-      border-radius: 12px;
-
-      background:
-        linear-gradient(
-          135deg,
-          #6d4aff,
-          #8b3ffc
-        );
-
-      color: #ffffff;
-
+      border-radius: 10px;
+      background: rgba(124,58,237,.16);
+      border: 1px solid rgba(139,92,246,.25);
+      color: #fff;
       font-weight: 800;
-
-      cursor: pointer;
     }
 
-    .store-link {
-      display: flex;
-
-      gap: 8px;
-    }
-
-    .store-link input {
-      flex: 1;
-    }
-
-    .copy-button {
-      padding: 0 15px;
-
-      border-radius: 11px;
-
-      border:
-        1px solid
-        rgba(255,255,255,0.10);
-
-      background:
-        rgba(255,255,255,0.05);
-
-      color: #ffffff;
-
-      font-weight: 700;
-
-      cursor: pointer;
-    }
-
-    .message {
-      display: none;
-
-      margin-top: 14px;
-
-      padding: 13px;
-
-      border-radius: 12px;
-
-      font-size: 12px;
-
-      line-height: 1.5;
-    }
-
-    .message.success {
-      display: block;
-
-      background:
-        rgba(34,197,94,0.08);
-
-      border:
-        1px solid
-        rgba(34,197,94,0.20);
-
-      color: #86efac;
-    }
-
-    .message.error {
-      display: block;
-
-      background:
-        rgba(239,68,68,0.08);
-
-      border:
-        1px solid
-        rgba(239,68,68,0.22);
-
-      color: #fca5a5;
-    }
-
-    .empty {
-      padding: 18px;
-
-      border-radius: 13px;
-
-      background:
-        rgba(255,255,255,0.03);
-
+    .loading,
+    .empty,
+    .error-box {
+      padding: 35px 18px;
+      border-radius: 15px;
+      background: rgba(13,16,51,.94);
+      border: 1px solid rgba(124,108,255,.19);
       color: #85819e;
-
-      font-size: 13px;
-
       text-align: center;
     }
 
-    .loading {
-      color: #85819e;
+    .error-box {
+      color: #fca5a5;
+      border-color: rgba(239,68,68,.22);
     }
 
     .footer {
-      margin-top: 30px;
-
+      margin-top: 35px;
       padding: 20px 0;
-
-      border-top:
-        1px solid
-        rgba(255,255,255,0.08);
-
+      border-top: 1px solid rgba(255,255,255,.08);
       color: #65617b;
-
       text-align: center;
-
       font-size: 11px;
     }
 
     @media (max-width: 800px) {
-
-      .stats {
-        grid-template-columns:
-          repeat(2, minmax(0, 1fr));
-      }
-
-      .grid {
-        grid-template-columns: 1fr;
-      }
-
-      .panel.full {
-        grid-column: auto;
-      }
-
-      .hero-row {
-        align-items: flex-start;
+      .store-header {
         flex-direction: column;
+        align-items: flex-start;
       }
 
-      .hero-buttons {
-        width: 100%;
+      .store-actions {
         justify-content: flex-start;
       }
 
+      .product-grid {
+        grid-template-columns: repeat(2,minmax(0,1fr));
+      }
     }
 
-    @media (max-width: 520px) {
-
+    @media (max-width: 560px) {
       .page {
-        padding: 12px;
-      }
-
-      .topbar {
-        align-items: flex-start;
+        padding: 11px;
       }
 
       .top-actions {
         display: none;
       }
 
-      .store-title {
+      .store-name {
         font-size: 21px;
       }
 
       .store-logo,
-      .store-logo-fallback {
-        width: 60px;
-        height: 60px;
+      .logo-fallback,
+      .logo-wrap {
+        width: 65px;
+        height: 65px;
       }
 
-      .stats {
-        grid-template-columns:
-          repeat(2, minmax(0, 1fr));
-      }
-
-      .menu-grid {
+      .filters {
         grid-template-columns: 1fr;
       }
 
-      .radio-group {
+      .product-grid {
         grid-template-columns: 1fr;
       }
 
-      .store-link {
+      .product-image-wrap {
+        height: 240px;
+      }
+
+      .share-row {
         flex-direction: column;
       }
-
-      .copy-button {
-        min-height: 43px;
-      }
-
     }
   </style>
 </head>
@@ -779,30 +451,14 @@
 
   <header class="topbar">
 
-    <div class="brand-wrap">
-
-      <div class="brand-icon">
-        E
-      </div>
-
-      <div class="brand">
-        Earn<span>Gig</span>
-      </div>
-
+    <div class="brand">
+      Earn<span>Gig</span>
     </div>
 
     <div class="top-actions">
 
       <button
-        class="small-button"
-        type="button"
-        onclick="openPublicStore()"
-      >
-        View Store
-      </button>
-
-      <button
-        class="small-button"
+        class="top-button"
         type="button"
         onclick="goMarketplace()"
       >
@@ -814,710 +470,145 @@
   </header>
 
 
-  <section class="hero">
-
-    <div class="hero-row">
-
-      <div class="store-main">
-
-        <div id="logoContainer">
-
-          <div class="store-logo-fallback">
-            M
-          </div>
-
-        </div>
-
-        <div>
-
-          <div
-            id="storeName"
-            class="store-title"
-          >
-            Loading Store...
-          </div>
-
-          <div
-            id="storeLocation"
-            class="store-location"
-          >
-            Loading location...
-          </div>
-
-          <div class="active-badge">
-
-            <span class="active-dot"></span>
-
-            <span>
-              Store Active
-            </span>
-
-          </div>
-
-        </div>
-
-      </div>
-
-
-      <div class="hero-buttons">
-
-        <button
-          class="primary-button"
-          type="button"
-          onclick="addProduct()"
-        >
-          + Add Product
-        </button>
-
-        <button
-          class="secondary-button"
-          type="button"
-          onclick="openPublicStore()"
-        >
-          View Store
-        </button>
-
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <div class="section-title">
-    Store Overview
+  <div id="loadingBox" class="loading">
+    Loading store...
   </div>
 
 
-  <section class="stats">
-
-    <div class="stat">
-
-      <div class="stat-label">
-        Products
-      </div>
-
-      <div
-        id="productCount"
-        class="stat-value"
-      >
-        —
-      </div>
-
-      <div class="stat-note">
-        Marketplace products
-      </div>
-
-    </div>
+  <div id="errorBox" class="error-box" style="display:none;"></div>
 
 
-    <div class="stat">
+  <div id="storeContent" style="display:none;">
 
-      <div class="stat-label">
-        New Orders
-      </div>
+    <!-- STORE HEADER -->
 
-      <div
-        id="newOrderCount"
-        class="stat-value"
-      >
-        —
-      </div>
+    <section class="store-card">
 
-      <div class="stat-note">
-        Awaiting fulfillment
-      </div>
+      <div class="store-header">
 
-    </div>
+        <div class="store-main">
 
-
-    <div class="stat">
-
-      <div class="stat-label">
-        Pending Earnings
-      </div>
-
-      <div
-        id="pendingEarnings"
-        class="stat-value"
-      >
-        ₦0.00
-      </div>
-
-      <div class="stat-note">
-        Awaiting completion
-      </div>
-
-    </div>
-
-
-    <div class="stat">
-
-      <div class="stat-label">
-        Available Earnings
-      </div>
-
-      <div
-        id="availableEarnings"
-        class="stat-value"
-      >
-        ₦0.00
-      </div>
-
-      <div class="stat-note">
-        Available to withdraw
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <div class="section-title">
-    Vendor Management
-  </div>
-
-
-  <section class="grid">
-
-
-    <div class="panel">
-
-      <div class="panel-header">
-
-        <div>
-
-          <div class="panel-title">
-            Store Management
+          <div id="logoWrap" class="logo-wrap">
+            <div class="logo-fallback">M</div>
           </div>
 
-          <div class="panel-subtitle">
-            Manage your public marketplace store.
+          <div>
+
+            <div id="storeName" class="store-name">
+              Store
+            </div>
+
+            <div id="storeDescription" class="store-description"></div>
+
+            <div id="storeLocation" class="store-location"></div>
+
+            <div class="store-type">
+              EarnGig Vendor Store
+            </div>
+
+            <div id="badges" class="badges"></div>
+
           </div>
+
+        </div>
+
+
+        <div class="store-actions">
+
+          <button
+            class="secondary-button"
+            type="button"
+            onclick="toggleShare()"
+          >
+            Share Store
+          </button>
+
+          <button
+            class="primary-button"
+            type="button"
+            onclick="copyStoreLink()"
+          >
+            Copy Store Link
+          </button>
 
         </div>
 
       </div>
 
 
-      <div class="menu-grid">
+      <div id="shareBox" class="share-box">
 
-        <button
-          class="menu-button"
-          type="button"
-          onclick="showStoreSettings()"
-        >
-
-          <div class="menu-icon">
-            ✏️
-          </div>
-
-          <div class="menu-name">
-            Edit Store
-          </div>
-
-          <div class="menu-description">
-            Update description, phone and store details.
-          </div>
-
-        </button>
-
-
-        <button
-          class="menu-button"
-          type="button"
-          onclick="showFulfillmentSettings()"
-        >
-
-          <div class="menu-icon">
-            🚚
-          </div>
-
-          <div class="menu-name">
-            Delivery & Pickup
-          </div>
-
-          <div class="menu-description">
-            Choose how buyers can receive their orders.
-          </div>
-
-        </button>
-
-
-        <button
-          class="menu-button"
-          type="button"
-          onclick="addProduct()"
-        >
-
-          <div class="menu-icon">
-            ➕
-          </div>
-
-          <div class="menu-name">
-            Add Product
-          </div>
-
-          <div class="menu-description">
-            Create a new marketplace product.
-          </div>
-
-        </button>
-
-
-        <button
-          class="menu-button"
-          type="button"
-          onclick="viewProducts()"
-        >
-
-          <div class="menu-icon">
-            📦
-          </div>
-
-          <div class="menu-name">
-            My Products
-          </div>
-
-          <div class="menu-description">
-            View products and approval status.
-          </div>
-
-        </button>
-
-
-        <button
-          class="menu-button"
-          type="button"
-          onclick="viewOrders()"
-        >
-
-          <div class="menu-icon">
-            🛍️
-          </div>
-
-          <div class="menu-name">
-            Orders
-          </div>
-
-          <div class="menu-description">
-            Manage new and existing customer orders.
-          </div>
-
-        </button>
-
-
-        <button
-          class="menu-button"
-          type="button"
-          onclick="viewEarnings()"
-        >
-
-          <div class="menu-icon">
-            💰
-          </div>
-
-          <div class="menu-name">
-            Earnings
-          </div>
-
-          <div class="menu-description">
-            View sales and marketplace earnings.
-          </div>
-
-        </button>
-
-      </div>
-
-    </div>
-
-
-    <div class="panel">
-
-      <div class="panel-header">
-
-        <div>
-
-          <div class="panel-title">
-            Store Link
-          </div>
-
-          <div class="panel-subtitle">
-            Your permanent public store address.
-          </div>
-
+        <div class="share-label">
+          Permanent store link
         </div>
 
-      </div>
-
-
-      <div class="store-link">
-
-        <div
-          class="field"
-          style="margin-top:0; flex:1;"
-        >
+        <div class="share-row">
 
           <input
             id="storeLink"
             type="text"
             readonly
-            value="Loading..."
           >
+
+          <button
+            class="secondary-button"
+            type="button"
+            onclick="copyStoreLink()"
+          >
+            Copy
+          </button>
 
         </div>
 
-        <button
-          class="copy-button"
-          type="button"
-          onclick="copyStoreLink()"
-        >
-          Copy
-        </button>
-
       </div>
 
+    </section>
 
-      <button
-        class="save-button"
-        type="button"
-        onclick="openPublicStore()"
+
+    <!-- PRODUCTS -->
+
+    <div class="section-title">
+      Products
+    </div>
+
+
+    <div class="filters">
+
+      <input
+        id="searchInput"
+        type="search"
+        placeholder="Search this store..."
+        oninput="filterProducts()"
       >
-        Open Public Store
-      </button>
 
-
-      <div
-        id="linkMessage"
-        class="message"
-      ></div>
+      <select
+        id="categoryFilter"
+        onchange="filterProducts()"
+      >
+        <option value="">All Categories</option>
+      </select>
 
     </div>
 
 
     <div
-      id="storeSettingsPanel"
-      class="panel"
-      style="display:none;"
+      id="resultLine"
+      class="result-line"
     >
-
-      <div class="panel-header">
-
-        <div>
-
-          <div class="panel-title">
-            Edit Store
-          </div>
-
-          <div class="panel-subtitle">
-            Update your public store information.
-          </div>
-
-        </div>
-
-      </div>
-
-
-      <div class="field">
-
-        <label>
-          Store Name
-        </label>
-
-        <input
-          id="editStoreName"
-          type="text"
-          readonly
-        >
-
-      </div>
-
-
-      <div class="field">
-
-        <label>
-          Store Description
-        </label>
-
-        <textarea
-          id="editDescription"
-          placeholder="Tell buyers about your store..."
-        ></textarea>
-
-      </div>
-
-
-      <div class="field">
-
-        <label>
-          Business Phone
-        </label>
-
-        <input
-          id="editBusinessPhone"
-          type="tel"
-          placeholder="Business phone"
-        >
-
-      </div>
-
-
-      <button
-        id="saveStoreButton"
-        class="save-button"
-        type="button"
-        onclick="saveStoreDetails()"
-      >
-        Save Store Details
-      </button>
-
-
-      <div
-        id="storeMessage"
-        class="message"
-      ></div>
-
+      Loading products...
     </div>
 
 
     <div
-      id="fulfillmentPanel"
-      class="panel"
-      style="display:none;"
-    >
-
-      <div class="panel-header">
-
-        <div>
-
-          <div class="panel-title">
-            Delivery & Pickup
-          </div>
-
-          <div class="panel-subtitle">
-            Choose the fulfillment methods buyers can use for your store.
-          </div>
-
-        </div>
-
-      </div>
-
-
-      <div class="radio-group">
-
-        <div class="radio-option">
-
-          <input
-            type="radio"
-            id="deliveryOnly"
-            name="fulfillment"
-            value="delivery"
-          >
-
-          <label for="deliveryOnly">
-            🚚<br>
-            Delivery Only
-          </label>
-
-        </div>
-
-
-        <div class="radio-option">
-
-          <input
-            type="radio"
-            id="pickupOnly"
-            name="fulfillment"
-            value="pickup"
-          >
-
-          <label for="pickupOnly">
-            📍<br>
-            Pickup Only
-          </label>
-
-        </div>
-
-
-        <div class="radio-option">
-
-          <input
-            type="radio"
-            id="deliveryPickup"
-            name="fulfillment"
-            value="both"
-          >
-
-          <label for="deliveryPickup">
-            🚚📍<br>
-            Both
-          </label>
-
-        </div>
-
-      </div>
-
-
-      <div
-        id="pickupFields"
-        style="display:none;"
-      >
-
-        <div class="field">
-
-          <label>
-            Pickup Location
-          </label>
-
-          <input
-            id="pickupLocation"
-            type="text"
-            placeholder="Where should buyers pick up?"
-          >
-
-        </div>
-
-
-        <div class="field">
-
-          <label>
-            Pickup Instructions
-          </label>
-
-          <textarea
-            id="pickupInstructions"
-            placeholder="Tell buyers when and how to pick up their order..."
-          ></textarea>
-
-        </div>
-
-      </div>
-
-
-      <button
-        id="saveFulfillmentButton"
-        class="save-button"
-        type="button"
-        onclick="saveFulfillmentSettings()"
-      >
-        Save Delivery & Pickup Settings
-      </button>
-
-
-      <div
-        id="fulfillmentMessage"
-        class="message"
-      ></div>
-
-    </div>
-
-
-    <div class="panel full">
-
-      <div class="panel-header">
-
-        <div>
-
-          <div class="panel-title">
-            Quick Start
-          </div>
-
-          <div class="panel-subtitle">
-            Complete these steps before selling.
-          </div>
-
-        </div>
-
-      </div>
-
-
-      <div class="settings-row">
-
-        <div>
-
-          <div class="setting-name">
-            1. Set Delivery / Pickup
-          </div>
-
-          <div class="setting-description">
-            Tell buyers whether your store delivers, supports pickup, or supports both.
-          </div>
-
-        </div>
-
-        <button
-          class="secondary-button"
-          type="button"
-          onclick="showFulfillmentSettings()"
-        >
-          Configure
-        </button>
-
-      </div>
-
-
-      <div class="settings-row">
-
-        <div>
-
-          <div class="setting-name">
-            2. Add Your First Product
-          </div>
-
-          <div class="setting-description">
-            Products require images and will go through the marketplace approval process.
-          </div>
-
-        </div>
-
-        <button
-          class="primary-button"
-          type="button"
-          onclick="addProduct()"
-        >
-          Add Product
-        </button>
-
-      </div>
-
-
-      <div class="settings-row">
-
-        <div>
-
-          <div class="setting-name">
-            3. Share Your Store
-          </div>
-
-          <div class="setting-description">
-            Share your permanent store link with customers.
-          </div>
-
-        </div>
-
-        <button
-          class="secondary-button"
-          type="button"
-          onclick="copyStoreLink()"
-        >
-          Copy Link
-        </button>
-
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <div
-    id="pageMessage"
-    class="message"
-  ></div>
+      id="productsGrid"
+      class="product-grid"
+    ></div>
+
+  </div>
 
 
   <footer class="footer">
-    © 2026 EarnGig. Marketplace Vendor Dashboard.
+    © 2026 EarnGig. Marketplace.
   </footer>
 
 </main>
@@ -1528,578 +619,226 @@
 const SUPABASE_URL =
   "https://ytvtdelwefykeqwztcyo.supabase.co";
 
-
 const SUPABASE_ANON_KEY =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl0dnRkZWx3ZWZ5a2Vxd3p0Y3lvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYzMDkwMjUsImV4cCI6MjEwMTg4NTAyNX0.qzT3lYrTFupgGAxQ0VZl26hqblLQDs0vc9ZNiwBU9tA";
-
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ5dHZ0ZGVsd2VmeWtld3d0Y3lvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYzMDkwMjUsImV4cCI6MjEwMTg4NTAyNX0.qzT3lYrTFupgGAxQ0VZl26hqblLQDs0vc9ZNiwBU9tA";
 
 const REST_BASE =
-  SUPABASE_URL +
-  "/rest/v1";
+  SUPABASE_URL + "/rest/v1";
 
-
-let currentUser = null;
 let currentStore = null;
+let allProducts = [];
 
 
-function money(
-  amount
-) {
+/* =========================================================
+   HELPERS
+   ========================================================= */
 
-  return new Intl.NumberFormat(
-    "en-NG",
-    {
-      style: "currency",
-      currency: "NGN",
-      minimumFractionDigits: 2
-    }
-  ).format(
-    Number(amount || 0)
-  );
+function escapeHtml(value) {
 
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
 
 
-function showMessage(
-  elementId,
-  message,
-  type
-) {
+function money(value) {
 
-  const element =
-    document.getElementById(
-      elementId
+  return "₦" +
+    Number(value || 0).toLocaleString(
+      "en-NG",
+      {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+      }
     );
-
-  element.textContent =
-    message;
-
-  element.className =
-    "message " + type;
-
 }
 
 
-function hideMessage(
-  elementId
-) {
-
-  const element =
-    document.getElementById(
-      elementId
-    );
-
-  element.textContent = "";
-
-  element.className =
-    "message";
-
-}
-
-
-async function getSession() {
+async function restGet(path) {
 
   const response =
     await fetch(
-      SUPABASE_URL +
-      "/auth/v1/session",
+      REST_BASE + path,
       {
         method: "GET",
-
         headers: {
-          "apikey":
-            SUPABASE_ANON_KEY
+          "apikey": SUPABASE_ANON_KEY,
+          "Authorization":
+            "Bearer " + SUPABASE_ANON_KEY
         }
       }
     );
 
-  /*
-   * The actual authenticated session is obtained
-   * from the Supabase JS client loaded below.
-   */
-
-}
-
-
-async function loadSession() {
-
-  if (
-    !window.supabase ||
-    !window.supabase.createClient
-  ) {
-
-    throw new Error(
-      "Supabase client could not load."
-    );
-
-  }
-
-
-  const client =
-    window.supabase.createClient(
-      SUPABASE_URL,
-      SUPABASE_ANON_KEY
-    );
-
-
-  const {
-    data,
-    error
-  } =
-    await client.auth.getSession();
-
-
-  if (error) {
-
-    throw new Error(
-      "Session error: " +
-      error.message
-    );
-
-  }
-
-
-  if (
-    !data ||
-    !data.session ||
-    !data.session.user
-  ) {
-
-    window.location.href =
-      "login.html?redirect=vendor-dashboard.html";
-
-    return null;
-
-  }
-
-
-  currentUser =
-    data.session.user;
-
-
-  return {
-    client,
-    session:
-      data.session
-  };
-
-}
-
-
-function restHeaders(
-  accessToken
-) {
-
-  return {
-    "apikey":
-      SUPABASE_ANON_KEY,
-
-    "Authorization":
-      "Bearer " +
-      accessToken,
-
-    "Content-Type":
-      "application/json",
-
-    "Prefer":
-      "return=representation"
-  };
-
-}
-
-
-async function restRequest(
-  url,
-  options = {}
-) {
-
-  const response =
-    await fetch(
-      url,
-      options
-    );
-
-
   const text =
     await response.text();
 
-
   let data = null;
 
-
   try {
-
-    data =
-      JSON.parse(text);
-
+    data = text ? JSON.parse(text) : null;
   } catch {
-
-    data =
-      text;
-
+    data = text;
   }
-
 
   if (!response.ok) {
 
     throw new Error(
       data?.message ||
+      data?.details ||
       data?.hint ||
       data?.error ||
-      (
-        "Request failed with HTTP " +
-        response.status
-      )
+      "Supabase request failed."
     );
-
   }
-
 
   return data;
-
 }
 
 
-function storeLocation(
-  store
-) {
+function getStoreSlug() {
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
 
   return (
-    store.location_display ||
-
-    [
-      store.business_area,
-      store.business_city,
-      store.business_lga,
-      store.business_state
-    ]
-      .filter(Boolean)
-      .join(", ")
-  ) ||
-  "Location not provided";
-
+    params.get("store") ||
+    ""
+  ).trim();
 }
 
 
-function publicStoreUrl() {
+function getCurrentStoreUrl() {
 
-  if (
-    !currentStore ||
-    !currentStore.store_slug
-  ) {
-
-    return "";
-
-  }
-
-
-  return (
-    window.location.origin +
-    window.location.pathname
-      .replace(
-        "vendor-dashboard.html",
-        "store.html"
-      ) +
-    "?store=" +
-    encodeURIComponent(
-      currentStore.store_slug
-    )
-  );
-
+  return window.location.href;
 }
 
 
-function renderStore() {
+function showError(message) {
 
   document.getElementById(
-    "storeName"
-  ).textContent =
-    currentStore.store_name ||
-    "Marketplace Store";
-
+    "loadingBox"
+  ).style.display = "none";
 
   document.getElementById(
-    "storeLocation"
-  ).textContent =
-    storeLocation(
-      currentStore
-    );
+    "storeContent"
+  ).style.display = "none";
 
-
-  document.getElementById(
-    "storeLink"
-  ).value =
-    publicStoreUrl() ||
-    "Store link unavailable";
-
-
-  document.getElementById(
-    "editStoreName"
-  ).value =
-    currentStore.store_name ||
-    "";
-
-
-  document.getElementById(
-    "editDescription"
-  ).value =
-    currentStore.description ||
-    "";
-
-
-  document.getElementById(
-    "editBusinessPhone"
-  ).value =
-    currentStore.business_phone ||
-    "";
-
-
-  const logoContainer =
+  const errorBox =
     document.getElementById(
-      "logoContainer"
+      "errorBox"
     );
 
+  errorBox.style.display = "block";
 
-  if (
-    currentStore.store_logo_url
-  ) {
+  errorBox.innerHTML =
+    escapeHtml(message);
+}
 
-    logoContainer.innerHTML =
-      `
-        <img
-          class="store-logo"
-          src="${escapeAttribute(currentStore.store_logo_url)}"
-          alt="${escapeAttribute(currentStore.store_name || "Store")}"
-          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-        >
 
-        <div
-          class="store-logo-fallback"
-          style="display:none;"
-        >
-          ${escapeHtml(
-            (
-              currentStore.store_name ||
-              "M"
-            ).charAt(0).toUpperCase()
-          )}
-        </div>
-      `;
+/* =========================================================
+   LOAD STORE
+   ========================================================= */
 
-  } else {
+async function loadStore() {
 
-    logoContainer.innerHTML =
-      `
-        <div class="store-logo-fallback">
-          ${escapeHtml(
-            (
-              currentStore.store_name ||
-              "M"
-            ).charAt(0).toUpperCase()
-          )}
-        </div>
-      `;
+  const slug =
+    getStoreSlug();
 
+  if (!slug) {
+
+    showError(
+      "Store link is missing a store identifier."
+    );
+
+    return;
   }
 
 
-  renderFulfillment();
-
-}
-
-
-function escapeHtml(
-  value
-) {
-
-  return String(
-    value || ""
-  )
-    .replaceAll(
-      "&",
-      "&amp;"
-    )
-    .replaceAll(
-      "<",
-      "&lt;"
-    )
-    .replaceAll(
-      ">",
-      "&gt;"
-    )
-    .replaceAll(
-      '"',
-      "&quot;"
-    )
-    .replaceAll(
-      "'",
-      "&#039;"
-    );
-
-}
-
-
-function escapeAttribute(
-  value
-) {
-
-  return escapeHtml(
-    value
-  );
-
-}
-
-
-function renderFulfillment() {
-
-  const delivery =
-    currentStore.accepts_delivery === true;
-
-  const pickup =
-    currentStore.accepts_pickup === true;
-
-
-  document.getElementById(
-    "deliveryOnly"
-  ).checked =
-    delivery &&
-    !pickup;
-
-
-  document.getElementById(
-    "pickupOnly"
-  ).checked =
-    pickup &&
-    !delivery;
-
-
-  document.getElementById(
-    "deliveryPickup"
-  ).checked =
-    delivery &&
-    pickup;
-
-
-  document.getElementById(
-    "pickupLocation"
-  ).value =
-    currentStore.pickup_location ||
-    "";
-
-
-  document.getElementById(
-    "pickupInstructions"
-  ).value =
-    currentStore.pickup_instructions ||
-    "";
-
-
-  updatePickupFields();
-
-}
-
-
-function updatePickupFields() {
-
-  const selected =
-    document.querySelector(
-      'input[name="fulfillment"]:checked'
+  /*
+   * First try the exact store slug from the URL.
+   */
+  let stores =
+    await restGet(
+      "/marketplace_stores" +
+      "?store_slug=eq." +
+      encodeURIComponent(slug) +
+      "&select=*"
     );
 
 
-  const pickupFields =
-    document.getElementById(
-      "pickupFields"
-    );
-
-
+  /*
+   * Some older store links may use a slug that
+   * was generated differently. If the exact lookup
+   * fails, try matching the final identifier/name
+   * more broadly.
+   */
   if (
-    selected &&
-    (
-      selected.value === "pickup" ||
-      selected.value === "both"
-    )
+    !Array.isArray(stores) ||
+    stores.length === 0
   ) {
 
-    pickupFields.style.display =
-      "block";
+    const possibleStores =
+      await restGet(
+        "/marketplace_stores" +
+        "?select=*" +
+        "&store_name=ilike." +
+        encodeURIComponent(
+          "The Mia Mart"
+        )
+      );
 
-  } else {
+    if (
+      Array.isArray(possibleStores) &&
+      possibleStores.length > 0
+    ) {
 
-    pickupFields.style.display =
-      "none";
+      const exact =
+        possibleStores.find(
+          store =>
+            String(
+              store.store_slug || ""
+            ).toLowerCase() ===
+            slug.toLowerCase()
+        );
 
-  }
-
-}
-
-
-async function loadStore(
-  session
-) {
-
-  const url =
-    REST_BASE +
-    "/marketplace_stores" +
-    "?select=" +
-    encodeURIComponent(
-      [
-        "id",
-        "vendor_id",
-        "store_name",
-        "store_slug",
-        "description",
-        "store_logo_url",
-        "business_phone",
-        "business_state",
-        "business_lga",
-        "business_city",
-        "business_area",
-        "location_display",
-        "status",
-        "accepts_delivery",
-        "accepts_pickup",
-        "pickup_location",
-        "pickup_instructions",
-        "created_at"
-      ].join(",")
-    ) +
-    "&vendor_id=eq." +
-    encodeURIComponent(
-      currentUser.id
-    ) +
-    "&order=created_at.desc" +
-    "&limit=1";
-
-
-  const data =
-    await restRequest(
-      url,
-      {
-        method: "GET",
-
-        headers:
-          restHeaders(
-            session.access_token
-          )
+      if (exact) {
+        stores = [exact];
+      } else {
+        /*
+         * Only use the fallback if the requested
+         * URL contains the Mia Mart identifier.
+         */
+        if (
+          slug.toLowerCase()
+            .includes("the-mia-mart")
+        ) {
+          stores = [possibleStores[0]];
+        }
       }
-    );
+    }
+  }
 
 
   if (
-    !Array.isArray(data) ||
-    data.length === 0
+    !Array.isArray(stores) ||
+    stores.length === 0
   ) {
 
-    throw new Error(
-      "No marketplace store was found for your account."
+    showError(
+      "Store not found. The store link does not currently match an active marketplace store."
     );
 
+    return;
   }
 
 
   currentStore =
-    data[0];
+    stores[0];
 
 
   if (
@@ -2107,659 +846,600 @@ async function loadStore(
     "active"
   ) {
 
-    window.location.href =
-      "vendor-subscription.html";
+    showError(
+      "This store is not currently active."
+    );
 
-    return false;
-
+    return;
   }
 
 
   renderStore();
 
-  return true;
+  await loadProducts();
 
+
+  document.getElementById(
+    "loadingBox"
+  ).style.display = "none";
+
+  document.getElementById(
+    "errorBox"
+  ).style.display = "none";
+
+  document.getElementById(
+    "storeContent"
+  ).style.display = "block";
 }
 
 
-async function loadStats(
-  session
+/* =========================================================
+   STORE DISPLAY
+   ========================================================= */
+
+function renderStore() {
+
+  document.getElementById(
+    "storeName"
+  ).textContent =
+    currentStore.store_name ||
+    "EarnGig Store";
+
+
+  document.getElementById(
+    "storeDescription"
+  ).textContent =
+    currentStore.description ||
+    "Welcome to this EarnGig marketplace store.";
+
+
+  const location =
+    currentStore.location_display ||
+
+    [
+      currentStore.business_area,
+      currentStore.business_city,
+      currentStore.business_lga,
+      currentStore.business_state
+    ]
+      .filter(Boolean)
+      .join(", ") ||
+
+    currentStore.business_location ||
+
+    "Location not provided";
+
+
+  document.getElementById(
+    "storeLocation"
+  ).textContent =
+    location;
+
+
+  document.getElementById(
+    "storeLink"
+  ).value =
+    getCurrentStoreUrl();
+
+
+  const logoWrap =
+    document.getElementById(
+      "logoWrap"
+    );
+
+
+  if (
+    currentStore.store_logo_url
+  ) {
+
+    logoWrap.innerHTML = `
+      <img
+        class="store-logo"
+        src="${escapeHtml(currentStore.store_logo_url)}"
+        alt="${escapeHtml(currentStore.store_name || "Store")}"
+        onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='flex';"
+      >
+
+      <div
+        class="logo-fallback"
+        style="display:none;"
+      >
+        ${escapeHtml(
+          (
+            currentStore.store_name ||
+            "E"
+          ).charAt(0).toUpperCase()
+        )}
+      </div>
+    `;
+
+  } else {
+
+    logoWrap.innerHTML = `
+      <div class="logo-fallback">
+        ${escapeHtml(
+          (
+            currentStore.store_name ||
+            "E"
+          ).charAt(0).toUpperCase()
+        )}
+      </div>
+    `;
+  }
+
+
+  const badges =
+    document.getElementById(
+      "badges"
+    );
+
+  let badgeHtml = "";
+
+
+  if (
+    currentStore.accepts_delivery === true
+  ) {
+
+    badgeHtml += `
+      <span class="badge">
+        Delivery Available
+      </span>
+    `;
+  }
+
+
+  if (
+    currentStore.accepts_pickup === true
+  ) {
+
+    badgeHtml += `
+      <span class="badge">
+        Pickup Available
+      </span>
+    `;
+  }
+
+
+  if (!badgeHtml) {
+
+    badgeHtml = `
+      <span
+        class="badge"
+        style="
+          color:#aaa8c4;
+          border-color:rgba(255,255,255,.10);
+          background:rgba(255,255,255,.04);
+        "
+      >
+        Contact Seller
+      </span>
+    `;
+  }
+
+
+  badges.innerHTML =
+    badgeHtml;
+}
+
+
+/* =========================================================
+   LOAD PRODUCTS
+   ========================================================= */
+
+async function loadProducts() {
+
+  /*
+   * Products belonging to this store.
+   */
+  const products =
+    await restGet(
+      "/marketplace_products" +
+      "?store_id=eq." +
+      encodeURIComponent(
+        currentStore.id
+      ) +
+      "&select=*" +
+      "&order=created_at.desc"
+    );
+
+
+  allProducts =
+    Array.isArray(products)
+      ? products
+      : [];
+
+
+  /*
+   * Load product images.
+   */
+  if (allProducts.length) {
+
+    const ids =
+      allProducts
+        .map(product => product.id)
+        .join(",");
+
+
+    const images =
+      await restGet(
+        "/marketplace_product_images" +
+        "?product_id=in.(" +
+        ids +
+        ")" +
+        "&select=*" +
+        "&order=sort_order.asc"
+      );
+
+
+    for (
+      const product of allProducts
+    ) {
+
+      product.images =
+        (
+          Array.isArray(images)
+            ? images
+            : []
+        ).filter(
+          image =>
+            image.product_id ===
+            product.id
+        );
+    }
+  }
+
+
+  buildCategories();
+
+  renderProducts(
+    allProducts
+  );
+}
+
+
+/* =========================================================
+   CATEGORIES
+   ========================================================= */
+
+function buildCategories() {
+
+  const select =
+    document.getElementById(
+      "categoryFilter"
+    );
+
+
+  const categories =
+    [
+      ...new Set(
+        allProducts
+          .map(
+            product =>
+              product.category
+          )
+          .filter(Boolean)
+      )
+    ]
+    .sort(
+      (a,b) =>
+        String(a).localeCompare(
+          String(b)
+        )
+    );
+
+
+  select.innerHTML =
+    `
+      <option value="">
+        All Categories
+      </option>
+    `;
+
+
+  categories.forEach(
+    category => {
+
+      const option =
+        document.createElement(
+          "option"
+        );
+
+      option.value =
+        category;
+
+      option.textContent =
+        category;
+
+      select.appendChild(
+        option
+      );
+    }
+  );
+}
+
+
+/* =========================================================
+   FILTER
+   ========================================================= */
+
+function filterProducts() {
+
+  const search =
+    document.getElementById(
+      "searchInput"
+    ).value
+      .trim()
+      .toLowerCase();
+
+
+  const category =
+    document.getElementById(
+      "categoryFilter"
+    ).value;
+
+
+  const filtered =
+    allProducts.filter(
+      product => {
+
+        const text =
+          [
+            product.title,
+            product.description,
+            product.category
+          ]
+            .filter(Boolean)
+            .join(" ")
+            .toLowerCase();
+
+
+        const matchesSearch =
+          !search ||
+          text.includes(search);
+
+
+        const matchesCategory =
+          !category ||
+          product.category ===
+          category;
+
+
+        return (
+          matchesSearch &&
+          matchesCategory
+        );
+      }
+    );
+
+
+  renderProducts(
+    filtered
+  );
+}
+
+
+/* =========================================================
+   RENDER PRODUCTS
+   ========================================================= */
+
+function renderProducts(
+  products
+) {
+
+  const grid =
+    document.getElementById(
+      "productsGrid"
+    );
+
+
+  const resultLine =
+    document.getElementById(
+      "resultLine"
+    );
+
+
+  resultLine.textContent =
+    products.length +
+    (
+      products.length === 1
+        ? " product"
+        : " products"
+    );
+
+
+  if (!products.length) {
+
+    grid.innerHTML = `
+      <div
+        class="empty"
+        style="grid-column:1/-1;"
+      >
+        No products found in this store.
+      </div>
+    `;
+
+    return;
+  }
+
+
+  grid.innerHTML =
+    products.map(
+      product =>
+        createProductCard(
+          product
+        )
+    ).join("");
+}
+
+
+/* =========================================================
+   PRODUCT CARD
+   ========================================================= */
+
+function createProductCard(
+  product
+) {
+
+  const primaryImage =
+    (
+      product.images ||
+      []
+    ).find(
+      image =>
+        image.is_primary === true
+    ) ||
+    (
+      product.images ||
+      []
+    )[0];
+
+
+  const imageUrl =
+    primaryImage?.watermarked_file_path ||
+    primaryImage?.image_url ||
+    "";
+
+
+  const stock =
+    Number(
+      product.stock_quantity ||
+      0
+    );
+
+
+  return `
+    <article class="product-card">
+
+      <div class="product-image-wrap">
+
+        ${
+          imageUrl
+            ? `
+              <img
+                class="product-image"
+                src="${escapeHtml(imageUrl)}"
+                alt="${escapeHtml(product.title || "Product")}"
+                loading="lazy"
+                onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='flex';"
+              >
+
+              <div
+                class="image-placeholder"
+                style="display:none;"
+              >
+                Image unavailable
+              </div>
+            `
+            : `
+              <div class="image-placeholder">
+                Product image unavailable
+              </div>
+            `
+        }
+
+      </div>
+
+
+      <div class="product-body">
+
+        <div class="product-title">
+          ${escapeHtml(
+            product.title ||
+            "Product"
+          )}
+        </div>
+
+
+        <div class="product-price">
+          ${money(product.price)}
+        </div>
+
+
+        ${
+          product.category
+            ? `
+              <span class="product-category">
+                ${escapeHtml(product.category)}
+              </span>
+            `
+            : ""
+        }
+
+
+        <div class="product-description">
+          ${escapeHtml(
+            product.description ||
+            "No product description available."
+          )}
+        </div>
+
+
+        <div class="product-stock">
+
+          ${
+            stock > 0
+              ? stock + " in stock"
+              : "Out of stock"
+          }
+
+        </div>
+
+
+        <button
+          class="product-button"
+          type="button"
+          onclick="viewProduct('${encodeURIComponent(product.id)}')"
+        >
+          View Product
+        </button>
+
+      </div>
+
+    </article>
+  `;
+}
+
+
+/* =========================================================
+   PRODUCT VIEW
+   ========================================================= */
+
+function viewProduct(
+  productId
 ) {
 
   /*
-   * Product count
+   * Use product.html if it exists.
+   * The product ID is passed safely through the URL.
    */
-
-  try {
-
-    const productUrl =
-      REST_BASE +
-      "/marketplace_products" +
-      "?select=id,status" +
-      "&vendor_id=eq." +
-      encodeURIComponent(
-        currentUser.id
-      );
-
-
-    const products =
-      await restRequest(
-        productUrl,
-        {
-          method: "GET",
-
-          headers:
-            restHeaders(
-              session.access_token
-            )
-        }
-      );
-
-
-    document.getElementById(
-      "productCount"
-    ).textContent =
-      Array.isArray(products)
-        ? products.length
-        : 0;
-
-  } catch (error) {
-
-    console.error(
-      "Product stats error:",
-      error
-    );
-
-    document.getElementById(
-      "productCount"
-    ).textContent =
-      "0";
-
-  }
-
-
-  /*
-   * Orders
-   */
-
-  try {
-
-    const orderUrl =
-      REST_BASE +
-      "/marketplace_store_orders" +
-      "?select=id,order_status,total_amount" +
-      "&vendor_id=eq." +
-      encodeURIComponent(
-        currentUser.id
-      );
-
-
-    const orders =
-      await restRequest(
-        orderUrl,
-        {
-          method: "GET",
-
-          headers:
-            restHeaders(
-              session.access_token
-            )
-        }
-      );
-
-
-    const orderList =
-      Array.isArray(orders)
-        ? orders
-        : [];
-
-
-    const newOrders =
-      orderList.filter(
-        order =>
-          order.order_status ===
-          "paid_pending_fulfillment"
-      ).length;
-
-
-    document.getElementById(
-      "newOrderCount"
-    ).textContent =
-      newOrders;
-
-
-    /*
-     * For now, the database does not expose a
-     * dedicated vendor earnings ledger in the
-     * confirmed schema, so sales are calculated
-     * from completed marketplace orders.
-     */
-
-    const completedOrders =
-      orderList.filter(
-        order =>
-          order.order_status ===
-          "delivered"
-      );
-
-
-    const deliveredTotal =
-      completedOrders.reduce(
-        (
-          total,
-          order
-        ) =>
-          total +
-          Number(
-            order.total_amount ||
-            0
-          ),
-        0
-      );
-
-
-    document.getElementById(
-      "availableEarnings"
-    ).textContent =
-      money(
-        deliveredTotal
-      );
-
-
-    const pendingOrders =
-      orderList.filter(
-        order =>
-          order.order_status !==
-          "delivered"
-      );
-
-
-    const pendingTotal =
-      pendingOrders.reduce(
-        (
-          total,
-          order
-        ) =>
-          total +
-          Number(
-            order.total_amount ||
-            0
-          ),
-        0
-      );
-
-
-    document.getElementById(
-      "pendingEarnings"
-    ).textContent =
-      money(
-        pendingTotal
-      );
-
-
-  } catch (error) {
-
-    console.error(
-      "Order stats error:",
-      error
-    );
-
-    document.getElementById(
-      "newOrderCount"
-    ).textContent =
-      "0";
-
-    document.getElementById(
-      "pendingEarnings"
-    ).textContent =
-      "₦0.00";
-
-    document.getElementById(
-      "availableEarnings"
-    ).textContent =
-      "₦0.00";
-
-  }
-
+  window.location.href =
+    "product.html?id=" +
+    productId;
 }
 
 
-function showStoreSettings() {
+/* =========================================================
+   SHARE
+   ========================================================= */
 
-  const panel =
+function toggleShare() {
+
+  const box =
     document.getElementById(
-      "storeSettingsPanel"
-    );
-
-  panel.style.display =
-    panel.style.display ===
-    "none"
-      ? "block"
-      : "none";
-
-
-  document.getElementById(
-    "fulfillmentPanel"
-  ).style.display =
-    "none";
-
-
-  if (
-    panel.style.display ===
-    "block"
-  ) {
-
-    panel.scrollIntoView({
-      behavior: "smooth",
-      block: "start"
-    });
-
-  }
-
-}
-
-
-function showFulfillmentSettings() {
-
-  const panel =
-    document.getElementById(
-      "fulfillmentPanel"
-    );
-
-  panel.style.display =
-    panel.style.display ===
-    "none"
-      ? "block"
-      : "none";
-
-
-  document.getElementById(
-    "storeSettingsPanel"
-  ).style.display =
-    "none";
-
-
-  if (
-    panel.style.display ===
-    "block"
-  ) {
-
-    panel.scrollIntoView({
-      behavior: "smooth",
-      block: "start"
-    });
-
-  }
-
-}
-
-
-async function saveStoreDetails() {
-
-  if (!currentStore) {
-    return;
-  }
-
-
-  const button =
-    document.getElementById(
-      "saveStoreButton"
+      "shareBox"
     );
 
 
-  const description =
-    document.getElementById(
-      "editDescription"
-    ).value.trim();
-
-
-  const businessPhone =
-    document.getElementById(
-      "editBusinessPhone"
-    ).value.trim();
-
-
-  button.disabled = true;
-
-  button.textContent =
-    "Saving...";
-
-
-  hideMessage(
-    "storeMessage"
+  box.classList.toggle(
+    "show"
   );
-
-
-  try {
-
-    const {
-      session
-    } =
-      await loadSession();
-
-
-    const url =
-      REST_BASE +
-      "/marketplace_stores" +
-      "?id=eq." +
-      encodeURIComponent(
-        currentStore.id
-      ) +
-      "&vendor_id=eq." +
-      encodeURIComponent(
-        currentUser.id
-      );
-
-
-    const data =
-      await restRequest(
-        url,
-        {
-          method: "PATCH",
-
-          headers:
-            restHeaders(
-              session.access_token
-            ),
-
-          body:
-            JSON.stringify({
-              description:
-                description,
-
-              business_phone:
-                businessPhone,
-
-              updated_at:
-                new Date().toISOString()
-            })
-        }
-      );
-
-
-    if (
-      Array.isArray(data) &&
-      data.length > 0
-    ) {
-
-      currentStore =
-        data[0];
-
-    } else {
-
-      currentStore.description =
-        description;
-
-      currentStore.business_phone =
-        businessPhone;
-
-    }
-
-
-    renderStore();
-
-
-    showMessage(
-      "storeMessage",
-      "Store details saved successfully.",
-      "success"
-    );
-
-
-  } catch (error) {
-
-    console.error(
-      "Save store error:",
-      error
-    );
-
-
-    showMessage(
-      "storeMessage",
-      error?.message ||
-      "Could not save store details.",
-      "error"
-    );
-
-
-  } finally {
-
-    button.disabled = false;
-
-    button.textContent =
-      "Save Store Details";
-
-  }
-
-}
-
-
-async function saveFulfillmentSettings() {
-
-  if (!currentStore) {
-    return;
-  }
-
-
-  const selected =
-    document.querySelector(
-      'input[name="fulfillment"]:checked'
-    );
-
-
-  if (!selected) {
-
-    showMessage(
-      "fulfillmentMessage",
-      "Please choose Delivery Only, Pickup Only, or Both.",
-      "error"
-    );
-
-    return;
-
-  }
-
-
-  const method =
-    selected.value;
-
-
-  const acceptsDelivery =
-    method === "delivery" ||
-    method === "both";
-
-
-  const acceptsPickup =
-    method === "pickup" ||
-    method === "both";
-
-
-  const pickupLocation =
-    document.getElementById(
-      "pickupLocation"
-    ).value.trim();
-
-
-  const pickupInstructions =
-    document.getElementById(
-      "pickupInstructions"
-    ).value.trim();
-
-
-  if (
-    acceptsPickup &&
-    !pickupLocation
-  ) {
-
-    showMessage(
-      "fulfillmentMessage",
-      "Please enter your pickup location.",
-      "error"
-    );
-
-    return;
-
-  }
-
-
-  const button =
-    document.getElementById(
-      "saveFulfillmentButton"
-    );
-
-
-  button.disabled = true;
-
-  button.textContent =
-    "Saving...";
-
-
-  hideMessage(
-    "fulfillmentMessage"
-  );
-
-
-  try {
-
-    const {
-      session
-    } =
-      await loadSession();
-
-
-    const url =
-      REST_BASE +
-      "/marketplace_stores" +
-      "?id=eq." +
-      encodeURIComponent(
-        currentStore.id
-      ) +
-      "&vendor_id=eq." +
-      encodeURIComponent(
-        currentUser.id
-      );
-
-
-    const data =
-      await restRequest(
-        url,
-        {
-          method: "PATCH",
-
-          headers:
-            restHeaders(
-              session.access_token
-            ),
-
-          body:
-            JSON.stringify({
-              accepts_delivery:
-                acceptsDelivery,
-
-              accepts_pickup:
-                acceptsPickup,
-
-              pickup_location:
-                acceptsPickup
-                  ? pickupLocation
-                  : null,
-
-              pickup_instructions:
-                acceptsPickup
-                  ? pickupInstructions
-                  : null,
-
-              updated_at:
-                new Date().toISOString()
-            })
-        }
-      );
-
-
-    if (
-      Array.isArray(data) &&
-      data.length > 0
-    ) {
-
-      currentStore =
-        data[0];
-
-    } else {
-
-      currentStore.accepts_delivery =
-        acceptsDelivery;
-
-      currentStore.accepts_pickup =
-        acceptsPickup;
-
-      currentStore.pickup_location =
-        acceptsPickup
-          ? pickupLocation
-          : null;
-
-      currentStore.pickup_instructions =
-        acceptsPickup
-          ? pickupInstructions
-          : null;
-
-    }
-
-
-    renderFulfillment();
-
-
-    showMessage(
-      "fulfillmentMessage",
-      "Delivery and pickup settings saved successfully.",
-      "success"
-    );
-
-
-  } catch (error) {
-
-    console.error(
-      "Fulfillment save error:",
-      error
-    );
-
-
-    showMessage(
-      "fulfillmentMessage",
-      error?.message ||
-      "Could not save fulfillment settings.",
-      "error"
-    );
-
-
-  } finally {
-
-    button.disabled = false;
-
-    button.textContent =
-      "Save Delivery & Pickup Settings";
-
-  }
-
 }
 
 
 async function copyStoreLink() {
 
   const link =
-    publicStoreUrl();
-
-
-  if (!link) {
-
-    showMessage(
-      "linkMessage",
-      "Your store link is not available yet.",
-      "error"
-    );
-
-    return;
-
-  }
+    getCurrentStoreUrl();
 
 
   try {
@@ -2769,12 +1449,9 @@ async function copyStoreLink() {
     );
 
 
-    showMessage(
-      "linkMessage",
-      "Store link copied successfully.",
-      "success"
+    alert(
+      "Store link copied successfully."
     );
-
 
   } catch {
 
@@ -2790,158 +1467,45 @@ async function copyStoreLink() {
       "copy"
     );
 
-
-    showMessage(
-      "linkMessage",
-      "Store link copied.",
-      "success"
+    alert(
+      "Store link copied."
     );
-
   }
-
 }
 
 
-function addProduct() {
-
-  /*
-   * Product creation will use the dedicated
-   * branded-image product workflow.
-   */
-
-  window.location.href =
-    "create-product.html";
-
-}
-
-
-function viewProducts() {
-
-  window.location.href =
-    "my-products.html";
-
-}
-
-
-function viewOrders() {
-
-  window.location.href =
-    "vendor-orders.html";
-
-}
-
-
-function viewEarnings() {
-
-  window.location.href =
-    "vendor-earnings.html";
-
-}
-
-
-function openPublicStore() {
-
-  const link =
-    publicStoreUrl();
-
-
-  if (link) {
-
-    window.location.href =
-      link;
-
-  } else {
-
-    showMessage(
-      "pageMessage",
-      "Your public store link is not available.",
-      "error"
-    );
-
-  }
-
-}
-
+/* =========================================================
+   MARKETPLACE
+   ========================================================= */
 
 function goMarketplace() {
 
   window.location.href =
     "marketplace.html";
-
 }
 
 
-async function initialize() {
+/* =========================================================
+   START
+   ========================================================= */
 
-  try {
+loadStore()
+  .catch(
+    error => {
 
-    const result =
-      await loadSession();
-
-
-    if (!result) {
-      return;
-    }
-
-
-    const storeLoaded =
-      await loadStore(
-        result.session
+      console.error(
+        "Store loading error:",
+        error
       );
 
-
-    if (!storeLoaded) {
-      return;
-    }
-
-
-    await loadStats(
-      result.session
-    );
-
-
-  } catch (error) {
-
-    console.error(
-      "Vendor dashboard error:",
-      error
-    );
-
-
-    showMessage(
-      "pageMessage",
-      error?.message ||
-      "Could not load your vendor dashboard.",
-      "error"
-    );
-
-  }
-
-}
-
-
-document
-  .querySelectorAll(
-    'input[name="fulfillment"]'
-  )
-  .forEach(
-    input => {
-
-      input.addEventListener(
-        "change",
-        updatePickupFields
+      showError(
+        error.message ||
+        "Unable to load this store."
       );
-
     }
   );
 
-
-initialize();
-
 </script>
-
-<!-- Supabase client -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 </body>
 </html>
