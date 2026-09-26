@@ -3,274 +3,795 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Create Listing | EarnGig</title>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Add Product | EarnGig Marketplace</title>
 
   <link rel="stylesheet" href="styles.css">
+
+  <style>
+
+    body {
+      background:
+        radial-gradient(
+          circle at top right,
+          rgba(92, 60, 180, 0.12),
+          transparent 35%
+        ),
+        #070b2b;
+    }
+
+    .product-page {
+      padding: 25px 0 70px;
+    }
+
+    .page-heading {
+      margin-bottom: 25px;
+    }
+
+    .page-heading h1 {
+      margin: 6px 0;
+    }
+
+    .page-heading p {
+      color: #929bb8;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .product-form {
+      max-width: 850px;
+      margin: 0 auto;
+    }
+
+    .form-section {
+      background: #101638;
+      border: 1px solid #272e53;
+      border-radius: 18px;
+      padding: 22px;
+      margin-bottom: 16px;
+    }
+
+    .form-section-title {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .form-number {
+      width: 30px;
+      height: 30px;
+      border-radius: 9px;
+      background: rgba(124, 58, 237, 0.18);
+      color: #b8aaff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 900;
+      flex-shrink: 0;
+    }
+
+    .form-section-title h2 {
+      margin: 0 0 4px;
+      font-size: 17px;
+    }
+
+    .form-section-title p {
+      margin: 0;
+      color: #858eaa;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .product-form label {
+      display: block;
+      color: #d7dcef;
+      font-size: 12px;
+      font-weight: 700;
+      margin: 16px 0 7px;
+    }
+
+    .product-form input,
+    .product-form select,
+    .product-form textarea {
+      width: 100%;
+      box-sizing: border-box;
+      border: 1px solid #303666;
+      background: #090d31;
+      color: #fff;
+      border-radius: 10px;
+      padding: 12px 13px;
+      font-size: 13px;
+      outline: none;
+    }
+
+    .product-form input:focus,
+    .product-form select:focus,
+    .product-form textarea:focus {
+      border-color: #7565df;
+    }
+
+    .product-form textarea {
+      resize: vertical;
+      min-height: 130px;
+      line-height: 1.6;
+    }
+
+    .product-form select option {
+      background: #090d31;
+      color: #fff;
+    }
+
+    .money-input {
+      display: flex;
+      align-items: center;
+      border: 1px solid #303666;
+      background: #090d31;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .money-input span {
+      padding-left: 13px;
+      color: #a78bfa;
+      font-weight: 900;
+    }
+
+    .money-input input {
+      border: 0;
+      background: transparent;
+    }
+
+    .money-input:focus-within {
+      border-color: #7565df;
+    }
+
+    .image-upload {
+      border: 1px dashed #465080;
+      background: rgba(9, 13, 49, 0.75);
+      border-radius: 14px;
+      padding: 18px;
+    }
+
+    .image-upload input[type="file"] {
+      border: 0;
+      padding: 0;
+      background: transparent;
+    }
+
+    .image-help {
+      color: #858eaa;
+      font-size: 11px;
+      line-height: 1.6;
+      margin-top: 8px;
+    }
+
+    .image-preview {
+      display: grid;
+      grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .preview-item {
+      position: relative;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid #30385e;
+      background: #090d31;
+      aspect-ratio: 1 / 1;
+    }
+
+    .preview-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .primary-label {
+      position: absolute;
+      left: 6px;
+      bottom: 6px;
+      background: rgba(0, 0, 0, 0.75);
+      color: #fff;
+      border-radius: 6px;
+      padding: 4px 6px;
+      font-size: 9px;
+      font-weight: 800;
+    }
+
+    .existing-image {
+      margin-top: 15px;
+    }
+
+    .existing-image-label {
+      color: #858eaa;
+      font-size: 11px;
+      margin-bottom: 8px;
+    }
+
+    .existing-image img {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 10px;
+      border: 1px solid #30385e;
+    }
+
+    .notice {
+      background: rgba(124, 58, 237, 0.10);
+      border: 1px solid rgba(124, 58, 237, 0.20);
+      border-radius: 13px;
+      padding: 15px;
+      color: #b9c0d7;
+      font-size: 12px;
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+
+    .notice strong {
+      color: #fff;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .agreement {
+      display: flex !important;
+      align-items: flex-start;
+      gap: 9px;
+      color: #aeb6ce !important;
+      font-weight: 500 !important;
+      line-height: 1.6;
+      cursor: pointer;
+    }
+
+    .agreement input {
+      width: auto;
+      margin-top: 3px;
+      flex-shrink: 0;
+    }
+
+    .form-message {
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 12px;
+      line-height: 1.5;
+      margin-bottom: 15px;
+    }
+
+    .form-message.success {
+      background: rgba(34, 197, 94, 0.10);
+      border: 1px solid rgba(34, 197, 94, 0.25);
+      color: #86efac;
+    }
+
+    .form-message.error {
+      background: rgba(239, 68, 68, 0.10);
+      border: 1px solid rgba(239, 68, 68, 0.25);
+      color: #fca5a5;
+    }
+
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .loading-box {
+      text-align: center;
+      padding: 40px 20px;
+      color: #929bb8;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 650px) {
+
+      .product-page {
+        padding: 18px 0 50px;
+      }
+
+      .form-section {
+        padding: 17px;
+      }
+
+      .image-preview {
+        grid-template-columns:
+          repeat(3, minmax(0, 1fr));
+      }
+
+      .form-actions {
+        flex-direction: column-reverse;
+      }
+
+      .form-actions a,
+      .form-actions button {
+        width: 100%;
+        text-align: center;
+      }
+
+    }
+
+  </style>
+
 </head>
+
 
 <body>
 
+
 <header>
+
   <div class="container nav">
 
-    <a class="logo" href="index.html">
-      <span class="logo-mark">E</span>
+    <a
+      class="logo"
+      href="index.html"
+    >
+
+      <span class="logo-mark">
+        E
+      </span>
+
       Earn<span>Gig</span>
+
     </a>
 
-    <a class="btn outline" href="seller-dashboard.html">
+
+    <a
+      class="btn outline"
+      href="seller-dashboard.html"
+    >
       Seller Dashboard
     </a>
 
   </div>
+
 </header>
 
 
-<main class="dashboard-page">
+<main class="dashboard-page product-page">
 
   <div class="container">
 
-    <div class="dashboard-heading">
 
-      <div>
-        <span class="eyebrow">SELLER CENTER</span>
+    <div
+      id="loading-box"
+      class="loading-box"
+    >
 
-        <h1>Create a listing</h1>
-
-        <p>
-          Add your product or service to the EarnGig Marketplace.
-        </p>
-      </div>
+      Checking your seller account...
 
     </div>
 
 
-    <form id="listing-form" class="novel-form">
-
-      <section class="form-section">
-
-        <div class="form-section-title">
-          <span>01</span>
-
-          <div>
-            <h2>Listing information</h2>
-            <p>Tell buyers what you're offering.</p>
-          </div>
-        </div>
+    <div
+      id="product-editor"
+      class="product-form hidden"
+    >
 
 
-        <label for="listing-title">
-          Listing title
-        </label>
+      <div class="page-heading">
 
-        <input
-          type="text"
-          id="listing-title"
-          placeholder="Enter your product or service title"
-          required
-        >
+        <span class="eyebrow">
+          SELLER CENTER
+        </span>
 
 
-        <label for="category">
-          Category
-        </label>
-
-        <select id="category" required>
-
-          <option value="">
-            Select a category
-          </option>
-
-          <option value="Digital Products">
-            Digital Products
-          </option>
-
-          <option value="Writing Services">
-            Writing Services
-          </option>
-
-          <option value="Design Services">
-            Design Services
-          </option>
-
-          <option value="Education">
-            Education
-          </option>
-
-          <option value="Business Services">
-            Business Services
-          </option>
-
-        </select>
+        <h1 id="page-title">
+          Add Product
+        </h1>
 
 
-        <label for="description">
-          Description
-        </label>
-
-        <textarea
-          id="description"
-          rows="6"
-          placeholder="Describe what buyers will receive..."
-          required
-        ></textarea>
-
-      </section>
-
-
-      <section class="form-section">
-
-        <div class="form-section-title">
-
-          <span>02</span>
-
-          <div>
-            <h2>Pricing</h2>
-
-            <p>
-              Set the price buyers will see.
-            </p>
-          </div>
-
-        </div>
-
-
-        <label for="price">
-          Price
-        </label>
-
-        <div class="money-input">
-
-          <span>₦</span>
-
-          <input
-            type="number"
-            id="price"
-            min="1"
-            step="1"
-            placeholder="Enter price"
-            required
-          >
-
-        </div>
-
-      </section>
-
-
-      <section class="form-section">
-
-        <div class="form-section-title">
-
-          <span>03</span>
-
-          <div>
-            <h2>Product or service delivery</h2>
-
-            <p>
-              Tell us how the buyer receives the offer.
-            </p>
-          </div>
-
-        </div>
-
-
-        <label for="delivery">
-          Delivery type
-        </label>
-
-        <select id="delivery" required>
-
-          <option value="">
-            Select delivery type
-          </option>
-
-          <option value="Digital Download">
-            Digital Download
-          </option>
-
-          <option value="Service / Direct Contact">
-            Service / Direct Contact
-          </option>
-
-          <option value="External Delivery">
-            External Delivery
-          </option>
-
-        </select>
-
-
-        <label for="listing-file">
-          Product file
-        </label>
-
-        <input
-          type="file"
-          id="listing-file"
-          accept=".pdf,.zip,.doc,.docx"
-        >
-
-        <small class="form-help">
-          Optional for now. File storage will be connected separately.
-        </small>
-
-      </section>
-
-
-      <section class="assessment-notice">
-
-        <strong>Before your listing goes live</strong>
-
-        <p>
-          Your listing will be submitted for review before it
-          becomes visible to marketplace buyers.
+        <p id="page-subtitle">
+          Add a product to your EarnGig marketplace store.
         </p>
-
-      </section>
-
-
-      <label class="submission-agreement">
-
-        <input
-          type="checkbox"
-          id="agreement"
-          required
-        >
-
-        I confirm that I have the rights to sell this
-        product or service and agree to EarnGig's
-        Marketplace rules.
-
-      </label>
-
-
-      <div
-        id="listing-message"
-        style="margin-top:20px;"
-      ></div>
-
-
-      <div class="form-actions">
-
-        <a
-          href="seller-dashboard.html"
-          class="btn outline big"
-        >
-          Cancel
-        </a>
-
-        <button
-          type="submit"
-          id="submit-listing"
-          class="btn primary big"
-        >
-          Submit Listing
-        </button>
 
       </div>
 
-    </form>
+
+      <form id="product-form">
+
+
+        <!-- PRODUCT INFORMATION -->
+
+        <section class="form-section">
+
+          <div class="form-section-title">
+
+            <span class="form-number">
+              01
+            </span>
+
+
+            <div>
+
+              <h2>
+                Product information
+              </h2>
+
+              <p>
+                Tell buyers what you're selling.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <label for="product-title">
+            Product name
+          </label>
+
+
+          <input
+            type="text"
+            id="product-title"
+            placeholder="e.g. Classic Leather Handbag"
+            maxlength="150"
+            required
+          >
+
+
+          <label for="category">
+            Product category
+          </label>
+
+
+          <select
+            id="category"
+            required
+          >
+
+            <option value="">
+              Select a category
+            </option>
+
+            <option value="Fashion & Clothing">
+              Fashion & Clothing
+            </option>
+
+            <option value="Beauty & Cosmetics">
+              Beauty & Cosmetics
+            </option>
+
+            <option value="Nails & Nail Accessories">
+              Nails & Nail Accessories
+            </option>
+
+            <option value="Bags & Accessories">
+              Bags & Accessories
+            </option>
+
+            <option value="Shoes & Footwear">
+              Shoes & Footwear
+            </option>
+
+            <option value="Phones & Tablets">
+              Phones & Tablets
+            </option>
+
+            <option value="Computers & Laptops">
+              Computers & Laptops
+            </option>
+
+            <option value="Electronics & Gadgets">
+              Electronics & Gadgets
+            </option>
+
+            <option value="Home & Kitchen">
+              Home & Kitchen
+            </option>
+
+            <option value="Furniture">
+              Furniture
+            </option>
+
+            <option value="Baby & Kids">
+              Baby & Kids
+            </option>
+
+            <option value="Health & Personal Care">
+              Health & Personal Care
+            </option>
+
+            <option value="Food & Drinks">
+              Food & Drinks
+            </option>
+
+            <option value="Groceries">
+              Groceries
+            </option>
+
+            <option value="Auto & Accessories">
+              Auto & Accessories
+            </option>
+
+            <option value="Tools & Hardware">
+              Tools & Hardware
+            </option>
+
+            <option value="Gifts & Accessories">
+              Gifts & Accessories
+            </option>
+
+            <option value="Other">
+              Other
+            </option>
+
+          </select>
+
+
+          <label for="description">
+            Product description
+          </label>
+
+
+          <textarea
+            id="description"
+            placeholder="Describe the product, what buyers receive, important features, size, colour, material, etc."
+            required
+          ></textarea>
+
+        </section>
+
+
+        <!-- PRICING AND STOCK -->
+
+        <section class="form-section">
+
+          <div class="form-section-title">
+
+            <span class="form-number">
+              02
+            </span>
+
+
+            <div>
+
+              <h2>
+                Price and stock
+              </h2>
+
+              <p>
+                Set your selling price and available quantity.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <label for="price">
+            Product price
+          </label>
+
+
+          <div class="money-input">
+
+            <span>
+              ₦
+            </span>
+
+
+            <input
+              type="number"
+              id="price"
+              min="1"
+              step="0.01"
+              placeholder="Enter price"
+              required
+            >
+
+          </div>
+
+
+          <label for="stock">
+            Stock quantity
+          </label>
+
+
+          <input
+            type="number"
+            id="stock"
+            min="0"
+            step="1"
+            placeholder="e.g. 10"
+            required
+          >
+
+
+          <label for="delivery">
+            Delivery type
+          </label>
+
+
+          <select
+            id="delivery"
+          >
+
+            <option value="">
+              Select delivery type
+            </option>
+
+            <option value="Vendor Delivery">
+              Vendor Delivery
+            </option>
+
+            <option value="Courier Delivery">
+              Courier Delivery
+            </option>
+
+            <option value="Pickup">
+              Pickup
+            </option>
+
+            <option value="Other">
+              Other
+            </option>
+
+          </select>
+
+        </section>
+
+
+        <!-- PRODUCT IMAGES -->
+
+        <section class="form-section">
+
+          <div class="form-section-title">
+
+            <span class="form-number">
+              03
+            </span>
+
+
+            <div>
+
+              <h2>
+                Product images
+              </h2>
+
+              <p>
+                At least one clear product image is required.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="image-upload">
+
+            <label for="product-images">
+              Upload product images
+            </label>
+
+
+            <input
+              type="file"
+              id="product-images"
+              accept="image/jpeg,image/png,image/webp"
+              multiple
+            >
+
+
+            <div class="image-help">
+
+              Upload up to 5 clear product images.
+              JPG, PNG or WebP.
+              Maximum 5 MB per image.
+
+              <br>
+
+              The first uploaded image will be used as
+              the primary product image.
+
+            </div>
+
+
+            <div
+              id="image-preview"
+              class="image-preview"
+            ></div>
+
+
+            <div
+              id="existing-image"
+              class="existing-image hidden"
+            >
+
+              <div class="existing-image-label">
+                Current primary image
+              </div>
+
+              <img
+                id="existing-image-preview"
+                src=""
+                alt="Current product image"
+              >
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- REVIEW NOTICE -->
+
+        <div class="notice">
+
+          <strong>
+            Before your product goes live
+          </strong>
+
+          Your product will be submitted for marketplace
+          review. Buyers will only see products that are
+          approved/active and have a valid product image.
+
+        </div>
+
+
+        <label class="agreement">
+
+          <input
+            type="checkbox"
+            id="agreement"
+            required
+          >
+
+
+          <span>
+            I confirm that I have the right to sell this
+            product and that the information and images
+            provided are accurate.
+          </span>
+
+        </label>
+
+
+        <div
+          id="form-message"
+          class="form-message hidden"
+        ></div>
+
+
+        <div class="form-actions">
+
+          <a
+            href="seller-dashboard.html"
+            class="btn outline big"
+          >
+            Cancel
+          </a>
+
+
+          <button
+            type="submit"
+            id="submit-product"
+            class="btn primary big"
+          >
+            Submit Product
+          </button>
+
+        </div>
+
+
+      </form>
+
+    </div>
 
   </div>
 
@@ -289,267 +810,1317 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
 
+
 <script>
 
-const listingForm =
-  document.getElementById("listing-form");
-
-const submitButton =
-  document.getElementById("submit-listing");
-
-const message =
-  document.getElementById("listing-message");
+let currentUser = null;
+let currentStore = null;
+let editingProduct = null;
 
 
-listingForm.addEventListener(
-  "submit",
-  async function(event) {
+/* ==========================================================
+   HELPERS
+========================================================== */
 
-    event.preventDefault();
+function escapeHtml(value) {
 
-    message.textContent = "";
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 
-    submitButton.disabled = true;
-    submitButton.textContent = "Submitting...";
-
-
-    try {
-
-      const {
-        data: { user },
-        error: userError
-      } = await supabaseClient.auth.getUser();
+}
 
 
-      if (userError || !user) {
+function showMessage(
+  text,
+  type
+) {
 
-        window.location.href = "login.html";
-
-        return;
-      }
-
-
-      const title =
-        document
-          .getElementById("listing-title")
-          .value
-          .trim();
+  const element =
+    document.getElementById(
+      "form-message"
+    );
 
 
-      const category =
-        document
-          .getElementById("category")
-          .value;
+  element.textContent =
+    text;
 
 
-      const description =
-        document
-          .getElementById("description")
-          .value
-          .trim();
+  element.className =
+    "form-message " +
+    type;
 
 
-      const price =
-        Number(
-          document
-            .getElementById("price")
-            .value
-        );
+  element.classList.remove(
+    "hidden"
+  );
+
+}
 
 
-      const deliveryType =
-        document
-          .getElementById("delivery")
-          .value;
+function getEditId() {
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
 
 
-      if (
-        !title ||
-        !category ||
-        !description ||
-        !deliveryType ||
-        !Number.isFinite(price) ||
-        price <= 0
-      ) {
+  return params.get(
+    "edit"
+  );
 
-        alert(
-          "Please complete all required fields."
-        );
-
-        return;
-      }
+}
 
 
-      const {
-        data: listing,
-        error
-      } = await supabaseClient
-        .from("marketplace_listings")
-        .insert({
+/* ==========================================================
+   CHECK VENDOR ACCESS
+========================================================== */
 
-          seller_id: user.id,
+async function checkVendorAccess() {
 
-          title: title,
-
-          category: category,
-
-          description: description,
-
-          price: price,
-
-          delivery_type: deliveryType,
-
-          status: "pending"
-
-        })
-        .select()
-        .single();
+  const {
+    data: {
+      user
+    },
+    error
+  } =
+    await supabaseClient.auth.getUser();
 
 
-      if (error) {
+  if (
+    error ||
+    !user
+  ) {
 
-        console.error(
-          "Create listing error:",
-          error
-        );
+    window.location.href =
+      "login.html";
 
-        message.textContent =
-          "Unable to create listing: " +
-          error.message;
+    return false;
 
-        return;
-      }
+  }
 
 
-      console.log(
-        "Listing created:",
-        listing
+  currentUser =
+    user;
+
+
+  /*
+   * Find the vendor's active store.
+   */
+
+  const {
+    data: store,
+    error: storeError
+  } =
+    await supabaseClient
+      .from(
+        "marketplace_stores"
+      )
+      .select(`
+        id,
+        vendor_id,
+        store_name,
+        store_slug,
+        description,
+        store_logo_url,
+        status
+      `)
+      .eq(
+        "vendor_id",
+        user.id
+      )
+      .eq(
+        "status",
+        "active"
+      )
+      .maybeSingle();
+
+
+  if (storeError) {
+
+    console.error(
+      "Store access error:",
+      storeError
+    );
+
+    showMessage(
+      "Unable to verify your marketplace store.",
+      "error"
+    );
+
+    return false;
+
+  }
+
+
+  if (!store) {
+
+    alert(
+      "You need an active approved store before adding products."
+    );
+
+    window.location.href =
+      "vendor-application.html";
+
+    return false;
+
+  }
+
+
+  currentStore =
+    store;
+
+
+  /*
+   * Verify active store subscription.
+   */
+
+  const {
+    data: subscription,
+    error: subscriptionError
+  } =
+    await supabaseClient
+      .from(
+        "marketplace_store_subscriptions"
+      )
+      .select(`
+        id,
+        status,
+        starts_at,
+        expires_at
+      `)
+      .eq(
+        "store_id",
+        store.id
+      )
+      .eq(
+        "vendor_id",
+        user.id
+      )
+      .order(
+        "expires_at",
+        {
+          ascending: false
+        }
+      )
+      .limit(1)
+      .maybeSingle();
+
+
+  if (subscriptionError) {
+
+    console.error(
+      "Subscription error:",
+      subscriptionError
+    );
+
+    alert(
+      "Unable to verify your store subscription."
+    );
+
+    return false;
+
+  }
+
+
+  const subscriptionActive =
+    subscription &&
+    String(
+      subscription.status || ""
+    ).toLowerCase() ===
+      "active" &&
+    subscription.expires_at &&
+    new Date(
+      subscription.expires_at
+    ).getTime() > Date.now();
+
+
+  if (!subscriptionActive) {
+
+    alert(
+      "Your store subscription is not active."
+    );
+
+    window.location.href =
+      "marketplace-subscription.html";
+
+    return false;
+
+  }
+
+
+  return true;
+
+}
+
+
+/* ==========================================================
+   LOAD EDIT PRODUCT
+========================================================== */
+
+async function loadEditProduct(
+  productId
+) {
+
+  if (!productId) {
+
+    return;
+
+  }
+
+
+  const {
+    data: product,
+    error
+  } =
+    await supabaseClient
+      .from(
+        "marketplace_products"
+      )
+      .select(`
+        id,
+        store_id,
+        vendor_id,
+        title,
+        category,
+        description,
+        price,
+        stock_quantity,
+        delivery_type,
+        status
+      `)
+      .eq(
+        "id",
+        productId
+      )
+      .eq(
+        "store_id",
+        currentStore.id
+      )
+      .eq(
+        "vendor_id",
+        currentUser.id
+      )
+      .maybeSingle();
+
+
+  if (error) {
+
+    console.error(
+      "Product loading error:",
+      error
+    );
+
+    showMessage(
+      "Unable to load this product for editing.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  if (!product) {
+
+    showMessage(
+      "Product not found or you do not have permission to edit it.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  editingProduct =
+    product;
+
+
+  document.getElementById(
+    "page-title"
+  ).textContent =
+    "Edit Product";
+
+
+  document.getElementById(
+    "page-subtitle"
+  ).textContent =
+    "Update your product information, price, stock or images.";
+
+
+  document.getElementById(
+    "product-title"
+  ).value =
+    product.title || "";
+
+
+  document.getElementById(
+    "category"
+  ).value =
+    product.category || "";
+
+
+  document.getElementById(
+    "description"
+  ).value =
+    product.description || "";
+
+
+  document.getElementById(
+    "price"
+  ).value =
+    product.price ?? "";
+
+
+  document.getElementById(
+    "stock"
+  ).value =
+    product.stock_quantity ?? "";
+
+
+  document.getElementById(
+    "delivery"
+  ).value =
+    product.delivery_type || "";
+
+
+  document.getElementById(
+    "submit-product"
+  ).textContent =
+    "Save Product";
+
+
+  /*
+   * Load existing images.
+   */
+
+  const {
+    data: images,
+    error: imagesError
+  } =
+    await supabaseClient
+      .from(
+        "marketplace_product_images"
+      )
+      .select(`
+        id,
+        image_url,
+        is_primary,
+        sort_order
+      `)
+      .eq(
+        "product_id",
+        product.id
+      )
+      .order(
+        "sort_order",
+        {
+          ascending: true
+        }
       );
 
 
-      message.textContent =
-        "Listing submitted successfully. It is awaiting review.";
+  if (imagesError) {
+
+    console.error(
+      "Existing images error:",
+      imagesError
+    );
+
+    return;
+
+  }
 
 
-      listingForm.reset();
+  const primary =
+    (images || []).find(
+      function(image) {
+
+        return (
+          image.is_primary === true
+        );
+
+      }
+    ) ||
+    (images || [])[0];
 
 
-      setTimeout(function() {
+  if (primary?.image_url) {
 
-        window.location.href =
-          "seller-dashboard.html";
+    document.getElementById(
+      "existing-image-preview"
+    ).src =
+      primary.image_url;
 
-      }, 1500);
+
+    document.getElementById(
+      "existing-image"
+    ).classList.remove(
+      "hidden"
+    );
+
+  }
+
+}
 
 
-    } catch (error) {
+/* ==========================================================
+   IMAGE PREVIEW
+========================================================== */
 
-      console.error(
-        "Listing error:",
-        error
+document
+  .getElementById(
+    "product-images"
+  )
+  .addEventListener(
+    "change",
+    function(event) {
+
+      const files =
+        Array.from(
+          event.target.files || []
+        );
+
+
+      const preview =
+        document.getElementById(
+          "image-preview"
+        );
+
+
+      preview.innerHTML =
+        "";
+
+
+      if (!files.length) {
+
+        return;
+
+      }
+
+
+      files
+        .slice(0, 5)
+        .forEach(
+          function(file, index) {
+
+            const url =
+              URL.createObjectURL(
+                file
+              );
+
+
+            const item =
+              document.createElement(
+                "div"
+              );
+
+
+            item.className =
+              "preview-item";
+
+
+            item.innerHTML = `
+
+              <img
+                src="${url}"
+                alt="Product image ${index + 1}"
+              >
+
+              ${
+                index === 0
+                  ? `
+                    <span class="primary-label">
+                      PRIMARY
+                    </span>
+                  `
+                  : ""
+              }
+
+            `;
+
+
+            preview.appendChild(
+              item
+            );
+
+          }
+        );
+
+    }
+  );
+
+
+/* ==========================================================
+   UPLOAD PRODUCT IMAGE
+========================================================== */
+
+async function uploadProductImage(
+  file,
+  productId,
+  index
+) {
+
+  if (!file) {
+
+    return null;
+
+  }
+
+
+  if (
+    ![
+      "image/jpeg",
+      "image/png",
+      "image/webp"
+    ].includes(
+      file.type
+    )
+  ) {
+
+    throw new Error(
+      "Only JPG, PNG and WebP images are allowed."
+    );
+
+  }
+
+
+  if (
+    file.size >
+    5 * 1024 * 1024
+  ) {
+
+    throw new Error(
+      "Each product image must be 5 MB or smaller."
+    );
+
+  }
+
+
+  const extension =
+    file.name
+      .split(".")
+      .pop()
+      .toLowerCase();
+
+
+  const filePath =
+    `${currentUser.id}/${productId}/${Date.now()}-${index}.${extension}`;
+
+
+  const {
+    error
+  } =
+    await supabaseClient.storage
+      .from(
+        "marketplace-product-images"
+      )
+      .upload(
+        filePath,
+        file,
+        {
+          cacheControl:
+            "3600",
+          upsert:
+            false,
+          contentType:
+            file.type
+        }
       );
 
-      message.textContent =
-        "Something went wrong. Please try again.";
 
-    } finally {
+  if (error) {
 
-      submitButton.disabled = false;
+    console.error(
+      "Image upload error:",
+      error
+    );
 
-      submitButton.textContent =
-        "Submit Listing";
+    throw new Error(
+      error.message
+    );
+
+  }
+
+
+  const {
+    data
+  } =
+    supabaseClient.storage
+      .from(
+        "marketplace-product-images"
+      )
+      .getPublicUrl(
+        filePath
+      );
+
+
+  return data.publicUrl;
+
+}
+
+
+/* ==========================================================
+   SAVE PRODUCT IMAGES
+========================================================== */
+
+async function saveProductImages(
+  productId,
+  files
+) {
+
+  if (!files.length) {
+
+    return;
+
+  }
+
+
+  /*
+   * Upload selected images.
+   */
+
+  const uploadedImages = [];
+
+
+  for (
+    let index = 0;
+    index < files.length;
+    index++
+  ) {
+
+    const url =
+      await uploadProductImage(
+        files[index],
+        productId,
+        index
+      );
+
+
+    uploadedImages.push(
+      {
+        image_url:
+          url,
+
+        is_primary:
+          index === 0,
+
+        sort_order:
+          index
+      }
+    );
+
+  }
+
+
+  /*
+   * If this is an edit and new images
+   * were uploaded, remove the old image
+   * records first.
+   */
+
+  if (editingProduct) {
+
+    const {
+      error: deleteError
+    } =
+      await supabaseClient
+        .from(
+          "marketplace_product_images"
+        )
+        .delete()
+        .eq(
+          "product_id",
+          productId
+        );
+
+
+    if (deleteError) {
+
+      throw new Error(
+        deleteError.message
+      );
 
     }
 
-  });
+  }
 
-</script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase.js"></script>
 
-<script>
+  const rows =
+    uploadedImages.map(
+      function(image) {
 
-const listingForm = document.querySelector(".novel-form");
+        return {
+          product_id:
+            productId,
 
-listingForm.addEventListener("submit", async function(event) {
+          image_url:
+            image.image_url,
 
-  event.preventDefault();
+          is_primary:
+            image.is_primary,
+
+          sort_order:
+            image.sort_order
+        };
+
+      }
+    );
+
 
   const {
-    data: { user },
-    error: userError
-  } = await supabaseClient.auth.getUser();
+    error
+  } =
+    await supabaseClient
+      .from(
+        "marketplace_product_images"
+      )
+      .insert(
+        rows
+      );
 
-  if (userError || !user) {
-    alert("Please log in before creating a listing.");
-    window.location.href = "login.html";
-    return;
+
+  if (error) {
+
+    throw new Error(
+      error.message
+    );
+
   }
 
-  const title =
-    document.getElementById("listing-title").value.trim();
+}
 
-  const category =
-    document.getElementById("category").value.trim();
 
-  const description =
-    document.getElementById("description").value.trim();
+/* ==========================================================
+   VERIFY EXISTING IMAGE
+========================================================== */
 
-  const price =
-    Number(document.getElementById("price").value);
-
-  const deliveryType =
-    document.getElementById("delivery").value.trim();
-
-  if (!title || !category || !description || !Number.isFinite(price)) {
-    alert("Please complete all listing information.");
-    return;
-  }
-
-  const submitButton =
-    listingForm.querySelector('button[type="submit"]');
-
-  submitButton.disabled = true;
-  submitButton.textContent = "Creating...";
+async function productHasImage(
+  productId
+) {
 
   const {
     data,
     error
-  } = await supabaseClient
-    .from("marketplace_listings")
-    .insert({
-      seller_id: user.id,
-      title: title,
-      category: category,
-      description: description,
-      price: price,
-      delivery_type: deliveryType,
-      status: "active"
-    })
-    .select()
-    .single();
+  } =
+    await supabaseClient
+      .from(
+        "marketplace_product_images"
+      )
+      .select(
+        "id"
+      )
+      .eq(
+        "product_id",
+        productId
+      )
+      .limit(1);
+
 
   if (error) {
 
-    console.error("Listing creation error:", error);
-
-    alert(
-      "Unable to create listing:\n\n" +
+    throw new Error(
       error.message
     );
 
-    submitButton.disabled = false;
-    submitButton.textContent = "Submit Listing";
-
-    return;
   }
 
-  alert("Listing created successfully!");
 
-  window.location.href = "marketplace.html";
+  return (
+    data &&
+    data.length > 0
+  );
 
-});
+}
+
+
+/* ==========================================================
+   SUBMIT PRODUCT
+========================================================== */
+
+document
+  .getElementById(
+    "product-form"
+  )
+  .addEventListener(
+    "submit",
+    async function(event) {
+
+      event.preventDefault();
+
+
+      const submitButton =
+        document.getElementById(
+          "submit-product"
+        );
+
+
+      submitButton.disabled =
+        true;
+
+
+      submitButton.textContent =
+        editingProduct
+          ? "Saving..."
+          : "Creating...";
+
+
+      document
+        .getElementById(
+          "form-message"
+        )
+        .classList.add(
+          "hidden"
+        );
+
+
+      try {
+
+        const title =
+          document
+            .getElementById(
+              "product-title"
+            )
+            .value
+            .trim();
+
+
+        const category =
+          document
+            .getElementById(
+              "category"
+            )
+            .value;
+
+
+        const description =
+          document
+            .getElementById(
+              "description"
+            )
+            .value
+            .trim();
+
+
+        const price =
+          Number(
+            document
+              .getElementById(
+                "price"
+              )
+              .value
+          );
+
+
+        const stock =
+          Number(
+            document
+              .getElementById(
+                "stock"
+              )
+              .value
+          );
+
+
+        const deliveryType =
+          document
+            .getElementById(
+              "delivery"
+            )
+            .value;
+
+
+        const files =
+          Array.from(
+            document
+              .getElementById(
+                "product-images"
+              )
+              .files ||
+              []
+          );
+
+
+        if (
+          !title ||
+          !category ||
+          !description
+        ) {
+
+          throw new Error(
+            "Please complete all product information."
+          );
+
+        }
+
+
+        if (
+          !Number.isFinite(price) ||
+          price <= 0
+        ) {
+
+          throw new Error(
+            "Please enter a valid product price."
+          );
+
+        }
+
+
+        if (
+          !Number.isInteger(stock) ||
+          stock < 0
+        ) {
+
+          throw new Error(
+            "Please enter a valid stock quantity."
+          );
+
+        }
+
+
+        /*
+         * A new product MUST have an image.
+         */
+
+        if (
+          !editingProduct &&
+          !files.length
+        ) {
+
+          throw new Error(
+            "At least one product image is required."
+          );
+
+        }
+
+
+        /*
+         * --------------------------------------------------
+         * EDIT EXISTING PRODUCT
+         * --------------------------------------------------
+         */
+
+        if (editingProduct) {
+
+          const {
+            error
+          } =
+            await supabaseClient
+              .from(
+                "marketplace_products"
+              )
+              .update({
+
+                title:
+                  title,
+
+                category:
+                  category,
+
+                description:
+                  description,
+
+                price:
+                  price,
+
+                stock_quantity:
+                  stock,
+
+                delivery_type:
+                  deliveryType ||
+                  null,
+
+                updated_at:
+                  new Date().toISOString()
+
+              })
+              .eq(
+                "id",
+                editingProduct.id
+              )
+              .eq(
+                "store_id",
+                currentStore.id
+              )
+              .eq(
+                "vendor_id",
+                currentUser.id
+              );
+
+
+          if (error) {
+
+            throw new Error(
+              error.message
+            );
+
+          }
+
+
+          /*
+           * If new images were selected,
+           * replace the existing images.
+           */
+
+          if (files.length) {
+
+            await saveProductImages(
+              editingProduct.id,
+              files
+            );
+
+          } else {
+
+            const hasImage =
+              await productHasImage(
+                editingProduct.id
+              );
+
+
+            if (!hasImage) {
+
+              throw new Error(
+                "This product must have at least one image."
+              );
+
+            }
+
+          }
+
+
+          showMessage(
+            "Product updated successfully.",
+            "success"
+          );
+
+
+          setTimeout(
+            function() {
+
+              window.location.href =
+                "seller-dashboard.html";
+
+            },
+            1200
+          );
+
+
+          return;
+
+        }
+
+
+        /*
+         * --------------------------------------------------
+         * CREATE NEW PRODUCT
+         * --------------------------------------------------
+         */
+
+        const {
+          data: product,
+          error: productError
+        } =
+          await supabaseClient
+            .from(
+              "marketplace_products"
+            )
+            .insert({
+
+              store_id:
+                currentStore.id,
+
+              vendor_id:
+                currentUser.id,
+
+              title:
+                title,
+
+              category:
+                category,
+
+              description:
+                description,
+
+              price:
+                price,
+
+              stock_quantity:
+                stock,
+
+              delivery_type:
+                deliveryType ||
+                null,
+
+              /*
+               * New products enter the
+               * marketplace as pending.
+               */
+
+              status:
+                "pending"
+
+            })
+            .select()
+            .single();
+
+
+        if (productError) {
+
+          throw new Error(
+            productError.message
+          );
+
+        }
+
+
+        /*
+         * Upload product images.
+         */
+
+        try {
+
+          await saveProductImages(
+            product.id,
+            files
+          );
+
+        } catch (imageError) {
+
+          /*
+           * If image upload fails,
+           * remove the product record so
+           * we never leave an image-less
+           * marketplace product behind.
+           */
+
+          await supabaseClient
+            .from(
+              "marketplace_products"
+            )
+            .delete()
+            .eq(
+              "id",
+              product.id
+            )
+            .eq(
+              "vendor_id",
+              currentUser.id
+            );
+
+
+          throw imageError;
+
+        }
+
+
+        showMessage(
+          "Product submitted successfully. It is now awaiting marketplace review.",
+          "success"
+        );
+
+
+        document
+          .getElementById(
+            "product-form"
+          )
+          .reset();
+
+
+        setTimeout(
+          function() {
+
+            window.location.href =
+              "seller-dashboard.html";
+
+          },
+          1500
+        );
+
+
+      } catch (error) {
+
+        console.error(
+          "Product save error:",
+          error
+        );
+
+
+        showMessage(
+          error?.message ||
+          "Unable to save the product.",
+          "error"
+        );
+
+
+      } finally {
+
+        submitButton.disabled =
+          false;
+
+
+        submitButton.textContent =
+          editingProduct
+            ? "Save Product"
+            : "Submit Product";
+
+      }
+
+    }
+  );
+
+
+/* ==========================================================
+   START
+========================================================== */
+
+(async function() {
+
+  const allowed =
+    await checkVendorAccess();
+
+
+  if (!allowed) {
+
+    return;
+
+  }
+
+
+  const editId =
+    getEditId();
+
+
+  if (editId) {
+
+    await loadEditProduct(
+      editId
+    );
+
+  }
+
+
+  document.getElementById(
+    "loading-box"
+  ).classList.add(
+    "hidden"
+  );
+
+
+  document.getElementById(
+    "product-editor"
+  ).classList.remove(
+    "hidden"
+  );
+
+})();
 
 </script>
+
 </body>
+
 </html>
