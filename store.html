@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+
   <meta charset="UTF-8">
 
   <meta
@@ -11,7 +12,10 @@
 
   <title>Store | EarnGig Marketplace</title>
 
-  <link rel="stylesheet" href="styles.css">
+  <link
+    rel="stylesheet"
+    href="styles.css"
+  >
 
   <style>
 
@@ -25,9 +29,11 @@
         #070b2b;
     }
 
+
     .store-page {
       padding: 25px 0 70px;
     }
+
 
     .back-link {
       display: inline-flex;
@@ -35,7 +41,14 @@
       color: #a99cff;
       font-size: 14px;
       font-weight: 700;
+      text-decoration: none;
     }
+
+
+    .back-link:hover {
+      color: #c8c0ff;
+    }
+
 
     .store-header {
       background:
@@ -51,11 +64,13 @@
       margin-bottom: 20px;
     }
 
+
     .store-header-content {
       display: flex;
       align-items: center;
       gap: 18px;
     }
+
 
     .store-logo {
       width: 86px;
@@ -67,6 +82,7 @@
       padding: 7px;
       flex-shrink: 0;
     }
+
 
     .store-logo-fallback {
       width: 86px;
@@ -87,11 +103,13 @@
       flex-shrink: 0;
     }
 
+
     .store-title {
       margin: 0 0 6px;
       font-size: 28px;
       line-height: 1.2;
     }
+
 
     .store-description {
       margin: 0;
@@ -101,11 +119,21 @@
       max-width: 700px;
     }
 
+
     .store-meta {
       margin-top: 10px;
       color: #858baa;
       font-size: 12px;
     }
+
+
+    .store-location {
+      margin-top: 10px;
+      color: #c6cbe0;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
 
     .store-actions {
       display: flex;
@@ -113,6 +141,7 @@
       flex-wrap: wrap;
       margin-top: 18px;
     }
+
 
     .share-btn {
       border: 1px solid #353c69;
@@ -125,9 +154,32 @@
       font-weight: 700;
     }
 
+
     .share-btn:hover {
       border-color: #7565df;
     }
+
+
+    .fulfillment-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+
+
+    .fulfillment-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 9px;
+      border-radius: 8px;
+      background: rgba(117, 101, 223, 0.12);
+      border: 1px solid rgba(117, 101, 223, 0.20);
+      color: #bdb5ff;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
 
     .search-area {
       display: flex;
@@ -135,9 +187,11 @@
       margin-bottom: 20px;
     }
 
+
     .search-box {
       flex: 1;
     }
+
 
     .search-box input,
     .category-select {
@@ -153,19 +207,23 @@
       box-sizing: border-box;
     }
 
+
     .search-box input:focus,
     .category-select:focus {
       border-color: #7565df;
     }
 
+
     .category-wrap {
       width: 210px;
     }
+
 
     .category-select option {
       background: #090d31;
       color: #fff;
     }
+
 
     .products-heading {
       display: flex;
@@ -175,15 +233,18 @@
       margin-bottom: 14px;
     }
 
+
     .products-heading h2 {
       margin: 0;
       font-size: 19px;
     }
 
+
     .product-count {
       color: #858baa;
       font-size: 13px;
     }
+
 
     .products-grid {
       display: grid;
@@ -191,6 +252,7 @@
         repeat(4, minmax(0, 1fr));
       gap: 15px;
     }
+
 
     .product-card {
       background: #101638;
@@ -202,15 +264,18 @@
         border-color .18s ease;
     }
 
+
     .product-card:hover {
       transform: translateY(-2px);
       border-color: #6956d8;
     }
 
+
     .product-image-link {
       display: block;
       background: #0a0f32;
     }
+
 
     .product-image {
       width: 100%;
@@ -220,23 +285,31 @@
       background: #0a0f32;
     }
 
+
     .product-content {
       padding: 13px;
     }
 
+
     .product-title {
-      display: block;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      overflow: hidden;
+
       color: #fff;
       font-size: 14px;
       font-weight: 800;
       line-height: 1.4;
       margin-bottom: 8px;
-
-      display: -webkit-box;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 2;
-      overflow: hidden;
+      text-decoration: none;
     }
+
+
+    .product-title:hover {
+      color: #c5bbff;
+    }
+
 
     .product-price {
       color: #a78bfa;
@@ -244,6 +317,7 @@
       font-weight: 900;
       margin-bottom: 9px;
     }
+
 
     .product-category {
       display: inline-flex;
@@ -256,11 +330,23 @@
       margin-bottom: 10px;
     }
 
+
     .product-stock {
       color: #8f98b6;
       font-size: 11px;
       margin-bottom: 10px;
     }
+
+
+    .product-stock.low {
+      color: #f5c77a;
+    }
+
+
+    .product-stock.out {
+      color: #f0aaaa;
+    }
+
 
     .view-product {
       display: block;
@@ -271,11 +357,14 @@
       padding: 9px;
       font-size: 12px;
       font-weight: 800;
+      text-decoration: none;
     }
+
 
     .view-product:hover {
       background: #252d53;
     }
+
 
     .state-box {
       grid-column: 1 / -1;
@@ -287,19 +376,23 @@
       color: #929bb8;
     }
 
+
     .state-box h3 {
       color: #fff;
       margin: 0 0 8px;
     }
+
 
     .state-box p {
       margin: 0 0 18px;
       line-height: 1.6;
     }
 
+
     .hidden {
       display: none !important;
     }
+
 
     @media (max-width: 900px) {
 
@@ -310,19 +403,23 @@
 
     }
 
+
     @media (max-width: 650px) {
 
       .store-page {
         padding: 18px 0 50px;
       }
 
+
       .store-header {
         padding: 18px;
       }
 
+
       .store-header-content {
         align-items: flex-start;
       }
+
 
       .store-logo,
       .store-logo-fallback {
@@ -330,21 +427,26 @@
         height: 68px;
       }
 
+
       .store-logo-fallback {
         font-size: 25px;
       }
+
 
       .store-title {
         font-size: 22px;
       }
 
+
       .search-area {
         flex-direction: column;
       }
 
+
       .category-wrap {
         width: 100%;
       }
+
 
       .products-grid {
         grid-template-columns:
@@ -353,13 +455,16 @@
         gap: 10px;
       }
 
+
       .product-content {
         padding: 10px;
       }
 
+
       .product-title {
         font-size: 13px;
       }
+
 
       .product-price {
         font-size: 15px;
@@ -532,6 +637,18 @@
               EarnGig Vendor Store
             </div>
 
+
+            <div
+              id="store-location"
+              class="store-location"
+            ></div>
+
+
+            <div
+              id="fulfillment-row"
+              class="fulfillment-row"
+            ></div>
+
           </div>
 
         </div>
@@ -693,6 +810,7 @@
         class="products-grid"
       ></div>
 
+
     </div>
 
   </div>
@@ -710,18 +828,22 @@
 
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script src="supabase.js"></script>
 
 
 <script>
 
+
 let currentStore = null;
+
 let storeProducts = [];
 
 
 /* ==========================================================
    HELPERS
 ========================================================== */
+
 
 function escapeHtml(value) {
 
@@ -756,6 +878,7 @@ function getStoreSlug() {
       window.location.search
     );
 
+
   return params.get("store");
 
 }
@@ -764,6 +887,7 @@ function getStoreSlug() {
 /* ==========================================================
    LOAD STORE
 ========================================================== */
+
 
 async function loadStore() {
 
@@ -793,7 +917,16 @@ async function loadStore() {
         store_slug,
         description,
         store_logo_url,
-        status
+        status,
+        business_state,
+        business_lga,
+        business_city,
+        business_area,
+        location_display,
+        accepts_delivery,
+        accepts_pickup,
+        pickup_location,
+        pickup_instructions
       `)
       .eq(
         "store_slug",
@@ -845,6 +978,7 @@ async function loadStore() {
    RENDER STORE
 ========================================================== */
 
+
 function renderStore() {
 
   const store =
@@ -880,6 +1014,7 @@ function renderStore() {
       "store-logo"
     );
 
+
   const fallback =
     document.getElementById(
       "logo-fallback"
@@ -896,13 +1031,16 @@ function renderStore() {
     logo.src =
       store.store_logo_url;
 
+
     logo.alt =
       store.store_name ||
       "Store logo";
 
+
     logo.classList.remove(
       "hidden"
     );
+
 
     fallback.classList.add(
       "hidden"
@@ -923,15 +1061,31 @@ function renderStore() {
     fallback.textContent =
       firstLetter;
 
+
     logo.classList.add(
       "hidden"
     );
+
 
     fallback.classList.remove(
       "hidden"
     );
 
   }
+
+
+  /*
+   * LOCATION
+   */
+
+  renderLocation();
+
+
+  /*
+   * FULFILLMENT
+   */
+
+  renderFulfillment();
 
 
   /*
@@ -963,19 +1117,167 @@ function renderStore() {
 
 
 /* ==========================================================
+   LOCATION
+========================================================== */
+
+
+function renderLocation() {
+
+  const element =
+    document.getElementById(
+      "store-location"
+    );
+
+
+  const parts = [];
+
+
+  if (
+    currentStore.location_display
+  ) {
+
+    element.textContent =
+      "📍 " +
+      currentStore.location_display;
+
+
+    return;
+
+  }
+
+
+  if (
+    currentStore.business_area
+  ) {
+
+    parts.push(
+      currentStore.business_area
+    );
+
+  }
+
+
+  if (
+    currentStore.business_city
+  ) {
+
+    parts.push(
+      currentStore.business_city
+    );
+
+  }
+
+
+  if (
+    currentStore.business_lga
+  ) {
+
+    parts.push(
+      currentStore.business_lga
+    );
+
+  }
+
+
+  if (
+    currentStore.business_state
+  ) {
+
+    parts.push(
+      currentStore.business_state
+    );
+
+  }
+
+
+  element.textContent =
+    parts.length
+      ? "📍 " + parts.join(", ")
+      : "";
+
+}
+
+
+/* ==========================================================
+   FULFILLMENT
+========================================================== */
+
+
+function renderFulfillment() {
+
+  const container =
+    document.getElementById(
+      "fulfillment-row"
+    );
+
+
+  const badges = [];
+
+
+  if (
+    currentStore.accepts_delivery === true
+  ) {
+
+    badges.push(
+      "Delivery Available"
+    );
+
+  }
+
+
+  if (
+    currentStore.accepts_pickup === true
+  ) {
+
+    badges.push(
+      "Pickup Available"
+    );
+
+  }
+
+
+  if (!badges.length) {
+
+    container.innerHTML =
+      "";
+
+    return;
+
+  }
+
+
+  container.innerHTML =
+    badges.map(
+      function(label) {
+
+        return `
+          <span class="fulfillment-badge">
+            ${label}
+          </span>
+        `;
+
+      }
+    ).join("");
+
+}
+
+
+/* ==========================================================
    LOAD PRODUCTS
 ========================================================== */
+
 
 async function loadProducts() {
 
   /*
-   * IMPORTANT:
+   * New marketplace product workflow:
    *
-   * Products now come from:
+   * pending
+   * changes_required
+   * rejected
+   * approved
    *
-   * marketplace_products
-   *
-   * NOT marketplace_listings.
+   * Only APPROVED products are public.
    */
 
   const {
@@ -1001,6 +1303,10 @@ async function loadProducts() {
       .eq(
         "store_id",
         currentStore.id
+      )
+      .eq(
+        "status",
+        "approved"
       )
       .order(
         "created_at",
@@ -1032,40 +1338,7 @@ async function loadProducts() {
     products || [];
 
 
-  /*
-   * Only products belonging to this
-   * store and currently available
-   * are considered.
-   */
-
-  const activeProducts =
-    productRows.filter(
-      function(product) {
-
-        const status =
-          String(
-            product.status || ""
-          ).toLowerCase();
-
-
-        return [
-          "active",
-          "approved",
-          "published",
-          "available"
-        ].includes(
-          status
-        );
-
-      }
-    );
-
-
-  /*
-   * No products.
-   */
-
-  if (!activeProducts.length) {
+  if (!productRows.length) {
 
     storeProducts = [];
 
@@ -1076,15 +1349,8 @@ async function loadProducts() {
   }
 
 
-  /*
-   * LOAD PRODUCT IMAGES
-   *
-   * Every displayed product must
-   * have an image.
-   */
-
   const productIds =
-    activeProducts.map(
+    productRows.map(
       function(product) {
 
         return product.id;
@@ -1092,6 +1358,11 @@ async function loadProducts() {
       }
     );
 
+
+  /*
+   * Only branded/watermarked images
+   * may be displayed publicly.
+   */
 
   const {
     data: images,
@@ -1105,11 +1376,21 @@ async function loadProducts() {
         image_url,
         is_primary,
         sort_order,
-        created_at
+        watermark_applied
       `)
       .in(
         "product_id",
         productIds
+      )
+      .eq(
+        "watermark_applied",
+        true
+      )
+      .order(
+        "is_primary",
+        {
+          ascending: false
+        }
       )
       .order(
         "sort_order",
@@ -1138,7 +1419,7 @@ async function loadProducts() {
 
 
   /*
-   * Group images by product.
+   * Group branded images by product.
    */
 
   const imagesByProduct = {};
@@ -1171,12 +1452,12 @@ async function loadProducts() {
 
 
   /*
-   * Attach the primary image to
-   * every product.
+   * Attach the primary branded
+   * image to every product.
    */
 
   storeProducts =
-    activeProducts
+    productRows
       .map(
         function(product) {
 
@@ -1185,10 +1466,6 @@ async function loadProducts() {
               product.id
             ] || [];
 
-
-          /*
-           * Prefer primary image.
-           */
 
           let primaryImage =
             productImages.find(
@@ -1202,11 +1479,6 @@ async function loadProducts() {
             );
 
 
-          /*
-           * If no primary image exists,
-           * use the first image.
-           */
-
           if (!primaryImage) {
 
             primaryImage =
@@ -1217,9 +1489,11 @@ async function loadProducts() {
 
           return {
             ...product,
+
             primary_image_url:
               primaryImage?.image_url ||
               null
+
           };
 
         }
@@ -1228,8 +1502,8 @@ async function loadProducts() {
         function(product) {
 
           /*
-           * Marketplace rule:
-           * NO IMAGE = NO PRODUCT DISPLAY.
+           * No branded image =
+           * no public product card.
            */
 
           return Boolean(
@@ -1251,6 +1525,7 @@ async function loadProducts() {
 /* ==========================================================
    PRODUCT ERROR
 ========================================================== */
+
 
 function showProductError(
   message
@@ -1289,6 +1564,7 @@ function showProductError(
 /* ==========================================================
    RENDER PRODUCTS
 ========================================================== */
+
 
 function renderProducts() {
 
@@ -1379,7 +1655,7 @@ function renderProducts() {
         </h3>
 
         <p>
-          This store does not have any products matching your search.
+          This store does not have any approved products matching your search.
         </p>
 
       </div>
@@ -1407,8 +1683,9 @@ function renderProducts() {
           );
 
 
-        let stockText =
-          "";
+        let stockText = "";
+
+        let stockClass = "";
 
 
         if (stock <= 0) {
@@ -1416,17 +1693,25 @@ function renderProducts() {
           stockText =
             "Out of stock";
 
-        } else if (stock === 1) {
+          stockClass =
+            "out";
+
+        } else if (stock <= 5) {
 
           stockText =
-            "1 item left";
+            `${stock.toLocaleString(
+              "en-NG"
+            )} left`;
+
+          stockClass =
+            "low";
 
         } else {
 
           stockText =
             `${stock.toLocaleString(
               "en-NG"
-            )} items available`;
+            )} available`;
 
         }
 
@@ -1434,6 +1719,7 @@ function renderProducts() {
         return `
 
           <article class="product-card">
+
 
             <a
               href="${productUrl}"
@@ -1456,6 +1742,7 @@ function renderProducts() {
 
             <div class="product-content">
 
+
               <a
                 href="${productUrl}"
                 class="product-title"
@@ -1467,24 +1754,32 @@ function renderProducts() {
 
 
               <div class="product-price">
+
                 ${formatNaira(
                   product.price
                 )}
+
               </div>
 
 
               <span class="product-category">
+
                 ${escapeHtml(
                   product.category ||
                   "Other"
                 )}
+
               </span>
 
 
-              <div class="product-stock">
+              <div
+                class="product-stock ${stockClass}"
+              >
+
                 ${escapeHtml(
                   stockText
                 )}
+
               </div>
 
 
@@ -1494,6 +1789,7 @@ function renderProducts() {
               >
                 View Product
               </a>
+
 
             </div>
 
@@ -1508,10 +1804,16 @@ function renderProducts() {
 
 
 /* ==========================================================
-   SHARE STORE
+   COPY STORE LINK
 ========================================================== */
 
+
 function getStoreUrl() {
+
+  /*
+   * This remains the permanent
+   * shareable store URL.
+   */
 
   return window.location.href;
 
@@ -1568,6 +1870,11 @@ async function copyStoreLink() {
 }
 
 
+/* ==========================================================
+   SHARE STORE
+========================================================== */
+
+
 async function shareStore() {
 
   const url =
@@ -1601,8 +1908,7 @@ async function shareStore() {
     } catch (error) {
 
       /*
-       * User cancelled the
-       * share sheet.
+       * User cancelled sharing.
        */
 
     }
@@ -1620,6 +1926,7 @@ async function shareStore() {
 /* ==========================================================
    NOT FOUND
 ========================================================== */
+
 
 function showNotFound() {
 
@@ -1649,6 +1956,7 @@ function showNotFound() {
 /* ==========================================================
    EVENTS
 ========================================================== */
+
 
 document
   .getElementById(
@@ -1694,9 +2002,11 @@ document
    START
 ========================================================== */
 
+
 loadStore();
 
 </script>
+
 
 </body>
 
