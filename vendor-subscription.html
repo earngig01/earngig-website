@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>Vendor Subscription | EarnGig</title>
 
@@ -17,7 +20,12 @@
       margin: 0;
       min-height: 100vh;
       background:
-        radial-gradient(circle at top, #26104f 0%, #100a24 42%, #070612 100%);
+        radial-gradient(
+          circle at top,
+          #26104f 0%,
+          #100a24 42%,
+          #070612 100%
+        );
       color: #ffffff;
       font-family: Arial, sans-serif;
     }
@@ -59,8 +67,8 @@
     }
 
     .card {
-      background: rgba(20, 14, 42, 0.96);
-      border: 1px solid rgba(139, 92, 246, 0.30);
+      background: rgba(20,14,42,0.96);
+      border: 1px solid rgba(139,92,246,0.30);
       border-radius: 22px;
       padding: 24px;
       margin-bottom: 16px;
@@ -74,7 +82,12 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: linear-gradient(135deg, #7c3aed, #4f46e5);
+      background:
+        linear-gradient(
+          135deg,
+          #7c3aed,
+          #4f46e5
+        );
       font-size: 28px;
       font-weight: 900;
       margin-bottom: 18px;
@@ -122,11 +135,12 @@
       margin-top: 18px;
       padding: 18px;
       border-radius: 16px;
-      background: linear-gradient(
-        135deg,
-        rgba(124,58,237,0.18),
-        rgba(79,70,229,0.10)
-      );
+      background:
+        linear-gradient(
+          135deg,
+          rgba(124,58,237,0.18),
+          rgba(79,70,229,0.10)
+        );
       border: 1px solid rgba(139,92,246,0.25);
     }
 
@@ -250,7 +264,12 @@
       font-size: 16px;
       font-weight: 800;
       cursor: pointer;
-      background: linear-gradient(135deg, #7c3aed, #4f46e5);
+      background:
+        linear-gradient(
+          135deg,
+          #7c3aed,
+          #4f46e5
+        );
     }
 
     .pay-btn:disabled {
@@ -566,20 +585,17 @@
 const SUPABASE_URL =
   "https://ytvtdelwefykeqwztcyo.supabase.co";
 
-/*
- * Current Supabase legacy ANON key.
- *
- * This is the browser/client key.
- * It is NOT the service_role/secret key.
- */
+
 const SUPABASE_PUBLISHABLE_KEY =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzIiwicmVmIjoieXR2dGRlbHdleWZ5a2Vxd3p0Y3lvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYzMDkwMjUsImV4cCI6MjEwMTg4NTAyNX0.qzT3lYrTFupgGAxQ0VZl26hqblLQDs0vc9ZNiwBU9tA";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl0dnRkZWx3ZWZ5a2Vxd3p0Y3lvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYzMDkwMjUsImV4cCI6MjEwMTg4NTAyNX0.qzT3lYrTFupgGAxQ0VZl26hqblLQDs0vc9ZNiwBU9tA";
+
 
 const supabaseClient =
   window.supabase.createClient(
     SUPABASE_URL,
     SUPABASE_PUBLISHABLE_KEY
   );
+
 
 let currentUser = null;
 let currentStore = null;
@@ -663,9 +679,7 @@ function getSelectedPaymentMethod() {
 function updatePaymentButton() {
 
   const button =
-    document.getElementById(
-      "payButton"
-    );
+    document.getElementById("payButton");
 
 
   if (paymentProcessing) {
@@ -717,9 +731,7 @@ function updatePaymentButton() {
 async function loadVendorStore() {
 
   const button =
-    document.getElementById(
-      "payButton"
-    );
+    document.getElementById("payButton");
 
 
   try {
@@ -759,46 +771,95 @@ async function loadVendorStore() {
       sessionData.session.user;
 
 
-    const {
-      data: store,
-      error: storeError
-    } =
-      await supabaseClient
-        .from("marketplace_stores")
-        .select(`
-          id,
-          vendor_id,
-          store_name,
-          store_slug,
-          status,
-          business_state,
-          business_lga,
-          business_city,
-          business_area,
-          location_display
-        `)
-        .eq(
-          "vendor_id",
-          currentUser.id
-        )
-        .order(
-          "created_at",
-          {
-            ascending: false
+    /*
+     * We already confirmed that direct REST access
+     * to marketplace_stores works.
+     *
+     * Therefore this page uses the REST endpoint
+     * directly for the store lookup.
+     */
+
+    const accessToken =
+      sessionData.session.access_token;
+
+
+    const storeUrl =
+      SUPABASE_URL +
+      "/rest/v1/marketplace_stores" +
+      "?select=" +
+      encodeURIComponent(
+        "id,vendor_id,store_name,store_slug,status,business_state,business_lga,business_city,business_area,location_display,created_at"
+      ) +
+      "&vendor_id=eq." +
+      encodeURIComponent(
+        currentUser.id
+      ) +
+      "&order=created_at.desc" +
+      "&limit=1";
+
+
+    const storeResponse =
+      await fetch(
+        storeUrl,
+        {
+          method: "GET",
+
+          headers: {
+            "apikey":
+              SUPABASE_PUBLISHABLE_KEY,
+
+            "Authorization":
+              "Bearer " + accessToken,
+
+            "Content-Type":
+              "application/json"
           }
-        )
-        .limit(1)
-        .maybeSingle();
+        }
+      );
 
 
-    if (storeError) {
+    const storeText =
+      await storeResponse.text();
+
+
+    let storeData = null;
+
+
+    try {
+
+      storeData =
+        JSON.parse(storeText);
+
+    } catch {
+
+      storeData = null;
+
+    }
+
+
+    if (!storeResponse.ok) {
 
       throw new Error(
-        "Store lookup failed: " +
-        storeError.message
+        "Store lookup failed: HTTP " +
+        storeResponse.status +
+        " - " +
+        (
+          storeData?.message ||
+          storeData?.hint ||
+          storeData?.error ||
+          storeText ||
+          "Unknown Supabase error."
+        )
       );
 
     }
+
+
+    const store =
+      Array.isArray(storeData) &&
+      storeData.length > 0
+        ? storeData[0]
+        : null;
 
 
     if (!store) {
@@ -860,6 +921,9 @@ async function loadVendorStore() {
         "Your marketplace store is already active.",
         "info"
       );
+
+
+      await loadWallet();
 
       return;
 
@@ -1293,9 +1357,7 @@ async function startPayment() {
 
 
 document
-  .getElementById(
-    "walletPayment"
-  )
+  .getElementById("walletPayment")
   .addEventListener(
     "change",
     function () {
@@ -1309,9 +1371,7 @@ document
 
 
 document
-  .getElementById(
-    "flutterwavePayment"
-  )
+  .getElementById("flutterwavePayment")
   .addEventListener(
     "change",
     function () {
