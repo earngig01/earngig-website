@@ -88,11 +88,6 @@
       font-size: 25px;
     }
 
-    h2 {
-      margin: 0;
-      font-size: 17px;
-    }
-
     p {
       color: #b8b1d0;
       line-height: 1.6;
@@ -105,6 +100,13 @@
       border-radius: 15px;
       background: rgba(255,255,255,0.045);
       border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .store-label {
+      color: #8f87aa;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .5px;
     }
 
     .store-name {
@@ -182,7 +184,6 @@
       font-weight: 800;
       cursor: pointer;
       background: linear-gradient(135deg, #7c3aed, #4f46e5);
-      box-shadow: 0 10px 28px rgba(79,70,229,0.25);
     }
 
     .pay-btn:disabled {
@@ -197,6 +198,7 @@
       border-radius: 13px;
       font-size: 13px;
       line-height: 1.5;
+      word-break: break-word;
     }
 
     .message.error {
@@ -219,10 +221,6 @@
       font-size: 12px;
       line-height: 1.5;
       padding: 5px 15px 20px;
-    }
-
-    .hidden {
-      display: none !important;
     }
 
     .spinner {
@@ -250,6 +248,7 @@
   <main class="page">
 
     <div class="topbar">
+
       <button
         class="back-btn"
         type="button"
@@ -259,35 +258,38 @@
       </button>
 
       <div>
-        <div class="brand">EarnGig Marketplace</div>
-        <div class="subtitle">Vendor Subscription</div>
+        <div class="brand">
+          EarnGig Marketplace
+        </div>
+
+        <div class="subtitle">
+          Vendor Subscription
+        </div>
       </div>
+
     </div>
 
 
     <section class="card">
 
-      <div class="icon">E</div>
+      <div class="icon">
+        E
+      </div>
 
-      <h1>Activate Your Store</h1>
+      <h1>
+        Activate Your Store
+      </h1>
 
       <p>
         Your vendor application has been approved.
-        Complete the monthly vendor subscription to activate
-        your marketplace store.
+        Complete the monthly vendor subscription
+        to activate your marketplace store.
       </p>
 
 
       <div class="store-box">
 
-        <div
-          style="
-            color:#8f87aa;
-            font-size:12px;
-            text-transform:uppercase;
-            letter-spacing:.5px;
-          "
-        >
+        <div class="store-label">
           Approved Store
         </div>
 
@@ -383,11 +385,14 @@
 
 
   <script>
+
     const SUPABASE_URL =
       "https://ytvtdelwefykeqwztcyo.supabase.co";
 
+
     const SUPABASE_PUBLISHABLE_KEY =
-      "sb_publishable_CLTeqgEB6JS7QKqq6rQARw_RV31Ccg3";
+      "sb_publishable_CLTeqgEB6JSQ7Kqq6rQARw_RV31Ccg3";
+
 
     const supabaseClient =
       window.supabase.createClient(
@@ -400,48 +405,80 @@
     let currentStore = null;
 
 
-    function showMessage(message, type = "info") {
-      const box =
-        document.getElementById("message");
+    function showMessage(
+      message,
+      type = "info"
+    ) {
 
-      box.textContent = message;
+      const box =
+        document.getElementById(
+          "message"
+        );
+
+      box.textContent =
+        message;
+
       box.className =
         "message " + type;
     }
 
 
-    function clearMessage() {
-      const box =
-        document.getElementById("message");
-
-      box.className = "message";
-      box.textContent = "";
-    }
-
-
     function goBack() {
-      if (window.history.length > 1) {
+
+      if (
+        window.history.length > 1
+      ) {
+
         window.history.back();
+
       } else {
-        window.location.href = "marketplace.html";
+
+        window.location.href =
+          "marketplace.html";
       }
     }
 
 
     async function loadVendorStore() {
+
+      const button =
+        document.getElementById(
+          "payButton"
+        );
+
+
       try {
+
+        /*
+         * STEP 1:
+         * Check the current login session.
+         */
 
         const {
           data: sessionData,
           error: sessionError
-        } = await supabaseClient.auth.getSession();
+        } =
+          await supabaseClient.auth.getSession();
+
+
+        if (sessionError) {
+
+          throw new Error(
+            "Session error: " +
+            sessionError.message
+          );
+        }
+
 
         if (
-          sessionError ||
-          !sessionData?.session
+          !sessionData ||
+          !sessionData.session ||
+          !sessionData.session.user
         ) {
+
           window.location.href =
             "login.html?redirect=vendor-subscription.html";
+
           return;
         }
 
@@ -450,49 +487,109 @@
           sessionData.session.user;
 
 
-        const {
-          data: store,
-          error: storeError
-        } = await supabaseClient
-          .from("marketplace_stores")
-          .select(`
-            id,
-            vendor_id,
-            store_name,
-            store_slug,
-            status,
-            business_state,
-            business_lga,
-            business_city,
-            location_display
-          `)
-          .eq("vendor_id", currentUser.id)
-          .order("created_at", {
-            ascending: false
-          })
-          .limit(1)
-          .maybeSingle();
+        /*
+         * STEP 2:
+         * Load the vendor's store.
+         */
+
+        const storePromise =
+          supabaseClient
+            .from("marketplace_stores")
+            .select(`
+              id,
+              vendor_id,
+              store_name,
+              store_slug,
+              status,
+              business_state,
+              business_lga,
+              business_city,
+              business_area,
+              location_display
+            `)
+            .eq(
+              "vendor_id",
+              currentUser.id
+            )
+            .order(
+              "created_at",
+              {
+                ascending: false
+              }
+            )
+            .limit(1)
+            .maybeSingle();
+
+
+        /*
+         * Prevent the page from being stuck
+         * forever if the database request hangs.
+         */
+
+        const timeoutPromise =
+          new Promise(
+            (_, reject) => {
+
+              setTimeout(
+                () => {
+
+                  reject(
+                    new Error(
+                      "The store lookup timed out. Please refresh the page."
+                    )
+                  );
+
+                },
+                10000
+              );
+
+            }
+          );
+
+
+        const result =
+          await Promise.race([
+            storePromise,
+            timeoutPromise
+          ]);
+
+
+        const store =
+          result?.data;
+
+        const storeError =
+          result?.error;
 
 
         if (storeError) {
+
           throw new Error(
+            "Store lookup failed: " +
             storeError.message
           );
         }
 
 
         if (!store) {
+
           throw new Error(
             "No marketplace store was found for your account."
           );
         }
 
 
-        currentStore = store;
+        /*
+         * STEP 3:
+         * Save store information.
+         */
+
+        currentStore =
+          store;
 
 
-        document.getElementById("storeName")
-          .textContent =
+        document.getElementById(
+          "storeName"
+        ).textContent =
           store.store_name ||
           "Your Marketplace Store";
 
@@ -509,28 +606,39 @@
             .join(", ");
 
 
-        document.getElementById("storeLocation")
-          .textContent =
+        document.getElementById(
+          "storeLocation"
+        ).textContent =
           location ||
           "Store location not provided";
 
 
-        if (store.status === "active") {
+        /*
+         * STEP 4:
+         * Determine whether payment is needed.
+         */
 
-          const button =
-            document.getElementById("payButton");
+        if (
+          store.status === "active"
+        ) {
 
-          button.disabled = false;
+          button.disabled =
+            false;
+
           button.textContent =
             "Open Vendor Dashboard";
 
-          button.onclick = function () {
-            window.location.href =
-              "vendor-dashboard.html";
-          };
+          button.onclick =
+            function () {
+
+              window.location.href =
+                "vendor-dashboard.html";
+
+            };
+
 
           showMessage(
-            "Your store is already active. No subscription payment is required on this page.",
+            "Your marketplace store is already active.",
             "info"
           );
 
@@ -538,10 +646,13 @@
         }
 
 
-        const button =
-          document.getElementById("payButton");
+        /*
+         * Store is pending payment.
+         */
 
-        button.disabled = false;
+        button.disabled =
+          false;
+
         button.textContent =
           "Pay ₦2,500 & Activate Store";
 
@@ -549,95 +660,120 @@
       } catch (error) {
 
         console.error(
-          "Load vendor store error:",
+          "Vendor store loading error:",
           error
         );
+
+
+        document.getElementById(
+          "storeName"
+        ).textContent =
+          "Unable to load store";
+
+
+        document.getElementById(
+          "storeLocation"
+        ).textContent =
+          "";
+
+
+        button.disabled =
+          true;
+
+
+        button.textContent =
+          "Unable to Continue";
+
 
         showMessage(
           error?.message ||
           "Could not load your vendor store.",
           "error"
         );
-
-        const button =
-          document.getElementById("payButton");
-
-        button.disabled = true;
-        button.textContent =
-          "Unable to Continue";
       }
+
     }
 
 
     async function startPayment() {
 
-      if (!currentUser || !currentStore) {
+      if (
+        !currentUser ||
+        !currentStore
+      ) {
+
         showMessage(
           "Your vendor store has not finished loading.",
           "error"
         );
+
         return;
       }
 
 
       const button =
-        document.getElementById("payButton");
+        document.getElementById(
+          "payButton"
+        );
 
 
       try {
 
-        button.disabled = true;
+        button.disabled =
+          true;
 
         button.innerHTML =
           '<span class="spinner"></span>Starting Secure Payment...';
-
-        clearMessage();
 
 
         const {
           data,
           error
-        } = await supabaseClient.functions.invoke(
-          "flutterwave-vendor-subscription",
-          {
-            body: {
-              action: "initialize",
-              store_id: currentStore.id
+        } =
+          await supabaseClient.functions.invoke(
+            "flutterwave-vendor-subscription",
+            {
+              body: {
+                action:
+                  "initialize",
+
+                store_id:
+                  currentStore.id
+              }
             }
-          }
-        );
+          );
 
 
         if (error) {
+
           throw new Error(
             error.message ||
-            "Could not start the payment."
+            "Could not start payment."
           );
         }
 
 
-        if (data?.already_active) {
+        if (
+          !data ||
+          !data.success
+        ) {
 
-          showMessage(
-            "Your store is already active.",
-            "info"
-          );
-
-          setTimeout(() => {
-            window.location.href =
-              "vendor-dashboard.html";
-          }, 1000);
-
-          return;
-        }
-
-
-        if (!data?.success) {
           throw new Error(
             data?.error ||
             data?.message ||
             "Flutterwave payment could not be initialized."
           );
+        }
+
+
+        if (
+          data.already_active
+        ) {
+
+          window.location.href =
+            "vendor-dashboard.html";
+
+          return;
         }
 
 
@@ -648,6 +784,7 @@
 
 
         if (!paymentLink) {
+
           throw new Error(
             "Flutterwave did not return a payment link."
           );
@@ -655,9 +792,9 @@
 
 
         /*
-         * Send the vendor to Flutterwave's hosted
-         * secure checkout page.
+         * Send the vendor to Flutterwave.
          */
+
         window.location.href =
           paymentLink;
 
@@ -665,24 +802,34 @@
       } catch (error) {
 
         console.error(
-          "Vendor subscription payment error:",
+          "Vendor payment error:",
           error
         );
 
+
         showMessage(
           error?.message ||
-          "Unable to start payment. Please try again.",
+          "Unable to start payment.",
           "error"
         );
 
-        button.disabled = false;
+
+        button.disabled =
+          false;
+
         button.textContent =
           "Pay ₦2,500 & Activate Store";
       }
+
     }
 
 
+    /*
+     * Start loading immediately.
+     */
+
     loadVendorStore();
+
   </script>
 
 </body>
