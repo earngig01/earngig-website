@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+
   <meta charset="UTF-8">
 
   <meta
@@ -152,6 +153,42 @@
       border-color: #7565df;
     }
 
+    .brand-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: rgba(124, 58, 237, 0.08);
+      border: 1px solid rgba(124, 58, 237, 0.22);
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 16px;
+    }
+
+    .brand-logo {
+      width: 58px;
+      height: 58px;
+      border-radius: 12px;
+      object-fit: contain;
+      background: #090d31;
+      border: 1px solid #30385e;
+      padding: 5px;
+      box-sizing: border-box;
+      flex-shrink: 0;
+    }
+
+    .brand-info strong {
+      display: block;
+      color: #fff;
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    .brand-info span {
+      color: #858eaa;
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
     .image-upload {
       border: 1px dashed #465080;
       background: rgba(9, 13, 49, 0.75);
@@ -200,12 +237,24 @@
       position: absolute;
       left: 6px;
       bottom: 6px;
-      background: rgba(0, 0, 0, 0.75);
+      background: rgba(0, 0, 0, 0.78);
       color: #fff;
       border-radius: 6px;
       padding: 4px 6px;
       font-size: 9px;
       font-weight: 800;
+    }
+
+    .branding-label {
+      position: absolute;
+      right: 6px;
+      top: 6px;
+      background: rgba(124, 58, 237, 0.92);
+      color: #fff;
+      border-radius: 6px;
+      padding: 4px 6px;
+      font-size: 8px;
+      font-weight: 900;
     }
 
     .existing-image {
@@ -370,9 +419,7 @@
       id="loading-box"
       class="loading-box"
     >
-
       Checking your seller account...
-
     </div>
 
 
@@ -401,392 +448,416 @@
       </div>
 
 
-      <form id="product-form">
+      <!-- STORE BRANDING -->
 
+      <section class="form-section">
 
-        <!-- PRODUCT INFORMATION -->
+        <div class="form-section-title">
 
-        <section class="form-section">
+          <span class="form-number">
+            01
+          </span>
 
-          <div class="form-section-title">
+          <div>
 
-            <span class="form-number">
-              01
-            </span>
+            <h2>
+              Store branding
+            </h2>
 
-
-            <div>
-
-              <h2>
-                Product information
-              </h2>
-
-              <p>
-                Tell buyers what you're selling.
-              </p>
-
-            </div>
+            <p>
+              Your marketplace images will automatically carry your store identity.
+            </p>
 
           </div>
 
-
-          <label for="product-title">
-            Product name
-          </label>
+        </div>
 
 
-          <input
-            type="text"
-            id="product-title"
-            placeholder="e.g. Classic Leather Handbag"
-            maxlength="150"
-            required
+        <div class="brand-card">
+
+          <img
+            id="store-logo-preview"
+            class="brand-logo"
+            src=""
+            alt="Store logo"
           >
 
 
-          <label for="category">
-            Product category
-          </label>
+          <div class="brand-info">
 
-
-          <select
-            id="category"
-            required
-          >
-
-            <option value="">
-              Select a category
-            </option>
-
-            <option value="Fashion & Clothing">
-              Fashion & Clothing
-            </option>
-
-            <option value="Beauty & Cosmetics">
-              Beauty & Cosmetics
-            </option>
-
-            <option value="Nails & Nail Accessories">
-              Nails & Nail Accessories
-            </option>
-
-            <option value="Bags & Accessories">
-              Bags & Accessories
-            </option>
-
-            <option value="Shoes & Footwear">
-              Shoes & Footwear
-            </option>
-
-            <option value="Phones & Tablets">
-              Phones & Tablets
-            </option>
-
-            <option value="Computers & Laptops">
-              Computers & Laptops
-            </option>
-
-            <option value="Electronics & Gadgets">
-              Electronics & Gadgets
-            </option>
-
-            <option value="Home & Kitchen">
-              Home & Kitchen
-            </option>
-
-            <option value="Furniture">
-              Furniture
-            </option>
-
-            <option value="Baby & Kids">
-              Baby & Kids
-            </option>
-
-            <option value="Health & Personal Care">
-              Health & Personal Care
-            </option>
-
-            <option value="Food & Drinks">
-              Food & Drinks
-            </option>
-
-            <option value="Groceries">
-              Groceries
-            </option>
-
-            <option value="Auto & Accessories">
-              Auto & Accessories
-            </option>
-
-            <option value="Tools & Hardware">
-              Tools & Hardware
-            </option>
-
-            <option value="Gifts & Accessories">
-              Gifts & Accessories
-            </option>
-
-            <option value="Other">
-              Other
-            </option>
-
-          </select>
-
-
-          <label for="description">
-            Product description
-          </label>
-
-
-          <textarea
-            id="description"
-            placeholder="Describe the product, what buyers receive, important features, size, colour, material, etc."
-            required
-          ></textarea>
-
-        </section>
-
-
-        <!-- PRICING AND STOCK -->
-
-        <section class="form-section">
-
-          <div class="form-section-title">
-
-            <span class="form-number">
-              02
-            </span>
-
-
-            <div>
-
-              <h2>
-                Price and stock
-              </h2>
-
-              <p>
-                Set your selling price and available quantity.
-              </p>
-
-            </div>
-
-          </div>
-
-
-          <label for="price">
-            Product price
-          </label>
-
-
-          <div class="money-input">
+            <strong id="store-name-display">
+              Your Store
+            </strong>
 
             <span>
-              ₦
+              Your store logo and name will be added to every marketplace product image.
             </span>
 
-
-            <input
-              type="number"
-              id="price"
-              min="1"
-              step="0.01"
-              placeholder="Enter price"
-              required
-            >
-
           </div>
 
+        </div>
 
-          <label for="stock">
-            Stock quantity
-          </label>
-
-
-          <input
-            type="number"
-            id="stock"
-            min="0"
-            step="1"
-            placeholder="e.g. 10"
-            required
-          >
-
-
-          <label for="delivery">
-            Delivery type
-          </label>
-
-
-          <select
-            id="delivery"
-          >
-
-            <option value="">
-              Select delivery type
-            </option>
-
-            <option value="Vendor Delivery">
-              Vendor Delivery
-            </option>
-
-            <option value="Courier Delivery">
-              Courier Delivery
-            </option>
-
-            <option value="Pickup">
-              Pickup
-            </option>
-
-            <option value="Other">
-              Other
-            </option>
-
-          </select>
-
-        </section>
-
-
-        <!-- PRODUCT IMAGES -->
-
-        <section class="form-section">
-
-          <div class="form-section-title">
-
-            <span class="form-number">
-              03
-            </span>
-
-
-            <div>
-
-              <h2>
-                Product images
-              </h2>
-
-              <p>
-                At least one clear product image is required.
-              </p>
-
-            </div>
-
-          </div>
-
-
-          <div class="image-upload">
-
-            <label for="product-images">
-              Upload product images
-            </label>
-
-
-            <input
-              type="file"
-              id="product-images"
-              accept="image/jpeg,image/png,image/webp"
-              multiple
-            >
-
-
-            <div class="image-help">
-
-              Upload up to 5 clear product images.
-              JPG, PNG or WebP.
-              Maximum 5 MB per image.
-
-              <br>
-
-              The first uploaded image will be used as
-              the primary product image.
-
-            </div>
-
-
-            <div
-              id="image-preview"
-              class="image-preview"
-            ></div>
-
-
-            <div
-              id="existing-image"
-              class="existing-image hidden"
-            >
-
-              <div class="existing-image-label">
-                Current primary image
-              </div>
-
-              <img
-                id="existing-image-preview"
-                src=""
-                alt="Current product image"
-              >
-
-            </div>
-
-          </div>
-
-        </section>
-
-
-        <!-- REVIEW NOTICE -->
 
         <div class="notice">
 
           <strong>
-            Before your product goes live
+            Image protection
           </strong>
 
-          Your product will be submitted for marketplace
-          review. Buyers will only see products that are
-          approved/active and have a valid product image.
+          Your original uploaded image is kept separately.
+          The marketplace version receives your approved store
+          branding before it is displayed to buyers.
+
+        </div>
+
+      </section>
+
+
+      <!-- PRODUCT INFORMATION -->
+
+      <section class="form-section">
+
+        <div class="form-section-title">
+
+          <span class="form-number">
+            02
+          </span>
+
+          <div>
+
+            <h2>
+              Product information
+            </h2>
+
+            <p>
+              Tell buyers what you're selling.
+            </p>
+
+          </div>
 
         </div>
 
 
-        <label class="agreement">
-
-          <input
-            type="checkbox"
-            id="agreement"
-            required
-          >
-
-
-          <span>
-            I confirm that I have the right to sell this
-            product and that the information and images
-            provided are accurate.
-          </span>
-
+        <label for="product-title">
+          Product name
         </label>
 
 
-        <div
-          id="form-message"
-          class="form-message hidden"
-        ></div>
+        <input
+          type="text"
+          id="product-title"
+          placeholder="e.g. Classic Leather Handbag"
+          maxlength="150"
+          required
+        >
 
 
-        <div class="form-actions">
-
-          <a
-            href="seller-dashboard.html"
-            class="btn outline big"
-          >
-            Cancel
-          </a>
+        <label for="category">
+          Product category
+        </label>
 
 
-          <button
-            type="submit"
-            id="submit-product"
-            class="btn primary big"
-          >
-            Submit Product
-          </button>
+        <select
+          id="category"
+          required
+        >
+
+          <option value="">
+            Select a category
+          </option>
+
+          <option value="Fashion & Clothing">
+            Fashion & Clothing
+          </option>
+
+          <option value="Beauty & Cosmetics">
+            Beauty & Cosmetics
+          </option>
+
+          <option value="Nails & Nail Accessories">
+            Nails & Nail Accessories
+          </option>
+
+          <option value="Bags & Accessories">
+            Bags & Accessories
+          </option>
+
+          <option value="Shoes & Footwear">
+            Shoes & Footwear
+          </option>
+
+          <option value="Phones & Tablets">
+            Phones & Tablets
+          </option>
+
+          <option value="Computers & Laptops">
+            Computers & Laptops
+          </option>
+
+          <option value="Electronics & Gadgets">
+            Electronics & Gadgets
+          </option>
+
+          <option value="Home & Kitchen">
+            Home & Kitchen
+          </option>
+
+          <option value="Furniture">
+            Furniture
+          </option>
+
+          <option value="Baby & Kids">
+            Baby & Kids
+          </option>
+
+          <option value="Health & Personal Care">
+            Health & Personal Care
+          </option>
+
+          <option value="Food & Drinks">
+            Food & Drinks
+          </option>
+
+          <option value="Groceries">
+            Groceries
+          </option>
+
+          <option value="Auto & Accessories">
+            Auto & Accessories
+          </option>
+
+          <option value="Tools & Hardware">
+            Tools & Hardware
+          </option>
+
+          <option value="Gifts & Accessories">
+            Gifts & Accessories
+          </option>
+
+          <option value="Other">
+            Other
+          </option>
+
+        </select>
+
+
+        <label for="description">
+          Product description
+        </label>
+
+
+        <textarea
+          id="description"
+          placeholder="Describe the product, what buyers receive, important features, size, colour, material, etc."
+          required
+        ></textarea>
+
+      </section>
+
+
+      <!-- PRICING AND STOCK -->
+
+      <section class="form-section">
+
+        <div class="form-section-title">
+
+          <span class="form-number">
+            03
+          </span>
+
+          <div>
+
+            <h2>
+              Price and stock
+            </h2>
+
+            <p>
+              Set your selling price and available quantity.
+            </p>
+
+          </div>
 
         </div>
+
+
+        <label for="price">
+          Product price
+        </label>
+
+
+        <div class="money-input">
+
+          <span>
+            ₦
+          </span>
+
+
+          <input
+            type="number"
+            id="price"
+            min="1"
+            step="0.01"
+            placeholder="Enter price"
+            required
+          >
+
+        </div>
+
+
+        <label for="stock">
+          Stock quantity
+        </label>
+
+
+        <input
+          type="number"
+          id="stock"
+          min="0"
+          step="1"
+          placeholder="e.g. 10"
+          required
+        >
+
+      </section>
+
+
+      <!-- PRODUCT IMAGES -->
+
+      <section class="form-section">
+
+        <div class="form-section-title">
+
+          <span class="form-number">
+            04
+          </span>
+
+          <div>
+
+            <h2>
+              Product images
+            </h2>
+
+            <p>
+              At least one clear product image is required.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="image-upload">
+
+          <label for="product-images">
+            Upload product images
+          </label>
+
+
+          <input
+            type="file"
+            id="product-images"
+            accept="image/jpeg,image/png,image/webp"
+            multiple
+          >
+
+
+          <div class="image-help">
+
+            Upload up to 5 clear product images.
+            JPG, PNG or WebP.
+            Maximum 5 MB per image.
+
+            <br><br>
+
+            EarnGig will create a branded marketplace version
+            using your store logo and store name.
+
+          </div>
+
+
+          <div
+            id="image-preview"
+            class="image-preview"
+          ></div>
+
+
+          <div
+            id="existing-image"
+            class="existing-image hidden"
+          >
+
+            <div class="existing-image-label">
+              Current primary marketplace image
+            </div>
+
+            <img
+              id="existing-image-preview"
+              src=""
+              alt="Current product image"
+            >
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <div class="notice">
+
+        <strong>
+          Before your product goes live
+        </strong>
+
+        Your product will be submitted for marketplace review.
+        Buyers will only see products that are approved and have
+        a valid branded product image.
+
+      </div>
+
+
+      <label class="agreement">
+
+        <input
+          type="checkbox"
+          id="agreement"
+          required
+        >
+
+
+        <span>
+          I confirm that I have the right to sell this product
+          and that the information and images provided are accurate.
+        </span>
+
+      </label>
+
+
+      <div
+        id="form-message"
+        class="form-message hidden"
+      ></div>
+
+
+      <div class="form-actions">
+
+        <a
+          href="seller-dashboard.html"
+          class="btn outline big"
+        >
+          Cancel
+        </a>
+
+
+        <button
+          type="submit"
+          id="submit-product"
+          class="btn primary big"
+        >
+          Submit Product
+        </button>
+
+      </div>
 
 
       </form>
@@ -822,41 +893,17 @@ let editingProduct = null;
    HELPERS
 ========================================================== */
 
-function escapeHtml(value) {
-
-  return String(value ?? "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-
-}
-
-
-function showMessage(
-  text,
-  type
-) {
+function showMessage(text, type) {
 
   const element =
-    document.getElementById(
-      "form-message"
-    );
+    document.getElementById("form-message");
 
-
-  element.textContent =
-    text;
-
+  element.textContent = text;
 
   element.className =
-    "form-message " +
-    type;
+    "form-message " + type;
 
-
-  element.classList.remove(
-    "hidden"
-  );
+  element.classList.remove("hidden");
 
 }
 
@@ -868,10 +915,7 @@ function getEditId() {
       window.location.search
     );
 
-
-  return params.get(
-    "edit"
-  );
+  return params.get("edit");
 
 }
 
@@ -891,10 +935,7 @@ async function checkVendorAccess() {
     await supabaseClient.auth.getUser();
 
 
-  if (
-    error ||
-    !user
-  ) {
+  if (error || !user) {
 
     window.location.href =
       "login.html";
@@ -904,22 +945,15 @@ async function checkVendorAccess() {
   }
 
 
-  currentUser =
-    user;
+  currentUser = user;
 
-
-  /*
-   * Find the vendor's active store.
-   */
 
   const {
     data: store,
     error: storeError
   } =
     await supabaseClient
-      .from(
-        "marketplace_stores"
-      )
+      .from("marketplace_stores")
       .select(`
         id,
         vendor_id,
@@ -929,23 +963,14 @@ async function checkVendorAccess() {
         store_logo_url,
         status
       `)
-      .eq(
-        "vendor_id",
-        user.id
-      )
-      .eq(
-        "status",
-        "active"
-      )
+      .eq("vendor_id", user.id)
+      .eq("status", "active")
       .maybeSingle();
 
 
   if (storeError) {
 
-    console.error(
-      "Store access error:",
-      storeError
-    );
+    console.error(storeError);
 
     showMessage(
       "Unable to verify your marketplace store.",
@@ -971,52 +996,52 @@ async function checkVendorAccess() {
   }
 
 
-  currentStore =
-    store;
-
-
   /*
-   * Verify active store subscription.
+   * A store logo is mandatory for branded
+   * marketplace product images.
    */
+
+  if (!store.store_logo_url) {
+
+    alert(
+      "Your store logo is required before you can add marketplace products."
+    );
+
+    window.location.href =
+      "seller-dashboard.html";
+
+    return false;
+
+  }
+
+
+  currentStore = store;
+
 
   const {
     data: subscription,
     error: subscriptionError
   } =
     await supabaseClient
-      .from(
-        "marketplace_store_subscriptions"
-      )
+      .from("marketplace_store_subscriptions")
       .select(`
         id,
         status,
         starts_at,
         expires_at
       `)
-      .eq(
-        "store_id",
-        store.id
-      )
-      .eq(
-        "vendor_id",
-        user.id
-      )
-      .order(
-        "expires_at",
-        {
-          ascending: false
-        }
-      )
+      .eq("store_id", store.id)
+      .eq("vendor_id", user.id)
+      .order("expires_at", {
+        ascending: false
+      })
       .limit(1)
       .maybeSingle();
 
 
   if (subscriptionError) {
 
-    console.error(
-      "Subscription error:",
-      subscriptionError
-    );
+    console.error(subscriptionError);
 
     alert(
       "Unable to verify your store subscription."
@@ -1031,8 +1056,7 @@ async function checkVendorAccess() {
     subscription &&
     String(
       subscription.status || ""
-    ).toLowerCase() ===
-      "active" &&
+    ).toLowerCase() === "active" &&
     subscription.expires_at &&
     new Date(
       subscription.expires_at
@@ -1053,6 +1077,18 @@ async function checkVendorAccess() {
   }
 
 
+  document.getElementById(
+    "store-logo-preview"
+  ).src =
+    store.store_logo_url;
+
+
+  document.getElementById(
+    "store-name-display"
+  ).textContent =
+    store.store_name;
+
+
   return true;
 
 }
@@ -1062,14 +1098,10 @@ async function checkVendorAccess() {
    LOAD EDIT PRODUCT
 ========================================================== */
 
-async function loadEditProduct(
-  productId
-) {
+async function loadEditProduct(productId) {
 
   if (!productId) {
-
     return;
-
   }
 
 
@@ -1078,9 +1110,7 @@ async function loadEditProduct(
     error
   } =
     await supabaseClient
-      .from(
-        "marketplace_products"
-      )
+      .from("marketplace_products")
       .select(`
         id,
         store_id,
@@ -1090,30 +1120,17 @@ async function loadEditProduct(
         description,
         price,
         stock_quantity,
-        delivery_type,
         status
       `)
-      .eq(
-        "id",
-        productId
-      )
-      .eq(
-        "store_id",
-        currentStore.id
-      )
-      .eq(
-        "vendor_id",
-        currentUser.id
-      )
+      .eq("id", productId)
+      .eq("store_id", currentStore.id)
+      .eq("vendor_id", currentUser.id)
       .maybeSingle();
 
 
   if (error) {
 
-    console.error(
-      "Product loading error:",
-      error
-    );
+    console.error(error);
 
     showMessage(
       "Unable to load this product for editing.",
@@ -1137,8 +1154,7 @@ async function loadEditProduct(
   }
 
 
-  editingProduct =
-    product;
+  editingProduct = product;
 
 
   document.getElementById(
@@ -1184,53 +1200,33 @@ async function loadEditProduct(
 
 
   document.getElementById(
-    "delivery"
-  ).value =
-    product.delivery_type || "";
-
-
-  document.getElementById(
     "submit-product"
   ).textContent =
     "Save Product";
 
-
-  /*
-   * Load existing images.
-   */
 
   const {
     data: images,
     error: imagesError
   } =
     await supabaseClient
-      .from(
-        "marketplace_product_images"
-      )
+      .from("marketplace_product_images")
       .select(`
         id,
         image_url,
         is_primary,
-        sort_order
+        sort_order,
+        watermark_applied
       `)
-      .eq(
-        "product_id",
-        product.id
-      )
-      .order(
-        "sort_order",
-        {
-          ascending: true
-        }
-      );
+      .eq("product_id", product.id)
+      .order("sort_order", {
+        ascending: true
+      });
 
 
   if (imagesError) {
 
-    console.error(
-      "Existing images error:",
-      imagesError
-    );
+    console.error(imagesError);
 
     return;
 
@@ -1239,13 +1235,7 @@ async function loadEditProduct(
 
   const primary =
     (images || []).find(
-      function(image) {
-
-        return (
-          image.is_primary === true
-        );
-
-      }
+      image => image.is_primary === true
     ) ||
     (images || [])[0];
 
@@ -1260,9 +1250,7 @@ async function loadEditProduct(
 
     document.getElementById(
       "existing-image"
-    ).classList.remove(
-      "hidden"
-    );
+    ).classList.remove("hidden");
 
   }
 
@@ -1274,9 +1262,7 @@ async function loadEditProduct(
 ========================================================== */
 
 document
-  .getElementById(
-    "product-images"
-  )
+  .getElementById("product-images")
   .addEventListener(
     "change",
     function(event) {
@@ -1284,7 +1270,7 @@ document
       const files =
         Array.from(
           event.target.files || []
-        );
+        ).slice(0, 5);
 
 
       const preview =
@@ -1293,95 +1279,80 @@ document
         );
 
 
-      preview.innerHTML =
-        "";
+      preview.innerHTML = "";
 
 
-      if (!files.length) {
+      files.forEach(
+        function(file, index) {
 
-        return;
-
-      }
-
-
-      files
-        .slice(0, 5)
-        .forEach(
-          function(file, index) {
-
-            const url =
-              URL.createObjectURL(
-                file
-              );
+          const url =
+            URL.createObjectURL(file);
 
 
-            const item =
-              document.createElement(
-                "div"
-              );
+          const item =
+            document.createElement("div");
 
 
-            item.className =
-              "preview-item";
+          item.className =
+            "preview-item";
 
 
-            item.innerHTML = `
+          item.innerHTML = `
 
-              <img
-                src="${url}"
-                alt="Product image ${index + 1}"
-              >
+            <img
+              src="${url}"
+              alt="Product image ${index + 1}"
+            >
 
-              ${
-                index === 0
-                  ? `
-                    <span class="primary-label">
-                      PRIMARY
-                    </span>
-                  `
-                  : ""
-              }
+            ${
+              index === 0
+                ? `
+                  <span class="primary-label">
+                    PRIMARY
+                  </span>
+                `
+                : ""
+            }
 
-            `;
+            <span class="branding-label">
+              BRANDED
+            </span>
+
+          `;
 
 
-            preview.appendChild(
-              item
-            );
+          preview.appendChild(item);
 
-          }
-        );
+        }
+      );
 
     }
   );
 
 
 /* ==========================================================
-   UPLOAD PRODUCT IMAGE
+   VALIDATE IMAGE
 ========================================================== */
 
-async function uploadProductImage(
-  file,
-  productId,
-  index
-) {
+function validateImage(file) {
 
   if (!file) {
 
-    return null;
+    throw new Error(
+      "Invalid product image."
+    );
 
   }
 
 
-  if (
-    ![
-      "image/jpeg",
-      "image/png",
-      "image/webp"
-    ].includes(
-      file.type
-    )
-  ) {
+  const allowedTypes = [
+    "image/jpeg",
+    "image/png",
+    "image/webp"
+  ];
+
+
+  if (!allowedTypes.includes(file.type)) {
 
     throw new Error(
       "Only JPG, PNG and WebP images are allowed."
@@ -1401,6 +1372,461 @@ async function uploadProductImage(
 
   }
 
+}
+
+
+/* ==========================================================
+   LOAD IMAGE
+========================================================== */
+
+function loadImage(source) {
+
+  return new Promise(
+    function(resolve, reject) {
+
+      const image =
+        new Image();
+
+
+      image.onload =
+        function() {
+
+          resolve(image);
+
+        };
+
+
+      image.onerror =
+        function() {
+
+          reject(
+            new Error(
+              "Unable to process product image."
+            )
+          );
+
+        };
+
+
+      image.src =
+        source;
+
+    }
+  );
+
+}
+
+
+/* ==========================================================
+   LOAD STORE LOGO
+========================================================== */
+
+async function loadStoreLogo() {
+
+  const response =
+    await fetch(
+      currentStore.store_logo_url,
+      {
+        mode: "cors"
+      }
+    );
+
+
+  if (!response.ok) {
+
+    throw new Error(
+      "Unable to load your store logo."
+    );
+
+  }
+
+
+  const blob =
+    await response.blob();
+
+
+  return URL.createObjectURL(
+    blob
+  );
+
+}
+
+
+/* ==========================================================
+   CREATE BRANDED IMAGE
+========================================================== */
+
+async function createBrandedImage(file) {
+
+  validateImage(file);
+
+
+  const originalUrl =
+    URL.createObjectURL(file);
+
+
+  const image =
+    await loadImage(
+      originalUrl
+    );
+
+
+  const logoUrl =
+    await loadStoreLogo();
+
+
+  const logo =
+    await loadImage(
+      logoUrl
+    );
+
+
+  /*
+   * Keep images at a reasonable marketplace
+   * resolution while preserving aspect ratio.
+   */
+
+  const MAX_WIDTH = 1600;
+  const MAX_HEIGHT = 1600;
+
+
+  let width =
+    image.naturalWidth;
+
+  let height =
+    image.naturalHeight;
+
+
+  const scale =
+    Math.min(
+      1,
+      MAX_WIDTH / width,
+      MAX_HEIGHT / height
+    );
+
+
+  width =
+    Math.max(
+      1,
+      Math.round(width * scale)
+    );
+
+
+  height =
+    Math.max(
+      1,
+      Math.round(height * scale)
+    );
+
+
+  const canvas =
+    document.createElement("canvas");
+
+
+  canvas.width =
+    width;
+
+  canvas.height =
+    height;
+
+
+  const context =
+    canvas.getContext("2d");
+
+
+  context.drawImage(
+    image,
+    0,
+    0,
+    width,
+    height
+  );
+
+
+  /*
+   * Branding panel.
+   */
+
+  const panelHeight =
+    Math.max(
+      75,
+      Math.round(
+        height * 0.12
+      )
+    );
+
+
+  const padding =
+    Math.max(
+      14,
+      Math.round(
+        width * 0.018
+      )
+    );
+
+
+  /*
+   * Dark translucent branding strip.
+   */
+
+  context.fillStyle =
+    "rgba(7, 11, 43, 0.88)";
+
+
+  context.fillRect(
+    0,
+    height - panelHeight,
+    width,
+    panelHeight
+  );
+
+
+  /*
+   * Logo sizing.
+   */
+
+  const maxLogoHeight =
+    panelHeight -
+    padding * 2;
+
+
+  const maxLogoWidth =
+    Math.min(
+      Math.round(
+        width * 0.18
+      ),
+      maxLogoHeight * 2
+    );
+
+
+  let logoWidth =
+    logo.naturalWidth;
+
+  let logoHeight =
+    logo.naturalHeight;
+
+
+  const logoScale =
+    Math.min(
+      maxLogoWidth / logoWidth,
+      maxLogoHeight / logoHeight
+    );
+
+
+  logoWidth =
+    Math.max(
+      1,
+      Math.round(
+        logoWidth * logoScale
+      )
+    );
+
+
+  logoHeight =
+    Math.max(
+      1,
+      Math.round(
+        logoHeight * logoScale
+      )
+    );
+
+
+  const logoX =
+    padding;
+
+
+  const logoY =
+    height -
+    panelHeight +
+    Math.round(
+      (panelHeight - logoHeight) / 2
+    );
+
+
+  context.drawImage(
+    logo,
+    logoX,
+    logoY,
+    logoWidth,
+    logoHeight
+  );
+
+
+  /*
+   * Store name.
+   */
+
+  const textX =
+    logoX +
+    logoWidth +
+    padding;
+
+
+  const availableTextWidth =
+    width -
+    textX -
+    padding;
+
+
+  let fontSize =
+    Math.max(
+      16,
+      Math.round(
+        panelHeight * 0.30
+      )
+    );
+
+
+  if (fontSize > 38) {
+    fontSize = 38;
+  }
+
+
+  context.font =
+    `800 ${fontSize}px Arial, sans-serif`;
+
+
+  context.fillStyle =
+    "#ffffff";
+
+
+  context.textBaseline =
+    "middle";
+
+
+  let storeName =
+    String(
+      currentStore.store_name || ""
+    ).trim();
+
+
+  if (!storeName) {
+    storeName = "EarnGig Seller";
+  }
+
+
+  /*
+   * Prevent extremely long store names
+   * from overflowing the image.
+   */
+
+  while (
+    context.measureText(storeName).width >
+      availableTextWidth &&
+    storeName.length > 5
+  ) {
+
+    storeName =
+      storeName
+        .slice(0, -4)
+        .trim() +
+      "...";
+
+  }
+
+
+  context.fillText(
+    storeName,
+    textX,
+    height -
+      panelHeight / 2
+  );
+
+
+  /*
+   * Small EarnGig marketplace mark.
+   */
+
+  const markSize =
+    Math.max(
+      9,
+      Math.round(
+        panelHeight * 0.14
+      )
+    );
+
+
+  context.font =
+    `600 ${markSize}px Arial, sans-serif`;
+
+
+  context.fillStyle =
+    "rgba(255,255,255,0.60)";
+
+
+  context.textBaseline =
+    "alphabetic";
+
+
+  context.fillText(
+    "EarnGig Marketplace",
+    textX,
+    height - padding
+  );
+
+
+  /*
+   * Convert canvas to PNG.
+   */
+
+  const brandedBlob =
+    await new Promise(
+      function(resolve, reject) {
+
+        canvas.toBlob(
+          function(blob) {
+
+            if (!blob) {
+
+              reject(
+                new Error(
+                  "Unable to create branded product image."
+                )
+              );
+
+              return;
+
+            }
+
+
+            resolve(blob);
+
+          },
+          "image/png",
+          0.92
+        );
+
+      }
+    );
+
+
+  URL.revokeObjectURL(
+    originalUrl
+  );
+
+
+  URL.revokeObjectURL(
+    logoUrl
+  );
+
+
+  return brandedBlob;
+
+}
+
+
+/* ==========================================================
+   UPLOAD ORIGINAL
+========================================================== */
+
+async function uploadOriginal(
+  file,
+  productId,
+  index
+) {
+
+  validateImage(file);
+
 
   const extension =
     file.name
@@ -1418,18 +1844,15 @@ async function uploadProductImage(
   } =
     await supabaseClient.storage
       .from(
-        "marketplace-product-images"
+        "marketplace-product-originals"
       )
       .upload(
         filePath,
         file,
         {
-          cacheControl:
-            "3600",
-          upsert:
-            false,
-          contentType:
-            file.type
+          cacheControl: "31536000",
+          upsert: false,
+          contentType: file.type
         }
       );
 
@@ -1437,7 +1860,58 @@ async function uploadProductImage(
   if (error) {
 
     console.error(
-      "Image upload error:",
+      "Original upload error:",
+      error
+    );
+
+    throw new Error(
+      error.message
+    );
+
+  }
+
+
+  return filePath;
+
+}
+
+
+/* ==========================================================
+   UPLOAD BRANDED IMAGE
+========================================================== */
+
+async function uploadBrandedImage(
+  brandedBlob,
+  productId,
+  index
+) {
+
+  const filePath =
+    `${currentUser.id}/${productId}/${Date.now()}-${index}.png`;
+
+
+  const {
+    error
+  } =
+    await supabaseClient.storage
+      .from(
+        "marketplace-product-images"
+      )
+      .upload(
+        filePath,
+        brandedBlob,
+        {
+          cacheControl: "31536000",
+          upsert: false,
+          contentType: "image/png"
+        }
+      );
+
+
+  if (error) {
+
+    console.error(
+      "Branded image upload error:",
       error
     );
 
@@ -1460,7 +1934,124 @@ async function uploadProductImage(
       );
 
 
-  return data.publicUrl;
+  return {
+    filePath: filePath,
+    publicUrl: data.publicUrl
+  };
+
+}
+
+
+/* ==========================================================
+   PROCESS ONE IMAGE
+========================================================== */
+
+async function processProductImage(
+  file,
+  productId,
+  index
+) {
+
+  validateImage(file);
+
+
+  /*
+   * Keep original privately.
+   */
+
+  const originalFilePath =
+    await uploadOriginal(
+      file,
+      productId,
+      index
+    );
+
+
+  /*
+   * Create branded marketplace copy.
+   */
+
+  const brandedBlob =
+    await createBrandedImage(
+      file
+    );
+
+
+  /*
+   * Upload branded copy publicly.
+   */
+
+  const branded =
+    await uploadBrandedImage(
+      brandedBlob,
+      productId,
+      index
+    );
+
+
+  return {
+
+    product_id:
+      productId,
+
+    image_url:
+      branded.publicUrl,
+
+    original_file_path:
+      originalFilePath,
+
+    watermarked_file_path:
+      branded.filePath,
+
+    watermark_applied:
+      true,
+
+    watermark_text:
+      currentStore.store_name,
+
+    watermark_store_id:
+      currentStore.id,
+
+    is_primary:
+      index === 0,
+
+    sort_order:
+      index
+
+  };
+
+}
+
+
+/* ==========================================================
+   DELETE OLD IMAGE RECORDS
+========================================================== */
+
+async function deleteOldImageRecords(
+  productId
+) {
+
+  const {
+    error
+  } =
+    await supabaseClient
+      .from(
+        "marketplace_product_images"
+      )
+      .delete()
+      .eq(
+        "product_id",
+        productId
+      );
+
+
+  if (error) {
+
+    throw new Error(
+      error.message
+    );
+
+  }
 
 }
 
@@ -1476,16 +2067,35 @@ async function saveProductImages(
 
   if (!files.length) {
 
-    return;
+    return false;
+
+  }
+
+
+  if (files.length > 5) {
+
+    throw new Error(
+      "You can upload a maximum of 5 product images."
+    );
 
   }
 
 
   /*
-   * Upload selected images.
+   * When editing and replacing images,
+   * remove the previous image records.
    */
 
-  const uploadedImages = [];
+  if (editingProduct) {
+
+    await deleteOldImageRecords(
+      productId
+    );
+
+  }
+
+
+  const rows = [];
 
 
   for (
@@ -1494,83 +2104,23 @@ async function saveProductImages(
     index++
   ) {
 
-    const url =
-      await uploadProductImage(
+    showMessage(
+      `Processing product image ${index + 1} of ${files.length}...`,
+      "success"
+    );
+
+
+    const row =
+      await processProductImage(
         files[index],
         productId,
         index
       );
 
 
-    uploadedImages.push(
-      {
-        image_url:
-          url,
-
-        is_primary:
-          index === 0,
-
-        sort_order:
-          index
-      }
-    );
+    rows.push(row);
 
   }
-
-
-  /*
-   * If this is an edit and new images
-   * were uploaded, remove the old image
-   * records first.
-   */
-
-  if (editingProduct) {
-
-    const {
-      error: deleteError
-    } =
-      await supabaseClient
-        .from(
-          "marketplace_product_images"
-        )
-        .delete()
-        .eq(
-          "product_id",
-          productId
-        );
-
-
-    if (deleteError) {
-
-      throw new Error(
-        deleteError.message
-      );
-
-    }
-
-  }
-
-
-  const rows =
-    uploadedImages.map(
-      function(image) {
-
-        return {
-          product_id:
-            productId,
-
-          image_url:
-            image.image_url,
-
-          is_primary:
-            image.is_primary,
-
-          sort_order:
-            image.sort_order
-        };
-
-      }
-    );
 
 
   const {
@@ -1587,11 +2137,19 @@ async function saveProductImages(
 
   if (error) {
 
+    console.error(
+      "Image record error:",
+      error
+    );
+
     throw new Error(
       error.message
     );
 
   }
+
+
+  return true;
 
 }
 
@@ -1631,9 +2189,9 @@ async function productHasImage(
   }
 
 
-  return (
+  return Boolean(
     data &&
-    data.length > 0
+    data.length
   );
 
 }
@@ -1727,14 +2285,6 @@ document
           );
 
 
-        const deliveryType =
-          document
-            .getElementById(
-              "delivery"
-            )
-            .value;
-
-
         const files =
           Array.from(
             document
@@ -1743,7 +2293,13 @@ document
               )
               .files ||
               []
-          );
+          ).slice(0, 5);
+
+
+        const agreement =
+          document.getElementById(
+            "agreement"
+          ).checked;
 
 
         if (
@@ -1783,8 +2339,26 @@ document
         }
 
 
+        if (!agreement) {
+
+          throw new Error(
+            "Please confirm that you have the right to sell this product."
+          );
+
+        }
+
+
+        if (!currentStore.store_logo_url) {
+
+          throw new Error(
+            "Your store logo is required before creating marketplace products."
+          );
+
+        }
+
+
         /*
-         * A new product MUST have an image.
+         * New product requires an image.
          */
 
         if (
@@ -1800,10 +2374,22 @@ document
 
 
         /*
-         * --------------------------------------------------
-         * EDIT EXISTING PRODUCT
-         * --------------------------------------------------
+         * Validate all selected images
+         * before creating the product.
          */
+
+        files.forEach(
+          function(file) {
+
+            validateImage(file);
+
+          }
+        );
+
+
+        /* ==================================================
+           EDIT PRODUCT
+        ================================================== */
 
         if (editingProduct) {
 
@@ -1831,9 +2417,13 @@ document
                 stock_quantity:
                   stock,
 
-                delivery_type:
-                  deliveryType ||
-                  null,
+                /*
+                 * Editing a product sends it
+                 * back through review.
+                 */
+
+                status:
+                  "pending",
 
                 updated_at:
                   new Date().toISOString()
@@ -1862,11 +2452,6 @@ document
           }
 
 
-          /*
-           * If new images were selected,
-           * replace the existing images.
-           */
-
           if (files.length) {
 
             await saveProductImages(
@@ -1894,7 +2479,7 @@ document
 
 
           showMessage(
-            "Product updated successfully.",
+            "Product updated and resubmitted for marketplace review.",
             "success"
           );
 
@@ -1906,7 +2491,7 @@ document
                 "seller-dashboard.html";
 
             },
-            1200
+            1400
           );
 
 
@@ -1915,11 +2500,9 @@ document
         }
 
 
-        /*
-         * --------------------------------------------------
-         * CREATE NEW PRODUCT
-         * --------------------------------------------------
-         */
+        /* ==================================================
+           CREATE NEW PRODUCT
+        ================================================== */
 
         const {
           data: product,
@@ -1953,13 +2536,7 @@ document
                 stock,
 
               delivery_type:
-                deliveryType ||
                 null,
-
-              /*
-               * New products enter the
-               * marketplace as pending.
-               */
 
               status:
                 "pending"
@@ -1978,10 +2555,6 @@ document
         }
 
 
-        /*
-         * Upload product images.
-         */
-
         try {
 
           await saveProductImages(
@@ -1992,10 +2565,8 @@ document
         } catch (imageError) {
 
           /*
-           * If image upload fails,
-           * remove the product record so
-           * we never leave an image-less
-           * marketplace product behind.
+           * Never leave an image-less
+           * product behind.
            */
 
           await supabaseClient
@@ -2019,7 +2590,7 @@ document
 
 
         showMessage(
-          "Product submitted successfully. It is now awaiting marketplace review.",
+          "Product submitted successfully. Your branded product images have been created and the product is now awaiting marketplace review.",
           "success"
         );
 
@@ -2038,7 +2609,7 @@ document
               "seller-dashboard.html";
 
           },
-          1500
+          1800
         );
 
 
@@ -2080,42 +2651,66 @@ document
 
 (async function() {
 
-  const allowed =
-    await checkVendorAccess();
+  try {
+
+    const allowed =
+      await checkVendorAccess();
 
 
-  if (!allowed) {
+    if (!allowed) {
 
-    return;
+      return;
 
-  }
-
-
-  const editId =
-    getEditId();
+    }
 
 
-  if (editId) {
+    const editId =
+      getEditId();
 
-    await loadEditProduct(
-      editId
+
+    if (editId) {
+
+      await loadEditProduct(
+        editId
+      );
+
+    }
+
+
+    document
+      .getElementById(
+        "loading-box"
+      )
+      .classList.add(
+        "hidden"
+      );
+
+
+    document
+      .getElementById(
+        "product-editor"
+      )
+      .classList.remove(
+        "hidden"
+      );
+
+  } catch (error) {
+
+    console.error(
+      "Page initialization error:",
+      error
     );
 
+
+    document
+      .getElementById(
+        "loading-box"
+      )
+      .textContent =
+      error?.message ||
+      "Unable to load seller center.";
+
   }
-
-
-  document.getElementById(
-    "loading-box"
-  ).classList.add(
-    "hidden"
-  );
-
-
-  document.getElementById(
-    "product-editor"
-  ).classList.remove(
-    "hidden"
-  );
 
 })();
 
