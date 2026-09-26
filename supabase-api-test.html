@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Supabase API Test</title>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      background: #080612;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+
+    .box {
+      max-width: 600px;
+      margin: auto;
+      background: #15102b;
+      border: 1px solid #39266b;
+      border-radius: 18px;
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 22px;
+    }
+
+    .result {
+      margin-top: 15px;
+      padding: 15px;
+      border-radius: 12px;
+      background: #0d0a1b;
+      white-space: pre-wrap;
+      word-break: break-word;
+      line-height: 1.6;
+    }
+
+    .success {
+      border: 1px solid #22c55e;
+      color: #86efac;
+    }
+
+    .error {
+      border: 1px solid #ef4444;
+      color: #fca5a5;
+    }
+
+    .info {
+      border: 1px solid #8b5cf6;
+      color: #c4b5fd;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="box">
+
+  <h1>EarnGig Supabase API Test</h1>
+
+  <div id="result" class="result info">
+    Testing Supabase API...
+  </div>
+
+</div>
+
+<script>
+
+const SUPABASE_URL =
+  "https://ytvtdelwefykeqwztcyo.supabase.co";
+
+const SUPABASE_ANON_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl0dnRkZWx3ZWZ5a2Vxd3p0Y3lvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYzMDkwMjUsImV4cCI6MjEwMTg4NTAyNX0.qzT3lYrTFupgGAxQ0VZl26hqblLQDs0vc9ZNiwBU9tA";
+
+const result =
+  document.getElementById("result");
+
+
+async function testSupabase() {
+
+  try {
+
+    result.textContent =
+      "Sending direct request to Supabase REST API...";
+
+
+    const response =
+      await fetch(
+        SUPABASE_URL +
+        "/rest/v1/marketplace_stores?select=id,store_name&limit=1",
+        {
+          method: "GET",
+
+          headers: {
+            "apikey": SUPABASE_ANON_KEY,
+            "Authorization":
+              "Bearer " + SUPABASE_ANON_KEY,
+            "Content-Type":
+              "application/json"
+          }
+        }
+      );
+
+
+    const text =
+      await response.text();
+
+
+    let parsed;
+
+    try {
+      parsed =
+        JSON.parse(text);
+    } catch {
+      parsed = text;
+    }
+
+
+    if (response.ok) {
+
+      result.className =
+        "result success";
+
+      result.textContent =
+        "SUCCESS\n\n" +
+        "HTTP Status: " +
+        response.status +
+        "\n\n" +
+        "Supabase accepted the API key.\n\n" +
+        "Response:\n" +
+        JSON.stringify(
+          parsed,
+          null,
+          2
+        );
+
+      return;
+
+    }
+
+
+    result.className =
+      "result error";
+
+    result.textContent =
+      "FAILED\n\n" +
+      "HTTP Status: " +
+      response.status +
+      "\n\n" +
+      "Supabase response:\n" +
+      JSON.stringify(
+        parsed,
+        null,
+        2
+      );
+
+
+  } catch (error) {
+
+    result.className =
+      "result error";
+
+    result.textContent =
+      "BROWSER ERROR\n\n" +
+      error.message;
+
+  }
+
+}
+
+
+testSupabase();
+
+</script>
+
+</body>
+</html>
