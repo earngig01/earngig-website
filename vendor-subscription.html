@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Vendor Subscription | EarnGig</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top, #26104f 0%, #100a24 42%, #070612 100%);
+      color: #ffffff;
+      font-family: Arial, sans-serif;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 560px;
+      margin: 0 auto;
+      padding: 18px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .back-btn {
+      width: 42px;
+      height: 42px;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 12px;
+      background: rgba(255,255,255,0.05);
+      color: #fff;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .brand {
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    .subtitle {
+      color: #aaa3c4;
+      font-size: 13px;
+      margin-top: 3px;
+    }
+
+    .card {
+      background: rgba(20, 14, 42, 0.96);
+      border: 1px solid rgba(139, 92, 246, 0.30);
+      border-radius: 22px;
+      padding: 24px;
+      margin-bottom: 16px;
+      box-shadow: 0 18px 50px rgba(0,0,0,0.30);
+    }
+
+    .icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 19px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #7c3aed, #4f46e5);
+      font-size: 28px;
+      font-weight: 900;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 25px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 17px;
+    }
+
+    p {
+      color: #b8b1d0;
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .store-box {
+      margin-top: 20px;
+      padding: 16px;
+      border-radius: 15px;
+      background: rgba(255,255,255,0.045);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .store-name {
+      font-size: 18px;
+      font-weight: 800;
+      margin-top: 7px;
+    }
+
+    .location {
+      margin-top: 6px;
+      color: #a9a1c4;
+      font-size: 13px;
+    }
+
+    .price-box {
+      margin-top: 18px;
+      padding: 18px;
+      border-radius: 16px;
+      background: linear-gradient(
+        135deg,
+        rgba(124,58,237,0.18),
+        rgba(79,70,229,0.10)
+      );
+      border: 1px solid rgba(139,92,246,0.25);
+    }
+
+    .price-label {
+      color: #aaa3c4;
+      font-size: 13px;
+    }
+
+    .price {
+      margin-top: 5px;
+      font-size: 31px;
+      font-weight: 900;
+    }
+
+    .price-period {
+      color: #aaa3c4;
+      font-size: 13px;
+      margin-top: 3px;
+    }
+
+    .features {
+      margin: 18px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .features li {
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      color: #d7d1e8;
+      font-size: 14px;
+    }
+
+    .features li:last-child {
+      border-bottom: 0;
+    }
+
+    .check {
+      color: #a78bfa;
+      font-weight: 900;
+      margin-right: 8px;
+    }
+
+    .pay-btn {
+      width: 100%;
+      margin-top: 22px;
+      border: 0;
+      border-radius: 14px;
+      padding: 16px;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      background: linear-gradient(135deg, #7c3aed, #4f46e5);
+      box-shadow: 0 10px 28px rgba(79,70,229,0.25);
+    }
+
+    .pay-btn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    .message {
+      display: none;
+      margin-top: 16px;
+      padding: 14px;
+      border-radius: 13px;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .message.error {
+      display: block;
+      background: rgba(239,68,68,0.10);
+      border: 1px solid rgba(239,68,68,0.25);
+      color: #fca5a5;
+    }
+
+    .message.info {
+      display: block;
+      background: rgba(139,92,246,0.10);
+      border: 1px solid rgba(139,92,246,0.25);
+      color: #c4b5fd;
+    }
+
+    .security {
+      text-align: center;
+      color: #77708f;
+      font-size: 12px;
+      line-height: 1.5;
+      padding: 5px 15px 20px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 15px;
+      height: 15px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      vertical-align: -2px;
+      margin-right: 7px;
+      animation: spin 0.7s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="page">
+
+    <div class="topbar">
+      <button
+        class="back-btn"
+        type="button"
+        onclick="goBack()"
+      >
+        ←
+      </button>
+
+      <div>
+        <div class="brand">EarnGig Marketplace</div>
+        <div class="subtitle">Vendor Subscription</div>
+      </div>
+    </div>
+
+
+    <section class="card">
+
+      <div class="icon">E</div>
+
+      <h1>Activate Your Store</h1>
+
+      <p>
+        Your vendor application has been approved.
+        Complete the monthly vendor subscription to activate
+        your marketplace store.
+      </p>
+
+
+      <div class="store-box">
+
+        <div
+          style="
+            color:#8f87aa;
+            font-size:12px;
+            text-transform:uppercase;
+            letter-spacing:.5px;
+          "
+        >
+          Approved Store
+        </div>
+
+        <div
+          id="storeName"
+          class="store-name"
+        >
+          Loading...
+        </div>
+
+        <div
+          id="storeLocation"
+          class="location"
+        >
+          Loading store information...
+        </div>
+
+      </div>
+
+
+      <div class="price-box">
+
+        <div class="price-label">
+          Monthly Vendor Subscription
+        </div>
+
+        <div class="price">
+          ₦2,500
+        </div>
+
+        <div class="price-period">
+          Per month
+        </div>
+
+      </div>
+
+
+      <ul class="features">
+
+        <li>
+          <span class="check">✓</span>
+          Activate your EarnGig Marketplace store
+        </li>
+
+        <li>
+          <span class="check">✓</span>
+          Add and manage your products
+        </li>
+
+        <li>
+          <span class="check">✓</span>
+          Receive marketplace orders
+        </li>
+
+        <li>
+          <span class="check">✓</span>
+          Manage delivery or pickup settings
+        </li>
+
+        <li>
+          <span class="check">✓</span>
+          Receive eligible marketplace earnings
+        </li>
+
+      </ul>
+
+
+      <button
+        id="payButton"
+        class="pay-btn"
+        type="button"
+        onclick="startPayment()"
+        disabled
+      >
+        Loading Store...
+      </button>
+
+
+      <div
+        id="message"
+        class="message"
+      ></div>
+
+    </section>
+
+
+    <div class="security">
+      Payments are processed securely through Flutterwave.
+      EarnGig does not store your card details.
+    </div>
+
+  </main>
+
+
+  <script>
+    const SUPABASE_URL =
+      "https://ytvtdelwefykeqwztcyo.supabase.co";
+
+    const SUPABASE_PUBLISHABLE_KEY =
+      "sb_publishable_CLTeqgEB6JS7QKqq6rQARw_RV31Ccg3";
+
+    const supabaseClient =
+      window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+      );
+
+
+    let currentUser = null;
+    let currentStore = null;
+
+
+    function showMessage(message, type = "info") {
+      const box =
+        document.getElementById("message");
+
+      box.textContent = message;
+      box.className =
+        "message " + type;
+    }
+
+
+    function clearMessage() {
+      const box =
+        document.getElementById("message");
+
+      box.className = "message";
+      box.textContent = "";
+    }
+
+
+    function goBack() {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = "marketplace.html";
+      }
+    }
+
+
+    async function loadVendorStore() {
+      try {
+
+        const {
+          data: sessionData,
+          error: sessionError
+        } = await supabaseClient.auth.getSession();
+
+        if (
+          sessionError ||
+          !sessionData?.session
+        ) {
+          window.location.href =
+            "login.html?redirect=vendor-subscription.html";
+          return;
+        }
+
+
+        currentUser =
+          sessionData.session.user;
+
+
+        const {
+          data: store,
+          error: storeError
+        } = await supabaseClient
+          .from("marketplace_stores")
+          .select(`
+            id,
+            vendor_id,
+            store_name,
+            store_slug,
+            status,
+            business_state,
+            business_lga,
+            business_city,
+            location_display
+          `)
+          .eq("vendor_id", currentUser.id)
+          .order("created_at", {
+            ascending: false
+          })
+          .limit(1)
+          .maybeSingle();
+
+
+        if (storeError) {
+          throw new Error(
+            storeError.message
+          );
+        }
+
+
+        if (!store) {
+          throw new Error(
+            "No marketplace store was found for your account."
+          );
+        }
+
+
+        currentStore = store;
+
+
+        document.getElementById("storeName")
+          .textContent =
+          store.store_name ||
+          "Your Marketplace Store";
+
+
+        const location =
+          store.location_display ||
+          [
+            store.business_area,
+            store.business_city,
+            store.business_lga,
+            store.business_state
+          ]
+            .filter(Boolean)
+            .join(", ");
+
+
+        document.getElementById("storeLocation")
+          .textContent =
+          location ||
+          "Store location not provided";
+
+
+        if (store.status === "active") {
+
+          const button =
+            document.getElementById("payButton");
+
+          button.disabled = false;
+          button.textContent =
+            "Open Vendor Dashboard";
+
+          button.onclick = function () {
+            window.location.href =
+              "vendor-dashboard.html";
+          };
+
+          showMessage(
+            "Your store is already active. No subscription payment is required on this page.",
+            "info"
+          );
+
+          return;
+        }
+
+
+        const button =
+          document.getElementById("payButton");
+
+        button.disabled = false;
+        button.textContent =
+          "Pay ₦2,500 & Activate Store";
+
+
+      } catch (error) {
+
+        console.error(
+          "Load vendor store error:",
+          error
+        );
+
+        showMessage(
+          error?.message ||
+          "Could not load your vendor store.",
+          "error"
+        );
+
+        const button =
+          document.getElementById("payButton");
+
+        button.disabled = true;
+        button.textContent =
+          "Unable to Continue";
+      }
+    }
+
+
+    async function startPayment() {
+
+      if (!currentUser || !currentStore) {
+        showMessage(
+          "Your vendor store has not finished loading.",
+          "error"
+        );
+        return;
+      }
+
+
+      const button =
+        document.getElementById("payButton");
+
+
+      try {
+
+        button.disabled = true;
+
+        button.innerHTML =
+          '<span class="spinner"></span>Starting Secure Payment...';
+
+        clearMessage();
+
+
+        const {
+          data,
+          error
+        } = await supabaseClient.functions.invoke(
+          "flutterwave-vendor-subscription",
+          {
+            body: {
+              action: "initialize",
+              store_id: currentStore.id
+            }
+          }
+        );
+
+
+        if (error) {
+          throw new Error(
+            error.message ||
+            "Could not start the payment."
+          );
+        }
+
+
+        if (data?.already_active) {
+
+          showMessage(
+            "Your store is already active.",
+            "info"
+          );
+
+          setTimeout(() => {
+            window.location.href =
+              "vendor-dashboard.html";
+          }, 1000);
+
+          return;
+        }
+
+
+        if (!data?.success) {
+          throw new Error(
+            data?.error ||
+            data?.message ||
+            "Flutterwave payment could not be initialized."
+          );
+        }
+
+
+        const paymentLink =
+          data.payment_link ||
+          data.link ||
+          data.checkout_url;
+
+
+        if (!paymentLink) {
+          throw new Error(
+            "Flutterwave did not return a payment link."
+          );
+        }
+
+
+        /*
+         * Send the vendor to Flutterwave's hosted
+         * secure checkout page.
+         */
+        window.location.href =
+          paymentLink;
+
+
+      } catch (error) {
+
+        console.error(
+          "Vendor subscription payment error:",
+          error
+        );
+
+        showMessage(
+          error?.message ||
+          "Unable to start payment. Please try again.",
+          "error"
+        );
+
+        button.disabled = false;
+        button.textContent =
+          "Pay ₦2,500 & Activate Store";
+      }
+    }
+
+
+    loadVendorStore();
+  </script>
+
+</body>
+</html>
