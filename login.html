@@ -122,7 +122,7 @@
 </footer>
 
 
-<script src="https://js.paystack.co/v1/inline.js"></script>
+<!-- SUPABASE ONLY -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
 
@@ -139,80 +139,21 @@ let loggedInUser = null;
 
 
 /*
- * --------------------------------------------------
- * VERIFY A PAYSTACK PAYMENT
- * --------------------------------------------------
+ * ==================================================
+ * OPEN FLUTTERWAVE MEMBERSHIP PAYMENT
+ * ==================================================
+ *
+ * This replaces the old Paystack payment completely.
+ *
+ * Initial membership:
+ * ₦9,000
+ *
+ * The Flutterwave Edge Function creates the
+ * transaction and returns the hosted checkout URL.
+ * ==================================================
  */
 
-async function verifyMembershipPayment(reference) {
-
-  loginButton.disabled = true;
-
-  loginButton.textContent =
-    "Verifying payment...";
-
-
-  const {
-    data: verification,
-    error: verificationError
-  } =
-    await supabaseClient.functions.invoke(
-      "paystack-payment",
-      {
-        body: {
-          reference: reference,
-          user_id: loggedInUser.id
-        }
-      }
-    );
-
-
-  if (
-    verificationError ||
-    !verification?.success
-  ) {
-
-    console.error(
-      "Payment verification error:",
-      verificationError,
-      verification
-    );
-
-    alert(
-      "Payment could not be verified. Your dashboard remains locked."
-    );
-
-    loginButton.disabled = false;
-
-    loginButton.type = "button";
-
-    loginButton.textContent =
-      "Pay ₦9,000 to Continue";
-
-    loginButton.onclick =
-      openMembershipPayment;
-
-    return;
-  }
-
-
-  alert(
-    "Payment successful! Your EarnGig membership is now active."
-  );
-
-
-  window.location.href =
-    "dashboard.html";
-}
-
-
-/*
- * --------------------------------------------------
- * OPEN ₦9,000 FIRST PAYMENT
- * --------------------------------------------------
- */
-
-function openMembershipPayment() {
+async function openMembershipPayment() {
 
   if (!loggedInUser) {
 
@@ -224,97 +165,97 @@ function openMembershipPayment() {
   }
 
 
-  if (
-    typeof PaystackPop ===
-    "undefined"
-  ) {
-
-    alert(
-      "Paystack could not load. Please refresh the page and try again."
-    );
-
-    return;
-  }
-
-
   loginButton.disabled = true;
 
+  loginButton.type = "button";
+
   loginButton.textContent =
-    "Opening Payment...";
+    "Opening Flutterwave...";
 
 
   try {
 
-    const handler =
-      PaystackPop.setup({
-
-        key:
-          "pk_test_aca5cbbbfb6574c4712453be151178c139c74512",
-
-        email:
-          loggedInUser.email,
-
-        amount:
-          900000,
-
-        currency:
-          "NGN",
-
-        ref:
-          "EG-MEMBER-" +
-          loggedInUser.id.substring(0, 8) +
-          "-" +
-          Date.now(),
-
-
-        callback:
-          function(response) {
-
-            verifyMembershipPayment(
-              response.reference
-            );
-
-          },
-
-
-        onClose:
-          function() {
-
-            loginButton.disabled =
-              false;
-
-            loginButton.type =
-              "button";
-
-            loginButton.textContent =
-              "Pay ₦9,000 to Continue";
-
-            loginButton.onclick =
-              openMembershipPayment;
-
+    const {
+      data,
+      error
+    } =
+      await supabaseClient.functions.invoke(
+        "flutterwave-payment",
+        {
+          body: {
+            action: "initialize",
+            payment_type: "membership",
+            membership_stage: "initial"
           }
+        }
+      );
 
-      });
+
+    console.log(
+      "Flutterwave initialization:",
+      data,
+      error
+    );
 
 
-    handler.openIframe();
+    if (error) {
 
+      console.error(
+        "Flutterwave initialization error:",
+        error
+      );
+
+      throw new Error(
+        error.message ||
+        "Unable to start Flutterwave payment."
+      );
+    }
+
+
+    if (
+      !data ||
+      !data.success ||
+      !data.payment_url
+    ) {
+
+      console.error(
+        "Invalid Flutterwave response:",
+        data
+      );
+
+      throw new Error(
+        data?.error ||
+        "Flutterwave payment link was not returned."
+      );
+    }
+
+
+    /*
+     * Redirect to Flutterwave hosted checkout.
+     */
+
+    window.location.href =
+      data.payment_url;
 
   } catch (error) {
 
     console.error(
-      "Paystack failed to open:",
+      "Flutterwave payment error:",
       error
     );
 
+
     alert(
-      "Paystack error: " +
-      (error?.message || error)
+      error?.message ||
+      "Unable to open Flutterwave payment. Please try again."
     );
 
-    loginButton.disabled = false;
 
-    loginButton.type = "button";
+    loginButton.disabled =
+      false;
+
+    loginButton.type =
+      "button";
 
     loginButton.textContent =
       "Pay ₦9,000 to Continue";
@@ -327,9 +268,9 @@ function openMembershipPayment() {
 
 
 /*
- * --------------------------------------------------
+ * ==================================================
  * LOGIN
- * --------------------------------------------------
+ * ==================================================
  */
 
 loginForm.addEventListener(
@@ -370,7 +311,9 @@ loginForm.addEventListener(
 
 
     /*
+     * --------------------------------------------------
      * SIGN IN
+     * --------------------------------------------------
      */
 
     const {
@@ -435,10 +378,6 @@ loginForm.addEventListener(
     /*
      * --------------------------------------------------
      * CHECK MEMBERSHIP
-     *
-     * IMPORTANT:
-     * We now check the membership PERIOD,
-     * NOT the old ₦9,000 payment record.
      * --------------------------------------------------
      */
 
@@ -493,8 +432,7 @@ loginForm.addEventListener(
      * --------------------------------------------------
      * NO MEMBERSHIP
      *
-     * User has never completed the ₦9,000
-     * initial membership payment.
+     * First-time membership payment = ₦9,000
      * --------------------------------------------------
      */
 
@@ -540,9 +478,7 @@ loginForm.addEventListener(
      * --------------------------------------------------
      * ACTIVE MEMBERSHIP
      *
-     * DO NOT ASK FOR ₦9,000 AGAIN.
-     *
-     * Send user directly to dashboard.
+     * Go directly to dashboard.
      * --------------------------------------------------
      */
 
@@ -557,11 +493,10 @@ loginForm.addEventListener(
 
     /*
      * --------------------------------------------------
-     * MEMBERSHIP EXPIRED
+     * EXPIRED / INACTIVE MEMBERSHIP
      *
-     * The first ₦9,000 payment is NOT requested again.
-     *
-     * The user needs the ₦5,000 monthly renewal.
+     * Renewal is handled on membership.html.
+     * Renewal amount = ₦5,000
      * --------------------------------------------------
      */
 
