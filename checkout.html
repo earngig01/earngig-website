@@ -42,10 +42,6 @@
       padding: 18px;
     }
 
-    /* =====================================================
-       HEADER
-    ====================================================== */
-
     .topbar {
       display: flex;
       align-items: center;
@@ -79,10 +75,6 @@
       border-color: #7c3aed;
     }
 
-    /* =====================================================
-       HEADER AREA
-    ====================================================== */
-
     .eyebrow {
       color: #9f7aea;
       font-size: 12px;
@@ -102,13 +94,11 @@
       font-size: 14px;
     }
 
-    /* =====================================================
-       LAYOUT
-    ====================================================== */
-
     .checkout-layout {
       display: grid;
-      grid-template-columns: minmax(0, 1.5fr) minmax(300px, 0.8fr);
+      grid-template-columns:
+        minmax(0, 1.5fr)
+        minmax(300px, 0.8fr);
       gap: 20px;
       align-items: start;
     }
@@ -131,6 +121,132 @@
       font-size: 13px;
       line-height: 1.5;
       margin: 0 0 19px;
+    }
+
+    /* =====================================================
+       STORE FULFILLMENT
+    ====================================================== */
+
+    .store-checkout {
+      border: 1px solid #293352;
+      border-radius: 14px;
+      overflow: hidden;
+      margin-bottom: 16px;
+      background: #0b1128;
+    }
+
+    .store-checkout-header {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 13px 14px;
+      background: #10172e;
+      border-bottom: 1px solid #252e4b;
+    }
+
+    .store-logo {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      object-fit: cover;
+      background: #171e35;
+      border: 1px solid #30395a;
+      flex-shrink: 0;
+    }
+
+    .store-name {
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .store-items-count {
+      color: #8791aa;
+      font-size: 11px;
+      margin-top: 3px;
+    }
+
+    .store-checkout-body {
+      padding: 14px;
+    }
+
+    .fulfillment-title {
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 9px;
+    }
+
+    .fulfillment-options {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .fulfillment-option {
+      border: 1px solid #343d60;
+      background: #0a1026;
+      border-radius: 11px;
+      padding: 13px;
+      cursor: pointer;
+      transition: 0.15s ease;
+    }
+
+    .fulfillment-option:hover {
+      border-color: #6d4bd6;
+    }
+
+    .fulfillment-option.selected {
+      border-color: #7c3aed;
+      background: rgba(124, 58, 237, 0.1);
+    }
+
+    .fulfillment-option.disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .fulfillment-option input {
+      accent-color: #7c3aed;
+      margin-right: 7px;
+    }
+
+    .fulfillment-option-title {
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .fulfillment-option-description {
+      color: #8993ad;
+      font-size: 11px;
+      line-height: 1.45;
+      margin-top: 6px;
+    }
+
+    .pickup-box {
+      margin-top: 11px;
+      padding: 12px;
+      border-radius: 10px;
+      background: rgba(124, 58, 237, 0.07);
+      border: 1px solid rgba(124, 58, 237, 0.25);
+    }
+
+    .pickup-label {
+      color: #a78bfa;
+      font-size: 11px;
+      font-weight: 800;
+      margin-bottom: 5px;
+    }
+
+    .pickup-location {
+      color: #e4e7f2;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .pickup-instructions {
+      color: #929cb5;
+      font-size: 11px;
+      line-height: 1.5;
+      margin-top: 6px;
     }
 
     /* =====================================================
@@ -189,7 +305,8 @@
     .form-group input:focus,
     .form-group textarea:focus {
       border-color: #7c3aed;
-      box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.11);
+      box-shadow:
+        0 0 0 3px rgba(124, 58, 237, 0.11);
     }
 
     /* =====================================================
@@ -211,11 +328,6 @@
     .payment-option.selected {
       border-color: #7c3aed;
       background: rgba(124, 58, 237, 0.08);
-    }
-
-    .payment-option.disabled {
-      opacity: 0.55;
-      cursor: not-allowed;
     }
 
     .payment-option input {
@@ -337,7 +449,7 @@
     }
 
     /* =====================================================
-       BUTTON
+       BUTTONS
     ====================================================== */
 
     .checkout-btn {
@@ -364,6 +476,19 @@
     .checkout-btn:disabled {
       opacity: 0.55;
       cursor: not-allowed;
+    }
+
+    .secondary-btn {
+      width: 100%;
+      border: 1px solid #343d63;
+      border-radius: 11px;
+      padding: 13px;
+      background: #11182e;
+      color: #e0e4f4;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      margin-top: 10px;
     }
 
     /* =====================================================
@@ -488,481 +613,481 @@
         font-size: 12px;
       }
 
+      .fulfillment-options {
+        grid-template-columns: 1fr;
+      }
+
     }
   </style>
 </head>
 
 <body>
 
-  <div class="page">
+<div class="page">
 
-    <!-- =====================================================
-         HEADER
-    ====================================================== -->
+  <div class="topbar">
 
-    <div class="topbar">
-
-      <a
-        href="marketplace.html"
-        class="brand"
-      >
-        Earn<span>Gig</span> Marketplace
-      </a>
-
-      <a
-        href="cart.html"
-        class="back-btn"
-      >
-        ← Back to Cart
-      </a>
-
-    </div>
-
-
-    <!-- =====================================================
-         PAGE TITLE
-    ====================================================== -->
-
-    <span class="eyebrow">
-      EARNGIG MARKETPLACE
-    </span>
-
-    <h1 class="page-title">
-      Checkout
-    </h1>
-
-    <p class="page-subtitle">
-      Confirm your delivery information and payment method
-      before placing your order.
-    </p>
-
-
-    <!-- =====================================================
-         MAIN AREA
-    ====================================================== -->
-
-    <div id="loading-state">
-
-      <div class="state-box">
-
-        <div class="state-icon">
-          ⏳
-        </div>
-
-        <div class="state-title">
-          Loading checkout
-        </div>
-
-        <div class="state-text">
-          Preparing your order...
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <div
-      id="checkout-area"
-      class="checkout-layout"
-      style="display:none;"
+    <a
+      href="marketplace.html"
+      class="brand"
     >
-
-      <!-- ===================================================
-           LEFT
-      ==================================================== -->
-
-      <div>
-
-        <!-- DELIVERY INFORMATION -->
-
-        <section class="card">
-
-          <h2>
-            Delivery Information
-          </h2>
-
-          <p class="card-description">
-            Enter the details where your order should be
-            delivered.
-          </p>
-
-          <div class="form-grid">
-
-            <div class="form-group full">
-
-              <label for="full-name">
-                Full Name
-              </label>
-
-              <input
-                id="full-name"
-                type="text"
-                autocomplete="name"
-                required
-              >
-
-            </div>
-
-
-            <div class="form-group">
-
-              <label for="phone-1">
-                Primary Phone
-              </label>
-
-              <input
-                id="phone-1"
-                type="tel"
-                placeholder="08012345678"
-                autocomplete="tel"
-                required
-              >
-
-            </div>
-
-
-            <div class="form-group">
-
-              <label for="phone-2">
-                Second Phone
-                <span>(optional)</span>
-              </label>
-
-              <input
-                id="phone-2"
-                type="tel"
-                placeholder="Optional"
-              >
-
-            </div>
-
-
-            <div class="form-group">
-
-              <label for="state">
-                State
-              </label>
-
-              <input
-                id="state"
-                type="text"
-                placeholder="e.g. Rivers"
-                required
-              >
-
-            </div>
-
-
-            <div class="form-group">
-
-              <label for="lga">
-                LGA
-              </label>
-
-              <input
-                id="lga"
-                type="text"
-                placeholder="e.g. Obio/Akpor"
-                required
-              >
-
-            </div>
-
-
-            <div class="form-group">
-
-              <label for="city">
-                City / Town
-              </label>
-
-              <input
-                id="city"
-                type="text"
-                placeholder="e.g. Port Harcourt"
-                required
-              >
-
-            </div>
-
-
-            <div class="form-group">
-
-              <label for="area">
-                Area
-              </label>
-
-              <input
-                id="area"
-                type="text"
-                placeholder="e.g. Rumuodara"
-                required
-              >
-
-            </div>
-
-
-            <div class="form-group full">
-
-              <label for="street">
-                Street / Full Address
-              </label>
-
-              <input
-                id="street"
-                type="text"
-                placeholder="House number and street"
-                required
-              >
-
-            </div>
-
-
-            <div class="form-group full">
-
-              <label for="address">
-                Additional Address Details
-                <span>(optional)</span>
-              </label>
-
-              <textarea
-                id="address"
-                placeholder="Apartment, estate, building name, floor, etc."
-              ></textarea>
-
-            </div>
-
-
-            <div class="form-group full">
-
-              <label for="landmark">
-                Landmark
-                <span>(optional)</span>
-              </label>
-
-              <input
-                id="landmark"
-                type="text"
-                placeholder="Nearby landmark"
-              >
-
-            </div>
-
-
-            <div class="form-group full">
-
-              <label for="delivery-instructions">
-                Delivery Instructions
-                <span>(optional)</span>
-              </label>
-
-              <textarea
-                id="delivery-instructions"
-                placeholder="Any instructions that will help the vendor or delivery person."
-              ></textarea>
-
-            </div>
-
-          </div>
-
-        </section>
-
-
-        <!-- PAYMENT -->
-
-        <section class="card">
-
-          <h2>
-            Payment Method
-          </h2>
-
-          <p class="card-description">
-            Choose how you want to pay for this marketplace
-            order.
-          </p>
-
-
-          <label
-            class="payment-option selected"
-            id="wallet-option"
-          >
-
-            <input
-              type="radio"
-              name="payment-method"
-              value="wallet"
-              checked
-            >
-
-            <div>
-
-              <div class="payment-title">
-                💳 EarnGig Wallet
-              </div>
-
-              <div class="payment-description">
-                Pay securely from your EarnGig wallet.
-                Your payment is held in the marketplace order
-                until delivery is confirmed.
-              </div>
-
-            </div>
-
-          </label>
-
-
-          <label
-            class="payment-option disabled"
-            title="Paystack will be connected next."
-          >
-
-            <input
-              type="radio"
-              name="payment-method"
-              value="paystack"
-              disabled
-            >
-
-            <div>
-
-              <div class="payment-title">
-                💰 Paystack
-              </div>
-
-              <div class="payment-description">
-                Coming next. Paystack payment and server-side
-                verification will be connected after Wallet
-                checkout is confirmed working.
-              </div>
-
-            </div>
-
-          </label>
-
-
-          <div class="wallet-balance">
-
-            <div class="wallet-label">
-              Current Wallet Balance
-            </div>
-
-            <div
-              class="wallet-amount"
-              id="wallet-balance"
-            >
-              ₦0
-            </div>
-
-          </div>
-
-        </section>
-
-      </div>
-
-
-      <!-- ===================================================
-           RIGHT
-      ==================================================== -->
-
-      <aside>
-
-        <!-- ORDER SUMMARY -->
-
-        <section class="card">
-
-          <h2>
-            Order Summary
-          </h2>
-
-          <p class="card-description">
-            Your cart is grouped by vendor/store.
-          </p>
-
-          <div id="order-items">
-            <!-- populated by JavaScript -->
-          </div>
-
-
-          <div class="summary-row">
-
-            <span>
-              Products
-            </span>
-
-            <span id="subtotal">
-              ₦0
-            </span>
-
-          </div>
-
-
-          <div class="summary-row">
-
-            <span>
-              Delivery
-            </span>
-
-            <span>
-              ₦0
-            </span>
-
-          </div>
-
-
-          <div class="summary-row total">
-
-            <span>
-              Total
-            </span>
-
-            <span id="total">
-              ₦0
-            </span>
-
-          </div>
-
-
-          <div
-            id="checkout-error"
-            class="notice danger"
-            style="display:none; margin-top:16px;"
-          ></div>
-
-
-          <button
-            id="place-order-button"
-            class="checkout-btn"
-            type="button"
-          >
-            Place Order & Pay from Wallet
-          </button>
-
-
-          <div class="notice info" style="margin-top:14px; margin-bottom:0;">
-
-            Your vendor does not receive the money immediately.
-            Funds remain protected until the order is delivered
-            and you confirm receipt.
-
-          </div>
-
-        </section>
-
-      </aside>
-
-    </div>
-
-
-    <!-- =====================================================
-         SUCCESS
-    ====================================================== -->
-
-    <div
-      id="success-area"
-      style="display:none;"
-    ></div>
+      Earn<span>Gig</span> Marketplace
+    </a>
+
+    <a
+      href="cart.html"
+      class="back-btn"
+    >
+      ← Back to Cart
+    </a>
 
   </div>
+
+
+  <span class="eyebrow">
+    EARNGIG MARKETPLACE
+  </span>
+
+  <h1 class="page-title">
+    Checkout
+  </h1>
+
+  <p class="page-subtitle">
+    Choose how each vendor will fulfill your order,
+    confirm your information, and select your payment method.
+  </p>
+
+
+  <div id="loading-state">
+
+    <div class="state-box">
+
+      <div class="state-icon">
+        ⏳
+      </div>
+
+      <div class="state-title">
+        Loading checkout
+      </div>
+
+      <div class="state-text">
+        Preparing your order...
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div
+    id="checkout-area"
+    class="checkout-layout"
+    style="display:none;"
+  >
+
+    <div>
+
+      <!-- =================================================
+           FULFILLMENT
+      ================================================== -->
+
+      <section class="card">
+
+        <h2>
+          Fulfillment
+        </h2>
+
+        <p class="card-description">
+          Each seller controls whether their products can be
+          delivered, picked up, or both.
+        </p>
+
+        <div id="fulfillment-container"></div>
+
+      </section>
+
+
+      <!-- =================================================
+           DELIVERY INFORMATION
+      ================================================== -->
+
+      <section
+        class="card"
+        id="delivery-information-card"
+      >
+
+        <h2>
+          Delivery Information
+        </h2>
+
+        <p class="card-description">
+          These details are required for orders where you
+          selected delivery.
+        </p>
+
+        <div class="form-grid">
+
+          <div class="form-group full">
+
+            <label for="full-name">
+              Full Name
+            </label>
+
+            <input
+              id="full-name"
+              type="text"
+              autocomplete="name"
+              required
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="phone-1">
+              Primary Phone
+            </label>
+
+            <input
+              id="phone-1"
+              type="tel"
+              placeholder="08012345678"
+              autocomplete="tel"
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="phone-2">
+              Second Phone
+              <span>(optional)</span>
+            </label>
+
+            <input
+              id="phone-2"
+              type="tel"
+              placeholder="Optional"
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="state">
+              State
+            </label>
+
+            <input
+              id="state"
+              type="text"
+              placeholder="e.g. Rivers"
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="lga">
+              LGA
+            </label>
+
+            <input
+              id="lga"
+              type="text"
+              placeholder="e.g. Obio/Akpor"
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="city">
+              City / Town
+            </label>
+
+            <input
+              id="city"
+              type="text"
+              placeholder="e.g. Port Harcourt"
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="area">
+              Area
+            </label>
+
+            <input
+              id="area"
+              type="text"
+              placeholder="e.g. Rumuodara"
+            >
+
+          </div>
+
+
+          <div class="form-group full">
+
+            <label for="street">
+              Street / Full Address
+            </label>
+
+            <input
+              id="street"
+              type="text"
+              placeholder="House number and street"
+            >
+
+          </div>
+
+
+          <div class="form-group full">
+
+            <label for="address">
+              Additional Address Details
+              <span>(optional)</span>
+            </label>
+
+            <textarea
+              id="address"
+              placeholder="Apartment, estate, building name, floor, etc."
+            ></textarea>
+
+          </div>
+
+
+          <div class="form-group full">
+
+            <label for="landmark">
+              Landmark
+              <span>(optional)</span>
+            </label>
+
+            <input
+              id="landmark"
+              type="text"
+              placeholder="Nearby landmark"
+            >
+
+          </div>
+
+
+          <div class="form-group full">
+
+            <label for="delivery-instructions">
+              Delivery Instructions
+              <span>(optional)</span>
+            </label>
+
+            <textarea
+              id="delivery-instructions"
+              placeholder="Instructions for the vendor or delivery person."
+            ></textarea>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- =================================================
+           PAYMENT
+      ================================================== -->
+
+      <section class="card">
+
+        <h2>
+          Payment Method
+        </h2>
+
+        <p class="card-description">
+          Choose how you want to pay for this marketplace order.
+        </p>
+
+
+        <label
+          class="payment-option selected"
+          id="wallet-option"
+        >
+
+          <input
+            type="radio"
+            name="payment-method"
+            value="wallet"
+            checked
+          >
+
+          <div>
+
+            <div class="payment-title">
+              💳 EarnGig Wallet
+            </div>
+
+            <div class="payment-description">
+              Pay from your EarnGig wallet. Funds remain
+              protected while the order is being fulfilled.
+            </div>
+
+          </div>
+
+        </label>
+
+
+        <label
+          class="payment-option"
+          id="flutterwave-option"
+        >
+
+          <input
+            type="radio"
+            name="payment-method"
+            value="flutterwave"
+          >
+
+          <div>
+
+            <div class="payment-title">
+              💰 Flutterwave
+            </div>
+
+            <div class="payment-description">
+              Pay securely with available Flutterwave payment
+              methods, including card, bank transfer, USSD and
+              supported local options.
+            </div>
+
+          </div>
+
+        </label>
+
+
+        <div class="wallet-balance">
+
+          <div class="wallet-label">
+            Current Wallet Balance
+          </div>
+
+          <div
+            class="wallet-amount"
+            id="wallet-balance"
+          >
+            ₦0
+          </div>
+
+        </div>
+
+      </section>
+
+    </div>
+
+
+    <!-- ===================================================
+         RIGHT
+    ==================================================== -->
+
+    <aside>
+
+      <section class="card">
+
+        <h2>
+          Order Summary
+        </h2>
+
+        <p class="card-description">
+          Your cart is grouped by vendor/store.
+        </p>
+
+        <div id="order-items"></div>
+
+
+        <div class="summary-row">
+
+          <span>
+            Products
+          </span>
+
+          <span id="subtotal">
+            ₦0
+          </span>
+
+        </div>
+
+
+        <div class="summary-row">
+
+          <span>
+            Delivery
+          </span>
+
+          <span id="delivery-total">
+            ₦0
+          </span>
+
+        </div>
+
+
+        <div class="summary-row total">
+
+          <span>
+            Total
+          </span>
+
+          <span id="total">
+            ₦0
+          </span>
+
+        </div>
+
+
+        <div
+          id="checkout-error"
+          class="notice danger"
+          style="display:none; margin-top:16px;"
+        ></div>
+
+
+        <button
+          id="place-order-button"
+          class="checkout-btn"
+          type="button"
+        >
+          Place Order
+        </button>
+
+
+        <div
+          class="notice info"
+          style="margin-top:14px; margin-bottom:0;"
+        >
+          Your vendor does not receive the money immediately.
+          Marketplace funds remain protected until the order
+          is completed according to the EarnGig marketplace
+          process.
+        </div>
+
+      </section>
+
+    </aside>
+
+  </div>
+
+
+  <div
+    id="success-area"
+    style="display:none;"
+  ></div>
+
+</div>
 
 
 <script>
@@ -975,6 +1100,8 @@ let productsById = {};
 let storesById = {};
 
 let walletBalance = 0;
+
+let fulfillmentSelections = {};
 
 
 /* ==========================================================
@@ -1009,9 +1136,11 @@ function showError(message) {
   const box =
     document.getElementById("checkout-error");
 
-  box.textContent = message;
+  box.textContent =
+    message;
 
-  box.style.display = "block";
+  box.style.display =
+    "block";
 
   box.scrollIntoView({
     behavior: "smooth",
@@ -1026,9 +1155,11 @@ function clearError() {
   const box =
     document.getElementById("checkout-error");
 
-  box.textContent = "";
+  box.textContent =
+    "";
 
-  box.style.display = "none";
+  box.style.display =
+    "none";
 
 }
 
@@ -1057,7 +1188,8 @@ async function initializeCheckout() {
   }
 
 
-  currentUser = user;
+  currentUser =
+    user;
 
 
   await loadCheckout();
@@ -1072,10 +1204,6 @@ async function initializeCheckout() {
 async function loadCheckout() {
 
   try {
-
-    /*
-     * The cart belongs to the authenticated user.
-     */
 
     const {
       data: cart,
@@ -1108,12 +1236,9 @@ async function loadCheckout() {
     }
 
 
-    cartId = cart.id;
+    cartId =
+      cart.id;
 
-
-    /*
-     * Load cart items.
-     */
 
     const {
       data: items,
@@ -1146,12 +1271,9 @@ async function loadCheckout() {
     }
 
 
-    cartItems = items;
+    cartItems =
+      items;
 
-
-    /*
-     * Get product IDs.
-     */
 
     const productIds = [
       ...new Set(
@@ -1161,10 +1283,6 @@ async function loadCheckout() {
       )
     ];
 
-
-    /*
-     * Load the real marketplace products.
-     */
 
     const {
       data: products,
@@ -1193,6 +1311,7 @@ async function loadCheckout() {
 
     productsById = {};
 
+
     (products || []).forEach(product => {
 
       productsById[product.id] =
@@ -1201,13 +1320,10 @@ async function loadCheckout() {
     });
 
 
-    /*
-     * Make sure every cart item still has a product.
-     */
-
     const missingProduct =
       cartItems.find(
-        item => !productsById[item.product_id]
+        item =>
+          !productsById[item.product_id]
       );
 
 
@@ -1220,13 +1336,33 @@ async function loadCheckout() {
     }
 
 
-    /*
-     * Load stores.
-     */
+    const unavailableProduct =
+      cartItems.find(item => {
+
+        const product =
+          productsById[item.product_id];
+
+        return (
+          product.status !== "approved" ||
+          Number(product.stock_quantity || 0) <
+            Number(item.quantity || 0)
+        );
+
+      });
+
+
+    if (unavailableProduct) {
+
+      throw new Error(
+        "One or more products in your cart are no longer available or do not have enough stock."
+      );
+
+    }
+
 
     const storeIds = [
       ...new Set(
-        (products || [])
+        products
           .map(product => product.store_id)
           .filter(Boolean)
       )
@@ -1248,7 +1384,11 @@ async function loadCheckout() {
           store_name,
           store_slug,
           store_logo_url,
-          status
+          status,
+          accepts_delivery,
+          accepts_pickup,
+          pickup_location,
+          pickup_instructions
         `)
         .in("id", storeIds);
 
@@ -1268,12 +1408,44 @@ async function loadCheckout() {
     }
 
 
+    const missingStore =
+      storeIds.find(
+        id =>
+          !storesById[id] ||
+          storesById[id].status !== "active"
+      );
+
+
+    if (missingStore) {
+
+      throw new Error(
+        "One or more stores in your cart are no longer active."
+      );
+
+    }
+
+
     /*
-     * Load wallet balance.
-     *
-     * This is only for display.
-     * The secure RPC performs the actual balance check.
+     * Default each store to delivery if available.
+     * Otherwise default to pickup.
      */
+
+    Object.values(storesById).forEach(store => {
+
+      if (store.accepts_delivery) {
+
+        fulfillmentSelections[store.id] =
+          "delivery";
+
+      } else if (store.accepts_pickup) {
+
+        fulfillmentSelections[store.id] =
+          "pickup";
+
+      }
+
+    });
+
 
     const {
       data: wallet,
@@ -1306,7 +1478,13 @@ async function loadCheckout() {
       formatNaira(walletBalance);
 
 
+    renderFulfillment();
+
+
     renderOrderSummary();
+
+
+    updateDeliveryVisibility();
 
 
     document.getElementById(
@@ -1334,6 +1512,371 @@ async function loadCheckout() {
       error.message ||
       "Please return to your cart and try again."
     );
+
+  }
+
+}
+
+
+/* ==========================================================
+   GET STORE IDS FROM CART
+========================================================== */
+
+function getCartStoreIds() {
+
+  return [
+    ...new Set(
+      cartItems
+        .map(item => {
+
+          const product =
+            productsById[item.product_id];
+
+          return product?.store_id;
+
+        })
+        .filter(Boolean)
+    )
+  ];
+
+}
+
+
+/* ==========================================================
+   FULFILLMENT UI
+========================================================== */
+
+function renderFulfillment() {
+
+  const container =
+    document.getElementById(
+      "fulfillment-container"
+    );
+
+
+  const storeIds =
+    getCartStoreIds();
+
+
+  let html =
+    "";
+
+
+  storeIds.forEach(storeId => {
+
+    const store =
+      storesById[storeId];
+
+
+    if (!store) {
+      return;
+    }
+
+
+    const itemCount =
+      cartItems
+        .filter(item => {
+
+          const product =
+            productsById[item.product_id];
+
+          return product?.store_id === storeId;
+
+        })
+        .reduce(
+          (total, item) =>
+            total + Number(item.quantity || 0),
+          0
+        );
+
+
+    const logo =
+      store.store_logo_url ||
+      "";
+
+
+    const selected =
+      fulfillmentSelections[storeId];
+
+
+    html += `
+
+      <div
+        class="store-checkout"
+        data-store-id="${escapeHtml(storeId)}"
+      >
+
+        <div class="store-checkout-header">
+
+          ${
+            logo
+              ? `
+                <img
+                  src="${escapeHtml(logo)}"
+                  class="store-logo"
+                  alt=""
+                >
+              `
+              : `
+                <div class="store-logo"
+                  style="
+                    display:flex;
+                    align-items:center;
+                    justify-content:center;
+                    font-size:19px;
+                  "
+                >
+                  🏪
+                </div>
+              `
+          }
+
+          <div>
+
+            <div class="store-name">
+              ${escapeHtml(store.store_name)}
+            </div>
+
+            <div class="store-items-count">
+              ${itemCount}
+              item${itemCount === 1 ? "" : "s"}
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="store-checkout-body">
+
+          <div class="fulfillment-title">
+            How do you want this store to fulfill your order?
+          </div>
+
+
+          <div class="fulfillment-options">
+
+            ${
+              store.accepts_delivery
+                ? `
+                  <label
+                    class="fulfillment-option ${
+                      selected === "delivery"
+                        ? "selected"
+                        : ""
+                    }"
+                  >
+
+                    <div>
+                      <input
+                        type="radio"
+                        name="fulfillment-${escapeHtml(storeId)}"
+                        value="delivery"
+                        ${
+                          selected === "delivery"
+                            ? "checked"
+                            : ""
+                        }
+                        data-store-id="${escapeHtml(storeId)}"
+                      >
+
+                      <span class="fulfillment-option-title">
+                        🚚 Delivery
+                      </span>
+                    </div>
+
+                    <div class="fulfillment-option-description">
+                      The seller will arrange delivery to the
+                      address you provide below.
+                    </div>
+
+                  </label>
+                `
+                : `
+                  <div
+                    class="fulfillment-option disabled"
+                  >
+                    <div>
+                      <span class="fulfillment-option-title">
+                        🚚 Delivery unavailable
+                      </span>
+                    </div>
+
+                    <div class="fulfillment-option-description">
+                      This seller does not currently offer delivery.
+                    </div>
+                  </div>
+                `
+            }
+
+
+            ${
+              store.accepts_pickup
+                ? `
+                  <label
+                    class="fulfillment-option ${
+                      selected === "pickup"
+                        ? "selected"
+                        : ""
+                    }"
+                  >
+
+                    <div>
+                      <input
+                        type="radio"
+                        name="fulfillment-${escapeHtml(storeId)}"
+                        value="pickup"
+                        ${
+                          selected === "pickup"
+                            ? "checked"
+                            : ""
+                        }
+                        data-store-id="${escapeHtml(storeId)}"
+                      >
+
+                      <span class="fulfillment-option-title">
+                        📦 Pickup
+                      </span>
+                    </div>
+
+                    <div class="fulfillment-option-description">
+                      Collect your order directly from the
+                      seller's pickup location.
+                    </div>
+
+                  </label>
+                `
+                : `
+                  <div
+                    class="fulfillment-option disabled"
+                  >
+                    <div>
+                      <span class="fulfillment-option-title">
+                        📦 Pickup unavailable
+                      </span>
+                    </div>
+
+                    <div class="fulfillment-option-description">
+                      This seller does not currently offer pickup.
+                    </div>
+                  </div>
+                `
+            }
+
+          </div>
+
+
+          ${
+            selected === "pickup"
+              ? `
+                <div class="pickup-box">
+
+                  <div class="pickup-label">
+                    PICKUP LOCATION
+                  </div>
+
+                  <div class="pickup-location">
+                    ${escapeHtml(
+                      store.pickup_location ||
+                      "Pickup location has not been provided."
+                    )}
+                  </div>
+
+                  ${
+                    store.pickup_instructions
+                      ? `
+                        <div class="pickup-instructions">
+                          <strong>Instructions:</strong>
+                          ${escapeHtml(
+                            store.pickup_instructions
+                          )}
+                        </div>
+                      `
+                      : ""
+                  }
+
+                </div>
+              `
+              : ""
+          }
+
+        </div>
+
+      </div>
+
+    `;
+
+  });
+
+
+  container.innerHTML =
+    html;
+
+
+  container
+    .querySelectorAll(
+      'input[type="radio"][data-store-id]'
+    )
+    .forEach(input => {
+
+      input.addEventListener(
+        "change",
+        function() {
+
+          const storeId =
+            this.dataset.storeId;
+
+
+          fulfillmentSelections[storeId] =
+            this.value;
+
+
+          renderFulfillment();
+
+
+          updateDeliveryVisibility();
+
+
+          clearError();
+
+        }
+      );
+
+    });
+
+}
+
+
+/* ==========================================================
+   DELIVERY VISIBILITY
+========================================================== */
+
+function updateDeliveryVisibility() {
+
+  const deliveryRequired =
+    Object.values(
+      fulfillmentSelections
+    ).some(
+      method =>
+        method === "delivery"
+    );
+
+
+  const card =
+    document.getElementById(
+      "delivery-information-card"
+    );
+
+
+  if (deliveryRequired) {
+
+    card.style.display =
+      "block";
+
+  } else {
+
+    card.style.display =
+      "none";
 
   }
 
@@ -1372,7 +1915,10 @@ function renderOrderSummary() {
 
 
     if (!groups[storeId]) {
-      groups[storeId] = [];
+
+      groups[storeId] =
+        [];
+
     }
 
 
@@ -1384,90 +1930,99 @@ function renderOrderSummary() {
   });
 
 
-  let subtotal = 0;
+  let subtotal =
+    0;
 
 
-  let html = "";
+  let html =
+    "";
 
 
-  Object.keys(groups).forEach(storeId => {
+  Object.keys(groups)
+    .forEach(storeId => {
 
-    const store =
-      storesById[storeId];
-
-
-    const storeName =
-      store?.store_name ||
-      "EarnGig Vendor";
+      const store =
+        storesById[storeId];
 
 
-    html += `
-      <div class="vendor-group">
-
-        <div class="vendor-header">
-          🏪 ${escapeHtml(storeName)}
-        </div>
-    `;
-
-
-    groups[storeId].forEach(({ item, product }) => {
-
-      const quantity =
-        Number(item.quantity || 0);
-
-
-      const lineTotal =
-        Number(product.price || 0) *
-        quantity;
-
-
-      subtotal += lineTotal;
+      const storeName =
+        store?.store_name ||
+        "EarnGig Vendor";
 
 
       html += `
 
-        <div class="checkout-item">
+        <div class="vendor-group">
 
-          <div
-            class="checkout-item-image"
-            style="
-              display:flex;
-              align-items:center;
-              justify-content:center;
-              font-size:22px;
-            "
-          >
-            🛍️
+          <div class="vendor-header">
+            🏪 ${escapeHtml(storeName)}
           </div>
-
-          <div class="checkout-item-info">
-
-            <div class="checkout-item-title">
-              ${escapeHtml(product.title)}
-            </div>
-
-            <div class="checkout-item-meta">
-              ${quantity} × ${formatNaira(product.price)}
-            </div>
-
-          </div>
-
-          <div class="checkout-item-price">
-            ${formatNaira(lineTotal)}
-          </div>
-
-        </div>
 
       `;
 
+
+      groups[storeId]
+        .forEach(({ item, product }) => {
+
+          const quantity =
+            Number(item.quantity || 0);
+
+
+          const lineTotal =
+            Number(product.price || 0) *
+            quantity;
+
+
+          subtotal +=
+            lineTotal;
+
+
+          html += `
+
+            <div class="checkout-item">
+
+              <div
+                class="checkout-item-image"
+                style="
+                  display:flex;
+                  align-items:center;
+                  justify-content:center;
+                  font-size:22px;
+                "
+              >
+                🛍️
+              </div>
+
+              <div class="checkout-item-info">
+
+                <div class="checkout-item-title">
+                  ${escapeHtml(product.title)}
+                </div>
+
+                <div class="checkout-item-meta">
+                  ${quantity}
+                  ×
+                  ${formatNaira(product.price)}
+                </div>
+
+              </div>
+
+              <div class="checkout-item-price">
+                ${formatNaira(lineTotal)}
+              </div>
+
+            </div>
+
+          `;
+
+        });
+
+
+      html += `
+        </div>
+      `;
+
     });
-
-
-    html += `
-      </div>
-    `;
-
-  });
 
 
   container.innerHTML =
@@ -1481,6 +2036,12 @@ function renderOrderSummary() {
 
 
   document.getElementById(
+    "delivery-total"
+  ).textContent =
+    formatNaira(0);
+
+
+  document.getElementById(
     "total"
   ).textContent =
     formatNaira(subtotal);
@@ -1489,7 +2050,7 @@ function renderOrderSummary() {
 
 
 /* ==========================================================
-   EMPTY / ERROR STATE
+   EMPTY STATE
 ========================================================== */
 
 function showEmptyState(
@@ -1512,7 +2073,9 @@ function showEmptyState(
       </div>
 
       <div class="state-text">
+
         ${escapeHtml(message)}
+
         <br><br>
 
         <a
@@ -1533,7 +2096,7 @@ function showEmptyState(
 
 
 /* ==========================================================
-   PAYMENT METHOD
+   PAYMENT METHOD UI
 ========================================================== */
 
 document
@@ -1573,10 +2136,345 @@ document
 
         }
 
+
+        updatePlaceOrderButton();
+
       }
     );
 
   });
+
+
+function updatePlaceOrderButton() {
+
+  const button =
+    document.getElementById(
+      "place-order-button"
+    );
+
+
+  const method =
+    document.querySelector(
+      'input[name="payment-method"]:checked'
+    )?.value;
+
+
+  if (method === "wallet") {
+
+    button.textContent =
+      "Place Order & Pay from Wallet";
+
+  } else {
+
+    button.textContent =
+      "Continue to Flutterwave";
+
+  }
+
+}
+
+
+/* ==========================================================
+   COLLECT FULFILLMENT DATA
+========================================================== */
+
+function getFulfillmentPayload() {
+
+  const storeIds =
+    getCartStoreIds();
+
+
+  const result =
+    [];
+
+
+  for (const storeId of storeIds) {
+
+    const method =
+      fulfillmentSelections[storeId];
+
+
+    if (!method) {
+
+      throw new Error(
+        "Please select Delivery or Pickup for every store."
+      );
+
+    }
+
+
+    const store =
+      storesById[storeId];
+
+
+    if (!store) {
+
+      throw new Error(
+        "A store in your cart could not be found."
+      );
+
+    }
+
+
+    if (
+      method === "delivery" &&
+      !store.accepts_delivery
+    ) {
+
+      throw new Error(
+        `${store.store_name} does not offer delivery.`
+      );
+
+    }
+
+
+    if (
+      method === "pickup" &&
+      !store.accepts_pickup
+    ) {
+
+      throw new Error(
+        `${store.store_name} does not offer pickup.`
+      );
+
+    }
+
+
+    if (
+      method === "pickup" &&
+      !String(
+        store.pickup_location || ""
+      ).trim()
+    ) {
+
+      throw new Error(
+        `${store.store_name} has not provided a pickup location.`
+      );
+
+    }
+
+
+    result.push({
+
+      store_id:
+        storeId,
+
+      fulfillment_method:
+        method
+
+    });
+
+  }
+
+
+  return result;
+
+}
+
+
+/* ==========================================================
+   DELIVERY FORM DATA
+========================================================== */
+
+function getDeliveryData() {
+
+  return {
+
+    fullName:
+      document
+        .getElementById("full-name")
+        .value
+        .trim(),
+
+    phone1:
+      document
+        .getElementById("phone-1")
+        .value
+        .trim(),
+
+    phone2:
+      document
+        .getElementById("phone-2")
+        .value
+        .trim(),
+
+    state:
+      document
+        .getElementById("state")
+        .value
+        .trim(),
+
+    lga:
+      document
+        .getElementById("lga")
+        .value
+        .trim(),
+
+    city:
+      document
+        .getElementById("city")
+        .value
+        .trim(),
+
+    area:
+      document
+        .getElementById("area")
+        .value
+        .trim(),
+
+    street:
+      document
+        .getElementById("street")
+        .value
+        .trim(),
+
+    address:
+      document
+        .getElementById("address")
+        .value
+        .trim(),
+
+    landmark:
+      document
+        .getElementById("landmark")
+        .value
+        .trim(),
+
+    deliveryInstructions:
+      document
+        .getElementById(
+          "delivery-instructions"
+        )
+        .value
+        .trim()
+
+  };
+
+}
+
+
+/* ==========================================================
+   VALIDATE DELIVERY DATA
+========================================================== */
+
+function validateDeliveryData(
+  data,
+  deliveryRequired
+) {
+
+  if (!deliveryRequired) {
+    return;
+  }
+
+
+  if (!data.fullName) {
+
+    throw new Error(
+      "Please enter your full name."
+    );
+
+  }
+
+
+  if (!data.phone1) {
+
+    throw new Error(
+      "Please enter your primary phone number."
+    );
+
+  }
+
+
+  if (!data.state) {
+
+    throw new Error(
+      "Please enter your state."
+    );
+
+  }
+
+
+  if (!data.lga) {
+
+    throw new Error(
+      "Please enter your LGA."
+    );
+
+  }
+
+
+  if (!data.city) {
+
+    throw new Error(
+      "Please enter your city or town."
+    );
+
+  }
+
+
+  if (!data.area) {
+
+    throw new Error(
+      "Please enter your area."
+    );
+
+  }
+
+
+  if (!data.street) {
+
+    throw new Error(
+      "Please enter your street/full address."
+    );
+
+  }
+
+}
+
+
+/* ==========================================================
+   SECURE FULFILLMENT VALIDATION
+========================================================== */
+
+async function validateFulfillment() {
+
+  const fulfillments =
+    getFulfillmentPayload();
+
+
+  const {
+    data,
+    error
+  } = await supabaseClient.rpc(
+    "validate_marketplace_checkout_fulfillment",
+    {
+      p_fulfillments:
+        fulfillments
+    }
+  );
+
+
+  if (error) {
+
+    throw new Error(
+      error.message
+    );
+
+  }
+
+
+  if (!data || !data.success) {
+
+    throw new Error(
+      "Marketplace fulfillment could not be validated."
+    );
+
+  }
+
+
+  return data;
+
+}
 
 
 /* ==========================================================
@@ -1598,303 +2496,104 @@ document
         );
 
 
-      /*
-       * Wallet is currently the only enabled payment method.
-       */
-
       const paymentMethod =
         document.querySelector(
           'input[name="payment-method"]:checked'
         )?.value;
 
 
-      if (paymentMethod !== "wallet") {
+      if (
+        paymentMethod !== "wallet" &&
+        paymentMethod !== "flutterwave"
+      ) {
 
         showError(
-          "Please select EarnGig Wallet."
+          "Please select a payment method."
         );
 
         return;
 
       }
-
-
-      const fullName =
-        document
-          .getElementById("full-name")
-          .value
-          .trim();
-
-
-      const phone1 =
-        document
-          .getElementById("phone-1")
-          .value
-          .trim();
-
-
-      const phone2 =
-        document
-          .getElementById("phone-2")
-          .value
-          .trim();
-
-
-      const state =
-        document
-          .getElementById("state")
-          .value
-          .trim();
-
-
-      const lga =
-        document
-          .getElementById("lga")
-          .value
-          .trim();
-
-
-      const city =
-        document
-          .getElementById("city")
-          .value
-          .trim();
-
-
-      const area =
-        document
-          .getElementById("area")
-          .value
-          .trim();
-
-
-      const street =
-        document
-          .getElementById("street")
-          .value
-          .trim();
-
-
-      const address =
-        document
-          .getElementById("address")
-          .value
-          .trim();
-
-
-      const landmark =
-        document
-          .getElementById("landmark")
-          .value
-          .trim();
-
-
-      const deliveryInstructions =
-        document
-          .getElementById(
-            "delivery-instructions"
-          )
-          .value
-          .trim();
-
-
-      /*
-       * Front-end validation is only for user experience.
-       * The database performs the real validation again.
-       */
-
-      if (!fullName) {
-
-        showError(
-          "Please enter your full name."
-        );
-
-        return;
-
-      }
-
-
-      if (!phone1) {
-
-        showError(
-          "Please enter your primary phone number."
-        );
-
-        return;
-
-      }
-
-
-      if (!state) {
-
-        showError(
-          "Please enter your state."
-        );
-
-        return;
-
-      }
-
-
-      if (!lga) {
-
-        showError(
-          "Please enter your LGA."
-        );
-
-        return;
-
-      }
-
-
-      if (!city) {
-
-        showError(
-          "Please enter your city or town."
-        );
-
-        return;
-
-      }
-
-
-      if (!area) {
-
-        showError(
-          "Please enter your area."
-        );
-
-        return;
-
-      }
-
-
-      if (!street) {
-
-        showError(
-          "Please enter your street/full address."
-        );
-
-        return;
-
-      }
-
-
-      /*
-       * Prevent accidental double-clicks.
-       */
-
-      button.disabled =
-        true;
-
-      button.textContent =
-        "Processing secure payment...";
 
 
       try {
 
-        /*
-         * IMPORTANT:
-         *
-         * No price is sent here.
-         *
-         * The secure database RPC reads:
-         *
-         * marketplace_cart_items
-         *        ↓
-         * marketplace_products
-         *
-         * and calculates the real price itself.
-         */
+        const fulfillmentData =
+          getFulfillmentPayload();
 
-        const {
-          data,
-          error
-        } = await supabaseClient.rpc(
-          "create_marketplace_wallet_checkout",
-          {
-            p_full_name:
-              fullName,
 
-            p_phone_1:
-              phone1,
+        const deliveryData =
+          getDeliveryData();
 
-            p_phone_2:
-              phone2 || null,
 
-            p_state:
-              state,
+        const deliveryRequired =
+          fulfillmentData.some(
+            item =>
+              item.fulfillment_method ===
+              "delivery"
+          );
 
-            p_lga:
-              lga,
 
-            p_city:
-              city,
-
-            p_area:
-              area,
-
-            p_street:
-              street,
-
-            p_address:
-              address || null,
-
-            p_landmark:
-              landmark || null,
-
-            p_delivery_instructions:
-              deliveryInstructions || null
-          }
+        validateDeliveryData(
+          deliveryData,
+          deliveryRequired
         );
 
 
-        if (error) {
-
-          throw new Error(
-            error.message
-          );
-
-        }
+        button.disabled =
+          true;
 
 
-        if (!data || !data.success) {
-
-          throw new Error(
-            "The payment could not be completed."
-          );
-
-        }
+        button.textContent =
+          "Validating order...";
 
 
         /*
-         * SUCCESS
+         * The database checks that each selected
+         * fulfillment method is actually allowed
+         * by the seller.
          */
 
-        showSuccessfulCheckout(
-          data
-        );
+        await validateFulfillment();
 
+
+        if (paymentMethod === "wallet") {
+
+          await processWalletCheckout(
+            fulfillmentData,
+            deliveryData,
+            button
+          );
+
+        } else {
+
+          await processFlutterwaveCheckout(
+            fulfillmentData,
+            deliveryData,
+            button
+          );
+
+        }
 
       } catch (error) {
 
         console.error(
-          "Marketplace wallet checkout error:",
+          "Checkout error:",
           error
         );
 
 
         showError(
           error.message ||
-          "Unable to complete your order. Your wallet was not charged."
+          "Unable to continue with checkout."
         );
 
 
         button.disabled =
           false;
 
-        button.textContent =
-          "Place Order & Pay from Wallet";
+
+        updatePlaceOrderButton();
 
       }
 
@@ -1903,11 +2602,235 @@ document
 
 
 /* ==========================================================
-   SUCCESS SCREEN
+   WALLET CHECKOUT
+========================================================== */
+
+async function processWalletCheckout(
+  fulfillmentData,
+  deliveryData,
+  button
+) {
+
+  button.textContent =
+    "Processing secure wallet payment...";
+
+
+  /*
+   * IMPORTANT:
+   *
+   * The existing RPC calculates product prices
+   * directly from the database.
+   *
+   * Fulfillment is validated separately above.
+   *
+   * We intentionally do NOT send prices from
+   * the browser.
+   */
+
+  const {
+    data,
+    error
+  } = await supabaseClient.rpc(
+    "create_marketplace_wallet_checkout",
+    {
+      p_full_name:
+        deliveryData.fullName || null,
+
+      p_phone_1:
+        deliveryData.phone1 || null,
+
+      p_phone_2:
+        deliveryData.phone2 || null,
+
+      p_state:
+        deliveryData.state || null,
+
+      p_lga:
+        deliveryData.lga || null,
+
+      p_city:
+        deliveryData.city || null,
+
+      p_area:
+        deliveryData.area || null,
+
+      p_street:
+        deliveryData.street || null,
+
+      p_address:
+        deliveryData.address || null,
+
+      p_landmark:
+        deliveryData.landmark || null,
+
+      p_delivery_instructions:
+        deliveryData.deliveryInstructions || null
+    }
+  );
+
+
+  if (error) {
+
+    throw new Error(
+      error.message
+    );
+
+  }
+
+
+  if (!data || !data.success) {
+
+    throw new Error(
+      "The wallet payment could not be completed."
+    );
+
+  }
+
+
+  showSuccessfulCheckout(
+    data,
+    "wallet"
+  );
+
+}
+
+
+/* ==========================================================
+   FLUTTERWAVE CHECKOUT
+========================================================== */
+
+async function processFlutterwaveCheckout(
+  fulfillmentData,
+  deliveryData,
+  button
+) {
+
+  button.textContent =
+    "Opening Flutterwave...";
+
+
+  /*
+   * The Flutterwave Edge Function is responsible for:
+   *
+   * 1. authenticating the user
+   * 2. validating the cart
+   * 3. validating fulfillment
+   * 4. calculating the amount server-side
+   * 5. creating a pending marketplace payment
+   * 6. initializing Flutterwave
+   *
+   * The browser never supplies a trusted amount.
+   */
+
+  const {
+    data,
+    error
+  } = await supabaseClient.functions.invoke(
+    "flutterwave-marketplace-payment",
+    {
+      body: {
+
+        action:
+          "initialize",
+
+        fulfillment:
+          fulfillmentData,
+
+        checkout: {
+
+          full_name:
+            deliveryData.fullName || null,
+
+          phone_1:
+            deliveryData.phone1 || null,
+
+          phone_2:
+            deliveryData.phone2 || null,
+
+          state:
+            deliveryData.state || null,
+
+          lga:
+            deliveryData.lga || null,
+
+          city:
+            deliveryData.city || null,
+
+          area:
+            deliveryData.area || null,
+
+          street:
+            deliveryData.street || null,
+
+          address:
+            deliveryData.address || null,
+
+          landmark:
+            deliveryData.landmark || null,
+
+          delivery_instructions:
+            deliveryData.deliveryInstructions || null
+
+        }
+
+      }
+    }
+  );
+
+
+  if (error) {
+
+    throw new Error(
+      error.message ||
+      "Flutterwave could not be initialized."
+    );
+
+  }
+
+
+  if (!data) {
+
+    throw new Error(
+      "Flutterwave returned no payment information."
+    );
+
+  }
+
+
+  /*
+   * The Edge Function should return
+   * a Flutterwave hosted payment link.
+   */
+
+  const paymentLink =
+    data.payment_link ||
+    data.link ||
+    data.checkout_url;
+
+
+  if (!paymentLink) {
+
+    throw new Error(
+      data.message ||
+      "Flutterwave payment link was not returned."
+    );
+
+  }
+
+
+  window.location.href =
+    paymentLink;
+
+}
+
+
+/* ==========================================================
+   SUCCESS
 ========================================================== */
 
 function showSuccessfulCheckout(
-  result
+  result,
+  paymentMethod
 ) {
 
   document.getElementById(
@@ -1924,6 +2847,25 @@ function showSuccessfulCheckout(
 
   successArea.style.display =
     "block";
+
+
+  const reference =
+    result.payment_reference ||
+    result.reference ||
+    result.tx_ref ||
+    "";
+
+
+  const amount =
+    result.total_amount ||
+    result.amount ||
+    0;
+
+
+  const orderCount =
+    Number(
+      result.order_count || 1
+    );
 
 
   successArea.innerHTML = `
@@ -1948,36 +2890,45 @@ function showSuccessfulCheckout(
 
         <div class="state-text">
 
-          Your payment was successful and your order has
-          been created.
+          ${
+            paymentMethod === "flutterwave"
+              ? `
+                Your Flutterwave payment has been
+                successfully processed and your marketplace
+                order has been created.
+              `
+              : `
+                Your wallet payment was successful and your
+                marketplace order has been created.
+              `
+          }
 
           <br><br>
 
           Your money remains protected while the vendor
-          prepares and delivers your order.
+          prepares and fulfills your order.
 
           <br><br>
 
           Payment Reference:
 
           <div class="success-reference">
-            ${escapeHtml(
-              result.payment_reference || ""
-            )}
+            ${escapeHtml(reference)}
           </div>
 
           <br><br>
 
           Total Paid:
+
           <strong>
-            ${formatNaira(result.total_amount)}
+            ${formatNaira(amount)}
           </strong>
 
           <br><br>
 
-          ${result.order_count || 1}
+          ${orderCount}
           vendor order${
-            Number(result.order_count || 1) === 1
+            orderCount === 1
               ? ""
               : "s"
           }
