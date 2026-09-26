@@ -72,11 +72,12 @@
       width: 86px;
       height: 86px;
       border-radius: 16px;
-      background: linear-gradient(
-        135deg,
-        #6d28d9,
-        #9333ea
-      );
+      background:
+        linear-gradient(
+          135deg,
+          #6d28d9,
+          #9333ea
+        );
       display: flex;
       align-items: center;
       justify-content: center;
@@ -149,6 +150,7 @@
       padding: 0 14px;
       font-size: 14px;
       outline: none;
+      box-sizing: border-box;
     }
 
     .search-box input:focus,
@@ -185,7 +187,8 @@
 
     .products-grid {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns:
+        repeat(4, minmax(0, 1fr));
       gap: 15px;
     }
 
@@ -206,6 +209,7 @@
 
     .product-image-link {
       display: block;
+      background: #0a0f32;
     }
 
     .product-image {
@@ -252,6 +256,12 @@
       margin-bottom: 10px;
     }
 
+    .product-stock {
+      color: #8f98b6;
+      font-size: 11px;
+      margin-bottom: 10px;
+    }
+
     .view-product {
       display: block;
       text-align: center;
@@ -294,7 +304,8 @@
     @media (max-width: 900px) {
 
       .products-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns:
+          repeat(3, minmax(0, 1fr));
       }
 
     }
@@ -336,7 +347,9 @@
       }
 
       .products-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns:
+          repeat(2, minmax(0, 1fr));
+
         gap: 10px;
       }
 
@@ -355,18 +368,25 @@
     }
 
   </style>
+
 </head>
 
 
 <body>
 
+
 <header>
 
   <div class="container nav">
 
-    <a class="logo" href="index.html">
+    <a
+      class="logo"
+      href="index.html"
+    >
 
-      <span class="logo-mark">E</span>
+      <span class="logo-mark">
+        E
+      </span>
 
       Earn<span>Gig</span>
 
@@ -401,6 +421,7 @@
 <main class="dashboard-page store-page">
 
   <div class="container">
+
 
     <a
       href="marketplace.html"
@@ -467,6 +488,7 @@
 
         <div class="store-header-content">
 
+
           <div id="logo-container">
 
             <div
@@ -475,6 +497,7 @@
             >
               S
             </div>
+
 
             <img
               id="store-logo"
@@ -499,8 +522,7 @@
             <p
               id="store-description"
               class="store-description"
-            >
-            </p>
+            ></p>
 
 
             <div
@@ -524,6 +546,7 @@
           >
             Share Store
           </button>
+
 
           <button
             id="copy-button"
@@ -652,6 +675,7 @@
           Products
         </h2>
 
+
         <span
           id="product-count"
           class="product-count"
@@ -759,26 +783,27 @@ async function loadStore() {
   const {
     data: store,
     error
-  } = await supabaseClient
-    .from("marketplace_stores")
-    .select(`
-      id,
-      vendor_id,
-      store_name,
-      store_slug,
-      description,
-      store_logo_url,
-      status
-    `)
-    .eq(
-      "store_slug",
-      storeSlug
-    )
-    .eq(
-      "status",
-      "active"
-    )
-    .maybeSingle();
+  } =
+    await supabaseClient
+      .from("marketplace_stores")
+      .select(`
+        id,
+        vendor_id,
+        store_name,
+        store_slug,
+        description,
+        store_logo_url,
+        status
+      `)
+      .eq(
+        "store_slug",
+        storeSlug
+      )
+      .eq(
+        "status",
+        "active"
+      )
+      .maybeSingle();
 
 
   if (error) {
@@ -847,7 +872,7 @@ function renderStore() {
 
 
   /*
-   * Logo
+   * STORE LOGO
    */
 
   const logo =
@@ -861,7 +886,12 @@ function renderStore() {
     );
 
 
-  if (store.store_logo_url) {
+  if (
+    store.store_logo_url &&
+    String(
+      store.store_logo_url
+    ).trim()
+  ) {
 
     logo.src =
       store.store_logo_url;
@@ -893,11 +923,19 @@ function renderStore() {
     fallback.textContent =
       firstLetter;
 
+    logo.classList.add(
+      "hidden"
+    );
+
+    fallback.classList.remove(
+      "hidden"
+    );
+
   }
 
 
   /*
-   * Page title
+   * PAGE TITLE
    */
 
   document.title =
@@ -905,7 +943,7 @@ function renderStore() {
 
 
   /*
-   * Show store.
+   * SHOW STORE
    */
 
   document.getElementById(
@@ -930,75 +968,79 @@ function renderStore() {
 
 async function loadProducts() {
 
+  /*
+   * IMPORTANT:
+   *
+   * Products now come from:
+   *
+   * marketplace_products
+   *
+   * NOT marketplace_listings.
+   */
+
   const {
     data: products,
-    error
-  } = await supabaseClient
-    .from("marketplace_listings")
-    .select(`
-      id,
-      seller_id,
-      title,
-      category,
-      description,
-      price,
-      delivery_type,
-      image_url,
-      status,
-      created_at
-    `)
-    .eq(
-      "seller_id",
-      currentStore.vendor_id
-    )
-    .order(
-      "created_at",
-      {
-        ascending: false
-      }
-    );
+    error: productsError
+  } =
+    await supabaseClient
+      .from("marketplace_products")
+      .select(`
+        id,
+        store_id,
+        vendor_id,
+        title,
+        category,
+        description,
+        price,
+        stock_quantity,
+        delivery_type,
+        status,
+        created_at,
+        updated_at
+      `)
+      .eq(
+        "store_id",
+        currentStore.id
+      )
+      .order(
+        "created_at",
+        {
+          ascending: false
+        }
+      );
 
 
-  if (error) {
+  if (productsError) {
 
     console.error(
       "Store products error:",
-      error
+      productsError
     );
 
-    document.getElementById(
-      "products-grid"
-    ).innerHTML = `
 
-      <div class="state-box">
+    showProductError(
+      productsError.message
+    );
 
-        <h3>
-          Unable to load products
-        </h3>
-
-        <p>
-          ${escapeHtml(
-            error.message
-          )}
-        </p>
-
-      </div>
-
-    `;
 
     return;
 
   }
 
 
+  const productRows =
+    products || [];
+
+
   /*
-   * Only active products with images
-   * are displayed.
+   * Only products belonging to this
+   * store and currently available
+   * are considered.
    */
 
-  storeProducts =
-    (products || [])
-      .filter(function(product) {
+  const activeProducts =
+    productRows.filter(
+      function(product) {
 
         const status =
           String(
@@ -1006,31 +1048,240 @@ async function loadProducts() {
           ).toLowerCase();
 
 
-        const validStatus =
-          !status ||
-          [
-            "active",
-            "approved",
-            "published",
-            "available"
-          ].includes(status);
-
-
-        const hasImage =
-          String(
-            product.image_url || ""
-          ).trim();
-
-
-        return (
-          validStatus &&
-          hasImage
+        return [
+          "active",
+          "approved",
+          "published",
+          "available"
+        ].includes(
+          status
         );
 
-      });
+      }
+    );
+
+
+  /*
+   * No products.
+   */
+
+  if (!activeProducts.length) {
+
+    storeProducts = [];
+
+    renderProducts();
+
+    return;
+
+  }
+
+
+  /*
+   * LOAD PRODUCT IMAGES
+   *
+   * Every displayed product must
+   * have an image.
+   */
+
+  const productIds =
+    activeProducts.map(
+      function(product) {
+
+        return product.id;
+
+      }
+    );
+
+
+  const {
+    data: images,
+    error: imagesError
+  } =
+    await supabaseClient
+      .from("marketplace_product_images")
+      .select(`
+        id,
+        product_id,
+        image_url,
+        is_primary,
+        sort_order,
+        created_at
+      `)
+      .in(
+        "product_id",
+        productIds
+      )
+      .order(
+        "sort_order",
+        {
+          ascending: true
+        }
+      );
+
+
+  if (imagesError) {
+
+    console.error(
+      "Product images error:",
+      imagesError
+    );
+
+
+    showProductError(
+      imagesError.message
+    );
+
+
+    return;
+
+  }
+
+
+  /*
+   * Group images by product.
+   */
+
+  const imagesByProduct = {};
+
+
+  (images || []).forEach(
+    function(image) {
+
+      if (
+        !imagesByProduct[
+          image.product_id
+        ]
+      ) {
+
+        imagesByProduct[
+          image.product_id
+        ] = [];
+
+      }
+
+
+      imagesByProduct[
+        image.product_id
+      ].push(
+        image
+      );
+
+    }
+  );
+
+
+  /*
+   * Attach the primary image to
+   * every product.
+   */
+
+  storeProducts =
+    activeProducts
+      .map(
+        function(product) {
+
+          const productImages =
+            imagesByProduct[
+              product.id
+            ] || [];
+
+
+          /*
+           * Prefer primary image.
+           */
+
+          let primaryImage =
+            productImages.find(
+              function(image) {
+
+                return (
+                  image.is_primary === true
+                );
+
+              }
+            );
+
+
+          /*
+           * If no primary image exists,
+           * use the first image.
+           */
+
+          if (!primaryImage) {
+
+            primaryImage =
+              productImages[0];
+
+          }
+
+
+          return {
+            ...product,
+            primary_image_url:
+              primaryImage?.image_url ||
+              null
+          };
+
+        }
+      )
+      .filter(
+        function(product) {
+
+          /*
+           * Marketplace rule:
+           * NO IMAGE = NO PRODUCT DISPLAY.
+           */
+
+          return Boolean(
+            product.primary_image_url &&
+            String(
+              product.primary_image_url
+            ).trim()
+          );
+
+        }
+      );
 
 
   renderProducts();
+
+}
+
+
+/* ==========================================================
+   PRODUCT ERROR
+========================================================== */
+
+function showProductError(
+  message
+) {
+
+  document.getElementById(
+    "product-count"
+  ).textContent =
+    "Unable to load";
+
+
+  document.getElementById(
+    "products-grid"
+  ).innerHTML = `
+
+    <div class="state-box">
+
+      <h3>
+        Unable to load products
+      </h3>
+
+      <p>
+        ${escapeHtml(
+          message ||
+          "Please try again later."
+        )}
+      </p>
+
+    </div>
+
+  `;
 
 }
 
@@ -1150,6 +1401,36 @@ function renderProducts() {
           )}`;
 
 
+        const stock =
+          Number(
+            product.stock_quantity || 0
+          );
+
+
+        let stockText =
+          "";
+
+
+        if (stock <= 0) {
+
+          stockText =
+            "Out of stock";
+
+        } else if (stock === 1) {
+
+          stockText =
+            "1 item left";
+
+        } else {
+
+          stockText =
+            `${stock.toLocaleString(
+              "en-NG"
+            )} items available`;
+
+        }
+
+
         return `
 
           <article class="product-card">
@@ -1161,7 +1442,7 @@ function renderProducts() {
 
               <img
                 src="${escapeHtml(
-                  product.image_url
+                  product.primary_image_url
                 )}"
                 alt="${escapeHtml(
                   product.title
@@ -1198,6 +1479,13 @@ function renderProducts() {
                   "Other"
                 )}
               </span>
+
+
+              <div class="product-stock">
+                ${escapeHtml(
+                  stockText
+                )}
+              </div>
 
 
               <a
@@ -1313,8 +1601,8 @@ async function shareStore() {
     } catch (error) {
 
       /*
-       * User cancelled the share sheet.
-       * No action required.
+       * User cancelled the
+       * share sheet.
        */
 
     }
