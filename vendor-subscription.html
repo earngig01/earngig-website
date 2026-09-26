@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Vendor Subscription | EarnGig</title>
 
@@ -17,851 +17,1032 @@
       margin: 0;
       font-family: Arial, Helvetica, sans-serif;
       background: #080b1a;
-      color: #ffffff;
+      color: #fff;
       min-height: 100vh;
     }
 
     .page {
-      width: 100%;
       max-width: 620px;
-      margin: 0 auto;
-      padding: 20px 16px 40px;
+      margin: auto;
+      padding: 18px 15px 40px;
     }
 
     .back {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      color: #b8b7ff;
+      display: inline-block;
+      color: #b9b3ff;
       text-decoration: none;
-      font-size: 14px;
       margin-bottom: 18px;
-    }
-
-    .back:hover {
-      color: #ffffff;
+      font-size: 14px;
+      cursor: pointer;
     }
 
     .card {
       background: linear-gradient(
         145deg,
-        rgba(25, 29, 63, 0.98),
-        rgba(14, 17, 39, 0.98)
+        #191d40,
+        #0e1128
       );
-      border: 1px solid rgba(124, 92, 255, 0.28);
+      border: 1px solid rgba(126, 91, 255, .3);
       border-radius: 20px;
       padding: 22px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+      box-shadow: 0 20px 60px rgba(0,0,0,.35);
     }
 
-    .brand {
+    h1 {
       text-align: center;
-      margin-bottom: 20px;
-    }
-
-    .brand h1 {
       margin: 0;
       font-size: 25px;
-      color: #ffffff;
     }
 
-    .brand p {
-      margin: 8px 0 0;
-      color: #aaaac5;
+    .intro {
+      text-align: center;
+      color: #aaaac2;
       font-size: 14px;
       line-height: 1.5;
+      margin: 9px 0 20px;
     }
 
-    .store-box {
-      background: rgba(124, 92, 255, 0.09);
-      border: 1px solid rgba(124, 92, 255, 0.22);
-      border-radius: 15px;
-      padding: 16px;
+    .store {
+      background: rgba(124,92,255,.09);
+      border: 1px solid rgba(124,92,255,.22);
+      border-radius: 14px;
+      padding: 15px;
       margin-bottom: 18px;
     }
 
-    .store-label {
-      color: #9292b0;
-      font-size: 12px;
-      margin-bottom: 6px;
+    .label {
+      color: #8f90aa;
+      font-size: 11px;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      margin-bottom: 6px;
     }
 
     .store-name {
       font-size: 20px;
       font-weight: 700;
-      color: #ffffff;
     }
 
-    .store-location {
-      margin-top: 6px;
-      color: #aaaac5;
+    .location {
+      color: #aaaac2;
       font-size: 13px;
-    }
-
-    .price-box {
-      text-align: center;
-      padding: 20px 10px;
-      margin-bottom: 18px;
+      margin-top: 5px;
     }
 
     .price {
-      font-size: 38px;
-      font-weight: 800;
-      color: #ffffff;
+      text-align: center;
+      margin: 22px 0;
     }
 
-    .period {
-      color: #a8a7c2;
-      font-size: 14px;
+    .amount {
+      font-size: 38px;
+      font-weight: 800;
+    }
+
+    .monthly {
+      color: #999ab3;
+      font-size: 13px;
       margin-top: 4px;
     }
 
-    .features {
-      display: grid;
-      gap: 10px;
-      margin: 18px 0 22px;
-    }
-
-    .feature {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      background: rgba(255, 255, 255, 0.035);
-      border-radius: 11px;
-      padding: 11px 12px;
-      color: #d9d8e9;
-      font-size: 13px;
-      line-height: 1.4;
-    }
-
-    .feature-icon {
-      color: #8d79ff;
-      font-weight: 700;
-    }
-
-    .wallet-box {
-      background: rgba(20, 184, 166, 0.07);
-      border: 1px solid rgba(20, 184, 166, 0.2);
+    .wallet {
+      background: rgba(20,184,166,.07);
+      border: 1px solid rgba(20,184,166,.2);
       border-radius: 14px;
       padding: 15px;
-      margin-bottom: 16px;
-    }
-
-    .wallet-label {
-      color: #9d9db6;
-      font-size: 12px;
-      margin-bottom: 5px;
+      margin-bottom: 18px;
     }
 
     .wallet-balance {
       font-size: 23px;
       font-weight: 800;
-      color: #ffffff;
     }
 
     .wallet-status {
-      margin-top: 5px;
-      color: #a8a8bd;
+      color: #a5a6bd;
       font-size: 12px;
+      margin-top: 5px;
     }
 
-    .methods-title {
+    .title {
       font-size: 14px;
       font-weight: 700;
       margin-bottom: 10px;
-      color: #ffffff;
     }
 
     .methods {
       display: grid;
       gap: 10px;
-      margin-bottom: 16px;
-    }
-
-    .method {
-      position: relative;
+      margin-bottom: 17px;
     }
 
     .method input {
-      position: absolute;
-      opacity: 0;
-      pointer-events: none;
+      display: none;
     }
 
     .method label {
       display: block;
-      border: 1px solid rgba(255, 255, 255, 0.11);
-      background: rgba(255, 255, 255, 0.035);
-      border-radius: 14px;
       padding: 15px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.11);
+      background: rgba(255,255,255,.035);
       cursor: pointer;
-      transition: 0.2s ease;
     }
 
     .method input:checked + label {
       border-color: #8066ff;
-      background: rgba(128, 102, 255, 0.13);
-      box-shadow: 0 0 0 1px rgba(128, 102, 255, 0.2);
+      background: rgba(128,102,255,.13);
     }
 
     .method-name {
       font-weight: 700;
       font-size: 15px;
-      color: #ffffff;
     }
 
-    .method-description {
-      margin-top: 5px;
+    .method-text {
+      color: #a8a8c0;
       font-size: 12px;
-      color: #a9a9c0;
-      line-height: 1.4;
+      margin-top: 5px;
     }
 
-    .button {
+    button.pay {
       width: 100%;
-      border: none;
+      border: 0;
       border-radius: 13px;
       padding: 15px;
+      background: linear-gradient(
+        135deg,
+        #7257ff,
+        #8d6cff
+      );
+      color: white;
       font-size: 15px;
       font-weight: 700;
-      color: #ffffff;
-      background: linear-gradient(135deg, #7257ff, #8d6cff);
       cursor: pointer;
-      transition: 0.2s ease;
     }
 
-    .button:hover {
-      filter: brightness(1.08);
-    }
-
-    .button:disabled {
-      opacity: 0.55;
+    button.pay:disabled {
+      opacity: .55;
       cursor: not-allowed;
     }
 
-    .secondary-button {
+    button.refresh {
       width: 100%;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 13px;
-      padding: 13px;
-      font-size: 14px;
-      font-weight: 600;
-      color: #d8d7e8;
-      background: rgba(255, 255, 255, 0.04);
-      cursor: pointer;
       margin-top: 10px;
+      padding: 13px;
+      border-radius: 13px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      color: #d9d8e9;
+      font-weight: 600;
     }
 
     .message {
       display: none;
-      border-radius: 12px;
       padding: 12px 14px;
+      border-radius: 12px;
       margin-bottom: 15px;
       font-size: 13px;
       line-height: 1.5;
     }
 
-    .message.error {
+    .error {
       display: block;
-      background: rgba(239, 68, 68, 0.10);
-      border: 1px solid rgba(239, 68, 68, 0.25);
-      color: #ffb4b4;
+      color: #ffb6b6;
+      background: rgba(239,68,68,.1);
+      border: 1px solid rgba(239,68,68,.25);
     }
 
-    .message.success {
+    .success {
       display: block;
-      background: rgba(34, 197, 94, 0.10);
-      border: 1px solid rgba(34, 197, 94, 0.25);
       color: #a9f5be;
+      background: rgba(34,197,94,.1);
+      border: 1px solid rgba(34,197,94,.25);
     }
 
     .loading {
       text-align: center;
-      padding: 30px 10px;
-      color: #aaaac5;
-      font-size: 14px;
-    }
-
-    .small-note {
-      text-align: center;
-      color: #85859f;
-      font-size: 11px;
-      line-height: 1.5;
-      margin-top: 15px;
+      color: #aaaac2;
+      padding: 25px;
     }
 
     .hidden {
-      display: none !important;
+      display: none;
     }
 
-    @media (max-width: 480px) {
-      .page {
-        padding: 14px 12px 30px;
-      }
-
-      .card {
-        padding: 18px;
-        border-radius: 17px;
-      }
-
-      .price {
-        font-size: 34px;
-      }
+    .note {
+      text-align: center;
+      color: #777991;
+      font-size: 11px;
+      line-height: 1.5;
+      margin-top: 14px;
     }
   </style>
 </head>
 
 <body>
 
-  <div class="page">
+<div class="page">
 
-    <a href="vendor-application-approved.html" class="back">
-      ← Back
-    </a>
+  <a
+    href="vendor-application-approved.html"
+    class="back"
+    id="backButton"
+  >
+    ← Back
+  </a>
 
-    <div id="loadingBox" class="card">
-      <div class="loading">
-        Loading your vendor subscription...
+  <div id="loading" class="card">
+    <div class="loading">
+      Loading your vendor subscription...
+    </div>
+  </div>
+
+  <div id="content" class="card hidden">
+
+    <h1>Activate Your Store</h1>
+
+    <div class="intro">
+      Complete your ₦2,500 monthly vendor subscription
+      to activate your EarnGig Marketplace store.
+    </div>
+
+    <div class="store">
+      <div class="label">Your Store</div>
+
+      <div
+        id="storeName"
+        class="store-name"
+      >
+        —
+      </div>
+
+      <div
+        id="storeLocation"
+        class="location"
+      >
+        —
       </div>
     </div>
 
-    <div id="mainBox" class="card hidden">
+    <div class="price">
+      <div class="amount">₦2,500</div>
+      <div class="monthly">
+        Monthly vendor subscription
+      </div>
+    </div>
 
-      <div class="brand">
-        <h1>Activate Your Store</h1>
-        <p>
-          Complete your monthly vendor subscription to activate
-          your EarnGig Marketplace store.
-        </p>
+    <div
+      id="message"
+      class="message"
+    ></div>
+
+    <div class="wallet">
+
+      <div class="label">
+        EarnGig Wallet Balance
       </div>
 
-      <div class="store-box">
-        <div class="store-label">Your Store</div>
-        <div id="storeName" class="store-name">—</div>
-        <div id="storeLocation" class="store-location">—</div>
-      </div>
-
-      <div class="price-box">
-        <div class="price">₦2,500</div>
-        <div class="period">Monthly vendor subscription</div>
-      </div>
-
-      <div class="features">
-        <div class="feature">
-          <span class="feature-icon">✓</span>
-          <span>Activate your marketplace store</span>
-        </div>
-
-        <div class="feature">
-          <span class="feature-icon">✓</span>
-          <span>List and sell approved products</span>
-        </div>
-
-        <div class="feature">
-          <span class="feature-icon">✓</span>
-          <span>Receive and manage customer orders</span>
-        </div>
-
-        <div class="feature">
-          <span class="feature-icon">✓</span>
-          <span>Manage delivery or pickup settings from your vendor dashboard</span>
-        </div>
-      </div>
-
-      <div id="message" class="message"></div>
-
-      <div class="wallet-box">
-        <div class="wallet-label">Your EarnGig Wallet Balance</div>
-        <div id="walletBalance" class="wallet-balance">₦0.00</div>
-        <div id="walletStatus" class="wallet-status">
-          Checking wallet balance...
-        </div>
-      </div>
-
-      <div class="methods-title">
-        Choose payment method
-      </div>
-
-      <div class="methods">
-
-        <div class="method">
-          <input
-            type="radio"
-            id="walletMethod"
-            name="paymentMethod"
-            value="wallet"
-          />
-
-          <label for="walletMethod">
-            <div class="method-name">
-              EarnGig Wallet
-            </div>
-
-            <div class="method-description">
-              Pay instantly from your EarnGig wallet balance.
-            </div>
-          </label>
-        </div>
-
-        <div class="method">
-          <input
-            type="radio"
-            id="flutterwaveMethod"
-            name="paymentMethod"
-            value="flutterwave"
-          />
-
-          <label for="flutterwaveMethod">
-            <div class="method-name">
-              Flutterwave
-            </div>
-
-            <div class="method-description">
-              Pay securely with the available Flutterwave payment options.
-            </div>
-          </label>
-        </div>
-
-      </div>
-
-      <button
-        id="payButton"
-        class="button"
-        type="button"
-        disabled
+      <div
+        id="walletBalance"
+        class="wallet-balance"
       >
-        Choose Payment Method
-      </button>
-
-      <button
-        id="refreshButton"
-        class="secondary-button"
-        type="button"
-      >
-        Refresh Wallet Balance
-      </button>
-
-      <div class="small-note">
-        Your store becomes active only after the ₦2,500 subscription
-        payment has been successfully confirmed.
+        ₦0.00
       </div>
 
+      <div
+        id="walletStatus"
+        class="wallet-status"
+      >
+        Loading wallet balance...
+      </div>
+
+    </div>
+
+    <div class="title">
+      Choose payment method
+    </div>
+
+    <div class="methods">
+
+      <div class="method">
+
+        <input
+          type="radio"
+          id="wallet"
+          name="payment"
+          value="wallet"
+        >
+
+        <label for="wallet">
+
+          <div class="method-name">
+            EarnGig Wallet
+          </div>
+
+          <div class="method-text">
+            Pay directly from your EarnGig wallet.
+          </div>
+
+        </label>
+
+      </div>
+
+      <div class="method">
+
+        <input
+          type="radio"
+          id="flutterwave"
+          name="payment"
+          value="flutterwave"
+        >
+
+        <label for="flutterwave">
+
+          <div class="method-name">
+            Flutterwave
+          </div>
+
+          <div class="method-text">
+            Pay securely through Flutterwave.
+          </div>
+
+        </label>
+
+      </div>
+
+    </div>
+
+    <button
+      class="pay"
+      id="payButton"
+      disabled
+    >
+      Choose Payment Method
+    </button>
+
+    <button
+      class="refresh"
+      id="refreshButton"
+    >
+      Refresh Wallet Balance
+    </button>
+
+    <div class="note">
+      Your store is activated only after successful
+      confirmation of the ₦2,500 subscription payment.
     </div>
 
   </div>
 
-  <script>
-    const SUPABASE_URL = "https://ytvtdelwefykeqwztcyo.supabase.co";
+</div>
 
-    const SUPABASE_PUBLISHABLE_KEY =
-      "sb_publishable_CLTeqgEB6JS7QKqq6rQARw_RV31Ccg3";
+<script>
 
-    const supabaseClient = window.supabase.createClient(
-      SUPABASE_URL,
-      SUPABASE_PUBLISHABLE_KEY
+const SUPABASE_URL =
+  "https://ytvtdelwefykeqwztcyo.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_CLTeqgEB6JS7QKqq6rQARw_RV31Ccg3";
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+let currentUser = null;
+let currentStore = null;
+let processing = false;
+
+const loading =
+  document.getElementById("loading");
+
+const content =
+  document.getElementById("content");
+
+const storeName =
+  document.getElementById("storeName");
+
+const storeLocation =
+  document.getElementById("storeLocation");
+
+const walletBalance =
+  document.getElementById("walletBalance");
+
+const walletStatus =
+  document.getElementById("walletStatus");
+
+const message =
+  document.getElementById("message");
+
+const payButton =
+  document.getElementById("payButton");
+
+const refreshButton =
+  document.getElementById("refreshButton");
+
+const walletOption =
+  document.getElementById("wallet");
+
+const flutterwaveOption =
+  document.getElementById("flutterwave");
+
+
+function showError(text) {
+
+  message.textContent = text;
+
+  message.className =
+    "message error";
+}
+
+
+function showSuccess(text) {
+
+  message.textContent = text;
+
+  message.className =
+    "message success";
+}
+
+
+function clearMessage() {
+
+  message.textContent = "";
+
+  message.className =
+    "message";
+}
+
+
+function naira(amount) {
+
+  return new Intl.NumberFormat(
+    "en-NG",
+    {
+      style: "currency",
+      currency: "NGN",
+      minimumFractionDigits: 2
+    }
+  ).format(
+    Number(amount || 0)
+  );
+}
+
+
+/*
+ * Back button:
+ * first try browser history.
+ * If there is no useful history,
+ * go directly to the approval page.
+ */
+document
+  .getElementById("backButton")
+  .addEventListener(
+    "click",
+    function(event) {
+
+      event.preventDefault();
+
+      if (
+        window.history.length > 1
+      ) {
+
+        window.history.back();
+
+      } else {
+
+        window.location.href =
+          "vendor-application-approved.html";
+      }
+
+    }
+  );
+
+
+function updateButton() {
+
+  if (processing) {
+
+    payButton.disabled = true;
+
+    payButton.textContent =
+      "Processing...";
+
+    return;
+  }
+
+  const selected =
+    document.querySelector(
+      'input[name="payment"]:checked'
     );
 
-    let currentUser = null;
-    let currentStore = null;
-    let walletBalance = 0;
-    let paymentInProgress = false;
+  if (!selected) {
 
-    const loadingBox = document.getElementById("loadingBox");
-    const mainBox = document.getElementById("mainBox");
+    payButton.disabled = true;
 
-    const storeName = document.getElementById("storeName");
-    const storeLocation = document.getElementById("storeLocation");
+    payButton.textContent =
+      "Choose Payment Method";
 
-    const walletBalanceEl = document.getElementById("walletBalance");
-    const walletStatusEl = document.getElementById("walletStatus");
+    return;
+  }
 
-    const walletMethod = document.getElementById("walletMethod");
-    const flutterwaveMethod = document.getElementById("flutterwaveMethod");
+  payButton.disabled = false;
 
-    const payButton = document.getElementById("payButton");
-    const refreshButton = document.getElementById("refreshButton");
+  if (
+    selected.value === "wallet"
+  ) {
 
-    const messageEl = document.getElementById("message");
+    payButton.textContent =
+      "Pay ₦2,500 from Wallet";
 
-    function showMessage(message, type = "error") {
-      messageEl.textContent = message;
-      messageEl.className = "message " + type;
-    }
+  } else {
 
-    function clearMessage() {
-      messageEl.textContent = "";
-      messageEl.className = "message";
-    }
+    payButton.textContent =
+      "Continue to Flutterwave";
+  }
+}
 
-    function formatNaira(amount) {
-      return new Intl.NumberFormat("en-NG", {
-        style: "currency",
-        currency: "NGN",
-        minimumFractionDigits: 2
-      }).format(Number(amount || 0));
-    }
 
-    function updatePayButton() {
-      if (paymentInProgress) {
-        payButton.disabled = true;
-        payButton.textContent = "Processing...";
-        return;
-      }
+async function loadUser() {
 
-      const selected = document.querySelector(
-        'input[name="paymentMethod"]:checked'
+  const {
+    data: {
+      user
+    },
+    error
+  } =
+    await supabaseClient.auth.getUser();
+
+  if (error) {
+    throw error;
+  }
+
+  if (!user) {
+
+    window.location.href =
+      "login.html";
+
+    return null;
+  }
+
+  return user;
+}
+
+
+async function loadStore() {
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("marketplace_stores")
+      .select(`
+        id,
+        vendor_id,
+        store_name,
+        status,
+        business_location,
+        location_display,
+        business_state,
+        business_lga,
+        business_city,
+        business_area
+      `)
+      .eq(
+        "vendor_id",
+        currentUser.id
+      )
+      .order(
+        "created_at",
+        {
+          ascending: false
+        }
+      )
+      .limit(1)
+      .maybeSingle();
+
+  if (error) {
+    throw error;
+  }
+
+  if (!data) {
+
+    throw new Error(
+      "Your marketplace store could not be found."
+    );
+  }
+
+  currentStore = data;
+
+  storeName.textContent =
+    data.store_name ||
+    "Your Marketplace Store";
+
+  const location =
+    data.location_display ||
+    data.business_location ||
+    [
+      data.business_area,
+      data.business_city,
+      data.business_lga,
+      data.business_state
+    ]
+      .filter(Boolean)
+      .join(", ");
+
+  storeLocation.textContent =
+    location ||
+    "Business location not provided";
+
+
+  /*
+   * If already active, don't show payment.
+   */
+  if (
+    data.status === "active"
+  ) {
+
+    showSuccess(
+      "Your marketplace store is already active."
+    );
+
+    payButton.disabled = true;
+
+    payButton.textContent =
+      "Store Already Active";
+
+    setTimeout(
+      function() {
+
+        window.location.href =
+          "vendor-dashboard.html";
+
+      },
+      1200
+    );
+  }
+}
+
+
+async function loadWallet() {
+
+  walletStatus.textContent =
+    "Loading wallet balance...";
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("wallets")
+      .select("balance")
+      .eq(
+        "user_id",
+        currentUser.id
+      )
+      .maybeSingle();
+
+  if (error) {
+
+    console.error(
+      "Wallet balance:",
+      error
+    );
+
+    walletBalance.textContent =
+      "Unavailable";
+
+    walletStatus.textContent =
+      "Could not load balance. Wallet payment is still securely checked.";
+
+    updateButton();
+
+    return;
+  }
+
+  const balance =
+    Number(
+      data?.balance || 0
+    );
+
+  walletBalance.textContent =
+    naira(balance);
+
+  if (balance >= 2500) {
+
+    walletStatus.textContent =
+      "Enough balance for the ₦2,500 subscription.";
+
+    walletOption.checked = true;
+
+  } else {
+
+    walletStatus.textContent =
+      "Insufficient wallet balance for this subscription.";
+
+    flutterwaveOption.checked =
+      true;
+  }
+
+  updateButton();
+}
+
+
+/*
+ * IMPORTANT:
+ * This is the ONLY place where the Wallet
+ * subscription RPC is called.
+ */
+async function payWithWallet() {
+
+  if (!currentStore) {
+    showError(
+      "Your store could not be found."
+    );
+    return;
+  }
+
+  processing = true;
+
+  clearMessage();
+
+  updateButton();
+
+  try {
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient.rpc(
+        "pay_marketplace_vendor_subscription_with_wallet",
+        {
+          p_store_id:
+            currentStore.id
+        }
       );
 
-      if (!selected) {
-        payButton.disabled = true;
-        payButton.textContent = "Choose Payment Method";
-        return;
-      }
-
-      payButton.disabled = false;
-
-      if (selected.value === "wallet") {
-        payButton.textContent = "Pay ₦2,500 from Wallet";
-      } else {
-        payButton.textContent = "Continue to Flutterwave";
-      }
+    if (error) {
+      throw new Error(
+        error.message
+      );
     }
 
-    async function loadCurrentUser() {
-      const {
-        data: { user },
-        error
-      } = await supabaseClient.auth.getUser();
+    if (!data?.success) {
 
-      if (error) {
-        throw error;
-      }
-
-      if (!user) {
-        window.location.href = "login.html";
-        return null;
-      }
-
-      return user;
+      throw new Error(
+        data?.message ||
+        "Wallet payment failed."
+      );
     }
 
-    async function loadStore() {
-      const { data, error } = await supabaseClient
-        .from("marketplace_stores")
-        .select(`
-          id,
-          vendor_id,
-          store_name,
-          store_slug,
-          status,
-          business_location,
-          location_display,
-          business_state,
-          business_lga,
-          business_city,
-          business_area,
-          accepts_delivery,
-          accepts_pickup,
-          pickup_location,
-          pickup_instructions
-        `)
-        .eq("vendor_id", currentUser.id)
-        .order("created_at", { ascending: false })
-        .limit(1)
-        .maybeSingle();
+    showSuccess(
+      data.message ||
+      "Wallet payment successful. Your store is now active."
+    );
 
-      if (error) {
-        throw error;
-      }
+    payButton.textContent =
+      "Store Activated";
 
-      if (!data) {
-        throw new Error(
-          "Your marketplace store could not be found."
-        );
-      }
+    setTimeout(
+      function() {
 
-      currentStore = data;
+        window.location.href =
+          "vendor-dashboard.html";
 
-      storeName.textContent =
-        data.store_name || "Your Marketplace Store";
+      },
+      1200
+    );
 
-      const location =
-        data.location_display ||
-        data.business_location ||
-        [
-          data.business_area,
-          data.business_city,
-          data.business_lga,
-          data.business_state
-        ]
-          .filter(Boolean)
-          .join(", ");
+  } catch (error) {
 
-      storeLocation.textContent =
-        location || "Business location not provided";
+    console.error(
+      "Wallet payment:",
+      error
+    );
 
-      if (data.status === "active") {
-        showMessage(
-          "Your marketplace store is already active.",
-          "success"
-        );
+    showError(
+      error.message ||
+      "Wallet payment failed."
+    );
 
-        payButton.disabled = true;
-        payButton.textContent = "Store Already Active";
+    processing = false;
 
-        setTimeout(() => {
-          window.location.href = "vendor-dashboard.html";
-        }, 1500);
-      }
-    }
+    updateButton();
+  }
+}
 
-    async function loadWalletBalance() {
-      walletStatusEl.textContent =
-        "Checking wallet balance...";
 
-      const { data, error } = await supabaseClient
-        .from("wallets")
-        .select("balance")
-        .eq("user_id", currentUser.id)
-        .maybeSingle();
+/*
+ * IMPORTANT:
+ * Flutterwave is NOT called when this page loads.
+ *
+ * It is called ONLY after the user chooses
+ * Flutterwave and presses the payment button.
+ */
+async function payWithFlutterwave() {
 
-      if (error) {
-        console.error("Wallet balance error:", error);
+  processing = true;
 
-        walletBalance = 0;
-        walletBalanceEl.textContent = "Unavailable";
+  clearMessage();
 
-        walletStatusEl.textContent =
-          "Wallet balance could not be loaded. Wallet payment will still be securely checked.";
+  updateButton();
 
-        return;
-      }
+  try {
 
-      walletBalance = Number(data?.balance || 0);
-
-      walletBalanceEl.textContent =
-        formatNaira(walletBalance);
-
-      if (walletBalance >= 2500) {
-        walletStatusEl.textContent =
-          "Your wallet has enough balance for this subscription.";
-
-        if (!flutterwaveMethod.checked) {
-          walletMethod.checked = true;
-        }
-      } else {
-        walletStatusEl.textContent =
-          "Your wallet balance is below the ₦2,500 subscription fee.";
-
-        if (!walletMethod.checked) {
-          flutterwaveMethod.checked = true;
-        }
-      }
-
-      updatePayButton();
-    }
-
-    async function payWithWallet() {
-      if (!currentStore) {
-        showMessage("Your store could not be found.");
-        return;
-      }
-
-      paymentInProgress = true;
-      clearMessage();
-      updatePayButton();
-
-      try {
-        const { data, error } = await supabaseClient.rpc(
-          "pay_marketplace_vendor_subscription_with_wallet",
-          {
-            p_store_id: currentStore.id
+    const {
+      data,
+      error
+    } =
+      await supabaseClient.functions.invoke(
+        "flutterwave-vendor-subscription",
+        {
+          body: {
+            action: "initialize"
           }
-        );
-
-        if (error) {
-          throw new Error(error.message);
         }
-
-        if (!data?.success) {
-          throw new Error(
-            data?.message ||
-            "Wallet payment could not be completed."
-          );
-        }
-
-        showMessage(
-          data.message ||
-          "Wallet payment successful. Your marketplace store is now active.",
-          "success"
-        );
-
-        payButton.textContent =
-          "Store Activated";
-
-        setTimeout(() => {
-          window.location.href =
-            "vendor-dashboard.html";
-        }, 1200);
-
-      } catch (error) {
-        console.error("Wallet subscription error:", error);
-
-        showMessage(
-          error.message ||
-          "Wallet payment failed. Please try again."
-        );
-
-        paymentInProgress = false;
-        updatePayButton();
-      }
-    }
-
-    async function payWithFlutterwave() {
-      if (!currentStore) {
-        showMessage("Your store could not be found.");
-        return;
-      }
-
-      paymentInProgress = true;
-      clearMessage();
-      updatePayButton();
-
-      try {
-        const { data, error } =
-          await supabaseClient.functions.invoke(
-            "flutterwave-vendor-subscription",
-            {
-              body: {
-                action: "initialize"
-              }
-            }
-          );
-
-        if (error) {
-          throw new Error(error.message);
-        }
-
-        if (!data?.success) {
-          throw new Error(
-            data?.error ||
-            data?.message ||
-            "Flutterwave payment could not be initialized."
-          );
-        }
-
-        const paymentLink =
-          data.payment_link ||
-          data.link ||
-          data.checkout_url;
-
-        if (!paymentLink) {
-          throw new Error(
-            "Flutterwave did not return a payment link."
-          );
-        }
-
-        window.location.href = paymentLink;
-
-      } catch (error) {
-        console.error(
-          "Flutterwave initialization error:",
-          error
-        );
-
-        showMessage(
-          error.message ||
-          "Flutterwave payment could not be started."
-        );
-
-        paymentInProgress = false;
-        updatePayButton();
-      }
-    }
-
-    async function handlePayment() {
-      if (paymentInProgress) {
-        return;
-      }
-
-      const selected = document.querySelector(
-        'input[name="paymentMethod"]:checked'
       );
 
-      if (!selected) {
-        showMessage("Please choose a payment method.");
-        return;
-      }
+    if (error) {
 
-      if (selected.value === "wallet") {
-        await payWithWallet();
-        return;
-      }
-
-      if (selected.value === "flutterwave") {
-        await payWithFlutterwave();
-        return;
-      }
+      throw new Error(
+        error.message
+      );
     }
 
-    walletMethod.addEventListener(
-      "change",
-      updatePayButton
-    );
+    if (!data?.success) {
 
-    flutterwaveMethod.addEventListener(
-      "change",
-      updatePayButton
-    );
-
-    payButton.addEventListener(
-      "click",
-      handlePayment
-    );
-
-    refreshButton.addEventListener(
-      "click",
-      async () => {
-        if (!currentUser) {
-          return;
-        }
-
-        clearMessage();
-        await loadWalletBalance();
-      }
-    );
-
-    async function initializePage() {
-      try {
-        currentUser = await loadCurrentUser();
-
-        if (!currentUser) {
-          return;
-        }
-
-        await loadStore();
-        await loadWalletBalance();
-
-        loadingBox.classList.add("hidden");
-        mainBox.classList.remove("hidden");
-
-        updatePayButton();
-
-      } catch (error) {
-        console.error("Vendor subscription error:", error);
-
-        loadingBox.innerHTML = `
-          <div class="message error" style="display:block;">
-            ${error.message || "Unable to load vendor subscription."}
-          </div>
-        `;
-      }
+      throw new Error(
+        data?.error ||
+        "Flutterwave payment could not be started."
+      );
     }
 
-    initializePage();
-  </script>
+    const link =
+      data.payment_link ||
+      data.link ||
+      data.checkout_url;
+
+    if (!link) {
+
+      throw new Error(
+        "Flutterwave did not return a payment link."
+      );
+    }
+
+    /*
+     * ONLY NOW do we leave EarnGig
+     * for Flutterwave checkout.
+     */
+    window.location.href =
+      link;
+
+  } catch (error) {
+
+    console.error(
+      "Flutterwave:",
+      error
+    );
+
+    showError(
+      error.message ||
+      "Flutterwave payment could not be started."
+    );
+
+    processing = false;
+
+    updateButton();
+  }
+}
+
+
+payButton.addEventListener(
+  "click",
+  async function() {
+
+    const selected =
+      document.querySelector(
+        'input[name="payment"]:checked'
+      );
+
+    if (!selected) {
+
+      showError(
+        "Please choose a payment method."
+      );
+
+      return;
+    }
+
+    if (
+      selected.value === "wallet"
+    ) {
+
+      await payWithWallet();
+
+      return;
+    }
+
+    if (
+      selected.value === "flutterwave"
+    ) {
+
+      await payWithFlutterwave();
+
+      return;
+    }
+
+  }
+);
+
+
+walletOption.addEventListener(
+  "change",
+  function() {
+
+    clearMessage();
+
+    updateButton();
+
+  }
+);
+
+
+flutterwaveOption.addEventListener(
+  "change",
+  function() {
+
+    clearMessage();
+
+    updateButton();
+
+  }
+);
+
+
+refreshButton.addEventListener(
+  "click",
+  async function() {
+
+    clearMessage();
+
+    await loadWallet();
+
+  }
+);
+
+
+async function startPage() {
+
+  try {
+
+    /*
+     * NO FLUTTERWAVE CALL HERE.
+     */
+    currentUser =
+      await loadUser();
+
+    if (!currentUser) {
+      return;
+    }
+
+    await loadStore();
+
+    await loadWallet();
+
+    loading.classList.add(
+      "hidden"
+    );
+
+    content.classList.remove(
+      "hidden"
+    );
+
+    updateButton();
+
+  } catch (error) {
+
+    console.error(
+      "Subscription page:",
+      error
+    );
+
+    loading.innerHTML = `
+      <div class="message error"
+           style="display:block;">
+        ${error.message ||
+          "Unable to load this page."}
+      </div>
+    `;
+  }
+}
+
+
+startPage();
+
+</script>
 
 </body>
 </html>
