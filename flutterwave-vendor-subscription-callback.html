@@ -2,11 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0"
   >
-  <title>Vendor Subscription Payment</title>
+
+  <title>Vendor Payment | EarnGig</title>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -18,67 +20,171 @@
     body {
       margin: 0;
       min-height: 100vh;
-      background:
-        radial-gradient(circle at top, #26104f 0%, #100a24 42%, #070612 100%);
-      color: #ffffff;
-      font-family: Arial, sans-serif;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 20px;
+
+      background:
+        radial-gradient(
+          circle at top,
+          #26104f 0%,
+          #100a24 45%,
+          #070612 100%
+        );
+
+      color: #ffffff;
+      font-family: Arial, sans-serif;
     }
 
     .card {
       width: 100%;
-      max-width: 460px;
-      background: rgba(20, 14, 42, 0.96);
-      border: 1px solid rgba(139, 92, 246, 0.35);
-      border-radius: 22px;
-      padding: 30px 22px;
+      max-width: 480px;
+      padding: 30px 24px;
+      border-radius: 24px;
+
+      background: rgba(20,14,42,0.97);
+
+      border:
+        1px solid
+        rgba(139,92,246,0.30);
+
+      box-shadow:
+        0 25px 70px
+        rgba(0,0,0,0.40);
+
       text-align: center;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
     }
 
-    .logo {
-      width: 62px;
-      height: 62px;
-      border-radius: 18px;
-      margin: 0 auto 18px;
+    .icon {
+      width: 76px;
+      height: 76px;
+
+      margin: 0 auto 20px;
+
+      border-radius: 22px;
+
       display: flex;
       align-items: center;
       justify-content: center;
-      background: linear-gradient(135deg, #7c3aed, #4f46e5);
-      font-size: 28px;
-      font-weight: 800;
+
+      background:
+        linear-gradient(
+          135deg,
+          #7c3aed,
+          #4f46e5
+        );
+
+      font-size: 34px;
+      font-weight: 900;
     }
 
     h1 {
       margin: 0 0 10px;
-      font-size: 23px;
+      font-size: 25px;
     }
 
-    p {
-      color: #b9b2d6;
+    .description {
+      color: #aaa3c4;
+      font-size: 14px;
       line-height: 1.6;
-      margin: 8px 0;
     }
 
     .status {
       margin-top: 22px;
       padding: 16px;
+
+      border-radius: 15px;
+
+      background:
+        rgba(139,92,246,0.08);
+
+      border:
+        1px solid
+        rgba(139,92,246,0.20);
+
+      color: #c4b5fd;
+
+      font-size: 14px;
+      line-height: 1.6;
+
+      word-break: break-word;
+    }
+
+    .status.success {
+      background:
+        rgba(34,197,94,0.08);
+
+      border-color:
+        rgba(34,197,94,0.25);
+
+      color: #a7f3b7;
+    }
+
+    .status.error {
+      background:
+        rgba(239,68,68,0.08);
+
+      border-color:
+        rgba(239,68,68,0.25);
+
+      color: #fca5a5;
+    }
+
+    .button {
+      width: 100%;
+
+      margin-top: 18px;
+
+      padding: 15px;
+
+      border: 0;
       border-radius: 14px;
-      background: rgba(255, 255, 255, 0.05);
-      color: #ddd6fe;
+
+      background:
+        linear-gradient(
+          135deg,
+          #7c3aed,
+          #4f46e5
+        );
+
+      color: #ffffff;
+
+      font-size: 15px;
+      font-weight: 800;
+
+      cursor: pointer;
+    }
+
+    .button.secondary {
+      background:
+        rgba(255,255,255,0.06);
+
+      border:
+        1px solid
+        rgba(255,255,255,0.10);
     }
 
     .spinner {
-      width: 42px;
-      height: 42px;
-      margin: 0 auto 18px;
-      border: 4px solid rgba(255,255,255,0.15);
-      border-top-color: #8b5cf6;
+      display: inline-block;
+
+      width: 16px;
+      height: 16px;
+
+      margin-right: 8px;
+
+      border:
+        2px solid
+        rgba(255,255,255,0.25);
+
+      border-top-color: #ffffff;
+
       border-radius: 50%;
-      animation: spin 0.8s linear infinite;
+
+      vertical-align: -3px;
+
+      animation:
+        spin 0.7s linear infinite;
     }
 
     @keyframes spin {
@@ -87,192 +193,318 @@
       }
     }
 
-    .success {
-      color: #86efac;
-    }
+    .small {
+      margin-top: 18px;
 
-    .error {
-      color: #fca5a5;
-    }
+      color: #706985;
 
-    button {
-      width: 100%;
-      margin-top: 20px;
-      border: 0;
-      border-radius: 13px;
-      padding: 14px;
-      font-size: 15px;
-      font-weight: 700;
-      color: #fff;
-      background: linear-gradient(135deg, #7c3aed, #4f46e5);
-      cursor: pointer;
-    }
+      font-size: 11px;
 
-    button:hover {
-      opacity: 0.92;
+      line-height: 1.5;
     }
   </style>
 </head>
 
 <body>
 
-  <div class="card">
-    <div class="logo">E</div>
+<div class="card">
 
-    <h1 id="title">Verifying Payment</h1>
-
-    <div id="loading">
-      <div class="spinner"></div>
-      <p>Please wait while we verify your Flutterwave payment.</p>
-    </div>
-
-    <div id="result" class="status" style="display:none;"></div>
-
-    <button
-      id="continueBtn"
-      style="display:none;"
-      onclick="goToDashboard()"
-    >
-      Continue to Vendor Dashboard
-    </button>
+  <div
+    id="icon"
+    class="icon"
+  >
+    E
   </div>
 
-  <script>
-    const SUPABASE_URL =
-      "https://ytvtdelwefykeqwztcyo.supabase.co";
+  <h1 id="title">
+    Verifying Payment
+  </h1>
 
-    const SUPABASE_PUBLISHABLE_KEY =
-      "sb_publishable_CLTeqgEB6JS7QKqq6rQARw_RV31Ccg3";
+  <div
+    id="description"
+    class="description"
+  >
+    Please wait while EarnGig securely verifies your
+    Flutterwave payment.
+  </div>
 
-    const supabaseClient =
-      window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_PUBLISHABLE_KEY
+  <div
+    id="status"
+    class="status"
+  >
+    <span class="spinner"></span>
+    Verifying transaction...
+  </div>
+
+  <button
+    id="dashboardButton"
+    class="button"
+    style="display:none;"
+    type="button"
+    onclick="goToDashboard()"
+  >
+    Open Vendor Dashboard
+  </button>
+
+  <button
+    id="subscriptionButton"
+    class="button secondary"
+    style="display:none;"
+    type="button"
+    onclick="goToSubscription()"
+  >
+    Return to Subscription
+  </button>
+
+  <div class="small">
+    EarnGig Marketplace Vendor Subscription
+  </div>
+
+</div>
+
+
+<script>
+
+const SUPABASE_URL =
+  "https://ytvtdelwefykeqwztcyo.supabase.co";
+
+
+const SUPABASE_ANON_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl0dnRkZWx3ZWZ5a2Vxd3p0Y3lvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYzMDkwMjUsImV4cCI6MjEwMTg4NTAyNX0.qzT3lYrTFupgGAxQ0VZl26hqblLQDs0vc9ZNiwBU9tA";
+
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+  );
+
+
+function setStatus(
+  message,
+  type = ""
+) {
+
+  const status =
+    document.getElementById("status");
+
+  status.className =
+    "status " + type;
+
+  status.innerHTML =
+    message;
+
+}
+
+
+function goToDashboard() {
+
+  window.location.href =
+    "vendor-dashboard.html";
+
+}
+
+
+function goToSubscription() {
+
+  window.location.href =
+    "vendor-subscription.html";
+
+}
+
+
+async function verifyPayment() {
+
+  try {
+
+    const params =
+      new URLSearchParams(
+        window.location.search
       );
 
-    function showResult(message, success) {
-      const loading = document.getElementById("loading");
-      const result = document.getElementById("result");
-      const title = document.getElementById("title");
-      const button = document.getElementById("continueBtn");
 
-      loading.style.display = "none";
-      result.style.display = "block";
+    const status =
+      params.get("status");
 
-      result.className =
-        "status " + (success ? "success" : "error");
+    const transactionId =
+      params.get("transaction_id");
 
-      result.textContent = message;
+    const txRef =
+      params.get("tx_ref");
 
-      if (success) {
-        title.textContent = "Payment Successful";
-        button.style.display = "block";
-      } else {
-        title.textContent = "Payment Verification";
-      }
+
+    /*
+     * Flutterwave should return all three values.
+     */
+
+    if (!txRef) {
+
+      throw new Error(
+        "The Flutterwave transaction reference was not returned."
+      );
+
     }
 
-    function goToDashboard() {
-      window.location.href =
-        "vendor-dashboard.html";
+
+    if (
+      status &&
+      status.toLowerCase() !==
+      "successful"
+    ) {
+
+      setStatus(
+        "The Flutterwave payment was not completed. " +
+        "Your store has not been activated.",
+        "error"
+      );
+
+
+      document.getElementById(
+        "title"
+      ).textContent =
+        "Payment Not Completed";
+
+
+      document.getElementById(
+        "subscriptionButton"
+      ).style.display =
+        "block";
+
+
+      return;
+
     }
 
-    async function verifyVendorPayment() {
-      try {
-        const { data: sessionData, error: sessionError } =
-          await supabaseClient.auth.getSession();
 
-        if (sessionError || !sessionData?.session) {
-          showResult(
-            "Your session has expired. Please sign in again.",
-            false
-          );
-          return;
-        }
+    if (!transactionId) {
 
-        const params =
-          new URLSearchParams(window.location.search);
+      throw new Error(
+        "Flutterwave did not return a transaction ID."
+      );
 
-        const status =
-          params.get("status");
-
-        const transactionId =
-          params.get("transaction_id");
-
-        const txRef =
-          params.get("tx_ref");
-
-        /*
-         * Flutterwave can return a cancelled/failed status.
-         * Do not attempt to activate anything in that case.
-         */
-        if (
-          status &&
-          status.toLowerCase() !== "successful"
-        ) {
-          showResult(
-            "The Flutterwave payment was not completed. No vendor subscription was activated.",
-            false
-          );
-          return;
-        }
-
-        if (!transactionId && !txRef) {
-          showResult(
-            "No Flutterwave transaction reference was returned.",
-            false
-          );
-          return;
-        }
-
-        const { data, error } =
-          await supabaseClient.functions.invoke(
-            "flutterwave-vendor-subscription",
-            {
-              body: {
-                action: "verify",
-                transaction_id: transactionId,
-                tx_ref: txRef
-              }
-            }
-          );
-
-        if (error) {
-          throw new Error(
-            error.message ||
-            "Payment verification failed."
-          );
-        }
-
-        if (!data?.success || !data?.paid) {
-          throw new Error(
-            data?.message ||
-            data?.error ||
-            "Payment could not be verified."
-          );
-        }
-
-        showResult(
-          "Your ₦2,500 vendor subscription has been verified. Your marketplace store is now active.",
-          true
-        );
-
-      } catch (error) {
-        console.error(
-          "Vendor subscription verification error:",
-          error
-        );
-
-        showResult(
-          error?.message ||
-          "We could not verify your payment. Please contact EarnGig support before making another payment.",
-          false
-        );
-      }
     }
 
-    verifyVendorPayment();
-  </script>
+
+    setStatus(
+      '<span class="spinner"></span>' +
+      "Securely verifying your transaction..."
+    );
+
+
+    /*
+     * Call the Supabase Edge Function.
+     *
+     * Verification happens server-side so the
+     * Flutterwave secret key never reaches this page.
+     */
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient.functions.invoke(
+        "flutterwave-vendor-subscription",
+        {
+          body: {
+            action: "verify",
+            transaction_id:
+              transactionId,
+            tx_ref:
+              txRef
+          }
+        }
+      );
+
+
+    if (error) {
+
+      throw new Error(
+        error.message ||
+        "The payment verification request failed."
+      );
+
+    }
+
+
+    if (
+      !data ||
+      !data.success
+    ) {
+
+      throw new Error(
+        data?.error ||
+        data?.message ||
+        "Flutterwave payment could not be verified."
+      );
+
+    }
+
+
+    document.getElementById(
+      "title"
+    ).textContent =
+      "Payment Successful";
+
+
+    document.getElementById(
+      "description"
+    ).textContent =
+      "Your ₦2,500 vendor subscription has been verified and your marketplace store is now active.";
+
+
+    setStatus(
+      "✓ Payment verified successfully.<br><br>" +
+      "Your store has been activated.",
+      "success"
+    );
+
+
+    document.getElementById(
+      "dashboardButton"
+    ).style.display =
+      "block";
+
+
+    document.getElementById(
+      "subscriptionButton"
+    ).style.display =
+      "none";
+
+
+  } catch (error) {
+
+    console.error(
+      "Vendor payment verification error:",
+      error
+    );
+
+
+    document.getElementById(
+      "title"
+    ).textContent =
+      "Payment Verification Problem";
+
+
+    setStatus(
+      error?.message ||
+      "We could not verify your payment.",
+      "error"
+    );
+
+
+    document.getElementById(
+      "subscriptionButton"
+    ).style.display =
+      "block";
+
+  }
+
+}
+
+
+verifyPayment();
+
+</script>
 
 </body>
 </html>
