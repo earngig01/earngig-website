@@ -11,13 +11,15 @@
 
   <title>Dashboard | EarnGig</title>
 
-  <link rel="stylesheet" href="styles.css">
-
+  <link
+    rel="stylesheet"
+    href="styles.css"
+  >
 
   <style>
 
 /* =====================================================
-   DAILY EARNING LIMIT CARD
+   DAILY EARNING LIMIT
 ===================================================== */
 
 .daily-limit-card {
@@ -26,20 +28,11 @@
 
   padding: 22px;
 
-  border: 1px solid rgba(96, 165, 250, 0.25);
-
   border-radius: 18px;
 
-  background:
-    linear-gradient(
-      135deg,
-      #111c4e 0%,
-      #172866 55%,
-      #1e3a8a 100%
-    );
+  border: 1px solid rgba(96, 165, 250, 0.20);
 
-  box-shadow:
-    0 10px 30px rgba(15, 23, 42, 0.18);
+  background: #17245f;
 
 }
 
@@ -48,7 +41,7 @@
 
   display: flex;
 
-  align-items: flex-start;
+  align-items: center;
 
   justify-content: space-between;
 
@@ -63,16 +56,18 @@
 
   align-items: center;
 
-  gap: 12px;
+  gap: 14px;
 
 }
 
 
 .daily-limit-icon {
 
-  width: 42px;
+  width: 44px;
 
-  height: 42px;
+  height: 44px;
+
+  flex-shrink: 0;
 
   display: flex;
 
@@ -82,11 +77,9 @@
 
   border-radius: 12px;
 
-  background: rgba(96, 165, 250, 0.18);
+  background: #263a82;
 
-  border: 1px solid rgba(147, 197, 253, 0.18);
-
-  font-size: 20px;
+  font-size: 21px;
 
 }
 
@@ -97,7 +90,7 @@
 
   color: #ffffff;
 
-  font-size: 18px;
+  font-size: 19px;
 
   font-weight: 800;
 
@@ -106,20 +99,14 @@
 
 .daily-limit-title p {
 
-  margin: 4px 0 0;
+  margin: 5px 0 0;
 
-  color: #bfdbfe;
+  color: #c7d2fe;
 
   font-size: 13px;
 
-  font-weight: 600;
-
 }
 
-
-/* =====================================================
-   RIGHT SIDE AMOUNT
-===================================================== */
 
 .daily-limit-amount {
 
@@ -147,32 +134,26 @@
 
   margin-top: 4px;
 
-  color: #bfdbfe;
+  color: #c7d2fe;
 
   font-size: 12px;
 
-  font-weight: 600;
-
 }
 
-
-/* =====================================================
-   PROGRESS BAR
-===================================================== */
 
 .daily-limit-progress {
 
   width: 100%;
 
-  height: 10px;
+  height: 9px;
 
-  margin-top: 18px;
+  margin-top: 20px;
 
   overflow: hidden;
 
   border-radius: 999px;
 
-  background: rgba(255, 255, 255, 0.14);
+  background: #2b3974;
 
 }
 
@@ -185,38 +166,16 @@
 
   border-radius: inherit;
 
-  transition: width 0.35s ease;
+  background: #60a5fa;
 
-  background:
-    linear-gradient(
-      90deg,
-      #60a5fa,
-      #93c5fd
-    );
-
-  box-shadow:
-    0 0 10px rgba(96, 165, 250, 0.35);
+  transition: width 0.3s ease;
 
 }
 
 
-/* =====================================================
-   BOTTOM TEXT
-===================================================== */
-
 .daily-limit-footer {
 
-  display: flex;
-
-  align-items: center;
-
-  justify-content: space-between;
-
-  gap: 15px;
-
-  margin-top: 12px;
-
-  font-size: 13px;
+  margin-top: 13px;
 
 }
 
@@ -225,6 +184,8 @@
 
   color: #ffffff;
 
+  font-size: 14px;
+
   font-weight: 800;
 
 }
@@ -232,58 +193,70 @@
 
 .daily-limit-note {
 
-  color: #bfdbfe;
+  margin-top: 7px;
 
-  font-weight: 600;
+  color: #c7d2fe;
 
-  text-align: right;
+  font-size: 13px;
 
 }
 
 
-/* =====================================================
-   LIMIT REACHED STATE
-===================================================== */
+.daily-limit-error {
+
+  border-color: rgba(251, 191, 36, 0.25);
+
+  background: #17245f;
+
+}
+
+
+.daily-limit-error .daily-limit-icon {
+
+  background: #3b3266;
+
+}
+
+
+.daily-limit-error .daily-limit-title p,
+
+.daily-limit-error .daily-limit-amount span,
+
+.daily-limit-error .daily-limit-note {
+
+  color: #c7d2fe;
+
+}
+
+
+.daily-limit-error .daily-limit-remaining {
+
+  color: #fcd34d;
+
+}
+
 
 .daily-limit-reached {
 
-  border-color: rgba(248, 113, 113, 0.35);
+  border-color: rgba(248, 113, 113, 0.30);
 
-  background:
-    linear-gradient(
-      135deg,
-      #3b1118 0%,
-      #5f1725 55%,
-      #7f1d1d 100%
-    );
+  background: #4a1822;
 
 }
 
 
 .daily-limit-reached .daily-limit-icon {
 
-  background: rgba(248, 113, 113, 0.16);
-
-  border-color: rgba(248, 113, 113, 0.25);
+  background: #642333;
 
 }
 
 
-.daily-limit-reached .daily-limit-title p {
+.daily-limit-reached .daily-limit-title p,
 
-  color: #fecaca;
+.daily-limit-reached .daily-limit-amount span,
 
-}
-
-
-.daily-limit-reached .daily-limit-amount strong {
-
-  color: #ffffff;
-
-}
-
-
-.daily-limit-reached .daily-limit-amount span {
+.daily-limit-reached .daily-limit-note {
 
   color: #fecaca;
 
@@ -292,7 +265,7 @@
 
 .daily-limit-reached .daily-limit-progress {
 
-  background: rgba(255, 255, 255, 0.12);
+  background: #652b38;
 
 }
 
@@ -300,9 +273,6 @@
 .daily-limit-reached .daily-limit-progress-bar {
 
   background: #f87171;
-
-  box-shadow:
-    0 0 10px rgba(248, 113, 113, 0.35);
 
 }
 
@@ -314,61 +284,18 @@
 }
 
 
-.daily-limit-reached .daily-limit-note {
-
-  color: #fecaca;
-
-}
-
-
-/* =====================================================
-   MOBILE
-===================================================== */
-
 @media (max-width: 600px) {
-
-  .daily-limit-card {
-
-    padding: 20px;
-
-  }
-
 
   .daily-limit-header {
 
     flex-direction: column;
 
-    gap: 16px;
+    align-items: flex-start;
 
   }
 
 
   .daily-limit-amount {
-
-    text-align: left;
-
-  }
-
-
-  .daily-limit-amount strong {
-
-    font-size: 21px;
-
-  }
-
-
-  .daily-limit-footer {
-
-    flex-direction: column;
-
-    align-items: flex-start;
-
-    gap: 8px;
-
-  }
-
-
-  .daily-limit-note {
 
     text-align: left;
 
@@ -388,9 +315,14 @@
 
   <div class="container nav">
 
-    <a class="logo" href="index.html">
+    <a
+      class="logo"
+      href="index.html"
+    >
 
-      <span class="logo-mark">E</span>
+      <span class="logo-mark">
+        E
+      </span>
 
       Earn<span>Gig</span>
 
@@ -399,13 +331,21 @@
 
     <nav>
 
-      <a href="#earn">Earn</a>
+      <a href="#earn">
+        Earn
+      </a>
 
-      <a href="#read">Read & Earn</a>
+      <a href="#read">
+        Read & Earn
+      </a>
 
-      <a href="#create">Create & Earn</a>
+      <a href="#create">
+        Create & Earn
+      </a>
 
-      <a href="#referrals">Referrals</a>
+      <a href="#referrals">
+        Referrals
+      </a>
 
     </nav>
 
@@ -437,7 +377,9 @@
   <div class="container">
 
 
-    <!-- WELCOME -->
+    <!-- =================================================
+         WELCOME
+    ================================================== -->
 
     <div class="dashboard-heading">
 
@@ -449,7 +391,9 @@
 
         <h1>
           Welcome back,
-          <span id="user-name">Member</span>!
+          <span id="user-name">
+            Member
+          </span>!
         </h1>
 
         <p>
@@ -471,7 +415,9 @@
 
 
 
-    <!-- WALLET -->
+    <!-- =================================================
+         WALLET
+    ================================================== -->
 
     <section class="member-wallet">
 
@@ -515,7 +461,9 @@
 
 
 
-    <!-- STATS -->
+    <!-- =================================================
+         STATS
+    ================================================== -->
 
     <div class="dashboard-stats">
 
@@ -533,7 +481,6 @@
       </div>
 
 
-
       <div class="dashboard-stat">
 
         <small>
@@ -547,7 +494,6 @@
       </div>
 
 
-
       <div class="dashboard-stat">
 
         <small>
@@ -559,7 +505,6 @@
         </strong>
 
       </div>
-
 
 
       <div class="dashboard-stat">
@@ -579,7 +524,9 @@
 
 
 
-    <!-- DAILY EARNING LIMIT -->
+    <!-- =================================================
+         DAILY EARNING LIMIT
+    ================================================== -->
 
     <section
       id="daily-earning-limit"
@@ -587,7 +534,6 @@
     >
 
       <div class="daily-limit-header">
-
 
         <div class="daily-limit-title">
 
@@ -614,15 +560,14 @@
         <div class="daily-limit-amount">
 
           <strong id="daily-limit-amount">
-            ₦0 / ₦0
+            Loading...
           </strong>
 
-          <span>
+          <span id="daily-limit-label">
             Normal activities today
           </span>
 
         </div>
-
 
       </div>
 
@@ -662,7 +607,9 @@
 
 
 
-    <!-- EARNING OPTIONS -->
+    <!-- =================================================
+         EARN
+    ================================================== -->
 
     <section
       id="earn"
@@ -684,7 +631,6 @@
         </div>
 
       </div>
-
 
 
       <div class="member-earning-grid">
@@ -715,7 +661,6 @@
         </a>
 
 
-
         <a
           href="membership.html"
           class="member-earning-card"
@@ -730,8 +675,8 @@
           </h3>
 
           <p>
-            Manage your Premium membership and view
-            available Premium activities.
+            Manage your membership and view available
+            Premium activities.
           </p>
 
           <strong>
@@ -739,7 +684,6 @@
           </strong>
 
         </a>
-
 
 
         <a
@@ -766,14 +710,15 @@
 
         </a>
 
-
       </div>
 
     </section>
 
 
 
-    <!-- MORE OPTIONS -->
+    <!-- =================================================
+         MORE OPTIONS
+    ================================================== -->
 
     <section
       id="more-options"
@@ -797,7 +742,6 @@
       </div>
 
 
-
       <div class="member-earning-grid">
 
 
@@ -815,9 +759,8 @@
           </h3>
 
           <p>
-            Discover sports competitions, contests,
-            awards and other opportunities to participate
-            and showcase your talent.
+            Discover competitions, contests, awards and
+            other opportunities to participate.
           </p>
 
           <strong>
@@ -825,7 +768,6 @@
           </strong>
 
         </a>
-
 
 
         <a
@@ -843,8 +785,7 @@
 
           <p>
             Having a problem with EarnGig?
-            Contact our support team directly by email
-            and tell us what happened.
+            Contact our support team directly by email.
           </p>
 
           <strong>
@@ -852,7 +793,6 @@
           </strong>
 
         </a>
-
 
 
         <a
@@ -879,14 +819,15 @@
 
         </a>
 
-
       </div>
 
     </section>
 
 
 
-    <!-- READ & EARN -->
+    <!-- =================================================
+         READ & EARN
+    ================================================== -->
 
     <section
       id="read"
@@ -916,7 +857,6 @@
         </a>
 
       </div>
-
 
 
       <div class="novel-preview">
@@ -953,7 +893,9 @@
 
 
 
-    <!-- CREATE & EARN -->
+    <!-- =================================================
+         CREATE & EARN
+    ================================================== -->
 
     <section
       id="create"
@@ -983,7 +925,6 @@
         </a>
 
       </div>
-
 
 
       <div class="novel-preview">
@@ -1021,7 +962,9 @@
 
 
 
-    <!-- REFERRALS -->
+    <!-- =================================================
+         REFERRALS
+    ================================================== -->
 
     <section
       id="referrals"
@@ -1045,7 +988,6 @@
       </div>
 
 
-
       <div class="referral-box">
 
         <div>
@@ -1067,7 +1009,6 @@
       </div>
 
 
-
       <button
         id="copy-referral-button"
         class="btn primary"
@@ -1077,8 +1018,8 @@
       </button>
 
 
-
       <div class="earning-box">
+
 
         <div>
 
@@ -1091,7 +1032,6 @@
           </strong>
 
         </div>
-
 
 
         <div>
@@ -1107,7 +1047,6 @@
         </div>
 
 
-
         <div>
 
           <small>
@@ -1121,7 +1060,6 @@
         </div>
 
       </div>
-
 
 
       <div class="referral-history">
@@ -1143,7 +1081,6 @@
         </div>
 
 
-
         <div id="referral-history-list">
 
           <div class="empty-state">
@@ -1162,12 +1099,13 @@
 
       </div>
 
-
     </section>
 
 
 
-    <!-- TRANSACTIONS -->
+    <!-- =================================================
+         TRANSACTIONS
+    ================================================== -->
 
     <section
       id="transactions"
@@ -1189,7 +1127,6 @@
         </div>
 
       </div>
-
 
 
       <div
@@ -1214,7 +1151,6 @@
         </div>
 
       </div>
-
 
     </section>
 
@@ -1246,7 +1182,7 @@
 <script>
 
 /* =====================================================
-   WITHDRAWAL MINIMUMS
+   CONSTANTS
 ===================================================== */
 
 const WITHDRAWAL_MINIMUMS = {
@@ -1261,11 +1197,6 @@ const WITHDRAWAL_MINIMUMS = {
 
 };
 
-
-
-/* =====================================================
-   EXPLICIT EARNING TYPES
-===================================================== */
 
 const EARNING_TYPES = new Set([
 
@@ -1289,11 +1220,6 @@ const EARNING_TYPES = new Set([
 
 ]);
 
-
-
-/* =====================================================
-   NON-EARNING TYPES
-===================================================== */
 
 const NON_EARNING_TYPES = new Set([
 
@@ -1344,9 +1270,11 @@ function formatNaira(
   decimals = 0
 ) {
 
-  return `₦${Number(
-    amount || 0
-  ).toLocaleString(
+  const value =
+    Number(amount || 0);
+
+
+  return `₦${value.toLocaleString(
     "en-NG",
     {
       minimumFractionDigits: decimals,
@@ -1359,7 +1287,7 @@ function formatNaira(
 
 
 /* =====================================================
-   GET TRANSACTION TYPE
+   TRANSACTION TYPE
 ===================================================== */
 
 function getTransactionType(
@@ -1377,7 +1305,7 @@ function getTransactionType(
 
 
 /* =====================================================
-   CHECK REAL EARNING
+   REAL EARNING
 ===================================================== */
 
 function isRealEarning(
@@ -1411,7 +1339,7 @@ function isRealEarning(
 
 
 /* =====================================================
-   CHECK WITHDRAWAL
+   WITHDRAWAL
 ===================================================== */
 
 function isWithdrawal(
@@ -1436,7 +1364,7 @@ function isWithdrawal(
 
 
 /* =====================================================
-   CHECK PAYMENT / DEBIT
+   PAYMENT / DEBIT
 ===================================================== */
 
 function isPaymentOrDebit(
@@ -1516,9 +1444,7 @@ async function checkMembershipAccess() {
       .select(`
         status,
         plan_code,
-        current_period_start,
-        current_period_end,
-        next_payment_at
+        current_period_end
       `)
       .eq(
         "user_id",
@@ -1541,15 +1467,6 @@ async function checkMembershipAccess() {
     );
 
 
-    await supabaseClient
-      .auth
-      .signOut();
-
-
-    window.location.href =
-      "login.html";
-
-
     return false;
 
   }
@@ -1558,14 +1475,8 @@ async function checkMembershipAccess() {
 
   if (!membership) {
 
-    alert(
-      "Membership payment required before you can access your dashboard."
-    );
-
-
     window.location.href =
       "membership.html";
-
 
     return false;
 
@@ -1582,7 +1493,7 @@ async function checkMembershipAccess() {
 
 
 
-  const membershipIsActive =
+  const active =
 
     membership.status === "active" &&
 
@@ -1593,7 +1504,7 @@ async function checkMembershipAccess() {
 
 
 
-  if (membershipIsActive) {
+  if (active) {
 
     return true;
 
@@ -1616,10 +1527,8 @@ async function checkMembershipAccess() {
 
 
 
-
-
 /* =====================================================
-   LOAD DAILY EARNING LIMIT
+   DAILY EARNING LIMIT
 ===================================================== */
 
 async function loadDailyEarningLimit() {
@@ -1642,6 +1551,12 @@ async function loadDailyEarningLimit() {
     );
 
 
+  const labelElement =
+    document.getElementById(
+      "daily-limit-label"
+    );
+
+
   const progressBar =
     document.getElementById(
       "daily-limit-progress-bar"
@@ -1660,170 +1575,294 @@ async function loadDailyEarningLimit() {
     );
 
 
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
-      .rpc(
-        "get_daily_task_earning_status"
+  /*
+   * Always start from a completely neutral state.
+   * This prevents old/stale values from remaining
+   * on screen when the RPC fails.
+   */
+
+  card.classList.remove(
+    "daily-limit-error",
+    "daily-limit-reached"
+  );
+
+
+  planElement.textContent =
+    "Loading your membership limit...";
+
+
+  amountElement.textContent =
+    "Loading...";
+
+
+  labelElement.textContent =
+    "Normal activities today";
+
+
+  progressBar.style.width =
+    "0%";
+
+
+  remainingElement.textContent =
+    "Loading...";
+
+
+  noteElement.textContent =
+    "Referral bonuses and Create & Earn are not included.";
+
+
+
+  try {
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .rpc(
+          "get_daily_task_earning_status"
+        );
+
+
+
+    if (error) {
+
+      throw error;
+
+    }
+
+
+
+    /*
+     * Supabase can return either an object
+     * or an array depending on the function's
+     * return definition.
+     */
+
+    let result =
+      data;
+
+
+    if (
+      Array.isArray(data)
+    ) {
+
+      result =
+        data[0] || null;
+
+    }
+
+
+
+    /*
+     * Validate the complete response before
+     * displaying ANY earning numbers.
+     */
+
+    const dailyLimit =
+      Number(
+        result?.daily_limit
+      );
+
+
+    const earnedToday =
+      Number(
+        result?.earned_today
+      );
+
+
+    const remainingToday =
+      Number(
+        result?.remaining_today
+      );
+
+
+    const planCode =
+      String(
+        result?.plan_code || ""
+      )
+        .trim()
+        .toLowerCase();
+
+
+
+    const responseIsValid =
+
+      result &&
+
+      (
+        result.success === true ||
+
+        (
+          planCode &&
+          Number.isFinite(dailyLimit) &&
+          dailyLimit > 0 &&
+          Number.isFinite(earnedToday) &&
+          earnedToday >= 0 &&
+          Number.isFinite(remainingToday) &&
+          remainingToday >= 0
+        )
       );
 
 
 
-  if (error) {
+    if (!responseIsValid) {
+
+      throw new Error(
+        result?.message ||
+        "Your membership earning limit is unavailable."
+      );
+
+    }
+
+
+
+    const safeEarned =
+      Math.max(
+        0,
+        earnedToday
+      );
+
+
+    const safeRemaining =
+      Math.max(
+        0,
+        remainingToday
+      );
+
+
+    const safeLimit =
+      Math.max(
+        0,
+        dailyLimit
+      );
+
+
+
+    const planName =
+      planCode
+        ? (
+            planCode.charAt(0).toUpperCase() +
+            planCode.slice(1)
+          )
+        : "Current";
+
+
+
+    const percentage =
+
+      safeLimit > 0
+
+        ? Math.min(
+            100,
+            (
+              safeEarned /
+              safeLimit
+            ) * 100
+          )
+
+        : 0;
+
+
+
+    /*
+     * ONLY NOW do we update the card.
+     */
+
+    planElement.textContent =
+      `${planName} plan • Normal earning activities`;
+
+
+    amountElement.textContent =
+      `${formatNaira(safeEarned)} / ${formatNaira(safeLimit)}`;
+
+
+    labelElement.textContent =
+      "Normal activities today";
+
+
+    progressBar.style.width =
+      `${percentage}%`;
+
+
+
+    if (
+      safeRemaining <= 0
+    ) {
+
+      card.classList.add(
+        "daily-limit-reached"
+      );
+
+
+      remainingElement.textContent =
+        "🔒 Daily earning limit reached for today.";
+
+
+      noteElement.textContent =
+        "Normal earning activities reset tomorrow. Referral bonuses and Create & Earn are not included.";
+
+    }
+
+    else {
+
+      remainingElement.textContent =
+        `${formatNaira(safeRemaining)} remaining today`;
+
+
+      noteElement.textContent =
+        "Referral bonuses and Create & Earn are not included.";
+
+    }
+
+  }
+
+  catch (error) {
 
     console.error(
-      "Unable to load daily earning limit:",
+      "Daily earning limit error:",
       error
     );
 
 
+    /*
+     * IMPORTANT:
+     * On error, ALL earning figures are cleared.
+     * Nothing from a previous successful load
+     * is allowed to remain.
+     */
+
+    card.classList.add(
+      "daily-limit-error"
+    );
+
+
     planElement.textContent =
-      "Unable to load your daily earning limit.";
+      "Unable to load your membership limit.";
 
 
     amountElement.textContent =
       "Unavailable";
+
+
+    labelElement.textContent =
+      "Normal activities today";
+
+
+    progressBar.style.width =
+      "0%";
 
 
     remainingElement.textContent =
       "Please refresh the page.";
 
 
-    progressBar.style.width =
-      "0%";
-
-
-    return;
-
-  }
-
-
-
-  if (
-    !data ||
-    data.success !== true
-  ) {
-
-    planElement.textContent =
-      "Your membership earning limit is unavailable.";
-
-
-    amountElement.textContent =
-      "Unavailable";
-
-
-    remainingElement.textContent =
-      data?.message ||
-      "Please check your membership.";
-
-
-    progressBar.style.width =
-      "0%";
-
-
-    return;
-
-  }
-
-
-
-  const planCode =
-    String(
-      data.plan_code || ""
-    );
-
-
-  const dailyLimit =
-    Number(
-      data.daily_limit || 0
-    );
-
-
-  const earnedToday =
-    Number(
-      data.earned_today || 0
-    );
-
-
-  const remainingToday =
-    Number(
-      data.remaining_today || 0
-    );
-
-
-  const planName =
-    planCode
-      ? planCode.charAt(0).toUpperCase() +
-        planCode.slice(1)
-      : "Current";
-
-
-  const percentage =
-    dailyLimit > 0
-      ? Math.min(
-          100,
-          Math.max(
-            0,
-            (
-              earnedToday /
-              dailyLimit
-            ) * 100
-          )
-        )
-      : 0;
-
-
-
-  planElement.textContent =
-    `${planName} plan • Normal earning activities`;
-
-
-  amountElement.textContent =
-    `${formatNaira(earnedToday)} / ${formatNaira(dailyLimit)}`;
-
-
-  progressBar.style.width =
-    `${percentage}%`;
-
-
-
-  if (
-    remainingToday <= 0
-  ) {
-
-    card.classList.add(
-      "daily-limit-reached"
-    );
-
-
-    remainingElement.textContent =
-      "🔒 Daily earning limit reached for today.";
-
-
     noteElement.textContent =
-      "Normal earning activities reset tomorrow. Referral bonuses and Create & Earn are not included.";
-
-  } else {
-
-    card.classList.remove(
-      "daily-limit-reached"
-    );
-
-
-    remainingElement.textContent =
-      `${formatNaira(remainingToday)} remaining today`;
-
-
-    noteElement.textContent =
-      "Referral bonuses and Create & Earn are not included.";
+      "Your earning limit could not be verified. No limit information is being displayed.";
 
   }
 
 }
-
-
 
 
 
@@ -1862,8 +1901,7 @@ async function loadDashboard() {
     /* PROFILE */
 
     const {
-      data: profile,
-      error: profileError
+      data: profile
     } =
       await supabaseClient
         .from("profiles")
@@ -1879,17 +1917,6 @@ async function loadDashboard() {
 
 
 
-    if (profileError) {
-
-      console.error(
-        "Unable to load profile:",
-        profileError
-      );
-
-    }
-
-
-
     document.getElementById(
       "user-name"
     ).textContent =
@@ -1901,32 +1928,18 @@ async function loadDashboard() {
     /* MEMBERSHIP */
 
     const {
-      data: membership,
-      error: membershipError
+      data: membership
     } =
       await supabaseClient
         .from("memberships")
         .select(`
-          plan_code,
-          status,
-          current_period_end
+          plan_code
         `)
         .eq(
           "user_id",
           user.id
         )
         .maybeSingle();
-
-
-
-    if (membershipError) {
-
-      console.error(
-        "Unable to load dashboard membership:",
-        membershipError
-      );
-
-    }
 
 
 
@@ -1946,26 +1959,15 @@ async function loadDashboard() {
 
 
 
-    const withdrawalText =
-      document.getElementById(
-        "withdrawal-minimum-text"
-      );
+    document.getElementById(
+      "withdrawal-minimum-text"
+    ).textContent =
 
-
-
-    if (
       withdrawalMinimum
-    ) {
 
-      withdrawalText.textContent =
-        `Minimum withdrawal: ${formatNaira(withdrawalMinimum)}`;
+        ? `Minimum withdrawal: ${formatNaira(withdrawalMinimum)}`
 
-    } else {
-
-      withdrawalText.textContent =
-        "Minimum withdrawal: Check your membership plan.";
-
-    }
+        : "Minimum withdrawal: Check your membership plan.";
 
 
 
@@ -1990,72 +1992,68 @@ async function loadDashboard() {
 
 
 
-    if (walletError) {
+    if (
+      walletError
+    ) {
 
       console.error(
-        "Unable to load wallet:",
+        "Wallet error:",
         walletError
       );
 
-
-      document.getElementById(
-        "wallet-balance"
-      ).textContent =
-        "₦0.00";
-
-    } else {
-
-      const balance =
-        Number(
-          wallet?.balance || 0
-        );
-
-
-      document.getElementById(
-        "wallet-balance"
-      ).textContent =
-        formatNaira(
-          balance,
-          2
-        );
-
-
-      const referralEarned =
-        Number(
-          wallet?.referral_earned || 0
-        );
-
-
-      document.getElementById(
-        "referral-earnings"
-      ).textContent =
-        formatNaira(
-          referralEarned
-        );
-
-
-      document.getElementById(
-        "dashboard-referral-earnings"
-      ).textContent =
-        formatNaira(
-          referralEarned
-        );
-
-
-      const totalEarned =
-        Number(
-          wallet?.total_earned || 0
-        );
-
-
-      document.getElementById(
-        "total-earned"
-      ).textContent =
-        formatNaira(
-          totalEarned
-        );
-
     }
+
+
+    const balance =
+      Number(
+        wallet?.balance || 0
+      );
+
+
+    const totalEarned =
+      Number(
+        wallet?.total_earned || 0
+      );
+
+
+    const referralEarned =
+      Number(
+        wallet?.referral_earned || 0
+      );
+
+
+
+    document.getElementById(
+      "wallet-balance"
+    ).textContent =
+      formatNaira(
+        balance,
+        2
+      );
+
+
+    document.getElementById(
+      "total-earned"
+    ).textContent =
+      formatNaira(
+        totalEarned
+      );
+
+
+    document.getElementById(
+      "referral-earnings"
+    ).textContent =
+      formatNaira(
+        referralEarned
+      );
+
+
+    document.getElementById(
+      "dashboard-referral-earnings"
+    ).textContent =
+      formatNaira(
+        referralEarned
+      );
 
 
 
@@ -2067,23 +2065,18 @@ async function loadDashboard() {
 
     /* REFERRAL CODE */
 
-    const referralCodeElement =
-      document.getElementById(
-        "dashboard-referral-code"
-      );
-
-
-    referralCodeElement.textContent =
+    document.getElementById(
+      "dashboard-referral-code"
+    ).textContent =
       profile?.referral_code ||
       "Not available";
 
 
 
-    /* REFERRAL COUNT */
+    /* REFERRALS */
 
     const {
-      data: referredMembers,
-      error: referredMembersError
+      data: referredMembers
     } =
       await supabaseClient
         .from("profiles")
@@ -2094,34 +2087,19 @@ async function loadDashboard() {
         );
 
 
-
-    if (
-      referredMembersError
-    ) {
-
-      console.error(
-        "Unable to load referral counters:",
-        referredMembersError
-      );
-
-    } else {
-
-      document.getElementById(
-        "successful-referrals"
-      ).textContent =
-        (
-          referredMembers || []
-        ).length;
-
-    }
+    document.getElementById(
+      "successful-referrals"
+    ).textContent =
+      (
+        referredMembers || []
+      ).length;
 
 
 
     /* ACTIVE REFERRALS */
 
     const {
-      data: activeReferralCount,
-      error: activeReferralError
+      data: activeReferralCount
     } =
       await supabaseClient
         .rpc(
@@ -2129,48 +2107,24 @@ async function loadDashboard() {
         );
 
 
-
-    if (
-      activeReferralError
-    ) {
-
-      console.error(
-        "Unable to load active referral count:",
-        activeReferralError
+    document.getElementById(
+      "active-referrals"
+    ).textContent =
+      Number(
+        activeReferralCount || 0
       );
 
 
-      document.getElementById(
-        "active-referrals"
-      ).textContent =
-        "0";
 
-    } else {
-
-      document.getElementById(
-        "active-referrals"
-      ).textContent =
-        Number(
-          activeReferralCount || 0
-        );
-
-    }
-
-
-
-    /* TASK ATTEMPTS */
+    /* TASKS */
 
     const {
-      data: attempts,
-      error: attemptsError
+      data: attempts
     } =
       await supabaseClient
         .from("task_attempts")
         .select(`
-          status,
-          reward_amount,
-          reward_status,
-          created_at
+          status
         `)
         .eq(
           "user_id",
@@ -2178,56 +2132,40 @@ async function loadDashboard() {
         );
 
 
+    const completedCount =
+      (
+        attempts || []
+      ).filter(
+        function(attempt) {
 
-    if (
-      attemptsError
-    ) {
+          return (
+            attempt.status === "completed" ||
+            attempt.status === "approved"
+          );
 
-      console.error(
-        "Unable to load task attempts:",
-        attemptsError
-      );
-
-    } else {
-
-      const completedCount =
-        (
-          attempts || []
-        ).filter(
-          function(attempt) {
-
-            return (
-              attempt.status === "completed" ||
-              attempt.status === "approved"
-            );
-
-          }
-        ).length;
+        }
+      ).length;
 
 
-      document.getElementById(
-        "completed-activities"
-      ).textContent =
-        completedCount;
-
-    }
+    document.getElementById(
+      "completed-activities"
+    ).textContent =
+      completedCount;
 
 
 
-    /* TRANSACTIONS */
+    /* COMPLETED TRANSACTIONS */
 
     const {
-      data: completedTransactions,
+      data: transactions,
       error: transactionsError
     } =
       await supabaseClient
         .from("transactions")
         .select(`
-          id,
           amount,
           type,
           status,
-          description,
           created_at
         `)
         .eq(
@@ -2246,7 +2184,7 @@ async function loadDashboard() {
     ) {
 
       console.error(
-        "Unable to load earnings:",
+        "Transaction error:",
         transactionsError
       );
 
@@ -2256,33 +2194,15 @@ async function loadDashboard() {
       ).textContent =
         "₦0";
 
-
       return;
 
     }
 
 
 
-    const transactions =
-      completedTransactions || [];
-
-
-    const realEarningTransactions =
-      transactions.filter(
-        function(transaction) {
-
-          return isRealEarning(
-            transaction
-          );
-
-        }
-      );
-
-
-
-    /* =================================================
-       TODAY IN NIGERIA
-    ================================================= */
+    /*
+     * Nigeria-local date.
+     */
 
     const lagosFormatter =
       new Intl.DateTimeFormat(
@@ -2296,7 +2216,7 @@ async function loadDashboard() {
       );
 
 
-    const lagosToday =
+    const today =
       lagosFormatter.format(
         new Date()
       );
@@ -2304,47 +2224,55 @@ async function loadDashboard() {
 
 
     const todayEarnings =
-      realEarningTransactions
-        .filter(
-          function(transaction) {
+      (
+        transactions || []
+      )
+      .filter(
+        function(transaction) {
 
-            if (
-              !transaction.created_at
-            ) {
+          if (
+            !isRealEarning(
+              transaction
+            )
+          ) {
 
-              return false;
-
-            }
-
-
-            const transactionDate =
-              lagosFormatter.format(
-                new Date(
-                  transaction.created_at
-                )
-              );
-
-
-            return (
-              transactionDate ===
-              lagosToday
-            );
+            return false;
 
           }
-        )
-        .reduce(
-          function(total, transaction) {
 
-            return (
-              total +
-              Number(
-                transaction.amount || 0
+
+          if (
+            !transaction.created_at
+          ) {
+
+            return false;
+
+          }
+
+
+          return (
+            lagosFormatter.format(
+              new Date(
+                transaction.created_at
               )
-            );
+            ) === today
+          );
 
-          },
-          0
-        );
+        }
+      )
+      .reduce(
+        function(total, transaction) {
+
+          return (
+            total +
+            Number(
+              transaction.amount || 0
+            )
+          );
+
+        },
+        0
+      );
 
 
 
@@ -2360,7 +2288,7 @@ async function loadDashboard() {
   catch (error) {
 
     console.error(
-      "Dashboard loading error:",
+      "Dashboard error:",
       error
     );
 
@@ -2376,24 +2304,16 @@ async function loadDashboard() {
 
 
 
-
-
 /* =====================================================
    LOAD TRANSACTIONS
 ===================================================== */
 
 async function loadTransactions() {
 
-  const transactionList =
+  const list =
     document.getElementById(
       "transaction-list"
     );
-
-
-  if (!transactionList) {
-    return;
-  }
-
 
 
   const {
@@ -2403,7 +2323,6 @@ async function loadTransactions() {
     await supabaseClient
       .auth
       .getUser();
-
 
 
   if (
@@ -2433,7 +2352,6 @@ async function loadTransactions() {
         status,
         description,
         reference,
-        balance_after,
         created_at
       `)
       .eq(
@@ -2451,13 +2369,7 @@ async function loadTransactions() {
 
   if (error) {
 
-    console.error(
-      "Unable to load transactions:",
-      error
-    );
-
-
-    transactionList.innerHTML = `
+    list.innerHTML = `
 
       <div class="empty-state">
 
@@ -2466,7 +2378,7 @@ async function loadTransactions() {
         </h3>
 
         <p>
-          There was a problem loading your wallet activity.
+          Please try again later.
         </p>
 
       </div>
@@ -2484,7 +2396,7 @@ async function loadTransactions() {
     transactions.length === 0
   ) {
 
-    transactionList.innerHTML = `
+    list.innerHTML = `
 
       <div class="empty-state">
 
@@ -2510,46 +2422,26 @@ async function loadTransactions() {
 
 
 
-  transactionList.innerHTML =
+  list.innerHTML =
     transactions
       .map(
         function(transaction) {
 
           const amount =
+            Math.abs(
+              Number(
+                transaction.amount || 0
+              )
+            );
+
+
+          const debit =
             Number(
               transaction.amount || 0
-            );
-
-
-          const type =
-            getTransactionType(
-              transaction
-            );
-
-
-          const isDebit =
-            amount < 0 ||
+            ) < 0 ||
             isPaymentOrDebit(
               transaction
             );
-
-
-          const displayAmount =
-            Math.abs(
-              amount
-            );
-
-
-          const sign =
-            isDebit
-              ? "−"
-              : "+";
-
-
-          const amountClass =
-            isDebit
-              ? "transaction-debit"
-              : "transaction-credit";
 
 
           const date =
@@ -2580,31 +2472,34 @@ async function loadTransactions() {
                   }
                 </strong>
 
-
                 <small>
                   ${date}
                 </small>
 
-
-                ${
-                  transaction.status
-                    ? `
-                      <small>
-                        Status:
-                        ${transaction.status}
-                      </small>
-                    `
-                    : ""
-                }
+                <small>
+                  Status:
+                  ${
+                    transaction.status ||
+                    "completed"
+                  }
+                </small>
 
               </div>
 
 
               <div
-                class="transaction-amount ${amountClass}"
+                class="transaction-amount ${
+                  debit
+                    ? "transaction-debit"
+                    : "transaction-credit"
+                }"
               >
 
-                ${sign}${formatNaira(displayAmount)}
+                ${
+                  debit
+                    ? "−"
+                    : "+"
+                }${formatNaira(amount)}
 
               </div>
 
@@ -2620,10 +2515,8 @@ async function loadTransactions() {
 
 
 
-
-
 /* =====================================================
-   LOAD REFERRAL HISTORY
+   REFERRAL HISTORY
 ===================================================== */
 
 async function loadReferralHistory() {
@@ -2632,12 +2525,6 @@ async function loadReferralHistory() {
     document.getElementById(
       "referral-history-list"
     );
-
-
-  if (!list) {
-    return;
-  }
-
 
 
   const {
@@ -2649,19 +2536,20 @@ async function loadReferralHistory() {
       .getUser();
 
 
-
   if (
     userError ||
     !user
   ) {
+
     return;
+
   }
 
 
 
   const {
-    data: referredUsers,
-    error: profileError
+    data: referrals,
+    error
   } =
     await supabaseClient
       .from("profiles")
@@ -2683,13 +2571,7 @@ async function loadReferralHistory() {
 
 
 
-  if (profileError) {
-
-    console.error(
-      "Unable to load referral history:",
-      profileError
-    );
-
+  if (error) {
 
     list.innerHTML = `
 
@@ -2714,8 +2596,8 @@ async function loadReferralHistory() {
 
 
   if (
-    !referredUsers ||
-    referredUsers.length === 0
+    !referrals ||
+    referrals.length === 0
   ) {
 
     list.innerHTML = `
@@ -2731,8 +2613,7 @@ async function loadReferralHistory() {
         </h3>
 
         <p>
-          Share your referral code
-          to start earning.
+          Share your referral code to start earning.
         </p>
 
       </div>
@@ -2746,7 +2627,7 @@ async function loadReferralHistory() {
 
 
   const ids =
-    referredUsers.map(
+    referrals.map(
       function(referral) {
 
         return referral.id;
@@ -2757,15 +2638,13 @@ async function loadReferralHistory() {
 
 
   const {
-    data: bonuses,
-    error: bonusError
+    data: bonuses
   } =
     await supabaseClient
       .from("referral_bonus_ledger")
       .select(`
         referred_user_id,
-        bonus_amount,
-        bonus_type
+        bonus_amount
       `)
       .in(
         "referred_user_id",
@@ -2774,27 +2653,17 @@ async function loadReferralHistory() {
 
 
 
-  if (bonusError) {
-
-    console.error(
-      "Unable to load referral bonuses:",
-      bonusError
-    );
-
-  }
-
-
-
   const bonusRows =
     bonuses || [];
 
 
+
   list.innerHTML =
-    referredUsers
+    referrals
       .map(
         function(referral) {
 
-          const userBonuses =
+          const rows =
             bonusRows.filter(
               function(bonus) {
 
@@ -2807,12 +2676,12 @@ async function loadReferralHistory() {
             );
 
 
-          const totalBonus =
-            userBonuses.reduce(
-              function(total, bonus) {
+          const total =
+            rows.reduce(
+              function(sum, bonus) {
 
                 return (
-                  total +
+                  sum +
                   Number(
                     bonus.bonus_amount || 0
                   )
@@ -2821,10 +2690,6 @@ async function loadReferralHistory() {
               },
               0
             );
-
-
-          const bonusCount =
-            userBonuses.length;
 
 
           const date =
@@ -2854,7 +2719,6 @@ async function loadReferralHistory() {
                   }
                 </strong>
 
-
                 <small>
                   Joined ${date}
                 </small>
@@ -2865,14 +2729,15 @@ async function loadReferralHistory() {
               <div>
 
                 <strong>
-                  ${formatNaira(totalBonus)}
+                  ${formatNaira(total)}
                 </strong>
 
-
                 <small>
-                  ${bonusCount}
+                  ${
+                    rows.length
+                  }
                   bonus payment${
-                    bonusCount === 1
+                    rows.length === 1
                       ? ""
                       : "s"
                   }
@@ -2892,10 +2757,8 @@ async function loadReferralHistory() {
 
 
 
-
-
 /* =====================================================
-   COPY REFERRAL LINK
+   COPY REFERRAL
 ===================================================== */
 
 document
@@ -2931,7 +2794,7 @@ document
 
 
 
-      const referralLink =
+      const link =
         window.location.origin +
         "/earngig-website/register.html?ref=" +
         encodeURIComponent(
@@ -2939,17 +2802,16 @@ document
         );
 
 
-
       try {
 
         await navigator.clipboard.writeText(
-          referralLink
+          link
         );
 
 
         alert(
           "Referral link copied!\n\n" +
-          referralLink
+          link
         );
 
       }
@@ -2958,15 +2820,13 @@ document
 
         prompt(
           "Copy your referral link:",
-          referralLink
+          link
         );
 
       }
 
     }
   );
-
-
 
 
 
@@ -2992,12 +2852,6 @@ document
 
       if (error) {
 
-        console.error(
-          "Logout error:",
-          error
-        );
-
-
         alert(
           "Unable to log out right now."
         );
@@ -3015,20 +2869,20 @@ document
 
 
 
-
-
 /* =====================================================
-   START DASHBOARD
+   START
 ===================================================== */
 
 (async function() {
 
-  const hasAccess =
+  const access =
     await checkMembershipAccess();
 
 
-  if (!hasAccess) {
+  if (!access) {
+
     return;
+
   }
 
 
@@ -3039,7 +2893,6 @@ document
   await loadReferralHistory();
 
 })();
-
 
 </script>
 
