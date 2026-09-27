@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
   <meta charset="UTF-8">
@@ -19,7 +20,8 @@
   <style>
 
 /* =====================================================
-   DAILY EARNING LIMIT
+   DAILY EARNING LIMIT — STYLE 1
+   LIGHT GRADIENT
 ===================================================== */
 
 .daily-limit-card {
@@ -28,11 +30,17 @@
 
   padding: 22px;
 
+  border: 1px solid rgba(37, 99, 235, 0.18);
+
   border-radius: 18px;
 
-  border: 1px solid rgba(96, 165, 250, 0.20);
-
-  background: #17245f;
+  background:
+    linear-gradient(
+      135deg,
+      #2563eb 0%,
+      #60a5fa 38%,
+      #eff6ff 100%
+    );
 
 }
 
@@ -41,7 +49,7 @@
 
   display: flex;
 
-  align-items: center;
+  align-items: flex-start;
 
   justify-content: space-between;
 
@@ -56,7 +64,7 @@
 
   align-items: center;
 
-  gap: 14px;
+  gap: 12px;
 
 }
 
@@ -77,7 +85,7 @@
 
   border-radius: 12px;
 
-  background: #263a82;
+  background: rgba(255, 255, 255, 0.22);
 
   font-size: 21px;
 
@@ -101,12 +109,18 @@
 
   margin: 5px 0 0;
 
-  color: #c7d2fe;
+  color: #eff6ff;
 
   font-size: 13px;
 
+  font-weight: 600;
+
 }
 
+
+/* =====================================================
+   AMOUNT
+===================================================== */
 
 .daily-limit-amount {
 
@@ -119,11 +133,11 @@
 
   display: block;
 
-  color: #ffffff;
+  color: #172554;
 
-  font-size: 22px;
+  font-size: 23px;
 
-  font-weight: 800;
+  font-weight: 900;
 
 }
 
@@ -134,26 +148,32 @@
 
   margin-top: 4px;
 
-  color: #c7d2fe;
+  color: #1e3a8a;
 
   font-size: 12px;
 
+  font-weight: 700;
+
 }
 
+
+/* =====================================================
+   PROGRESS
+===================================================== */
 
 .daily-limit-progress {
 
   width: 100%;
 
-  height: 9px;
+  height: 10px;
 
-  margin-top: 20px;
+  margin-top: 18px;
 
   overflow: hidden;
 
   border-radius: 999px;
 
-  background: #2b3974;
+  background: rgba(255, 255, 255, 0.55);
 
 }
 
@@ -166,127 +186,153 @@
 
   border-radius: inherit;
 
-  background: #60a5fa;
+  background: #172554;
 
-  transition: width 0.3s ease;
+  transition: width 0.35s ease;
 
 }
 
 
+/* =====================================================
+   FOOTER
+===================================================== */
+
 .daily-limit-footer {
 
-  margin-top: 13px;
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 15px;
+
+  margin-top: 12px;
 
 }
 
 
 .daily-limit-remaining {
 
-  color: #ffffff;
+  color: #172554;
 
   font-size: 14px;
 
-  font-weight: 800;
+  font-weight: 900;
 
 }
 
 
 .daily-limit-note {
 
-  margin-top: 7px;
-
-  color: #c7d2fe;
+  color: #1e3a8a;
 
   font-size: 13px;
 
-}
+  font-weight: 600;
 
-
-.daily-limit-error {
-
-  border-color: rgba(251, 191, 36, 0.25);
-
-  background: #17245f;
+  text-align: right;
 
 }
 
 
-.daily-limit-error .daily-limit-icon {
-
-  background: #3b3266;
-
-}
-
-
-.daily-limit-error .daily-limit-title p,
-
-.daily-limit-error .daily-limit-amount span,
-
-.daily-limit-error .daily-limit-note {
-
-  color: #c7d2fe;
-
-}
-
-
-.daily-limit-error .daily-limit-remaining {
-
-  color: #fcd34d;
-
-}
-
+/* =====================================================
+   LIMIT REACHED
+===================================================== */
 
 .daily-limit-reached {
 
-  border-color: rgba(248, 113, 113, 0.30);
-
-  background: #4a1822;
-
-}
-
-
-.daily-limit-reached .daily-limit-icon {
-
-  background: #642333;
-
-}
-
-
-.daily-limit-reached .daily-limit-title p,
-
-.daily-limit-reached .daily-limit-amount span,
-
-.daily-limit-reached .daily-limit-note {
-
-  color: #fecaca;
+  background:
+    linear-gradient(
+      135deg,
+      #2563eb 0%,
+      #93c5fd 38%,
+      #fee2e2 100%
+    );
 
 }
 
 
 .daily-limit-reached .daily-limit-progress {
 
-  background: #652b38;
+  background: rgba(220, 38, 38, 0.15);
 
 }
 
 
 .daily-limit-reached .daily-limit-progress-bar {
 
-  background: #f87171;
+  background: #dc2626;
 
 }
 
 
 .daily-limit-reached .daily-limit-remaining {
 
-  color: #fca5a5;
+  color: #991b1b;
 
 }
 
 
+.daily-limit-reached .daily-limit-note {
+
+  color: #7f1d1d;
+
+}
+
+
+/* =====================================================
+   ERROR
+===================================================== */
+
+.daily-limit-error {
+
+  background:
+    linear-gradient(
+      135deg,
+      #2563eb 0%,
+      #60a5fa 38%,
+      #fef3c7 100%
+    );
+
+}
+
+
+.daily-limit-error .daily-limit-remaining {
+
+  color: #92400e;
+
+}
+
+
+.daily-limit-error .daily-limit-note {
+
+  color: #78350f;
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
 @media (max-width: 600px) {
 
   .daily-limit-header {
+
+    flex-direction: column;
+
+  }
+
+
+  .daily-limit-amount {
+
+    text-align: left;
+
+  }
+
+
+  .daily-limit-footer {
 
     flex-direction: column;
 
@@ -295,7 +341,7 @@
   }
 
 
-  .daily-limit-amount {
+  .daily-limit-note {
 
     text-align: left;
 
@@ -519,7 +565,6 @@
 
       </div>
 
-
     </div>
 
 
@@ -534,6 +579,7 @@
     >
 
       <div class="daily-limit-header">
+
 
         <div class="daily-limit-title">
 
@@ -661,6 +707,7 @@
         </a>
 
 
+
         <a
           href="membership.html"
           class="member-earning-card"
@@ -684,6 +731,7 @@
           </strong>
 
         </a>
+
 
 
         <a
@@ -759,8 +807,9 @@
           </h3>
 
           <p>
-            Discover competitions, contests, awards and
-            other opportunities to participate.
+            Discover sports competitions, contests,
+            awards and other opportunities to participate
+            and showcase your talent.
           </p>
 
           <strong>
@@ -768,6 +817,7 @@
           </strong>
 
         </a>
+
 
 
         <a
@@ -793,6 +843,7 @@
           </strong>
 
         </a>
+
 
 
         <a
@@ -1214,9 +1265,7 @@ const EARNING_TYPES = new Set([
 
   "novel_earnings",
 
-  "competition_prize",
-
-  "daily_login_reward"
+  "competition_prize"
 
 ]);
 
@@ -1575,10 +1624,9 @@ async function loadDailyEarningLimit() {
     );
 
 
+
   /*
-   * Always start from a completely neutral state.
-   * This prevents old/stale values from remaining
-   * on screen when the RPC fails.
+   * Reset the entire card before every request.
    */
 
   card.classList.remove(
@@ -1633,12 +1681,6 @@ async function loadDailyEarningLimit() {
 
 
 
-    /*
-     * Supabase can return either an object
-     * or an array depending on the function's
-     * return definition.
-     */
-
     let result =
       data;
 
@@ -1653,11 +1695,6 @@ async function loadDailyEarningLimit() {
     }
 
 
-
-    /*
-     * Validate the complete response before
-     * displaying ANY earning numbers.
-     */
 
     const dailyLimit =
       Number(
@@ -1686,27 +1723,33 @@ async function loadDailyEarningLimit() {
 
 
 
-    const responseIsValid =
+    const valid =
 
       result &&
 
-      (
-        result.success === true ||
+      planCode &&
 
-        (
-          planCode &&
-          Number.isFinite(dailyLimit) &&
-          dailyLimit > 0 &&
-          Number.isFinite(earnedToday) &&
-          earnedToday >= 0 &&
-          Number.isFinite(remainingToday) &&
-          remainingToday >= 0
-        )
-      );
+      Number.isFinite(
+        dailyLimit
+      ) &&
+
+      dailyLimit > 0 &&
+
+      Number.isFinite(
+        earnedToday
+      ) &&
+
+      earnedToday >= 0 &&
+
+      Number.isFinite(
+        remainingToday
+      ) &&
+
+      remainingToday >= 0;
 
 
 
-    if (!responseIsValid) {
+    if (!valid) {
 
       throw new Error(
         result?.message ||
@@ -1717,20 +1760,6 @@ async function loadDailyEarningLimit() {
 
 
 
-    const safeEarned =
-      Math.max(
-        0,
-        earnedToday
-      );
-
-
-    const safeRemaining =
-      Math.max(
-        0,
-        remainingToday
-      );
-
-
     const safeLimit =
       Math.max(
         0,
@@ -1738,21 +1767,35 @@ async function loadDailyEarningLimit() {
       );
 
 
+    const safeEarned =
+      Math.min(
+        safeLimit,
+        Math.max(
+          0,
+          earnedToday
+        )
+      );
+
+
+    const safeRemaining =
+      Math.max(
+        0,
+        Math.min(
+          safeLimit,
+          remainingToday
+        )
+      );
+
+
 
     const planName =
-      planCode
-        ? (
-            planCode.charAt(0).toUpperCase() +
-            planCode.slice(1)
-          )
-        : "Current";
+      planCode.charAt(0).toUpperCase() +
+      planCode.slice(1);
 
 
 
     const percentage =
-
       safeLimit > 0
-
         ? Math.min(
             100,
             (
@@ -1760,13 +1803,13 @@ async function loadDailyEarningLimit() {
               safeLimit
             ) * 100
           )
-
         : 0;
 
 
 
     /*
-     * ONLY NOW do we update the card.
+     * Display only after all values
+     * have passed validation.
      */
 
     planElement.textContent =
@@ -1826,10 +1869,8 @@ async function loadDailyEarningLimit() {
 
 
     /*
-     * IMPORTANT:
-     * On error, ALL earning figures are cleared.
-     * Nothing from a previous successful load
-     * is allowed to remain.
+     * On failure, do not show stale
+     * earning numbers.
      */
 
     card.classList.add(
@@ -1858,7 +1899,7 @@ async function loadDailyEarningLimit() {
 
 
     noteElement.textContent =
-      "Your earning limit could not be verified. No limit information is being displayed.";
+      "Your earning limit could not be verified.";
 
   }
 
@@ -1952,7 +1993,7 @@ async function loadDashboard() {
 
 
 
-    const withdrawalMinimum =
+    const minimum =
       WITHDRAWAL_MINIMUMS[
         planCode
       ];
@@ -1963,9 +2004,9 @@ async function loadDashboard() {
       "withdrawal-minimum-text"
     ).textContent =
 
-      withdrawalMinimum
+      minimum
 
-        ? `Minimum withdrawal: ${formatNaira(withdrawalMinimum)}`
+        ? `Minimum withdrawal: ${formatNaira(minimum)}`
 
         : "Minimum withdrawal: Check your membership plan.";
 
@@ -1974,8 +2015,7 @@ async function loadDashboard() {
     /* WALLET */
 
     const {
-      data: wallet,
-      error: walletError
+      data: wallet
     } =
       await supabaseClient
         .from("wallets")
@@ -1990,18 +2030,6 @@ async function loadDashboard() {
         )
         .maybeSingle();
 
-
-
-    if (
-      walletError
-    ) {
-
-      console.error(
-        "Wallet error:",
-        walletError
-      );
-
-    }
 
 
     const balance =
@@ -2132,7 +2160,7 @@ async function loadDashboard() {
         );
 
 
-    const completedCount =
+    const completed =
       (
         attempts || []
       ).filter(
@@ -2150,15 +2178,14 @@ async function loadDashboard() {
     document.getElementById(
       "completed-activities"
     ).textContent =
-      completedCount;
+      completed;
 
 
 
-    /* COMPLETED TRANSACTIONS */
+    /* TODAY'S EARNINGS */
 
     const {
-      data: transactions,
-      error: transactionsError
+      data: transactions
     } =
       await supabaseClient
         .from("transactions")
@@ -2178,31 +2205,6 @@ async function loadDashboard() {
         );
 
 
-
-    if (
-      transactionsError
-    ) {
-
-      console.error(
-        "Transaction error:",
-        transactionsError
-      );
-
-
-      document.getElementById(
-        "today-earnings"
-      ).textContent =
-        "₦0";
-
-      return;
-
-    }
-
-
-
-    /*
-     * Nigeria-local date.
-     */
 
     const lagosFormatter =
       new Intl.DateTimeFormat(
@@ -2288,15 +2290,9 @@ async function loadDashboard() {
   catch (error) {
 
     console.error(
-      "Dashboard error:",
+      "Dashboard loading error:",
       error
     );
-
-
-    document.getElementById(
-      "today-earnings"
-    ).textContent =
-      "₦0";
 
   }
 
@@ -2305,7 +2301,7 @@ async function loadDashboard() {
 
 
 /* =====================================================
-   LOAD TRANSACTIONS
+   TRANSACTIONS
 ===================================================== */
 
 async function loadTransactions() {
@@ -2653,7 +2649,7 @@ async function loadReferralHistory() {
 
 
 
-  const bonusRows =
+  const rows =
     bonuses || [];
 
 
@@ -2663,8 +2659,8 @@ async function loadReferralHistory() {
       .map(
         function(referral) {
 
-          const rows =
-            bonusRows.filter(
+          const userBonuses =
+            rows.filter(
               function(bonus) {
 
                 return (
@@ -2677,7 +2673,7 @@ async function loadReferralHistory() {
 
 
           const total =
-            rows.reduce(
+            userBonuses.reduce(
               function(sum, bonus) {
 
                 return (
@@ -2733,11 +2729,9 @@ async function loadReferralHistory() {
                 </strong>
 
                 <small>
-                  ${
-                    rows.length
-                  }
+                  ${userBonuses.length}
                   bonus payment${
-                    rows.length === 1
+                    userBonuses.length === 1
                       ? ""
                       : "s"
                   }
@@ -2870,7 +2864,7 @@ document
 
 
 /* =====================================================
-   START
+   START DASHBOARD
 ===================================================== */
 
 (async function() {
