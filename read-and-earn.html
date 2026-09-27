@@ -8,6 +8,103 @@
   <title>Read & Earn | EarnGig</title>
 
   <link rel="stylesheet" href="styles.css">
+
+  <style>
+    /* ================================
+       DAILY EARNING LIMIT POPUP
+    ================================= */
+
+    .earning-limit-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.62);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 9999;
+      backdrop-filter: blur(4px);
+    }
+
+    .earning-limit-overlay.show {
+      display: flex;
+    }
+
+    .earning-limit-modal {
+      width: 100%;
+      max-width: 430px;
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 28px 24px 24px;
+      box-shadow: 0 20px 60px rgba(15, 23, 42, 0.25);
+      text-align: center;
+      animation: earningLimitPopupIn 0.2s ease-out;
+    }
+
+    @keyframes earningLimitPopupIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.98);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .earning-limit-icon {
+      width: 58px;
+      height: 58px;
+      margin: 0 auto 16px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #EEF2FF;
+      color: #4338CA;
+      font-size: 25px;
+    }
+
+    .earning-limit-modal h3 {
+      margin: 0 0 10px;
+      color: #1E1B4B;
+      font-size: 21px;
+    }
+
+    .earning-limit-modal p {
+      margin: 0;
+      color: #4B5563;
+      line-height: 1.6;
+      font-size: 15px;
+    }
+
+    .earning-limit-amount {
+      margin: 18px 0;
+      padding: 13px 16px;
+      border-radius: 12px;
+      background: #F5F3FF;
+      color: #4338CA;
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    .earning-limit-modal button {
+      width: 100%;
+      border: 0;
+      border-radius: 10px;
+      padding: 13px 18px;
+      background: #4338CA;
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .earning-limit-modal button:hover {
+      background: #3730A3;
+    }
+  </style>
 </head>
 
 <body>
@@ -87,38 +184,38 @@
 
         <div class="novel-search-filter">
 
-  <input
-    type="search"
-    id="novel-search"
-    placeholder="Search novels..."
-    autocomplete="off"
-  >
+          <input
+            type="search"
+            id="novel-search"
+            placeholder="Search novels..."
+            autocomplete="off"
+          >
 
-  <select class="novel-filter" id="genre-filter">
+          <select class="novel-filter" id="genre-filter">
 
-    <option value="all">All genres</option>
-    <option value="romance">Romance</option>
-    <option value="drama">Drama</option>
-    <option value="thriller">Thriller</option>
-    <option value="mystery">Mystery</option>
-    <option value="fantasy">Fantasy</option>
-    <option value="adventure">Adventure</option>
+            <option value="all">All genres</option>
+            <option value="romance">Romance</option>
+            <option value="drama">Drama</option>
+            <option value="thriller">Thriller</option>
+            <option value="mystery">Mystery</option>
+            <option value="fantasy">Fantasy</option>
+            <option value="adventure">Adventure</option>
 
-  </select>
+          </select>
 
         </div>
 
       </div>
 
 
-<div class="novel-grid" id="novel-grid">
+      <div class="novel-grid" id="novel-grid">
 
-  <div class="empty-state">
-    <h3>Loading novels...</h3>
-    <p>Finding available novels for you.</p>
-  </div>
+        <div class="empty-state">
+          <h3>Loading novels...</h3>
+          <p>Finding available novels for you.</p>
+        </div>
 
-</div>
+      </div>
 
     </section>
 
@@ -166,11 +263,59 @@
   </div>
 
 </footer>
+
+
+<!-- DAILY EARNING LIMIT POPUP -->
+
+<div
+  class="earning-limit-overlay"
+  id="earning-limit-overlay"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="earning-limit-title"
+>
+
+  <div class="earning-limit-modal">
+
+    <div class="earning-limit-icon">
+      🔒
+    </div>
+
+    <h3 id="earning-limit-title">
+      Daily Earning Limit Reached
+    </h3>
+
+    <p id="earning-limit-message">
+      You’ve reached your maximum earning limit for today.
+      Please come back tomorrow.
+    </p>
+
+    <div
+      class="earning-limit-amount"
+      id="earning-limit-amount"
+    >
+      Normal earnings today: ₦0 / ₦0
+    </div>
+
+    <button
+      type="button"
+      id="earning-limit-close"
+    >
+      Okay
+    </button>
+
+  </div>
+
+</div>
+
+
 <!-- SUPABASE -->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
-  <script>
+
+
+<script>
 document.addEventListener("DOMContentLoaded", async function () {
 
   const searchInput =
@@ -182,8 +327,176 @@ document.addEventListener("DOMContentLoaded", async function () {
   const novelGrid =
     document.getElementById("novel-grid");
 
+  const earningLimitOverlay =
+    document.getElementById("earning-limit-overlay");
+
+  const earningLimitMessage =
+    document.getElementById("earning-limit-message");
+
+  const earningLimitAmount =
+    document.getElementById("earning-limit-amount");
+
+  const earningLimitClose =
+    document.getElementById("earning-limit-close");
+
+
   let novels = [];
   let assignments = [];
+
+
+  /*
+   * CLOSE DAILY LIMIT POPUP
+   */
+  function closeEarningLimitPopup() {
+
+    if (earningLimitOverlay) {
+      earningLimitOverlay.classList.remove("show");
+    }
+
+  }
+
+
+  if (earningLimitClose) {
+
+    earningLimitClose.addEventListener(
+      "click",
+      closeEarningLimitPopup
+    );
+
+  }
+
+
+  if (earningLimitOverlay) {
+
+    earningLimitOverlay.addEventListener(
+      "click",
+      function (event) {
+
+        if (event.target === earningLimitOverlay) {
+          closeEarningLimitPopup();
+        }
+
+      }
+    );
+
+  }
+
+
+  /*
+   * SHOW DAILY LIMIT POPUP
+   */
+  function showEarningLimitPopup(status) {
+
+    const dailyLimit =
+      Number(status?.daily_limit || 0);
+
+    const earnedToday =
+      Number(status?.earned_today || 0);
+
+    const planName =
+      status?.plan_code
+        ? (
+            status.plan_code.charAt(0).toUpperCase() +
+            status.plan_code.slice(1)
+          )
+        : "your";
+
+
+    if (earningLimitMessage) {
+
+      earningLimitMessage.textContent =
+        "You’ve reached your maximum earning limit of ₦" +
+        dailyLimit.toLocaleString("en-NG") +
+        " for today. Please come back tomorrow.";
+
+    }
+
+
+    if (earningLimitAmount) {
+
+      earningLimitAmount.textContent =
+        "Normal earnings today: ₦" +
+        earnedToday.toLocaleString("en-NG") +
+        " / ₦" +
+        dailyLimit.toLocaleString("en-NG") +
+        " (" +
+        planName +
+        " plan)";
+
+    }
+
+
+    if (earningLimitOverlay) {
+
+      earningLimitOverlay.classList.add("show");
+
+    }
+
+  }
+
+
+  /*
+   * CHECK DAILY EARNING LIMIT
+   *
+   * This is only an early UI check.
+   *
+   * The real protection remains the Supabase
+   * server-side transaction trigger.
+   */
+  async function checkDailyEarningLimit() {
+
+    const {
+      data,
+      error
+    } = await supabaseClient.rpc(
+      "get_daily_task_earning_status"
+    );
+
+
+    if (error) {
+
+      console.error(
+        "Unable to check daily earning limit:",
+        error
+      );
+
+      /*
+       * Do not block reading if the status check
+       * itself fails.
+       *
+       * The server-side trigger remains the
+       * final protection when the reward is credited.
+       */
+      return {
+        allowed: true,
+        status: null
+      };
+
+    }
+
+
+    const status =
+      data || {};
+
+
+    if (status.limit_reached === true) {
+
+      showEarningLimitPopup(status);
+
+      return {
+        allowed: false,
+        status: status
+      };
+
+    }
+
+
+    return {
+      allowed: true,
+      status: status
+    };
+
+  }
 
 
   /*
@@ -279,10 +592,13 @@ document.addEventListener("DOMContentLoaded", async function () {
   /*
    * LOAD APPROVED NOVELS
    */
-const {
+  const {
     data: novelData,
     error: novelsError
-} = await supabaseClient.rpc("get_read_earn_novels");
+  } = await supabaseClient.rpc(
+    "get_read_earn_novels"
+  );
+
 
   if (novelsError) {
 
@@ -369,23 +685,27 @@ const {
       .single();
 
 
-  if (createError) {
+    if (createError) {
 
-  console.error(
-    "Unable to create reading assignment:",
-    createError
-  );
+      console.error(
+        "Unable to create reading assignment:",
+        createError
+      );
 
-  alert(
-    "START READING ERROR:\n\n" +
-    "Message: " + (createError.message || "Unknown error") +
-    "\n\nCode: " + (createError.code || "No code") +
-    "\n\nDetails: " + (createError.details || "No details") +
-    "\n\nHint: " + (createError.hint || "No hint")
-  );
+      alert(
+        "START READING ERROR:\n\n" +
+        "Message: " +
+        (createError.message || "Unknown error") +
+        "\n\nCode: " +
+        (createError.code || "No code") +
+        "\n\nDetails: " +
+        (createError.details || "No details") +
+        "\n\nHint: " +
+        (createError.hint || "No hint")
+      );
 
-  return null;
-  }
+      return null;
+    }
 
 
     /*
@@ -404,6 +724,7 @@ const {
 
 
     return newAssignment.id;
+
   }
 
 
@@ -450,126 +771,128 @@ const {
 
 
         return `
-  <article
-    class="novel-card"
-    data-novel-id="${novel.id}"
-    style="
-      display:flex;
-      flex-direction:row;
-      gap:18px;
-      align-items:stretch;
-      padding:16px;
-      min-height:170px;
-    "
-  >
+          <article
+            class="novel-card"
+            data-novel-id="${novel.id}"
+            style="
+              display:flex;
+              flex-direction:row;
+              gap:18px;
+              align-items:stretch;
+              padding:16px;
+              min-height:170px;
+            "
+          >
 
-    <div
-      style="
-        width:105px;
-        min-width:105px;
-        height:150px;
-        overflow:hidden;
-        border-radius:10px;
-        background:rgba(255,255,255,.08);
-      "
-    >
-      ${
-        novel.cover_url
-          ? `
-            <img
-              src="${novel.cover_url}"
-              alt="${novel.title || "Novel"} cover"
-              style="
-                width:100%;
-                height:100%;
-                object-fit:cover;
-                display:block;
-              "
-            >
-          `
-          : `
             <div
               style="
-                width:100%;
-                height:100%;
-                display:flex;
-                align-items:center;
-                justify-content:center;
-                font-weight:700;
+                width:105px;
+                min-width:105px;
+                height:150px;
+                overflow:hidden;
+                border-radius:10px;
+                background:rgba(255,255,255,.08);
               "
             >
-              EG
+              ${
+                novel.cover_url
+                  ? `
+                    <img
+                      src="${novel.cover_url}"
+                      alt="${novel.title || "Novel"} cover"
+                      style="
+                        width:100%;
+                        height:100%;
+                        object-fit:cover;
+                        display:block;
+                      "
+                    >
+                  `
+                  : `
+                    <div
+                      style="
+                        width:100%;
+                        height:100%;
+                        display:flex;
+                        align-items:center;
+                        justify-content:center;
+                        font-weight:700;
+                      "
+                    >
+                      EG
+                    </div>
+                  `
+              }
             </div>
-          `
-      }
-    </div>
 
-    <div
-      class="novel-card-content"
-      style="
-        flex:1;
-        min-width:0;
-        display:flex;
-        flex-direction:column;
-      "
-    >
+            <div
+              class="novel-card-content"
+              style="
+                flex:1;
+                min-width:0;
+                display:flex;
+                flex-direction:column;
+              "
+            >
 
-      <span class="novel-category">
-        NOVEL
-      </span>
+              <span class="novel-category">
+                NOVEL
+              </span>
 
-      <h3 style="
-        margin:6px 0 6px;
-        line-height:1.25;
-      ">
-        ${novel.title || "Untitled Novel"}
-      </h3>
+              <h3 style="
+                margin:6px 0 6px;
+                line-height:1.25;
+              ">
+                ${novel.title || "Untitled Novel"}
+              </h3>
 
-      <div class="novel-meta">
-        By ${novel.author_name || "Unknown Author"}
-      </div>
+              <div class="novel-meta">
+                By ${novel.author_name || "Unknown Author"}
+              </div>
 
-      <p style="
-        margin:8px 0;
-        display:-webkit-box;
-        -webkit-line-clamp:2;
-        -webkit-box-orient:vertical;
-        overflow:hidden;
-      ">
-        ${novel.description ||
-          "Discover this novel and start reading."}
-      </p>
+              <p style="
+                margin:8px 0;
+                display:-webkit-box;
+                -webkit-line-clamp:2;
+                -webkit-box-orient:vertical;
+                overflow:hidden;
+              ">
+                ${
+                  novel.description ||
+                  "Discover this novel and start reading."
+                }
+              </p>
 
-      <div
-        class="novel-reward"
-        style="
-          margin-top:auto;
-          display:flex;
-          align-items:center;
-          justify-content:space-between;
-          gap:12px;
-        "
-      >
+              <div
+                class="novel-reward"
+                style="
+                  margin-top:auto;
+                  display:flex;
+                  align-items:center;
+                  justify-content:space-between;
+                  gap:12px;
+                "
+              >
 
-        <div>
-          <small>Your reader reward</small>
-          <strong>Available</strong>
-        </div>
+                <div>
+                  <small>Your reader reward</small>
+                  <strong>Available</strong>
+                </div>
 
-        <button
-          type="button"
-          class="btn primary start-reading-button"
-          data-novel-id="${novel.id}"
-        >
-          Start Reading
-        </button>
+                <button
+                  type="button"
+                  class="btn primary start-reading-button"
+                  data-novel-id="${novel.id}"
+                >
+                  Start Reading
+                </button>
 
-      </div>
+              </div>
 
-    </div>
+            </div>
 
-  </article>
-`;
+          </article>
+        `;
 
       }).join("");
 
@@ -597,6 +920,34 @@ const {
              * Prevent double-clicks.
              */
             button.disabled = true;
+
+            button.textContent =
+              "Checking...";
+
+
+            /*
+             * CHECK DAILY EARNING LIMIT
+             *
+             * Read & Earn is a normal earning activity,
+             * so starting a NEW reading assignment is
+             * blocked once the normal daily limit is
+             * already reached.
+             */
+            const limitCheck =
+              await checkDailyEarningLimit();
+
+
+            if (!limitCheck.allowed) {
+
+              button.disabled = false;
+
+              button.textContent =
+                "Start Reading";
+
+              return;
+
+            }
+
 
             button.textContent =
               "Starting...";
@@ -729,9 +1080,8 @@ const {
   }
 
 });
-  </script>  
- 
-        
+</script>
+
+
 </body>
 </html>
-
