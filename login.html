@@ -2,30 +2,48 @@
 <html lang="en">
 
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>Login | EarnGig</title>
 
   <link rel="stylesheet" href="styles.css">
+
 </head>
+
 
 <body>
 
+
 <header>
+
   <div class="container nav">
 
     <a class="logo" href="index.html">
+
       <span class="logo-mark">E</span>
+
       Earn<span>Gig</span>
+
     </a>
 
-    <a class="btn outline" href="index.html">
+
+    <a
+      class="btn outline"
+      href="index.html"
+    >
       Back to Home
     </a>
 
   </div>
+
 </header>
+
 
 
 <main class="auth-page">
@@ -33,23 +51,37 @@
   <div class="auth-card">
 
     <div class="auth-logo">
-      <span class="logo-mark">E</span>
+
+      <span class="logo-mark">
+        E
+      </span>
+
     </div>
 
-    <span class="eyebrow">WELCOME BACK</span>
 
-    <h1>Login to EarnGig</h1>
+    <span class="eyebrow">
+      WELCOME BACK
+    </span>
+
+
+    <h1>
+      Login to EarnGig
+    </h1>
+
 
     <p class="auth-subtitle">
       Access your account, activities and earnings.
     </p>
 
 
+
     <form id="login-form">
+
 
       <label for="email">
         Email Address
       </label>
+
 
       <input
         type="email"
@@ -60,9 +92,11 @@
       >
 
 
+
       <label for="password">
         Password
       </label>
+
 
       <input
         type="password"
@@ -73,18 +107,26 @@
       >
 
 
+
       <div class="login-options">
 
+
         <label class="remember">
+
           <input type="checkbox">
+
           Remember me
+
         </label>
+
 
         <a href="#">
           Forgot password?
         </a>
 
+
       </div>
+
 
 
       <button
@@ -95,65 +137,88 @@
         Login
       </button>
 
+
     </form>
 
 
+
     <div class="auth-divider">
-      <span>OR</span>
+
+      <span>
+        OR
+      </span>
+
     </div>
 
 
+
     <p class="signup-text">
+
       Don't have an EarnGig account?
-      <a href="register.html">Create an account</a>
+
+      <a href="register.html">
+        Create an account
+      </a>
+
     </p>
+
 
   </div>
 
 </main>
 
 
+
 <footer>
 
   <div class="container copy">
-    © 2026 EarnGig. All rights reserved.
+
+    © 2026 EarnGig.
+    All rights reserved.
+
   </div>
 
 </footer>
 
 
-<!-- SUPABASE ONLY -->
+
+<!-- =====================================================
+     SUPABASE
+====================================================== -->
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script src="supabase.js"></script>
+
 
 
 <script>
 
+
 const loginForm =
-  document.getElementById("login-form");
+  document.getElementById(
+    "login-form"
+  );
+
 
 const loginButton =
-  document.getElementById("login-button");
+  document.getElementById(
+    "login-button"
+  );
+
 
 let loggedInUser = null;
+
 
 
 /*
  * ==================================================
  * OPEN FLUTTERWAVE MEMBERSHIP PAYMENT
  * ==================================================
- *
- * This replaces the old Paystack payment completely.
- *
- * Initial membership:
- * ₦9,000
- *
- * The Flutterwave Edge Function creates the
- * transaction and returns the hosted checkout URL.
- * ==================================================
  */
 
 async function openMembershipPayment() {
+
 
   if (!loggedInUser) {
 
@@ -162,12 +227,17 @@ async function openMembershipPayment() {
     );
 
     return;
+
   }
 
 
-  loginButton.disabled = true;
+  loginButton.disabled =
+    true;
 
-  loginButton.type = "button";
+
+  loginButton.type =
+    "button";
+
 
   loginButton.textContent =
     "Opening Flutterwave...";
@@ -175,20 +245,28 @@ async function openMembershipPayment() {
 
   try {
 
+
     const {
       data,
       error
     } =
-      await supabaseClient.functions.invoke(
-        "flutterwave-payment",
-        {
-          body: {
-            action: "initialize",
-            payment_type: "membership",
-            membership_stage: "initial"
+      await supabaseClient
+        .functions
+        .invoke(
+          "flutterwave-payment",
+          {
+            body: {
+              action:
+                "initialize",
+
+              payment_type:
+                "membership",
+
+              membership_stage:
+                "initial"
+            }
           }
-        }
-      );
+        );
 
 
     console.log(
@@ -205,10 +283,12 @@ async function openMembershipPayment() {
         error
       );
 
+
       throw new Error(
         error.message ||
         "Unable to start Flutterwave payment."
       );
+
     }
 
 
@@ -223,21 +303,21 @@ async function openMembershipPayment() {
         data
       );
 
+
       throw new Error(
         data?.error ||
         "Flutterwave payment link was not returned."
       );
+
     }
 
-
-    /*
-     * Redirect to Flutterwave hosted checkout.
-     */
 
     window.location.href =
       data.payment_url;
 
+
   } catch (error) {
+
 
     console.error(
       "Flutterwave payment error:",
@@ -254,17 +334,138 @@ async function openMembershipPayment() {
     loginButton.disabled =
       false;
 
+
     loginButton.type =
       "button";
+
 
     loginButton.textContent =
       "Pay ₦9,000 to Continue";
 
+
     loginButton.onclick =
       openMembershipPayment;
+
   }
 
 }
+
+
+
+/*
+ * ==================================================
+ * CLAIM DAILY LOGIN REWARD
+ * ==================================================
+ *
+ * The database function controls the reward.
+ *
+ * One reward per Nigeria calendar day.
+ *
+ * Reward:
+ * ₦50
+ *
+ * The function also updates:
+ *
+ * wallets.balance
+ * wallets.total_earned
+ * transactions
+ *
+ * The client cannot choose the amount.
+ * ==================================================
+ */
+
+async function claimDailyLoginReward() {
+
+
+  try {
+
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .rpc(
+          "claim_daily_login_reward"
+        );
+
+
+    console.log(
+      "Daily login reward:",
+      data,
+      error
+    );
+
+
+    if (error) {
+
+      console.error(
+        "Daily login reward error:",
+        error
+      );
+
+
+      return;
+
+    }
+
+
+    if (
+      !data
+    ) {
+
+      return;
+
+    }
+
+
+    if (
+      data.already_claimed
+    ) {
+
+      return;
+
+    }
+
+
+    if (
+      data.success &&
+      Number(data.amount || 0) > 0
+    ) {
+
+
+      alert(
+        "🎉 Daily Login Reward!\n\n" +
+        "₦" +
+        Number(
+          data.amount
+        ).toLocaleString(
+          "en-NG"
+        ) +
+        " has been credited to your wallet."
+      );
+
+
+    }
+
+
+  } catch (error) {
+
+
+    /*
+     * A daily reward failure must not prevent
+     * a member from logging into EarnGig.
+     */
+
+    console.error(
+      "Daily login reward exception:",
+      error
+    );
+
+  }
+
+}
+
 
 
 /*
@@ -277,37 +478,52 @@ loginForm.addEventListener(
   "submit",
   async function(event) {
 
+
     event.preventDefault();
 
 
     const email =
       document
-        .getElementById("email")
+        .getElementById(
+          "email"
+        )
         .value
         .trim();
 
+
     const password =
       document
-        .getElementById("password")
+        .getElementById(
+          "password"
+        )
         .value;
 
 
-    if (!email || !password) {
+    if (
+      !email ||
+      !password
+    ) {
 
       alert(
         "Please enter your email and password."
       );
 
       return;
+
     }
 
 
-    loginButton.disabled = true;
+    loginButton.disabled =
+      true;
 
-    loginButton.type = "submit";
+
+    loginButton.type =
+      "submit";
+
 
     loginButton.textContent =
       "Checking...";
+
 
 
     /*
@@ -330,25 +546,32 @@ loginForm.addEventListener(
 
     if (error) {
 
+
       console.error(
         "Login error:",
         error
       );
 
+
       alert(
         error.message
       );
 
+
       loginButton.disabled =
         false;
+
 
       loginButton.type =
         "submit";
 
+
       loginButton.textContent =
         "Login";
 
+
       return;
+
     }
 
 
@@ -358,21 +581,28 @@ loginForm.addEventListener(
 
     if (!loggedInUser) {
 
+
       alert(
         "Unable to verify your account."
       );
 
+
       loginButton.disabled =
         false;
+
 
       loginButton.type =
         "submit";
 
+
       loginButton.textContent =
         "Login";
 
+
       return;
+
     }
+
 
 
     /*
@@ -406,26 +636,34 @@ loginForm.addEventListener(
 
     if (membershipError) {
 
+
       console.error(
         "Membership check error:",
         membershipError
       );
 
+
       alert(
         "Unable to verify your membership. Please try again."
       );
 
+
       loginButton.disabled =
         false;
+
 
       loginButton.type =
         "submit";
 
+
       loginButton.textContent =
         "Login";
 
+
       return;
+
     }
+
 
 
     /*
@@ -433,25 +671,34 @@ loginForm.addEventListener(
      * NO MEMBERSHIP
      *
      * First-time membership payment = ₦9,000
+     *
+     * No daily reward is given here.
      * --------------------------------------------------
      */
 
     if (!membership) {
 
+
       loginButton.disabled =
         false;
+
 
       loginButton.type =
         "button";
 
+
       loginButton.textContent =
         "Pay ₦9,000 to Continue";
+
 
       loginButton.onclick =
         openMembershipPayment;
 
+
       return;
+
     }
+
 
 
     /*
@@ -471,43 +718,72 @@ loginForm.addEventListener(
     const membershipIsActive =
       membership.status === "active" &&
       periodEnd &&
-      periodEnd.getTime() > Date.now();
+      periodEnd.getTime() >
+        Date.now();
+
 
 
     /*
      * --------------------------------------------------
      * ACTIVE MEMBERSHIP
-     *
-     * Go directly to dashboard.
      * --------------------------------------------------
      */
 
     if (membershipIsActive) {
 
+
+      /*
+       * Claim today's ₦50 reward.
+       *
+       * This happens before entering the dashboard.
+       *
+       * If the reward was already claimed today,
+       * the function simply returns without paying again.
+       */
+
+      loginButton.textContent =
+        "Claiming daily reward...";
+
+
+      await claimDailyLoginReward();
+
+
+      /*
+       * Go to dashboard.
+       */
+
       window.location.href =
         "dashboard.html";
 
+
       return;
+
     }
+
 
 
     /*
      * --------------------------------------------------
      * EXPIRED / INACTIVE MEMBERSHIP
      *
-     * Renewal is handled on membership.html.
      * Renewal amount = ₦5,000
+     *
+     * No daily reward is given while membership
+     * is inactive.
      * --------------------------------------------------
      */
 
     loginButton.disabled =
       false;
 
+
     loginButton.type =
       "button";
 
+
     loginButton.textContent =
       "Renew for ₦5,000";
+
 
     loginButton.onclick =
       function() {
@@ -517,10 +793,13 @@ loginForm.addEventListener(
 
       };
 
+
   }
 );
 
+
 </script>
+
 
 </body>
 
