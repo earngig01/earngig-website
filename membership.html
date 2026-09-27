@@ -444,29 +444,6 @@ function formatNaira(
 
 
 /* =====================================================
-   GET PLAN PRICE
-===================================================== */
-
-function getPlanPrice(
-  planCode
-) {
-
-  const plan =
-    membershipPlans.find(
-      item =>
-        item.plan_code ===
-        planCode
-    );
-
-  return plan
-    ? Number(plan.price)
-    : null;
-
-}
-
-
-
-/* =====================================================
    PLAN RANK
 ===================================================== */
 
@@ -732,9 +709,7 @@ async function loadPlans() {
         plan_code,
         plan_name,
         price,
-        daily_earning_limit,
-        referral_initial_commission,
-        referral_renewal_commission
+        daily_earning_limit
       `)
       .order(
         "price",
@@ -840,6 +815,7 @@ function renderPlans() {
           /*
             A higher-priced plan is an upgrade.
           */
+
           const isUpgrade =
             active &&
             currentPlanCode &&
@@ -850,6 +826,7 @@ function renderPlans() {
           /*
             A lower-priced plan is a downgrade.
           */
+
           const isDowngrade =
             active &&
             currentPlanCode &&
@@ -1058,34 +1035,6 @@ function renderPlans() {
                       ✓ Daily earning limit:
                       ${formatNaira(
                         plan.daily_earning_limit
-                      )}
-                    </div>
-                  `
-                  : ""
-              }
-
-
-              ${
-                plan.referral_initial_commission != null
-                  ? `
-                    <div class="membership-benefit">
-                      ✓ Referral initial commission:
-                      ${formatNaira(
-                        plan.referral_initial_commission
-                      )}
-                    </div>
-                  `
-                  : ""
-              }
-
-
-              ${
-                plan.referral_renewal_commission != null
-                  ? `
-                    <div class="membership-benefit">
-                      ✓ Referral renewal commission:
-                      ${formatNaira(
-                        plan.referral_renewal_commission
                       )}
                     </div>
                   `
