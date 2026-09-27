@@ -113,6 +113,19 @@
     }
 
 
+    .quiz-result.limit-reached {
+
+      display: block;
+
+      background: #f5f3ff;
+
+      border: 1px solid #c7d2fe;
+
+      color: #312e81;
+
+    }
+
+
     .quiz-result strong {
       color: inherit;
     }
@@ -125,6 +138,113 @@
 
     .verification-status {
       margin-top: 25px;
+    }
+
+
+    /* ================================================
+       DAILY EARNING LIMIT POPUP
+       ================================================ */
+
+    .earning-limit-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.62);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 9999;
+      backdrop-filter: blur(4px);
+    }
+
+
+    .earning-limit-overlay.show {
+      display: flex;
+    }
+
+
+    .earning-limit-modal {
+      width: 100%;
+      max-width: 430px;
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 28px 24px 24px;
+      box-shadow: 0 20px 60px rgba(15, 23, 42, 0.25);
+      text-align: center;
+      animation: earningLimitPopupIn 0.2s ease-out;
+    }
+
+
+    @keyframes earningLimitPopupIn {
+
+      from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.98);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+
+    }
+
+
+    .earning-limit-icon {
+      width: 58px;
+      height: 58px;
+      margin: 0 auto 16px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #EEF2FF;
+      color: #4338CA;
+      font-size: 25px;
+    }
+
+
+    .earning-limit-modal h3 {
+      margin: 0 0 10px;
+      color: #1E1B4B;
+      font-size: 21px;
+    }
+
+
+    .earning-limit-modal p {
+      margin: 0;
+      color: #4B5563;
+      line-height: 1.6;
+      font-size: 15px;
+    }
+
+
+    .earning-limit-amount {
+      margin: 18px 0;
+      padding: 13px 16px;
+      border-radius: 12px;
+      background: #F5F3FF;
+      color: #4338CA;
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+
+    .earning-limit-modal button {
+      width: 100%;
+      border: 0;
+      border-radius: 10px;
+      padding: 13px 18px;
+      background: #4338CA;
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+
+    .earning-limit-modal button:hover {
+      background: #3730A3;
     }
 
 
@@ -618,6 +738,57 @@
 
 
 <!-- =====================================================
+     DAILY EARNING LIMIT POPUP
+     ===================================================== -->
+
+<div
+  class="earning-limit-overlay"
+  id="earning-limit-overlay"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="earning-limit-title"
+>
+
+  <div class="earning-limit-modal">
+
+    <div class="earning-limit-icon">
+      🔒
+    </div>
+
+
+    <h3 id="earning-limit-title">
+      Daily Earning Limit Reached
+    </h3>
+
+
+    <p id="earning-limit-message">
+      You’ve reached your maximum earning limit for today.
+      Please come back tomorrow.
+    </p>
+
+
+    <div
+      class="earning-limit-amount"
+      id="earning-limit-amount"
+    >
+      Normal earnings today: ₦0 / ₦0
+    </div>
+
+
+    <button
+      type="button"
+      id="earning-limit-close"
+    >
+      Okay
+    </button>
+
+  </div>
+
+</div>
+
+
+
+<!-- =====================================================
      SUPABASE
      ===================================================== -->
 
@@ -654,10 +825,6 @@ let quizQuestions = [];
 
 /*
  * Store the reward loaded from the novels table.
- *
- * This is always read from:
- *
- * novels.approved_reader_reward
  */
 let currentNovelReward = 0;
 
@@ -802,6 +969,30 @@ const quizResult =
   );
 
 
+const earningLimitOverlay =
+  document.getElementById(
+    "earning-limit-overlay"
+  );
+
+
+const earningLimitMessage =
+  document.getElementById(
+    "earning-limit-message"
+  );
+
+
+const earningLimitAmount =
+  document.getElementById(
+    "earning-limit-amount"
+  );
+
+
+const earningLimitClose =
+  document.getElementById(
+    "earning-limit-close"
+  );
+
+
 
 /* =====================================================
    FORMAT MONEY
@@ -836,7 +1027,6 @@ function formatMoney(
       }
     )
   );
-
 
 }
 
@@ -887,6 +1077,252 @@ function escapeHtml(
 
 
 /* =====================================================
+   DAILY EARNING LIMIT POPUP
+   ===================================================== */
+
+
+function closeEarningLimitPopup() {
+
+
+  if (
+    earningLimitOverlay
+  ) {
+
+
+    earningLimitOverlay.classList.remove(
+      "show"
+    );
+
+  }
+
+
+}
+
+
+
+if (
+  earningLimitClose
+) {
+
+
+  earningLimitClose.addEventListener(
+    "click",
+    closeEarningLimitPopup
+  );
+
+}
+
+
+
+if (
+  earningLimitOverlay
+) {
+
+
+  earningLimitOverlay.addEventListener(
+    "click",
+    function (
+      event
+    ) {
+
+
+      if (
+        event.target ===
+        earningLimitOverlay
+      ) {
+
+
+        closeEarningLimitPopup();
+
+      }
+
+
+    }
+  );
+
+}
+
+
+
+/* =====================================================
+   SHOW DAILY EARNING LIMIT
+   ===================================================== */
+
+
+function showEarningLimitPopup(
+  status
+) {
+
+
+  const dailyLimit =
+    Number(
+      status?.daily_limit || 0
+    );
+
+
+  const earnedToday =
+    Number(
+      status?.earned_today || 0
+    );
+
+
+  const planCode =
+    status?.plan_code ||
+    "";
+
+
+  const planName =
+    planCode
+
+      ?
+
+      (
+        planCode.charAt(0).toUpperCase() +
+        planCode.slice(1)
+      )
+
+      :
+
+      "your";
+
+
+  if (
+    earningLimitMessage
+  ) {
+
+
+    earningLimitMessage.textContent =
+      "You’ve reached your maximum earning limit of " +
+      formatMoney(
+        dailyLimit
+      ) +
+      " for today. Please come back tomorrow.";
+
+  }
+
+
+
+  if (
+    earningLimitAmount
+  ) {
+
+
+    earningLimitAmount.textContent =
+      "Normal earnings today: " +
+      formatMoney(
+        earnedToday
+      ) +
+      " / " +
+      formatMoney(
+        dailyLimit
+      ) +
+      " (" +
+      planName +
+      " plan)";
+
+  }
+
+
+
+  if (
+    earningLimitOverlay
+  ) {
+
+
+    earningLimitOverlay.classList.add(
+      "show"
+    );
+
+  }
+
+}
+
+
+
+/* =====================================================
+   CHECK DAILY EARNING LIMIT
+   ===================================================== */
+
+
+/*
+ * This is an early user-facing check.
+ *
+ * The real enforcement remains inside
+ * Supabase when submit_novel_quiz()
+ * attempts to create the task_reward.
+ */
+async function checkDailyEarningLimit() {
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient.rpc(
+      "get_daily_task_earning_status"
+    );
+
+
+
+  if (error) {
+
+
+    console.error(
+      "Unable to check daily earning limit:",
+      error
+    );
+
+
+    /*
+     * Do not block the quiz merely because
+     * the status display RPC failed.
+     *
+     * The server-side transaction trigger
+     * remains the final protection.
+     */
+    return {
+      allowed: true,
+      status: null
+    };
+
+  }
+
+
+
+  const status =
+    data || {};
+
+
+
+  if (
+    status.limit_reached === true
+  ) {
+
+
+    showEarningLimitPopup(
+      status
+    );
+
+
+    return {
+      allowed: false,
+      status: status
+    };
+
+  }
+
+
+
+  return {
+    allowed: true,
+    status: status
+  };
+
+}
+
+
+
+/* =====================================================
    GET CURRENT USER
    ===================================================== */
 
@@ -905,6 +1341,7 @@ async function getCurrentUser() {
       .getUser();
 
 
+
   if (
     error ||
     !user
@@ -920,6 +1357,7 @@ async function getCurrentUser() {
     return null;
 
   }
+
 
 
   return user;
@@ -959,7 +1397,9 @@ async function getAssignmentId() {
    * If assignment ID is in the URL,
    * use it.
    */
-  if (urlAssignmentId) {
+  if (
+    urlAssignmentId
+  ) {
 
 
     console.log(
@@ -980,6 +1420,7 @@ async function getAssignmentId() {
    */
   const user =
     await getCurrentUser();
+
 
 
   if (!user) {
@@ -1028,7 +1469,9 @@ async function getAssignmentId() {
 
 
 
-  if (assignmentError) {
+  if (
+    assignmentError
+  ) {
 
 
     console.error(
@@ -1077,6 +1520,7 @@ async function loadSelectedNovel() {
 
   const user =
     await getCurrentUser();
+
 
 
   if (!user) {
@@ -1216,6 +1660,7 @@ async function loadSelectedNovel() {
     );
 
 
+
   if (
     Number.isFinite(
       rawReadingPercent
@@ -1253,7 +1698,10 @@ async function loadSelectedNovel() {
     );
 
 
-  if (titleElement) {
+
+  if (
+    titleElement
+  ) {
 
 
     titleElement.textContent =
@@ -1275,7 +1723,10 @@ async function loadSelectedNovel() {
     );
 
 
-  if (detailsElement) {
+
+  if (
+    detailsElement
+  ) {
 
 
     detailsElement.textContent =
@@ -1297,6 +1748,7 @@ async function loadSelectedNovel() {
     document.getElementById(
       "novelCover"
     );
+
 
 
   if (
@@ -1330,20 +1782,14 @@ async function loadSelectedNovel() {
     );
 
 
-  /*
-   * Read EXACTLY from:
-   *
-   * approved_reader_reward
-   */
   const rawReward =
     novel.approved_reader_reward;
 
 
-  /*
-   * Convert safely.
-   */
   const reward =
-    Number(rawReward);
+    Number(
+      rawReward
+    );
 
 
 
@@ -1360,9 +1806,6 @@ async function loadSelectedNovel() {
 
 
 
-  /*
-   * The reward must be a positive number.
-   */
   if (
     !Number.isFinite(
       reward
@@ -1386,7 +1829,9 @@ async function loadSelectedNovel() {
       0;
 
 
-    if (rewardElement) {
+    if (
+      rewardElement
+    ) {
 
 
       rewardElement.textContent =
@@ -1394,33 +1839,19 @@ async function loadSelectedNovel() {
 
     }
 
-
-    /*
-     * We do not redirect here.
-     *
-     * The novel can still be displayed,
-     * but the database function must
-     * contain a valid reward before
-     * crediting the reader.
-     */
-
   }
 
   else {
 
 
-    /*
-     * Store the valid reward.
-     */
     currentNovelReward =
       reward;
 
 
 
-    /*
-     * Display the reward.
-     */
-    if (rewardElement) {
+    if (
+      rewardElement
+    ) {
 
 
       rewardElement.textContent =
@@ -1504,7 +1935,9 @@ async function loadNovelPages() {
 
 
 
-  if (error) {
+  if (
+    error
+  ) {
 
 
     console.error(
@@ -1588,6 +2021,7 @@ function calculateProgressPercent() {
   }
 
 
+
   return Math.min(
     100,
 
@@ -1615,6 +2049,7 @@ function hasCompletedRequiredReading() {
 
   const progress =
     calculateProgressPercent();
+
 
 
   return (
@@ -1705,10 +2140,6 @@ async function displayPage() {
 
 
 
-  /*
-   * Check whether required reading
-   * has been completed.
-   */
   if (
     hasCompletedRequiredReading()
   ) {
@@ -1721,13 +2152,10 @@ async function displayPage() {
 
 
     progressMessage.textContent =
-      "You have completed the required reading. Complete the verification quiz below.";
+      "You have completed the required reading. Your verification quiz is now available below.";
 
 
 
-    /*
-     * Load the quiz.
-     */
     await loadQuiz();
 
 
@@ -1753,9 +2181,6 @@ async function displayPage() {
 
 
 
-  /*
-   * Navigation button.
-   */
   if (
     currentPage >= totalPages
   ) {
@@ -1862,7 +2287,9 @@ async function saveProgress() {
 
 
 
-  if (error) {
+  if (
+    error
+  ) {
 
 
     console.error(
@@ -2039,7 +2466,9 @@ async function loadQuiz() {
 
 
 
-  if (error) {
+  if (
+    error
+  ) {
 
 
     console.error(
@@ -2399,7 +2828,9 @@ quizForm.addEventListener(
        =============================================== */
 
 
-    if (!novelReaderId) {
+    if (
+      !novelReaderId
+    ) {
 
 
       alert(
@@ -2484,7 +2915,9 @@ quizForm.addEventListener(
 
 
 
-        if (selected) {
+        if (
+          selected
+        ) {
 
 
           answers[
@@ -2525,6 +2958,27 @@ quizForm.addEventListener(
 
 
     /* ===============================================
+       CHECK DAILY EARNING LIMIT
+       =============================================== */
+
+
+    const limitCheck =
+      await checkDailyEarningLimit();
+
+
+
+    if (
+      !limitCheck.allowed
+    ) {
+
+
+      return;
+
+    }
+
+
+
+    /* ===============================================
        SUBMIT BUTTON
        =============================================== */
 
@@ -2536,7 +2990,9 @@ quizForm.addEventListener(
 
 
 
-    if (submitButton) {
+    if (
+      submitButton
+    ) {
 
 
       submitButton.disabled =
@@ -2580,7 +3036,9 @@ quizForm.addEventListener(
        =============================================== */
 
 
-    if (error) {
+    if (
+      error
+    ) {
 
 
       console.error(
@@ -2589,6 +3047,143 @@ quizForm.addEventListener(
       );
 
 
+      /*
+       * The daily limit trigger may reject
+       * the task_reward transaction.
+       *
+       * Convert that technical error into
+       * the clean user-facing limit message.
+       */
+      const errorMessage =
+        String(
+          error.message ||
+          ""
+        );
+
+
+      const lowerErrorMessage =
+        errorMessage.toLowerCase();
+
+
+      const isDailyLimitError =
+
+        lowerErrorMessage.includes(
+          "maximum earning limit"
+        ) ||
+
+        lowerErrorMessage.includes(
+          "daily earning limit"
+        ) ||
+
+        lowerErrorMessage.includes(
+          "would exceed your daily earning limit"
+        ) ||
+
+        lowerErrorMessage.includes(
+          "reached your maximum earning limit"
+        ) ||
+
+        lowerErrorMessage.includes(
+          "per day from normal activities"
+        );
+
+
+
+      if (
+        isDailyLimitError
+      ) {
+
+
+        /*
+         * Ask the status RPC for the
+         * exact current amount and plan.
+         */
+        const latestLimit =
+          await checkDailyEarningLimit();
+
+
+
+        if (
+          latestLimit.status
+        ) {
+
+
+          /*
+           * checkDailyEarningLimit()
+           * already displays the popup when
+           * limit_reached is true.
+           *
+           * If the reward itself caused the
+           * limit to be exceeded, the RPC may
+           * still report remaining balance.
+           *
+           * Display the popup directly using
+           * the latest status.
+           */
+          if (
+            latestLimit.status.limit_reached !== true
+          ) {
+
+
+            showEarningLimitPopup(
+              latestLimit.status
+            );
+
+          }
+
+        }
+
+        else {
+
+
+          quizResult.className =
+            "quiz-result limit-reached";
+
+
+          quizResult.innerHTML =
+            `
+
+              <strong>
+                Daily earning limit reached.
+              </strong>
+
+              <p>
+                This reward could not be credited because
+                it would exceed your normal earning limit
+                for today. Please come back tomorrow.
+              </p>
+
+            `;
+
+        }
+
+
+
+        if (
+          submitButton
+        ) {
+
+
+          submitButton.disabled =
+            false;
+
+
+          submitButton.textContent =
+            "Submit Quiz";
+
+        }
+
+
+
+        return;
+
+      }
+
+
+
+      /*
+       * Normal database error.
+       */
       quizResult.className =
         "quiz-result failed";
 
@@ -2616,7 +3211,9 @@ quizForm.addEventListener(
 
 
 
-      if (submitButton) {
+      if (
+        submitButton
+      ) {
 
 
         submitButton.disabled =
@@ -2711,7 +3308,9 @@ quizForm.addEventListener(
 
 
 
-      if (submitButton) {
+      if (
+        submitButton
+      ) {
 
 
         submitButton.disabled =
@@ -2736,16 +3335,6 @@ quizForm.addEventListener(
        =============================================== */
 
 
-    /*
-     * The amount returned by the database
-     * is preferred.
-     *
-     * If the database does not return an
-     * amount, display the reward loaded
-     * from approved_reader_reward.
-     */
-
-
     let creditedAmount =
       Number(
         data.amount ??
@@ -2756,9 +3345,6 @@ quizForm.addEventListener(
 
 
 
-    /*
-     * Final safety fallback.
-     */
     if (
       !Number.isFinite(
         creditedAmount
@@ -2845,7 +3431,9 @@ quizForm.addEventListener(
 
 
 
-    if (submitButton) {
+    if (
+      submitButton
+    ) {
 
 
       submitButton.disabled =
@@ -2881,7 +3469,9 @@ async function initializeReading() {
 
 
 
-  if (!assignmentId) {
+  if (
+    !assignmentId
+  ) {
 
 
     alert(
@@ -2921,7 +3511,9 @@ async function initializeReading() {
 
 
 
-  if (!novelLoaded) {
+  if (
+    !novelLoaded
+  ) {
 
 
     return;
@@ -2940,7 +3532,9 @@ async function initializeReading() {
 
 
 
-  if (!pagesLoaded) {
+  if (
+    !pagesLoaded
+  ) {
 
 
     return;
