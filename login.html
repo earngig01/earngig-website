@@ -88,6 +88,7 @@
         id="email"
         name="email"
         placeholder="Enter your email address"
+        autocomplete="email"
         required
       >
 
@@ -103,6 +104,7 @@
         id="password"
         name="password"
         placeholder="Enter your password"
+        autocomplete="current-password"
         required
       >
 
@@ -110,10 +112,12 @@
 
       <div class="login-options">
 
-
         <label class="remember">
 
-          <input type="checkbox">
+          <input
+            type="checkbox"
+            id="remember-me"
+          >
 
           Remember me
 
@@ -123,7 +127,6 @@
         <a href="#">
           Forgot password?
         </a>
-
 
       </div>
 
@@ -194,6 +197,11 @@
 
 <script>
 
+/*
+ * =====================================================
+ * ELEMENTS
+ * =====================================================
+ */
 
 const loginForm =
   document.getElementById(
@@ -207,178 +215,23 @@ const loginButton =
   );
 
 
-let loggedInUser = null;
-
-
-
 /*
- * ==================================================
- * OPEN FLUTTERWAVE MEMBERSHIP PAYMENT
- * ==================================================
- */
-
-async function openMembershipPayment() {
-
-
-  if (!loggedInUser) {
-
-    alert(
-      "Please log in first."
-    );
-
-    return;
-
-  }
-
-
-  loginButton.disabled =
-    true;
-
-
-  loginButton.type =
-    "button";
-
-
-  loginButton.textContent =
-    "Opening Flutterwave...";
-
-
-  try {
-
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .functions
-        .invoke(
-          "flutterwave-payment",
-          {
-            body: {
-              action:
-                "initialize",
-
-              payment_type:
-                "membership",
-
-              membership_stage:
-                "initial"
-            }
-          }
-        );
-
-
-    console.log(
-      "Flutterwave initialization:",
-      data,
-      error
-    );
-
-
-    if (error) {
-
-      console.error(
-        "Flutterwave initialization error:",
-        error
-      );
-
-
-      throw new Error(
-        error.message ||
-        "Unable to start Flutterwave payment."
-      );
-
-    }
-
-
-    if (
-      !data ||
-      !data.success ||
-      !data.payment_url
-    ) {
-
-      console.error(
-        "Invalid Flutterwave response:",
-        data
-      );
-
-
-      throw new Error(
-        data?.error ||
-        "Flutterwave payment link was not returned."
-      );
-
-    }
-
-
-    window.location.href =
-      data.payment_url;
-
-
-  } catch (error) {
-
-
-    console.error(
-      "Flutterwave payment error:",
-      error
-    );
-
-
-    alert(
-      error?.message ||
-      "Unable to open Flutterwave payment. Please try again."
-    );
-
-
-    loginButton.disabled =
-      false;
-
-
-    loginButton.type =
-      "button";
-
-
-    loginButton.textContent =
-      "Pay ₦9,000 to Continue";
-
-
-    loginButton.onclick =
-      openMembershipPayment;
-
-  }
-
-}
-
-
-
-/*
- * ==================================================
- * CLAIM DAILY LOGIN REWARD
- * ==================================================
+ * =====================================================
+ * DAILY LOGIN REWARD
+ * =====================================================
  *
  * The database function controls the reward.
  *
- * One reward per Nigeria calendar day.
+ * The client does not choose the amount.
  *
- * Reward:
- * ₦50
- *
- * The function also updates:
- *
- * wallets.balance
- * wallets.total_earned
- * transactions
- *
- * The client cannot choose the amount.
- * ==================================================
+ * If the reward has already been claimed today,
+ * nothing is credited.
+ * =====================================================
  */
 
 async function claimDailyLoginReward() {
 
-
   try {
-
 
     const {
       data,
@@ -404,24 +257,19 @@ async function claimDailyLoginReward() {
         error
       );
 
+      return;
+
+    }
+
+
+    if (!data) {
 
       return;
 
     }
 
 
-    if (
-      !data
-    ) {
-
-      return;
-
-    }
-
-
-    if (
-      data.already_claimed
-    ) {
+    if (data.already_claimed) {
 
       return;
 
@@ -432,7 +280,6 @@ async function claimDailyLoginReward() {
       data.success &&
       Number(data.amount || 0) > 0
     ) {
-
 
       alert(
         "🎉 Daily Login Reward!\n\n" +
@@ -445,16 +292,13 @@ async function claimDailyLoginReward() {
         " has been credited to your wallet."
       );
 
-
     }
-
 
   } catch (error) {
 
-
     /*
-     * A daily reward failure must not prevent
-     * a member from logging into EarnGig.
+     * A reward failure must never prevent
+     * the user from logging in.
      */
 
     console.error(
@@ -469,15 +313,244 @@ async function claimDailyLoginReward() {
 
 
 /*
- * ==================================================
+ * =====================================================
+ * CHECK EXISTING SESSION
+ * =====================================================
+ *
+ * If the user is already logged in and opens
+ * login.html, send them to the correct page.
+ * =====================================================
+ */
+
+async function checkExistingSession() {
+
+  try {
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .auth
+        .getSession();
+
+
+    if (error) {
+
+      console.error(
+        "Session check error:",
+        error
+      );
+
+      return;
+
+    }
+
+
+    const user =
+      data?.session?.user;
+
+
+    if (!user) {
+
+      return;
+
+    }
+
+
+    /*
+     * User is already authenticated.
+     *
+     * Check membership so we know whether to
+     * send them to the dashboard or membership page.
+     */
+
+    await routeAuthenticatedUser(
+      user,
+      false
+    );
+
+  } catch (error) {
+
+    console.error(
+      "Existing session error:",
+      error
+    );
+
+  }
+
+}
+
+
+
+/*
+ * =====================================================
+ * ROUTE AUTHENTICATED USER
+ * =====================================================
+ */
+
+async function routeAuthenticatedUser(
+  user,
+  claimReward
+) {
+
+  /*
+   * ---------------------------------------------------
+   * LOAD MEMBERSHIP
+   * ---------------------------------------------------
+   */
+
+  const {
+    data: membership,
+    error: membershipError
+  } =
+    await supabaseClient
+      .from("memberships")
+      .select(`
+        status,
+        plan_code,
+        current_period_start,
+        current_period_end,
+        next_payment_at,
+        payment_count
+      `)
+      .eq(
+        "user_id",
+        user.id
+      )
+      .maybeSingle();
+
+
+  if (membershipError) {
+
+    console.error(
+      "Membership check error:",
+      membershipError
+    );
+
+
+    alert(
+      "Unable to verify your membership. Please try again."
+    );
+
+
+    loginButton.disabled =
+      false;
+
+
+    loginButton.textContent =
+      "Login";
+
+
+    return;
+
+  }
+
+
+
+  /*
+   * ---------------------------------------------------
+   * NO MEMBERSHIP
+   * ---------------------------------------------------
+   *
+   * This is a new user who has not started
+   * membership yet.
+   *
+   * Send them to membership selection.
+   */
+
+  if (!membership) {
+
+    window.location.href =
+      "membership.html";
+
+    return;
+
+  }
+
+
+
+  /*
+   * ---------------------------------------------------
+   * DETERMINE ACTIVE MEMBERSHIP
+   * ---------------------------------------------------
+   */
+
+  const periodEnd =
+    membership.current_period_end
+      ? new Date(
+          membership.current_period_end
+        )
+      : null;
+
+
+  const membershipIsActive =
+    membership.status === "active" &&
+    periodEnd &&
+    periodEnd.getTime() > Date.now();
+
+
+
+  /*
+   * ---------------------------------------------------
+   * ACTIVE MEMBERSHIP
+   * ---------------------------------------------------
+   */
+
+  if (membershipIsActive) {
+
+    if (claimReward) {
+
+      loginButton.textContent =
+        "Claiming daily reward...";
+
+
+      await claimDailyLoginReward();
+
+    }
+
+
+    window.location.href =
+      "dashboard.html";
+
+
+    return;
+
+  }
+
+
+
+  /*
+   * ---------------------------------------------------
+   * INACTIVE / EXPIRED MEMBERSHIP
+   * ---------------------------------------------------
+   *
+   * Do not attempt payment here.
+   *
+   * membership.html now controls:
+   *
+   * - renewal
+   * - upgrade
+   * - plan selection
+   * - Flutterwave
+   */
+
+  window.location.href =
+    "membership.html";
+
+}
+
+
+
+/*
+ * =====================================================
  * LOGIN
- * ==================================================
+ * =====================================================
  */
 
 loginForm.addEventListener(
   "submit",
   async function(event) {
-
 
     event.preventDefault();
 
@@ -517,19 +590,14 @@ loginForm.addEventListener(
       true;
 
 
-    loginButton.type =
-      "submit";
-
-
     loginButton.textContent =
       "Checking...";
 
 
-
     /*
-     * --------------------------------------------------
+     * ---------------------------------------------------
      * SIGN IN
-     * --------------------------------------------------
+     * ---------------------------------------------------
      */
 
     const {
@@ -546,7 +614,6 @@ loginForm.addEventListener(
 
     if (error) {
 
-
       console.error(
         "Login error:",
         error
@@ -554,16 +621,13 @@ loginForm.addEventListener(
 
 
       alert(
-        error.message
+        error.message ||
+        "Unable to log in. Please check your details and try again."
       );
 
 
       loginButton.disabled =
         false;
-
-
-      loginButton.type =
-        "submit";
 
 
       loginButton.textContent =
@@ -575,12 +639,11 @@ loginForm.addEventListener(
     }
 
 
-    loggedInUser =
+    const user =
       data?.user;
 
 
-    if (!loggedInUser) {
-
+    if (!user) {
 
       alert(
         "Unable to verify your account."
@@ -591,10 +654,6 @@ loginForm.addEventListener(
         false;
 
 
-      loginButton.type =
-        "submit";
-
-
       loginButton.textContent =
         "Login";
 
@@ -604,199 +663,42 @@ loginForm.addEventListener(
     }
 
 
-
     /*
-     * --------------------------------------------------
-     * CHECK MEMBERSHIP
-     * --------------------------------------------------
+     * ---------------------------------------------------
+     * ROUTE USER
+     * ---------------------------------------------------
+     *
+     * If active:
+     *     daily reward → dashboard
+     *
+     * If expired:
+     *     membership.html
+     *
+     * If no membership:
+     *     membership.html
      */
 
     loginButton.textContent =
       "Checking membership...";
 
 
-    const {
-      data: membership,
-      error: membershipError
-    } =
-      await supabaseClient
-        .from("memberships")
-        .select(`
-          status,
-          current_period_start,
-          current_period_end,
-          next_payment_at
-        `)
-        .eq(
-          "user_id",
-          loggedInUser.id
-        )
-        .maybeSingle();
-
-
-    if (membershipError) {
-
-
-      console.error(
-        "Membership check error:",
-        membershipError
-      );
-
-
-      alert(
-        "Unable to verify your membership. Please try again."
-      );
-
-
-      loginButton.disabled =
-        false;
-
-
-      loginButton.type =
-        "submit";
-
-
-      loginButton.textContent =
-        "Login";
-
-
-      return;
-
-    }
-
-
-
-    /*
-     * --------------------------------------------------
-     * NO MEMBERSHIP
-     *
-     * First-time membership payment = ₦9,000
-     *
-     * No daily reward is given here.
-     * --------------------------------------------------
-     */
-
-    if (!membership) {
-
-
-      loginButton.disabled =
-        false;
-
-
-      loginButton.type =
-        "button";
-
-
-      loginButton.textContent =
-        "Pay ₦9,000 to Continue";
-
-
-      loginButton.onclick =
-        openMembershipPayment;
-
-
-      return;
-
-    }
-
-
-
-    /*
-     * --------------------------------------------------
-     * CHECK CURRENT MEMBERSHIP PERIOD
-     * --------------------------------------------------
-     */
-
-    const periodEnd =
-      membership.current_period_end
-        ? new Date(
-            membership.current_period_end
-          )
-        : null;
-
-
-    const membershipIsActive =
-      membership.status === "active" &&
-      periodEnd &&
-      periodEnd.getTime() >
-        Date.now();
-
-
-
-    /*
-     * --------------------------------------------------
-     * ACTIVE MEMBERSHIP
-     * --------------------------------------------------
-     */
-
-    if (membershipIsActive) {
-
-
-      /*
-       * Claim today's ₦50 reward.
-       *
-       * This happens before entering the dashboard.
-       *
-       * If the reward was already claimed today,
-       * the function simply returns without paying again.
-       */
-
-      loginButton.textContent =
-        "Claiming daily reward...";
-
-
-      await claimDailyLoginReward();
-
-
-      /*
-       * Go to dashboard.
-       */
-
-      window.location.href =
-        "dashboard.html";
-
-
-      return;
-
-    }
-
-
-
-    /*
-     * --------------------------------------------------
-     * EXPIRED / INACTIVE MEMBERSHIP
-     *
-     * Renewal amount = ₦5,000
-     *
-     * No daily reward is given while membership
-     * is inactive.
-     * --------------------------------------------------
-     */
-
-    loginButton.disabled =
-      false;
-
-
-    loginButton.type =
-      "button";
-
-
-    loginButton.textContent =
-      "Renew for ₦5,000";
-
-
-    loginButton.onclick =
-      function() {
-
-        window.location.href =
-          "membership.html";
-
-      };
-
+    await routeAuthenticatedUser(
+      user,
+      true
+    );
 
   }
 );
 
+
+
+/*
+ * =====================================================
+ * START
+ * =====================================================
+ */
+
+checkExistingSession();
 
 </script>
 
