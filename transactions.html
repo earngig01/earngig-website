@@ -50,7 +50,6 @@
 
     </a>
 
-
   </div>
 
 </header>
@@ -85,7 +84,6 @@
 
 
       </div>
-
 
     </div>
 
@@ -214,27 +212,21 @@
         id="transactionList"
       >
 
-
         <div class="empty-state">
-
 
           <div class="empty-icon">
             ₦
           </div>
 
-
           <h3>
             Loading transactions...
           </h3>
-
 
           <p>
             Please wait.
           </p>
 
-
         </div>
-
 
       </div>
 
@@ -349,31 +341,19 @@ let allTransactions = [];
 
 function formatNaira(amount) {
 
-
   const value =
     Number(amount || 0);
 
-
   return (
-
     "₦" +
-
     Math.abs(value).toLocaleString(
-
       "en-NG",
-
       {
-
         minimumFractionDigits: 0,
-
         maximumFractionDigits: 2
-
       }
-
     )
-
   );
-
 
 }
 
@@ -385,49 +365,32 @@ function formatNaira(amount) {
 
 function formatDate(dateValue) {
 
-
   if (!dateValue) {
-
     return "";
-
   }
-
 
   const date =
     new Date(dateValue);
-
 
   if (
     Number.isNaN(
       date.getTime()
     )
   ) {
-
     return "";
-
   }
 
-
   return date.toLocaleDateString(
-
     "en-NG",
-
     {
-
+      timeZone: "Africa/Lagos",
       day: "numeric",
-
       month: "short",
-
       year: "numeric",
-
       hour: "2-digit",
-
       minute: "2-digit"
-
     }
-
   );
-
 
 }
 
@@ -439,105 +402,188 @@ function formatDate(dateValue) {
 
 function getTransactionType(transaction) {
 
-
   return String(
-
     transaction.type || ""
-
   )
-  .toLowerCase()
-  .trim();
-
+    .toLowerCase()
+    .trim();
 
 }
 
 
 
 /* =========================================
-   CHECK IF DEBIT
+   TRANSACTION CATEGORIES
 
-   DEBIT = MONEY LEAVING WALLET
+   These are deliberately explicit.
 
-   Examples:
-
-   listing_fee
-   withdrawal
-   payment
-   charge
+   This prevents unrelated credit
+   transactions from automatically
+   being counted as earnings.
 ========================================= */
 
-function isDebit(transaction) {
 
+/* -----------------------------------------
+   REAL MEMBER EARNINGS
+----------------------------------------- */
+
+const EARNING_TYPES = new Set([
+
+  "task_reward",
+
+  "watch_earn",
+
+  "referral_bonus",
+
+  "referral_earning",
+
+  "referral_commission",
+
+  "novel_writer_earnings",
+
+  "novel_earnings",
+
+  "competition_prize",
+
+  "daily_login_reward"
+
+]);
+
+
+
+/* -----------------------------------------
+   REFUNDS / CREDITS THAT ARE NOT
+   NORMAL EARNINGS
+----------------------------------------- */
+
+const REFUND_TYPES = new Set([
+
+  "task_refund",
+
+  "refund"
+
+]);
+
+
+
+/* -----------------------------------------
+   WITHDRAWALS
+----------------------------------------- */
+
+const WITHDRAWAL_TYPES = new Set([
+
+  "withdrawal",
+
+  "withdrawal_fee"
+
+]);
+
+
+
+/* -----------------------------------------
+   PAYMENTS / FEES / DEBITS
+----------------------------------------- */
+
+const PAYMENT_TYPES = new Set([
+
+  "listing_fee",
+
+  "novel_listing_fee",
+
+  "payment",
+
+  "task_payment",
+
+  "fee",
+
+  "charge",
+
+  "debit",
+
+  "membership_payment"
+
+]);
+
+
+
+/* -----------------------------------------
+   ADVERTISER PAYMENT
+
+   This is NOT member earnings.
+----------------------------------------- */
+
+const NON_MEMBER_CREDIT_TYPES = new Set([
+
+  "advert_payment"
+
+]);
+
+
+
+/* =========================================
+   CHECK IF WITHDRAWAL
+========================================= */
+
+function isWithdrawal(transaction) {
 
   const type =
     getTransactionType(
       transaction
     );
 
+  return WITHDRAWAL_TYPES.has(type)
+    || type.includes("withdraw");
 
-  const debitTypes = [
-
-    "listing_fee",
-
-    "withdrawal",
-
-    "withdrawal_fee",
-
-    "payment",
-
-    "task_payment",
-
-    "fee",
-
-    "charge",
-
-    "debit"
-
-  ];
+}
 
 
-  /*
-   * Exact transaction types
-   */
 
+/* =========================================
+   CHECK IF PAYMENT / FEE
+========================================= */
+
+function isPayment(transaction) {
+
+  const type =
+    getTransactionType(
+      transaction
+    );
 
   if (
-    debitTypes.includes(type)
+    PAYMENT_TYPES.has(type)
   ) {
-
     return true;
-
   }
 
-
-  /*
-   * Extra protection for
-   * transaction type names
-   * containing these words.
-   */
-
-
   if (
+    isWithdrawal(transaction)
+  ) {
+    return false;
+  }
 
-    type.includes("withdraw") ||
-
+  return (
     type.includes("fee") ||
-
-    type.includes("payment") ||
-
     type.includes("charge") ||
+    type.includes("payment") ||
+    type === "debit"
+  );
 
-    type.includes("debit")
-
-  ) {
-
-    return true;
-
-  }
+}
 
 
-  return false;
 
+/* =========================================
+   CHECK IF REFUND
+========================================= */
+
+function isRefund(transaction) {
+
+  const type =
+    getTransactionType(
+      transaction
+    );
+
+  return REFUND_TYPES.has(type);
 
 }
 
@@ -545,15 +591,55 @@ function isDebit(transaction) {
 
 /* =========================================
    CHECK IF EARNING
+
+   IMPORTANT:
+
+   Only known earning types count.
+
+   Unknown transaction types do NOT
+   automatically become earnings.
 ========================================= */
 
 function isEarning(transaction) {
 
+  const type =
+    getTransactionType(
+      transaction
+    );
 
-  return !isDebit(
-    transaction
+  return EARNING_TYPES.has(type);
+
+}
+
+
+
+/* =========================================
+   CHECK IF NON-EARNING CREDIT
+========================================= */
+
+function isNonMemberCredit(transaction) {
+
+  const type =
+    getTransactionType(
+      transaction
+    );
+
+  return NON_MEMBER_CREDIT_TYPES.has(type);
+
+}
+
+
+
+/* =========================================
+   CHECK IF DEBIT
+========================================= */
+
+function isDebit(transaction) {
+
+  return (
+    isWithdrawal(transaction) ||
+    isPayment(transaction)
   );
-
 
 }
 
@@ -565,7 +651,6 @@ function isEarning(transaction) {
 
 function getTransactionTitle(transaction) {
 
-
   const type =
     getTransactionType(
       transaction
@@ -574,102 +659,108 @@ function getTransactionTitle(transaction) {
 
   const titles = {
 
-
     "novel_earnings":
-
       "Novel writer earnings released",
 
+    "novel_writer_earnings":
+      "Novel writer earnings released",
 
     "novel_reader_reward":
-
       "Novel reading reward",
 
-
     "task_reward":
-
       "Task reward",
 
-
-    "listing_fee":
-
-      "Novel listing fee",
-
-
-    "withdrawal":
-
-      "Withdrawal",
-
-
-    "withdrawal_fee":
-
-      "Withdrawal fee",
-
+    "watch_earn":
+      "Watch & Earn reward",
 
     "referral_bonus":
-
       "Referral bonus",
 
+    "referral_earning":
+      "Referral earning",
+
+    "referral_commission":
+      "Referral commission",
+
+    "competition_prize":
+      "Competition prize",
+
+    "daily_login_reward":
+      "Daily login reward",
+
+    "task_refund":
+      "Task refund",
+
+    "refund":
+      "Refund",
+
+    "novel_listing_fee":
+      "Novel listing fee",
+
+    "listing_fee":
+      "Listing fee",
+
+    "withdrawal":
+      "Withdrawal",
+
+    "withdrawal_fee":
+      "Withdrawal fee",
+
+    "task_payment":
+      "Task payment",
 
     "payment":
+      "Payment",
 
-      "Payment"
+    "membership_payment":
+      "Membership payment",
 
+    "fee":
+      "Fee",
+
+    "charge":
+      "Charge",
+
+    "debit":
+      "Wallet debit",
+
+    "advert_payment":
+      "Advert payment"
 
   };
 
 
   if (titles[type]) {
-
     return titles[type];
-
   }
-
-
-  /*
-   * Use description if available
-   */
 
 
   if (
     transaction.description
   ) {
-
     return transaction.description;
-
   }
-
-
-  /*
-   * Convert transaction type
-   * into readable text
-   */
 
 
   if (type) {
 
     return type
-
       .replace(
         /_/g,
         " "
       )
-
       .replace(
         /\b\w/g,
-
         function(letter) {
-
           return letter.toUpperCase();
-
         }
-
       );
 
   }
 
 
   return "Wallet transaction";
-
 
 }
 
@@ -683,12 +774,10 @@ function getTransactionStatus(
   transaction
 ) {
 
-
   return (
     transaction.status ||
     "completed"
   );
-
 
 }
 
@@ -696,28 +785,19 @@ function getTransactionStatus(
 
 /* =========================================
    GET SIGN
-
-   + = MONEY ENTERING WALLET
-
-   − = MONEY LEAVING WALLET
 ========================================= */
 
 function getTransactionSign(
   transaction
 ) {
 
-
   if (
     isDebit(transaction)
   ) {
-
     return "−";
-
   }
 
-
   return "+";
-
 
 }
 
@@ -731,18 +811,13 @@ function getAmountClass(
   transaction
 ) {
 
-
   if (
     isDebit(transaction)
   ) {
-
     return "transaction-debit";
-
   }
 
-
   return "transaction-credit";
-
 
 }
 
@@ -754,19 +829,15 @@ function getAmountClass(
 
 function escapeHtml(value) {
 
-
   const div =
     document.createElement(
       "div"
     );
 
-
   div.textContent =
     String(value ?? "");
 
-
   return div.innerHTML;
-
 
 }
 
@@ -778,37 +849,26 @@ function escapeHtml(value) {
 
 async function loadTransactions() {
 
-
   try {
 
-
     const {
-
       data: {
         user
       },
-
       error: userError
-
     } =
-
       await supabaseClient
         .auth
         .getUser();
 
 
     if (
-
       userError ||
-
       !user
-
     ) {
-
 
       window.location.href =
         "login.html";
-
 
       return;
 
@@ -816,55 +876,35 @@ async function loadTransactions() {
 
 
 
-    /* =====================================
-       LOAD USER TRANSACTIONS
-    ===================================== */
-
     const {
-
       data,
-
       error
-
     } =
-
       await supabaseClient
-
         .from("transactions")
-
         .select("*")
-
         .eq(
           "user_id",
           user.id
         )
-
         .order(
           "created_at",
           {
-
             ascending: false
-
           }
-
         );
 
 
-
     if (error) {
-
 
       console.error(
         "Transaction loading error:",
         error
       );
 
-
       throw error;
 
-
     }
-
 
 
     allTransactions =
@@ -873,17 +913,13 @@ async function loadTransactions() {
 
     updateSummary();
 
-
     renderTransactions(
       allTransactions
     );
 
-
   }
 
-
   catch (error) {
-
 
     console.error(
       "Unable to load transactions:",
@@ -916,9 +952,7 @@ async function loadTransactions() {
 
     `;
 
-
   }
-
 
 }
 
@@ -930,12 +964,9 @@ async function loadTransactions() {
 
 function updateSummary() {
 
-
   let totalEarned = 0;
 
-
   let totalWithdrawn = 0;
-
 
   let thisMonthAmount = 0;
 
@@ -947,7 +978,6 @@ function updateSummary() {
   allTransactions.forEach(
     function(transaction) {
 
-
       const amount =
         Number(
           transaction.amount || 0
@@ -957,16 +987,20 @@ function updateSummary() {
       if (
         !Number.isFinite(amount)
       ) {
-
         return;
-
       }
 
 
-      /*
-       * Earnings
-       */
 
+      /* -----------------------------------
+         TOTAL EARNED
+
+         Only explicit earning types count.
+
+         Refunds, advertiser payments,
+         fees and other credits do NOT
+         inflate this figure.
+      ----------------------------------- */
 
       if (
         isEarning(transaction)
@@ -978,38 +1012,55 @@ function updateSummary() {
       }
 
 
-      /*
-       * Withdrawals only
-       */
 
+      /* -----------------------------------
+         TOTAL WITHDRAWN
+      ----------------------------------- */
 
       if (
-
-        getTransactionType(
-          transaction
-        )
-        .includes("withdrawal")
-
+        isWithdrawal(transaction)
       ) {
 
-        totalWithdrawn +=
-          Math.abs(amount);
+        /*
+         * Withdrawal fees are not added
+         * separately to Total Withdrawn.
+         *
+         * Only the actual withdrawal
+         * amount counts.
+         */
+
+        if (
+          getTransactionType(
+            transaction
+          ) !== "withdrawal_fee"
+        ) {
+
+          totalWithdrawn +=
+            Math.abs(amount);
+
+        }
 
       }
 
 
-      /*
-       * This month
 
-       * Debit amounts reduce
-       * the monthly net amount.
-       */
+      /* -----------------------------------
+         THIS MONTH
 
+         This shows wallet movement:
+
+         + earning
+         + refund
+         - withdrawal
+         - payment / fee
+
+         Other non-member credit types
+         are not treated as earnings.
+      ----------------------------------- */
 
       if (
         transaction.created_at
       ) {
-
 
         const date =
           new Date(
@@ -1018,41 +1069,67 @@ function updateSummary() {
 
 
         if (
-
-          date.getMonth() ===
-            now.getMonth() &&
-
-          date.getFullYear() ===
-            now.getFullYear()
-
+          !Number.isNaN(
+            date.getTime()
+          )
         ) {
+
+          const transactionDate =
+            new Intl.DateTimeFormat(
+              "en-CA",
+              {
+                timeZone: "Africa/Lagos",
+                year: "numeric",
+                month: "2-digit"
+              }
+            ).format(date);
+
+
+          const currentDate =
+            new Intl.DateTimeFormat(
+              "en-CA",
+              {
+                timeZone: "Africa/Lagos",
+                year: "numeric",
+                month: "2-digit"
+              }
+            ).format(now);
 
 
           if (
-            isDebit(transaction)
+            transactionDate ===
+            currentDate
           ) {
 
-            thisMonthAmount -=
-              Math.abs(amount);
+            if (
+              isEarning(transaction) ||
+              isRefund(transaction)
+            ) {
+
+              thisMonthAmount +=
+                Math.abs(amount);
+
+            }
+
+            else if (
+              isWithdrawal(transaction) ||
+              isPayment(transaction)
+            ) {
+
+              thisMonthAmount -=
+                Math.abs(amount);
+
+            }
 
           }
-
-          else {
-
-            thisMonthAmount +=
-              Math.abs(amount);
-
-          }
-
 
         }
 
-
       }
-
 
     }
   );
+
 
 
   totalEarnedElement.textContent =
@@ -1065,12 +1142,6 @@ function updateSummary() {
     formatNaira(
       totalWithdrawn
     );
-
-
-  /*
-   * This month can show
-   * negative value
-   */
 
 
   thisMonthElement.textContent =
@@ -1091,12 +1162,10 @@ function updateSummary() {
 
 
   transactionCountElement.textContent =
-
     allTransactions.length
       .toLocaleString(
         "en-NG"
       );
-
 
 }
 
@@ -1110,15 +1179,10 @@ function renderTransactions(
   transactions
 ) {
 
-
   if (
-
     !transactions ||
-
     transactions.length === 0
-
   ) {
-
 
     transactionList.innerHTML = `
 
@@ -1148,9 +1212,7 @@ function renderTransactions(
 
     `;
 
-
     return;
-
 
   }
 
@@ -1159,10 +1221,8 @@ function renderTransactions(
   transactionList.innerHTML =
 
     transactions
-
       .map(
         function(transaction) {
-
 
           const amount =
             Number(
@@ -1215,9 +1275,7 @@ function renderTransactions(
 
             <div class="transaction-item">
 
-
               <div class="transaction-main">
-
 
                 <div class="transaction-icon">
 
@@ -1232,38 +1290,28 @@ function renderTransactions(
 
                 <div class="transaction-info">
 
-
                   <strong>
-
                     ${escapeHtml(title)}
-
                   </strong>
 
 
                   <small>
-
                     ${escapeHtml(date)}
-
                   </small>
 
 
                   <span>
-
                     Ref:
                     ${escapeHtml(reference)}
-
                   </span>
 
-
                 </div>
-
 
               </div>
 
 
 
               <div class="transaction-amount-box">
-
 
                 <strong
                   class="${amountClass}"
@@ -1275,25 +1323,18 @@ function renderTransactions(
 
 
                 <span>
-
                   ${escapeHtml(status)}
-
                 </span>
 
-
               </div>
-
 
             </div>
 
           `;
 
-
         }
       )
-
       .join("");
-
 
 }
 
@@ -1304,11 +1345,8 @@ function renderTransactions(
 ========================================= */
 
 transactionFilter.addEventListener(
-
   "change",
-
   function() {
-
 
     const filter =
       this.value;
@@ -1318,13 +1356,16 @@ transactionFilter.addEventListener(
       allTransactions;
 
 
+
+    /* -----------------------------------
+       EARNINGS
+    ----------------------------------- */
+
     if (
       filter === "earnings"
     ) {
 
-
       filteredTransactions =
-
         allTransactions.filter(
           function(transaction) {
 
@@ -1335,82 +1376,62 @@ transactionFilter.addEventListener(
           }
         );
 
-
     }
 
 
+
+    /* -----------------------------------
+       WITHDRAWALS
+    ----------------------------------- */
 
     else if (
       filter === "withdrawals"
     ) {
 
-
       filteredTransactions =
-
         allTransactions.filter(
           function(transaction) {
 
-
-            return getTransactionType(
+            return isWithdrawal(
               transaction
-            )
-            .includes(
-              "withdraw"
             );
-
 
           }
         );
 
-
     }
 
 
+
+    /* -----------------------------------
+       PAYMENTS & FEES
+    ----------------------------------- */
 
     else if (
       filter === "payments"
     ) {
 
-
       filteredTransactions =
-
         allTransactions.filter(
           function(transaction) {
 
-
-            const type =
-              getTransactionType(
-                transaction
-              );
-
-
             return (
-
-              isDebit(
-                transaction
-              ) &&
-
-              !type.includes(
-                "withdraw"
-              )
-
+              isPayment(transaction) &&
+              !isWithdrawal(transaction)
             );
-
 
           }
         );
 
-
     }
+
 
 
     renderTransactions(
       filteredTransactions
     );
 
-
   }
-
 );
 
 
