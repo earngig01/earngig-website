@@ -13,6 +13,268 @@
 
   <link rel="stylesheet" href="styles.css">
 
+  <style>
+
+/* =====================================================
+   DAILY EARNING LIMIT CARD
+===================================================== */
+
+.daily-limit-card {
+
+  margin-top: 24px;
+
+  padding: 22px;
+
+  border: 1px solid rgba(37, 99, 235, 0.16);
+
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(37, 99, 235, 0.06),
+      rgba(255, 255, 255, 0.96)
+    );
+
+}
+
+
+.daily-limit-header {
+
+  display: flex;
+
+  align-items: flex-start;
+
+  justify-content: space-between;
+
+  gap: 20px;
+
+}
+
+
+.daily-limit-title {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+}
+
+
+.daily-limit-icon {
+
+  width: 42px;
+
+  height: 42px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 12px;
+
+  background: rgba(37, 99, 235, 0.10);
+
+  font-size: 20px;
+
+}
+
+
+.daily-limit-title h3 {
+
+  margin: 0;
+
+  font-size: 18px;
+
+}
+
+
+.daily-limit-title p {
+
+  margin: 4px 0 0;
+
+  font-size: 13px;
+
+  opacity: 0.72;
+
+}
+
+
+.daily-limit-amount {
+
+  text-align: right;
+
+}
+
+
+.daily-limit-amount strong {
+
+  display: block;
+
+  font-size: 20px;
+
+}
+
+
+.daily-limit-amount span {
+
+  display: block;
+
+  margin-top: 3px;
+
+  font-size: 12px;
+
+  opacity: 0.70;
+
+}
+
+
+.daily-limit-progress {
+
+  width: 100%;
+
+  height: 10px;
+
+  margin-top: 18px;
+
+  overflow: hidden;
+
+  border-radius: 999px;
+
+  background: rgba(0, 0, 0, 0.08);
+
+}
+
+
+.daily-limit-progress-bar {
+
+  width: 0%;
+
+  height: 100%;
+
+  border-radius: inherit;
+
+  transition: width 0.35s ease;
+
+  background: currentColor;
+
+}
+
+
+.daily-limit-footer {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 15px;
+
+  margin-top: 12px;
+
+  font-size: 13px;
+
+}
+
+
+.daily-limit-remaining {
+
+  font-weight: 700;
+
+}
+
+
+.daily-limit-note {
+
+  opacity: 0.70;
+
+  text-align: right;
+
+}
+
+
+.daily-limit-reached {
+
+  border-color: rgba(220, 38, 38, 0.20);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(220, 38, 38, 0.06),
+      rgba(255, 255, 255, 0.96)
+    );
+
+}
+
+
+.daily-limit-reached .daily-limit-icon {
+
+  background: rgba(220, 38, 38, 0.10);
+
+}
+
+
+.daily-limit-reached .daily-limit-progress {
+
+  background: rgba(220, 38, 38, 0.10);
+
+}
+
+
+.daily-limit-reached .daily-limit-progress-bar {
+
+  background: #dc2626;
+
+}
+
+
+.daily-limit-reached .daily-limit-remaining {
+
+  color: #dc2626;
+
+}
+
+
+@media (max-width: 600px) {
+
+  .daily-limit-header {
+
+    flex-direction: column;
+
+  }
+
+
+  .daily-limit-amount {
+
+    text-align: left;
+
+  }
+
+
+  .daily-limit-footer {
+
+    flex-direction: column;
+
+    align-items: flex-start;
+
+  }
+
+
+  .daily-limit-note {
+
+    text-align: left;
+
+  }
+
+}
+
+  </style>
+
 </head>
 
 
@@ -217,6 +479,91 @@
 
 
     </div>
+
+
+
+    <!-- =================================================
+         DAILY EARNING LIMIT
+    ================================================== -->
+
+    <section
+      id="daily-earning-limit"
+      class="daily-limit-card"
+    >
+
+      <div class="daily-limit-header">
+
+
+        <div class="daily-limit-title">
+
+          <div class="daily-limit-icon">
+            🔒
+          </div>
+
+
+          <div>
+
+            <h3>
+              Daily Earning Limit
+            </h3>
+
+            <p id="daily-limit-plan">
+              Loading your membership limit...
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="daily-limit-amount">
+
+          <strong id="daily-limit-amount">
+            ₦0 / ₦0
+          </strong>
+
+          <span>
+            Normal activities today
+          </span>
+
+        </div>
+
+
+      </div>
+
+
+
+      <div class="daily-limit-progress">
+
+        <div
+          id="daily-limit-progress-bar"
+          class="daily-limit-progress-bar"
+        ></div>
+
+      </div>
+
+
+
+      <div class="daily-limit-footer">
+
+        <div
+          id="daily-limit-remaining"
+          class="daily-limit-remaining"
+        >
+          Loading...
+        </div>
+
+
+        <div
+          id="daily-limit-note"
+          class="daily-limit-note"
+        >
+          Referral bonuses and Create & Earn are not included.
+        </div>
+
+      </div>
+
+    </section>
 
 
 
@@ -1050,18 +1397,6 @@ function isRealEarning(
 
 
 
-  /*
-     These transaction types are NOT earnings.
-
-     In particular:
-
-     advert_payment = money spent by a member
-     to pay for their own advertising campaign.
-
-     It must NEVER appear in Today's Earnings
-     or any transaction-based earnings calculation.
-  */
-
   const excludedTypes = [
 
     "advert_payment",
@@ -1105,12 +1440,6 @@ function isRealEarning(
   }
 
 
-
-  /*
-     Also protect against descriptions that clearly
-     represent spending/refunds even if the transaction
-     type changes.
-  */
 
   const excludedDescriptionWords = [
 
@@ -1170,6 +1499,239 @@ function isRealEarning(
 
 
   return true;
+
+}
+
+
+
+
+
+/* =====================================================
+   LOAD DAILY EARNING LIMIT
+===================================================== */
+
+async function loadDailyEarningLimit() {
+
+  const card =
+    document.getElementById(
+      "daily-earning-limit"
+    );
+
+
+  const planElement =
+    document.getElementById(
+      "daily-limit-plan"
+    );
+
+
+  const amountElement =
+    document.getElementById(
+      "daily-limit-amount"
+    );
+
+
+  const progressBar =
+    document.getElementById(
+      "daily-limit-progress-bar"
+    );
+
+
+  const remainingElement =
+    document.getElementById(
+      "daily-limit-remaining"
+    );
+
+
+  const noteElement =
+    document.getElementById(
+      "daily-limit-note"
+    );
+
+
+  if (
+    !card ||
+    !planElement ||
+    !amountElement ||
+    !progressBar ||
+    !remainingElement
+  ) {
+
+    return;
+
+  }
+
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .rpc(
+        "get_daily_task_earning_status"
+      );
+
+
+
+  if (error) {
+
+    console.error(
+      "Unable to load daily earning limit:",
+      error
+    );
+
+
+    planElement.textContent =
+      "Unable to load your daily earning limit.";
+
+
+    amountElement.textContent =
+      "Unavailable";
+
+
+    remainingElement.textContent =
+      "Please refresh the page.";
+
+
+    progressBar.style.width =
+      "0%";
+
+
+    return;
+
+  }
+
+
+
+  if (
+    !data ||
+    data.success !== true
+  ) {
+
+    planElement.textContent =
+      "Your membership earning limit is unavailable.";
+
+
+    amountElement.textContent =
+      "Unavailable";
+
+
+    remainingElement.textContent =
+      data?.message ||
+      "Please check your membership.";
+
+
+    progressBar.style.width =
+      "0%";
+
+
+    return;
+
+  }
+
+
+
+  const planCode =
+    String(
+      data.plan_code || ""
+    );
+
+
+  const dailyLimit =
+    Number(
+      data.daily_limit || 0
+    );
+
+
+  const earnedToday =
+    Number(
+      data.earned_today || 0
+    );
+
+
+  const remainingToday =
+    Number(
+      data.remaining_today || 0
+    );
+
+
+
+  const planName =
+
+    planCode
+
+      ? planCode.charAt(0).toUpperCase() +
+        planCode.slice(1)
+
+      : "Current";
+
+
+
+  const percentage =
+
+    dailyLimit > 0
+
+      ? Math.min(
+          100,
+          Math.max(
+            0,
+            (
+              earnedToday /
+              dailyLimit
+            ) * 100
+          )
+        )
+
+      : 0;
+
+
+
+  planElement.textContent =
+    `${planName} plan • Normal earning activities`;
+
+
+
+  amountElement.textContent =
+    `${formatNaira(earnedToday)} / ${formatNaira(dailyLimit)}`;
+
+
+
+  progressBar.style.width =
+    `${percentage}%`;
+
+
+
+  if (
+    remainingToday <= 0
+  ) {
+
+    card.classList.add(
+      "daily-limit-reached"
+    );
+
+
+    remainingElement.textContent =
+      "🔒 Daily earning limit reached for today.";
+
+
+    noteElement.textContent =
+      "Normal earning activities reset tomorrow. Referral bonuses and Create & Earn are not included.";
+
+  } else {
+
+    card.classList.remove(
+      "daily-limit-reached"
+    );
+
+
+    remainingElement.textContent =
+      `${formatNaira(remainingToday)} remaining today`;
+
+
+    noteElement.textContent =
+      "Referral bonuses and Create & Earn are not included.";
+
+  }
 
 }
 
@@ -1336,18 +1898,12 @@ async function loadDashboard() {
         );
 
 
-      /*
-         Total Earned comes directly from the wallet.
-
-         This is the authoritative stored lifetime
-         earnings value and does not include advert
-         payments made by the member.
-      */
 
       const totalEarned =
         Number(
           wallet?.total_earned || 0
         );
+
 
 
       document.getElementById(
@@ -1358,6 +1914,14 @@ async function loadDashboard() {
         );
 
     }
+
+
+
+    /* -----------------------------------------------
+       LOAD DAILY EARNING LIMIT
+    ----------------------------------------------- */
+
+    await loadDailyEarningLimit();
 
 
 
@@ -1618,14 +2182,12 @@ async function loadDashboard() {
       new Date();
 
 
-
     startOfToday.setHours(
       0,
       0,
       0,
       0
     );
-
 
 
     const startOfTodayTime =
@@ -1865,7 +2427,6 @@ async function loadTransactions() {
             Number(
               transaction.amount || 0
             );
-
 
 
           const type =
