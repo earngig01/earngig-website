@@ -10,9 +10,105 @@
     content="width=device-width, initial-scale=1.0"
   >
 
-  <title>Premium Membership | EarnGig</title>
+  <title>Membership | EarnGig</title>
 
-  <link rel="stylesheet" href="styles.css">
+  <link
+    rel="stylesheet"
+    href="styles.css"
+  >
+
+  <style>
+
+    .membership-grid {
+      display: grid;
+      grid-template-columns: repeat(
+        auto-fit,
+        minmax(240px, 1fr)
+      );
+      gap: 20px;
+      margin-top: 24px;
+    }
+
+    .membership-plan {
+      position: relative;
+      padding: 26px;
+      border-radius: 18px;
+      border: 1px solid rgba(139, 92, 246, 0.25);
+      background: rgba(255, 255, 255, 0.035);
+    }
+
+    .membership-plan.current {
+      border-color: rgba(74, 222, 128, 0.55);
+    }
+
+    .membership-plan h3 {
+      margin: 0 0 8px;
+      font-size: 21px;
+    }
+
+    .membership-price {
+      font-size: 28px;
+      font-weight: 800;
+      margin: 10px 0 4px;
+    }
+
+    .membership-period {
+      margin-bottom: 18px;
+      opacity: 0.75;
+      font-size: 13px;
+    }
+
+    .membership-benefit {
+      margin: 7px 0;
+      font-size: 14px;
+    }
+
+    .plan-status {
+      display: inline-block;
+      margin-bottom: 14px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      background: rgba(139, 92, 246, 0.14);
+    }
+
+    .plan-status.active {
+      background: rgba(34, 197, 94, 0.14);
+      color: #4ade80;
+    }
+
+    .plan-button {
+      width: 100%;
+      margin-top: 18px;
+    }
+
+    .membership-message {
+      margin-top: 18px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.04);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .membership-message.error {
+      color: #fca5a5;
+      background: rgba(239, 68, 68, 0.08);
+    }
+
+    .membership-message.success {
+      color: #86efac;
+      background: rgba(34, 197, 94, 0.08);
+    }
+
+    .loading-plans {
+      text-align: center;
+      padding: 30px 10px;
+      opacity: 0.75;
+    }
+
+  </style>
 
 </head>
 
@@ -24,7 +120,10 @@
 
   <div class="container nav">
 
-    <a class="logo" href="index.html">
+    <a
+      class="logo"
+      href="index.html"
+    >
 
       <span class="logo-mark">E</span>
 
@@ -77,16 +176,16 @@
       <div>
 
         <span class="eyebrow">
-          PREMIUM MEMBERSHIP
+          EARNGIG MEMBERSHIP
         </span>
 
         <h1>
-          Manage your EarnGig membership
+          Choose your membership plan
         </h1>
 
         <p>
-          Manage your membership and access Premium
-          earning opportunities.
+          Select the membership plan that fits
+          your earning goals.
         </p>
 
       </div>
@@ -104,8 +203,6 @@
       <div class="member-earning-grid">
 
 
-        <!-- MEMBERSHIP -->
-
         <div class="member-earning-card">
 
           <div class="member-card-icon blue">
@@ -113,7 +210,7 @@
           </div>
 
           <h3>
-            Premium Membership
+            Your membership
           </h3>
 
           <p id="membership-description">
@@ -128,8 +225,6 @@
 
 
 
-        <!-- STATUS -->
-
         <div class="member-earning-card">
 
           <div class="member-card-icon blue">
@@ -137,15 +232,14 @@
           </div>
 
           <h3>
-            Your membership status
+            Membership status
           </h3>
 
           <p id="membership-status">
             Checking...
           </p>
 
-          <p id="membership-period">
-          </p>
+          <p id="membership-period"></p>
 
         </div>
 
@@ -157,40 +251,46 @@
 
 
     <!-- =================================================
-         PAYMENT
+         PLANS
     ================================================== -->
 
     <section class="dashboard-section">
 
-      <div class="novel-preview">
+      <div>
 
-        <div>
+        <span class="eyebrow">
+          MEMBERSHIP PLANS
+        </span>
 
-          <span class="eyebrow">
-            MEMBERSHIP PAYMENT
-          </span>
+        <h2>
+          Choose your plan
+        </h2>
 
-          <h3 id="payment-title">
-            Checking payment requirement...
-          </h3>
-
-          <p id="payment-description">
-            Please wait while we check your membership.
-          </p>
-
-        </div>
-
-
-        <button
-          id="payment-button"
-          class="btn primary"
-          type="button"
-          disabled
-        >
-          Checking...
-        </button>
+        <p>
+          Membership payments are processed securely
+          through Flutterwave.
+        </p>
 
       </div>
+
+
+      <div
+        id="plans-container"
+        class="membership-grid"
+      >
+
+        <div class="loading-plans">
+          Loading membership plans...
+        </div>
+
+      </div>
+
+
+      <div
+        id="membership-message"
+        class="membership-message"
+        style="display:none;"
+      ></div>
 
     </section>
 
@@ -212,12 +312,14 @@
           Membership payment information
         </h3>
 
-        <p id="payment-info">
+        <p>
+          Choose a membership plan above.
+          Your payment will be securely processed
+          by Flutterwave.
+        </p>
 
-          Your membership status determines whether
-          you need the initial ₦9,000 payment or the
-          ₦5,000 renewal payment.
-
+        <p>
+          EarnGig does not store your card details.
         </p>
 
       </div>
@@ -260,21 +362,98 @@ let currentUser = null;
 
 let currentMembership = null;
 
-let paymentStage = null;
+let membershipPlans = [];
 
-let paymentAmount = 0;
+let paymentInProgress = false;
 
 
 
-const paymentButton =
+const plansContainer =
   document.getElementById(
-    "payment-button"
+    "plans-container"
+  );
+
+const membershipMessage =
+  document.getElementById(
+    "membership-message"
   );
 
 
 
-const FLUTTERWAVE_FUNCTION_URL =
-  "https://ytvtdelwefykeqwztcyo.supabase.co/functions/v1/flutterwave-payment";
+/* =====================================================
+   MESSAGE
+===================================================== */
+
+function showMessage(
+  message,
+  type = ""
+) {
+
+  membershipMessage.textContent =
+    message;
+
+  membershipMessage.className =
+    "membership-message " +
+    type;
+
+  membershipMessage.style.display =
+    "block";
+
+}
+
+
+
+/* =====================================================
+   FORMAT MONEY
+===================================================== */
+
+function formatNaira(
+  amount
+) {
+
+  return "₦" +
+    Number(amount).toLocaleString(
+      "en-NG"
+    );
+
+}
+
+
+
+/* =====================================================
+   LOAD USER
+===================================================== */
+
+async function loadUser() {
+
+  const {
+    data: {
+      user
+    },
+    error
+  } =
+    await supabaseClient
+      .auth
+      .getUser();
+
+  if (
+    error ||
+    !user
+  ) {
+
+    window.location.href =
+      "login.html";
+
+    return null;
+
+  }
+
+  currentUser =
+    user;
+
+  return user;
+
+}
 
 
 
@@ -284,77 +463,73 @@ const FLUTTERWAVE_FUNCTION_URL =
 
 async function loadMembership() {
 
-
-  const {
-    data: {
-      user
-    },
-    error: userError
-  } =
-    await supabaseClient
-      .auth
-      .getUser();
-
-
-
-  if (
-    userError ||
-    !user
-  ) {
-
-    window.location.href =
-      "login.html";
-
-    return;
-
-  }
-
-
-
-  currentUser =
-    user;
-
-
-
   const {
     data: membership,
-    error: membershipError
+    error
   } =
     await supabaseClient
       .from("memberships")
       .select(`
+        id,
         status,
         started_at,
         current_period_start,
         current_period_end,
         next_payment_at,
-        payment_count
+        payment_count,
+        plan_code
       `)
       .eq(
         "user_id",
-        user.id
+        currentUser.id
       )
       .maybeSingle();
 
 
+  if (error) {
+
+    console.error(
+      "Membership load error:",
+      error
+    );
+
+    throw new Error(
+      "Unable to load your membership."
+    );
+
+  }
+
+
+  currentMembership =
+    membership;
+
+
+  updateMembershipSummary();
+
+}
+
+
+
+/* =====================================================
+   MEMBERSHIP SUMMARY
+===================================================== */
+
+function updateMembershipSummary() {
 
   const statusElement =
     document.getElementById(
       "membership-status"
     );
 
-
   const periodElement =
     document.getElementById(
       "membership-period"
     );
 
-
   const descriptionElement =
     document.getElementById(
       "membership-description"
     );
-
 
   const priceElement =
     document.getElementById(
@@ -362,212 +537,68 @@ async function loadMembership() {
     );
 
 
-  const paymentTitle =
-    document.getElementById(
-      "payment-title"
-    );
-
-
-  const paymentDescription =
-    document.getElementById(
-      "payment-description"
-    );
-
-
-  const paymentInfo =
-    document.getElementById(
-      "payment-info"
-    );
-
-
-
-  /* ===================================================
-     DATABASE ERROR
-  =================================================== */
-
-  if (membershipError) {
-
-    console.error(
-      "Unable to load membership:",
-      membershipError
-    );
-
+  if (!currentMembership) {
 
     statusElement.textContent =
-      "Unable to check membership.";
-
-
-    paymentTitle.textContent =
-      "Membership check failed.";
-
-
-    paymentDescription.textContent =
-      "Please refresh the page and try again.";
-
-
-    paymentButton.disabled =
-      true;
-
-
-    return;
-
-  }
-
-
-
-  currentMembership =
-    membership;
-
-
-
-  /* ===================================================
-     NO MEMBERSHIP
-     
-     INITIAL PAYMENT = ₦9,000
-  =================================================== */
-
-  if (!membership) {
-
-    paymentStage =
-      "initial";
-
-    paymentAmount =
-      9000;
-
-
-
-    statusElement.textContent =
-      "No active membership";
-
-
-    periodElement.textContent =
-      "Complete the first payment to activate your membership.";
-
+      "No membership yet";
 
     descriptionElement.textContent =
-      "Your first Premium membership payment activates your membership for one month.";
-
+      "Choose one of the four plans below to activate your membership.";
 
     priceElement.textContent =
-      "First payment: ₦9,000";
+      "Select a plan";
 
-
-    paymentTitle.textContent =
-      "Activate your membership";
-
-
-    paymentDescription.textContent =
-      "Pay ₦9,000 through Flutterwave to activate your EarnGig membership for one month.";
-
-
-    paymentInfo.textContent =
-      "Your first membership payment is ₦9,000. After the first month, you can manually renew for ₦5,000. There are no automatic deductions.";
-
-
-    paymentButton.disabled =
-      false;
-
-
-    paymentButton.textContent =
-      "Pay ₦9,000";
-
+    periodElement.textContent =
+      "";
 
     return;
 
   }
 
 
-
-  /* ===================================================
-     CHECK EXPIRY
-  =================================================== */
-
   const periodEnd =
-    membership.current_period_end
+    currentMembership.current_period_end
       ? new Date(
-          membership.current_period_end
+          currentMembership.current_period_end
         )
       : null;
 
 
-
-  const membershipIsActive =
-
-    membership.status ===
-      "active"
-
-    &&
-
-    periodEnd
-
-    &&
-
+  const isActive =
+    currentMembership.status ===
+      "active" &&
+    periodEnd &&
     periodEnd.getTime() >
       Date.now();
 
 
-
-  /* ===================================================
-     ACTIVE MEMBERSHIP
-     
-     NO PAYMENT REQUIRED
-  =================================================== */
-
-  if (
-    membershipIsActive
-  ) {
-
-    paymentStage =
-      null;
-
-    paymentAmount =
-      0;
-
-
+  if (isActive) {
 
     statusElement.textContent =
-      "Status: Active ✓";
-
+      "Active ✓";
 
     descriptionElement.textContent =
-      "Your Premium membership is currently active.";
-
+      currentMembership.plan_code
+        ? "Your " +
+          currentMembership.plan_code +
+          " membership is active."
+        : "Your membership is active.";
 
     priceElement.textContent =
-      "No payment required right now";
+      currentMembership.plan_code
+        ? currentMembership.plan_code
+            .charAt(0)
+            .toUpperCase() +
+          currentMembership.plan_code
+            .slice(1)
+        : "Active membership";
 
 
-    paymentTitle.textContent =
-      "Your membership is active";
-
-
-    paymentDescription.textContent =
-      "You already have access to EarnGig. When this membership period ends, you can manually renew for ₦5,000.";
-
-
-    paymentButton.disabled =
-      true;
-
-
-    paymentButton.textContent =
-      "Membership Active";
-
-
-
-    if (
-      membership.current_period_end
-    ) {
-
-      const endDate =
-        new Date(
-          membership.current_period_end
-        );
-
+    if (periodEnd) {
 
       periodElement.textContent =
         "Current period ends: " +
-
-        endDate.toLocaleDateString(
+        periodEnd.toLocaleDateString(
           "en-NG",
           {
             year: "numeric",
@@ -578,79 +609,29 @@ async function loadMembership() {
 
     }
 
-
-
-    paymentInfo.textContent =
-      "Your membership is active. No automatic payment will be taken. When your current period ends, you can return here and manually pay ₦5,000 to renew.";
-
-
     return;
 
   }
 
 
-
-  /* ===================================================
-     EXPIRED / INACTIVE MEMBERSHIP
-     
-     RENEWAL = ₦5,000
-  =================================================== */
-
-  paymentStage =
-    "renewal";
-
-  paymentAmount =
-    5000;
-
-
-
   statusElement.textContent =
-    "Status: Expired";
-
+    "Expired / Inactive";
 
   descriptionElement.textContent =
-    "Your previous membership period has ended.";
-
+    currentMembership.plan_code
+      ? "Your previous membership period has ended."
+      : "Choose a plan below to activate your membership.";
 
   priceElement.textContent =
-    "Monthly renewal: ₦5,000";
+    currentMembership.plan_code
+      ? currentMembership.plan_code
+      : "Select a plan";
 
-
-  paymentTitle.textContent =
-    "Renew your membership";
-
-
-  paymentDescription.textContent =
-    "Pay ₦5,000 through Flutterwave to renew your EarnGig membership for another month.";
-
-
-  paymentInfo.textContent =
-    "Your initial membership payment is ₦9,000. After that, membership renewals cost ₦5,000 per month. Renewals are manual and there are no automatic deductions.";
-
-
-  paymentButton.disabled =
-    false;
-
-
-  paymentButton.textContent =
-    "Renew for ₦5,000";
-
-
-
-  if (
-    membership.current_period_end
-  ) {
-
-    const endDate =
-      new Date(
-        membership.current_period_end
-      );
-
+  if (periodEnd) {
 
     periodElement.textContent =
       "Previous period ended: " +
-
-      endDate.toLocaleDateString(
+      periodEnd.toLocaleDateString(
         "en-NG",
         {
           year: "numeric",
@@ -665,54 +646,340 @@ async function loadMembership() {
 
 
 
+/* =====================================================
+   LOAD PLANS
+===================================================== */
+
+async function loadPlans() {
+
+  const {
+    data: plans,
+    error
+  } =
+    await supabaseClient
+      .from("membership_plans")
+      .select(`
+        id,
+        plan_code,
+        plan_name,
+        price,
+        daily_earning_limit,
+        referral_initial_commission,
+        referral_renewal_commission
+      `)
+      .order(
+        "price",
+        {
+          ascending: true
+        }
+      );
+
+
+  if (error) {
+
+    console.error(
+      "Plan load error:",
+      error
+    );
+
+    throw new Error(
+      "Unable to load membership plans."
+    );
+
+  }
+
+
+  membershipPlans =
+    plans || [];
+
+
+  renderPlans();
+
+}
+
 
 
 /* =====================================================
-   START FLUTTERWAVE PAYMENT
+   RENDER PLANS
 ===================================================== */
 
-async function openPayment() {
+function renderPlans() {
+
+  if (
+    !membershipPlans.length
+  ) {
+
+    plansContainer.innerHTML =
+      `<div class="loading-plans">
+        No membership plans are currently available.
+      </div>`;
+
+    return;
+
+  }
+
+
+  const periodEnd =
+    currentMembership?.current_period_end
+      ? new Date(
+          currentMembership.current_period_end
+        )
+      : null;
+
+
+  const active =
+    currentMembership?.status ===
+      "active" &&
+    periodEnd &&
+    periodEnd.getTime() >
+      Date.now();
+
+
+  plansContainer.innerHTML =
+    membershipPlans
+      .map(
+        plan => {
+
+          const isCurrent =
+            active &&
+            currentMembership?.plan_code ===
+              plan.plan_code;
+
+
+          /*
+            A legacy active membership has
+            plan_code = NULL.
+
+            We allow the user to choose a
+            new plan in that situation.
+          */
+          const legacyActive =
+            active &&
+            !currentMembership?.plan_code;
+
+
+          let buttonText =
+            "Choose " +
+            plan.plan_name;
+
+
+          let disabled =
+            false;
+
+
+          if (isCurrent) {
+
+            buttonText =
+              "Current Plan";
+
+            disabled =
+              true;
+
+          }
+
+
+          if (
+            active &&
+            !legacyActive &&
+            !isCurrent
+          ) {
+
+            buttonText =
+              "Membership Active";
+
+            disabled =
+              true;
+
+          }
+
+
+          return `
+
+            <div
+              class="membership-plan ${
+                isCurrent
+                  ? "current"
+                  : ""
+              }"
+            >
+
+              <span
+                class="plan-status ${
+                  isCurrent
+                    ? "active"
+                    : ""
+                }"
+              >
+
+                ${
+                  isCurrent
+                    ? "CURRENT PLAN"
+                    : plan.plan_name
+                }
+
+              </span>
+
+
+              <h3>
+                ${plan.plan_name}
+              </h3>
+
+
+              <div class="membership-price">
+                ${formatNaira(
+                  plan.price
+                )}
+              </div>
+
+
+              <div class="membership-period">
+                Membership period: 1 month
+              </div>
+
+
+              ${
+                plan.daily_earning_limit != null
+                  ? `
+                    <div class="membership-benefit">
+                      ✓ Daily earning limit:
+                      ${formatNaira(
+                        plan.daily_earning_limit
+                      )}
+                    </div>
+                  `
+                  : ""
+              }
+
+
+              ${
+                plan.referral_initial_commission != null
+                  ? `
+                    <div class="membership-benefit">
+                      ✓ Referral initial commission:
+                      ${formatNaira(
+                        plan.referral_initial_commission
+                      )}
+                    </div>
+                  `
+                  : ""
+              }
+
+
+              ${
+                plan.referral_renewal_commission != null
+                  ? `
+                    <div class="membership-benefit">
+                      ✓ Referral renewal commission:
+                      ${formatNaira(
+                        plan.referral_renewal_commission
+                      )}
+                    </div>
+                  `
+                  : ""
+              }
+
+
+              <button
+                class="btn primary plan-button"
+                type="button"
+                data-plan-code="${plan.plan_code}"
+                ${
+                  disabled
+                    ? "disabled"
+                    : ""
+                }
+              >
+                ${buttonText}
+              </button>
+
+            </div>
+
+          `;
+
+        }
+      )
+      .join("");
+
+
+  document
+    .querySelectorAll(
+      ".plan-button"
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            const planCode =
+              button.dataset.planCode;
+
+            startPayment(
+              planCode
+            );
+
+          }
+        );
+
+      }
+    );
+
+}
+
+
+
+/* =====================================================
+   START PAYMENT
+===================================================== */
+
+async function startPayment(
+  planCode
+) {
+
+  if (
+    paymentInProgress
+  ) {
+
+    return;
+
+  }
+
+
+  const plan =
+    membershipPlans.find(
+      item =>
+        item.plan_code ===
+        planCode
+    );
+
+
+  if (!plan) {
+
+    showMessage(
+      "The selected membership plan could not be found.",
+      "error"
+    );
+
+    return;
+
+  }
 
 
   if (!currentUser) {
 
-    alert(
-      "Please log in first."
-    );
-
-
     window.location.href =
       "login.html";
 
-
     return;
 
   }
 
 
-
-  if (
-    !paymentStage ||
-    !paymentAmount
-  ) {
-
-    alert(
-      "Unable to determine the required membership payment."
-    );
-
-
-    return;
-
-  }
-
-
-
-  /* ---------------------------------------------------
-     SAFETY CHECK
-     
-     Do not allow an active member to pay again.
-  --------------------------------------------------- */
-
+  /*
+    Check current membership again
+    before opening Flutterwave.
+  */
   if (
     currentMembership
   ) {
@@ -725,29 +992,23 @@ async function openPayment() {
         : null;
 
 
-
     const active =
-
       currentMembership.status ===
-        "active"
-
-      &&
-
-      periodEnd
-
-      &&
-
+        "active" &&
+      periodEnd &&
       periodEnd.getTime() >
         Date.now();
 
 
+    if (
+      active &&
+      currentMembership.plan_code
+    ) {
 
-    if (active) {
-
-      alert(
-        "Your membership is already active. No payment is required yet."
+      showMessage(
+        "Your membership is already active. Payment is not required right now.",
+        "error"
       );
-
 
       return;
 
@@ -756,100 +1017,75 @@ async function openPayment() {
   }
 
 
-
-  paymentButton.disabled =
+  paymentInProgress =
     true;
 
 
-  paymentButton.textContent =
-    "Opening Flutterwave...";
+  showMessage(
+    "Preparing your " +
+    plan.plan_name +
+    " membership payment..."
+  );
 
+
+  document
+    .querySelectorAll(
+      ".plan-button"
+    )
+    .forEach(
+      button => {
+        button.disabled =
+          true;
+      }
+    );
 
 
   try {
 
-
-    /* -----------------------------------------------
-       GET CURRENT SESSION
-    ----------------------------------------------- */
-
-    const {
-      data: {
-        session
-      },
-      error: sessionError
-    } =
-      await supabaseClient
-        .auth
-        .getSession();
-
-
-
-    if (
-      sessionError ||
-      !session
-    ) {
-
-      throw new Error(
-        "Your login session has expired. Please log in again."
-      );
-
-    }
-
-
-
-    /* -----------------------------------------------
-       INITIALIZE PAYMENT
-    ----------------------------------------------- */
-
+    /*
+      Supabase Edge Function invocation
+      automatically uses the signed-in
+      user's session.
+    */
     const {
       data: result,
       error
     } =
-      await supabaseClient.functions.invoke(
-        "flutterwave-payment",
-        {
-          body: {
+      await supabaseClient
+        .functions
+        .invoke(
+          "membership-payment",
+          {
+            body: {
+              action:
+                "initialize",
 
-            action:
-              "initialize",
-
-            payment_type:
-              "membership",
-
-            membership_stage:
-              paymentStage
-
+              plan_code:
+                planCode
+            }
           }
-        }
-      );
-
+        );
 
 
     console.log(
-      "Flutterwave initialization result:",
+      "Membership payment initialization:",
       result
     );
 
 
-
-    if (
-      error
-    ) {
+    if (error) {
 
       console.error(
-        "Flutterwave function error:",
+        "Membership function error:",
         error
       );
 
-
       throw new Error(
         error.message ||
-        "Unable to start Flutterwave payment."
+        "Unable to start membership payment."
       );
 
     }
-
 
 
     if (
@@ -858,15 +1094,14 @@ async function openPayment() {
 
       throw new Error(
         result?.error ||
-        "Unable to start Flutterwave payment."
+        "Unable to start membership payment."
       );
 
     }
 
 
-
     if (
-      !result?.payment_url
+      !result?.payment_link
     ) {
 
       throw new Error(
@@ -876,40 +1111,48 @@ async function openPayment() {
     }
 
 
-
     /*
-     * Redirect customer to Flutterwave.
-     *
-     * The customer chooses the available
-     * payment method there, including OPay
-     * when enabled for the account.
-     */
+      Send the customer to Flutterwave.
+    */
     window.location.href =
-      result.payment_url;
+      result.payment_link;
 
 
   } catch (error) {
 
     console.error(
-      "Flutterwave payment error:",
+      "Membership payment error:",
       error
     );
 
 
-    alert(
+    showMessage(
       error?.message ||
-      "Unable to start payment. Please try again."
+      "Unable to start payment. Please try again.",
+      "error"
     );
 
 
-    paymentButton.disabled =
+    paymentInProgress =
       false;
 
 
-    paymentButton.textContent =
-      paymentStage === "renewal"
-        ? "Renew for ₦5,000"
-        : "Pay ₦9,000";
+    document
+      .querySelectorAll(
+        ".plan-button"
+      )
+      .forEach(
+        button => {
+
+          /*
+            Re-rendering also recalculates
+            which buttons should be enabled.
+          */
+          button.disabled =
+            false;
+
+        }
+      );
 
   }
 
@@ -917,26 +1160,56 @@ async function openPayment() {
 
 
 
-
-
-/* =====================================================
-   PAYMENT BUTTON
-===================================================== */
-
-paymentButton.addEventListener(
-  "click",
-  openPayment
-);
-
-
-
-
-
 /* =====================================================
    START PAGE
 ===================================================== */
 
-loadMembership();
+async function startPage() {
+
+  try {
+
+    const user =
+      await loadUser();
+
+
+    if (!user) {
+
+      return;
+
+    }
+
+
+    await loadMembership();
+
+    await loadPlans();
+
+
+  } catch (error) {
+
+    console.error(
+      "Membership page error:",
+      error
+    );
+
+
+    showMessage(
+      error?.message ||
+      "Unable to load membership information.",
+      "error"
+    );
+
+
+    plansContainer.innerHTML =
+      `<div class="loading-plans">
+        Unable to load membership plans.
+      </div>`;
+
+  }
+
+}
+
+
+startPage();
 
 </script>
 
