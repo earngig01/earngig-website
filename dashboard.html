@@ -369,9 +369,7 @@
       <div class="member-earning-grid">
 
 
-        <!-- =============================================
-             COMPETITIONS & AWARDS
-        ============================================== -->
+        <!-- COMPETITIONS & AWARDS -->
 
         <a
           href="competitions.html"
@@ -400,9 +398,7 @@
 
 
 
-        <!-- =============================================
-             COMPLAINTS & ISSUES
-        ============================================== -->
+        <!-- COMPLAINTS & ISSUES -->
 
         <a
           href="mailto:ahruhenterprises@gmail.com?subject=EarnGig%20Complaint%20%2F%20Issue"
@@ -431,9 +427,7 @@
 
 
 
-        <!-- =============================================
-             RUN AN ADVERT
-        ============================================== -->
+        <!-- RUN AN ADVERT -->
 
         <a
           href="run-advert.html"
@@ -1056,7 +1050,25 @@ function isRealEarning(
 
 
 
+  /*
+     These transaction types are NOT earnings.
+
+     In particular:
+
+     advert_payment = money spent by a member
+     to pay for their own advertising campaign.
+
+     It must NEVER appear in Today's Earnings
+     or any transaction-based earnings calculation.
+  */
+
   const excludedTypes = [
+
+    "advert_payment",
+
+    "advert_payment_with_wallet",
+
+    "ad_payment",
 
     "task_payment",
 
@@ -1094,9 +1106,25 @@ function isRealEarning(
 
 
 
+  /*
+     Also protect against descriptions that clearly
+     represent spending/refunds even if the transaction
+     type changes.
+  */
+
   const excludedDescriptionWords = [
 
-    "payment for task",
+    "advert payment",
+
+    "advert payment -",
+
+    "advertising payment",
+
+    "ad payment",
+
+    "payment for advert",
+
+    "payment for advertising",
 
     "task payment",
 
@@ -1243,6 +1271,7 @@ async function loadDashboard() {
         .from("wallets")
         .select(`
           balance,
+          total_earned,
           referral_earned
         `)
         .eq("user_id", user.id)
@@ -1304,6 +1333,28 @@ async function loadDashboard() {
       ).textContent =
         formatNaira(
           referralEarned
+        );
+
+
+      /*
+         Total Earned comes directly from the wallet.
+
+         This is the authoritative stored lifetime
+         earnings value and does not include advert
+         payments made by the member.
+      */
+
+      const totalEarned =
+        Number(
+          wallet?.total_earned || 0
+        );
+
+
+      document.getElementById(
+        "total-earned"
+      ).textContent =
+        formatNaira(
+          totalEarned
         );
 
     }
@@ -1489,7 +1540,7 @@ async function loadDashboard() {
 
 
     /* -----------------------------------------------
-       LOAD ALL COMPLETED TRANSACTIONS
+       LOAD COMPLETED TRANSACTIONS
     ----------------------------------------------- */
 
     const {
@@ -1531,12 +1582,6 @@ async function loadDashboard() {
         "₦0";
 
 
-      document.getElementById(
-        "total-earned"
-      ).textContent =
-        "₦0";
-
-
       return;
 
     }
@@ -1561,37 +1606,6 @@ async function loadDashboard() {
           );
 
         }
-      );
-
-
-
-    /* -----------------------------------------------
-       CALCULATE TOTAL EARNED
-    ----------------------------------------------- */
-
-    const totalEarned =
-      realEarningTransactions
-        .reduce(
-          function(total, transaction) {
-
-            return (
-              total +
-              Number(
-                transaction.amount || 0
-              )
-            );
-
-          },
-          0
-        );
-
-
-
-    document.getElementById(
-      "total-earned"
-    ).textContent =
-      formatNaira(
-        totalEarned
       );
 
 
@@ -1694,11 +1708,6 @@ async function loadDashboard() {
     ).textContent =
       "₦0";
 
-
-    document.getElementById(
-      "total-earned"
-    ).textContent =
-      "₦0";
 
   }
 
@@ -1863,7 +1872,8 @@ async function loadTransactions() {
             String(
               transaction.type || ""
             )
-              .toLowerCase();
+              .toLowerCase()
+              .trim();
 
 
 
@@ -1882,6 +1892,18 @@ async function loadTransactions() {
             ||
 
             type === "withdraw"
+
+            ||
+
+            type === "advert_payment"
+
+            ||
+
+            type === "advert_payment_with_wallet"
+
+            ||
+
+            type === "ad_payment"
 
             ||
 
