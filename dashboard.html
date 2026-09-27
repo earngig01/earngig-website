@@ -26,17 +26,20 @@
 
   padding: 22px;
 
-  border: 1px solid rgba(37, 99, 235, 0.16);
+  border: 1px solid rgba(96, 165, 250, 0.25);
 
   border-radius: 18px;
 
   background:
     linear-gradient(
       135deg,
-      rgba(20, 35, 95, 0.98) 0%,
-      rgba(52, 69, 145, 0.96) 38%,
-      rgba(220, 225, 242, 0.98) 100%
+      #111c4e 0%,
+      #172866 55%,
+      #1e3a8a 100%
     );
+
+  box-shadow:
+    0 10px 30px rgba(15, 23, 42, 0.18);
 
 }
 
@@ -79,7 +82,9 @@
 
   border-radius: 12px;
 
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(96, 165, 250, 0.18);
+
+  border: 1px solid rgba(147, 197, 253, 0.18);
 
   font-size: 20px;
 
@@ -94,6 +99,8 @@
 
   font-size: 18px;
 
+  font-weight: 800;
+
 }
 
 
@@ -101,15 +108,17 @@
 
   margin: 4px 0 0;
 
-  color: rgba(255, 255, 255, 0.82);
+  color: #bfdbfe;
 
   font-size: 13px;
+
+  font-weight: 600;
 
 }
 
 
 /* =====================================================
-   RIGHT SIDE TEXT
+   RIGHT SIDE AMOUNT
 ===================================================== */
 
 .daily-limit-amount {
@@ -123,7 +132,7 @@
 
   display: block;
 
-  color: #312E81;
+  color: #ffffff;
 
   font-size: 22px;
 
@@ -138,13 +147,11 @@
 
   margin-top: 4px;
 
-  color: #4338CA;
+  color: #bfdbfe;
 
   font-size: 12px;
 
-  font-weight: 700;
-
-  opacity: 1;
+  font-weight: 600;
 
 }
 
@@ -165,7 +172,7 @@
 
   border-radius: 999px;
 
-  background: rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.14);
 
 }
 
@@ -180,7 +187,15 @@
 
   transition: width 0.35s ease;
 
-  background: #ffffff;
+  background:
+    linear-gradient(
+      90deg,
+      #60a5fa,
+      #93c5fd
+    );
+
+  box-shadow:
+    0 0 10px rgba(96, 165, 250, 0.35);
 
 }
 
@@ -208,7 +223,7 @@
 
 .daily-limit-remaining {
 
-  color: #3730A3;
+  color: #ffffff;
 
   font-weight: 800;
 
@@ -217,11 +232,9 @@
 
 .daily-limit-note {
 
-  color: #4F46A5;
+  color: #bfdbfe;
 
-  font-weight: 650;
-
-  opacity: 1;
+  font-weight: 600;
 
   text-align: right;
 
@@ -234,14 +247,14 @@
 
 .daily-limit-reached {
 
-  border-color: rgba(220, 38, 38, 0.22);
+  border-color: rgba(248, 113, 113, 0.35);
 
   background:
     linear-gradient(
       135deg,
-      rgba(20, 35, 95, 0.98) 0%,
-      rgba(52, 69, 145, 0.96) 38%,
-      rgba(245, 222, 222, 0.98) 100%
+      #3b1118 0%,
+      #5f1725 55%,
+      #7f1d1d 100%
     );
 
 }
@@ -249,35 +262,61 @@
 
 .daily-limit-reached .daily-limit-icon {
 
-  background: rgba(220, 38, 38, 0.15);
+  background: rgba(248, 113, 113, 0.16);
+
+  border-color: rgba(248, 113, 113, 0.25);
+
+}
+
+
+.daily-limit-reached .daily-limit-title p {
+
+  color: #fecaca;
+
+}
+
+
+.daily-limit-reached .daily-limit-amount strong {
+
+  color: #ffffff;
+
+}
+
+
+.daily-limit-reached .daily-limit-amount span {
+
+  color: #fecaca;
 
 }
 
 
 .daily-limit-reached .daily-limit-progress {
 
-  background: rgba(220, 38, 38, 0.12);
+  background: rgba(255, 255, 255, 0.12);
 
 }
 
 
 .daily-limit-reached .daily-limit-progress-bar {
 
-  background: #dc2626;
+  background: #f87171;
+
+  box-shadow:
+    0 0 10px rgba(248, 113, 113, 0.35);
 
 }
 
 
 .daily-limit-reached .daily-limit-remaining {
 
-  color: #B91C1C;
+  color: #fca5a5;
 
 }
 
 
 .daily-limit-reached .daily-limit-note {
 
-  color: #7F1D1D;
+  color: #fecaca;
 
 }
 
@@ -288,9 +327,18 @@
 
 @media (max-width: 600px) {
 
+  .daily-limit-card {
+
+    padding: 20px;
+
+  }
+
+
   .daily-limit-header {
 
     flex-direction: column;
+
+    gap: 16px;
 
   }
 
@@ -302,11 +350,20 @@
   }
 
 
+  .daily-limit-amount strong {
+
+    font-size: 21px;
+
+  }
+
+
   .daily-limit-footer {
 
     flex-direction: column;
 
     align-items: flex-start;
+
+    gap: 8px;
 
   }
 
@@ -380,9 +437,7 @@
   <div class="container">
 
 
-    <!-- =================================================
-         WELCOME
-    ================================================== -->
+    <!-- WELCOME -->
 
     <div class="dashboard-heading">
 
@@ -416,9 +471,7 @@
 
 
 
-    <!-- =================================================
-         WALLET
-    ================================================== -->
+    <!-- WALLET -->
 
     <section class="member-wallet">
 
@@ -432,8 +485,8 @@
           ₦0.00
         </strong>
 
-        <p>
-          Minimum withdrawal: ₦15,000
+        <p id="withdrawal-minimum-text">
+          Minimum withdrawal: Loading...
         </p>
 
       </div>
@@ -462,9 +515,7 @@
 
 
 
-    <!-- =================================================
-         STATS
-    ================================================== -->
+    <!-- STATS -->
 
     <div class="dashboard-stats">
 
@@ -528,9 +579,7 @@
 
 
 
-    <!-- =================================================
-         DAILY EARNING LIMIT
-    ================================================== -->
+    <!-- DAILY EARNING LIMIT -->
 
     <section
       id="daily-earning-limit"
@@ -613,9 +662,7 @@
 
 
 
-    <!-- =================================================
-         EARNING OPTIONS
-    ================================================== -->
+    <!-- EARNING OPTIONS -->
 
     <section
       id="earn"
@@ -643,8 +690,6 @@
       <div class="member-earning-grid">
 
 
-        <!-- TASKS -->
-
         <a
           href="tasks.html"
           class="member-earning-card"
@@ -671,8 +716,6 @@
 
 
 
-        <!-- PREMIUM -->
-
         <a
           href="membership.html"
           class="member-earning-card"
@@ -698,8 +741,6 @@
         </a>
 
 
-
-        <!-- WATCH ADS -->
 
         <a
           href="watch-ads.html"
@@ -732,9 +773,7 @@
 
 
 
-    <!-- =================================================
-         MORE OPTIONS
-    ================================================== -->
+    <!-- MORE OPTIONS -->
 
     <section
       id="more-options"
@@ -761,8 +800,6 @@
 
       <div class="member-earning-grid">
 
-
-        <!-- COMPETITIONS & AWARDS -->
 
         <a
           href="competitions.html"
@@ -791,8 +828,6 @@
 
 
 
-        <!-- COMPLAINTS & ISSUES -->
-
         <a
           href="mailto:ahruhenterprises@gmail.com?subject=EarnGig%20Complaint%20%2F%20Issue"
           class="member-earning-card"
@@ -819,8 +854,6 @@
         </a>
 
 
-
-        <!-- RUN AN ADVERT -->
 
         <a
           href="run-advert.html"
@@ -853,9 +886,7 @@
 
 
 
-    <!-- =================================================
-         READ & EARN
-    ================================================== -->
+    <!-- READ & EARN -->
 
     <section
       id="read"
@@ -890,7 +921,6 @@
 
       <div class="novel-preview">
 
-
         <div class="novel-preview-icon">
           📖
         </div>
@@ -917,16 +947,13 @@
           Browse Novels
         </a>
 
-
       </div>
 
     </section>
 
 
 
-    <!-- =================================================
-         CREATE & EARN
-    ================================================== -->
+    <!-- CREATE & EARN -->
 
     <section
       id="create"
@@ -961,7 +988,6 @@
 
       <div class="novel-preview">
 
-
         <div class="novel-preview-icon">
           ✍️
         </div>
@@ -989,22 +1015,18 @@
           Create & Earn
         </a>
 
-
       </div>
 
     </section>
 
 
 
-    <!-- =================================================
-         REFERRALS
-    ================================================== -->
+    <!-- REFERRALS -->
 
     <section
       id="referrals"
       class="dashboard-section"
     >
-
 
       <div class="section-title">
 
@@ -1026,7 +1048,6 @@
 
       <div class="referral-box">
 
-
         <div>
 
           <small>
@@ -1043,7 +1064,6 @@
 
         </div>
 
-
       </div>
 
 
@@ -1059,7 +1079,6 @@
 
 
       <div class="earning-box">
-
 
         <div>
 
@@ -1101,15 +1120,11 @@
 
         </div>
 
-
       </div>
 
 
 
-      <!-- REFERRAL HISTORY -->
-
       <div class="referral-history">
-
 
         <div class="section-title">
 
@@ -1131,7 +1146,6 @@
 
         <div id="referral-history-list">
 
-
           <div class="empty-state">
 
             <h3>
@@ -1144,9 +1158,7 @@
 
           </div>
 
-
         </div>
-
 
       </div>
 
@@ -1155,15 +1167,12 @@
 
 
 
-    <!-- =================================================
-         TRANSACTIONS
-    ================================================== -->
+    <!-- TRANSACTIONS -->
 
     <section
       id="transactions"
       class="dashboard-section"
     >
-
 
       <div class="section-title">
 
@@ -1229,17 +1238,244 @@
 
 
 
-<!-- =====================================================
-     SUPABASE
-====================================================== -->
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script src="supabase.js"></script>
 
 
-
 <script>
+
+/* =====================================================
+   WITHDRAWAL MINIMUMS
+===================================================== */
+
+const WITHDRAWAL_MINIMUMS = {
+
+  starter: 3000,
+
+  standard: 6000,
+
+  premium: 12000,
+
+  elite: 24000
+
+};
+
+
+
+/* =====================================================
+   EXPLICIT EARNING TYPES
+===================================================== */
+
+const EARNING_TYPES = new Set([
+
+  "task_reward",
+
+  "watch_earn",
+
+  "referral_bonus",
+
+  "referral_earning",
+
+  "referral_commission",
+
+  "novel_writer_earnings",
+
+  "novel_earnings",
+
+  "competition_prize",
+
+  "daily_login_reward"
+
+]);
+
+
+
+/* =====================================================
+   NON-EARNING TYPES
+===================================================== */
+
+const NON_EARNING_TYPES = new Set([
+
+  "advert_payment",
+
+  "advert_payment_with_wallet",
+
+  "ad_payment",
+
+  "task_payment",
+
+  "task_refund",
+
+  "withdrawal",
+
+  "withdraw",
+
+  "withdrawal_fee",
+
+  "debit",
+
+  "payment",
+
+  "membership_payment",
+
+  "membership_fee",
+
+  "listing_fee",
+
+  "novel_listing_fee",
+
+  "refund",
+
+  "fee",
+
+  "charge"
+
+]);
+
+
+
+/* =====================================================
+   FORMAT NAIRA
+===================================================== */
+
+function formatNaira(
+  amount,
+  decimals = 0
+) {
+
+  return `₦${Number(
+    amount || 0
+  ).toLocaleString(
+    "en-NG",
+    {
+      minimumFractionDigits: decimals,
+      maximumFractionDigits: decimals
+    }
+  )}`;
+
+}
+
+
+
+/* =====================================================
+   GET TRANSACTION TYPE
+===================================================== */
+
+function getTransactionType(
+  transaction
+) {
+
+  return String(
+    transaction?.type || ""
+  )
+    .trim()
+    .toLowerCase();
+
+}
+
+
+
+/* =====================================================
+   CHECK REAL EARNING
+===================================================== */
+
+function isRealEarning(
+  transaction
+) {
+
+  const amount =
+    Number(
+      transaction?.amount || 0
+    );
+
+
+  if (
+    !Number.isFinite(amount) ||
+    amount <= 0
+  ) {
+
+    return false;
+
+  }
+
+
+  return EARNING_TYPES.has(
+    getTransactionType(
+      transaction
+    )
+  );
+
+}
+
+
+
+/* =====================================================
+   CHECK WITHDRAWAL
+===================================================== */
+
+function isWithdrawal(
+  transaction
+) {
+
+  const type =
+    getTransactionType(
+      transaction
+    );
+
+
+  return (
+    type === "withdrawal" ||
+    type === "withdraw" ||
+    type === "withdrawal_fee" ||
+    type.includes("withdraw")
+  );
+
+}
+
+
+
+/* =====================================================
+   CHECK PAYMENT / DEBIT
+===================================================== */
+
+function isPaymentOrDebit(
+  transaction
+) {
+
+  const type =
+    getTransactionType(
+      transaction
+    );
+
+
+  if (
+    isWithdrawal(transaction)
+  ) {
+
+    return true;
+
+  }
+
+
+  if (
+    NON_EARNING_TYPES.has(type)
+  ) {
+
+    return true;
+
+  }
+
+
+  return (
+    type.includes("payment") ||
+    type.includes("fee") ||
+    type.includes("charge") ||
+    type === "debit"
+  );
+
+}
+
 
 
 /* =====================================================
@@ -1257,7 +1493,10 @@ async function checkMembershipAccess() {
       .getUser();
 
 
-  if (userError || !user) {
+  if (
+    userError ||
+    !user
+  ) {
 
     window.location.href =
       "login.html";
@@ -1276,11 +1515,15 @@ async function checkMembershipAccess() {
       .from("memberships")
       .select(`
         status,
+        plan_code,
         current_period_start,
         current_period_end,
         next_payment_at
       `)
-      .eq("user_id", user.id)
+      .eq(
+        "user_id",
+        user.id
+      )
       .maybeSingle();
 
 
@@ -1316,7 +1559,7 @@ async function checkMembershipAccess() {
   if (!membership) {
 
     alert(
-      "₦9,000 membership payment required before you can access your dashboard."
+      "Membership payment required before you can access your dashboard."
     );
 
 
@@ -1376,181 +1619,6 @@ async function checkMembershipAccess() {
 
 
 /* =====================================================
-   FORMAT NIGERIAN NAIRA
-===================================================== */
-
-function formatNaira(
-  amount,
-  decimals = 0
-) {
-
-  return `₦${Number(
-    amount || 0
-  ).toLocaleString(
-    "en-NG",
-    {
-      minimumFractionDigits: decimals,
-      maximumFractionDigits: decimals
-    }
-  )}`;
-
-}
-
-
-
-
-
-/* =====================================================
-   CHECK IF TRANSACTION IS A REAL EARNING
-===================================================== */
-
-function isRealEarning(
-  transaction
-) {
-
-
-  const amount =
-    Number(
-      transaction.amount || 0
-    );
-
-
-  if (amount <= 0) {
-
-    return false;
-
-  }
-
-
-
-  const type =
-    String(
-      transaction.type || ""
-    )
-      .trim()
-      .toLowerCase();
-
-
-
-  const description =
-    String(
-      transaction.description || ""
-    )
-      .trim()
-      .toLowerCase();
-
-
-
-  const excludedTypes = [
-
-    "advert_payment",
-
-    "advert_payment_with_wallet",
-
-    "ad_payment",
-
-    "task_payment",
-
-    "task_refund",
-
-    "withdrawal",
-
-    "withdraw",
-
-    "debit",
-
-    "payment",
-
-    "membership_payment",
-
-    "membership_fee",
-
-    "listing_fee",
-
-    "novel_listing_fee",
-
-    "refund"
-
-  ];
-
-
-
-  if (
-    excludedTypes.includes(type)
-  ) {
-
-    return false;
-
-  }
-
-
-
-  const excludedDescriptionWords = [
-
-    "advert payment",
-
-    "advert payment -",
-
-    "advertising payment",
-
-    "ad payment",
-
-    "payment for advert",
-
-    "payment for advertising",
-
-    "task payment",
-
-    "task refund",
-
-    "withdrawal",
-
-    "withdraw",
-
-    "membership payment",
-
-    "membership fee",
-
-    "listing fee",
-
-    "novel listing fee",
-
-    "refund"
-
-  ];
-
-
-
-  const isExcludedByDescription =
-    excludedDescriptionWords.some(
-      function(word) {
-
-        return description.includes(
-          word
-        );
-
-      }
-    );
-
-
-
-  if (isExcludedByDescription) {
-
-    return false;
-
-  }
-
-
-
-  return true;
-
-}
-
-
-
-
-
-/* =====================================================
    LOAD DAILY EARNING LIMIT
 ===================================================== */
 
@@ -1590,20 +1658,6 @@ async function loadDailyEarningLimit() {
     document.getElementById(
       "daily-limit-note"
     );
-
-
-  if (
-    !card ||
-    !planElement ||
-    !amountElement ||
-    !progressBar ||
-    !remainingElement
-  ) {
-
-    return;
-
-  }
-
 
 
   const {
@@ -1699,22 +1753,15 @@ async function loadDailyEarningLimit() {
     );
 
 
-
   const planName =
-
     planCode
-
       ? planCode.charAt(0).toUpperCase() +
         planCode.slice(1)
-
       : "Current";
 
 
-
   const percentage =
-
     dailyLimit > 0
-
       ? Math.min(
           100,
           Math.max(
@@ -1725,7 +1772,6 @@ async function loadDailyEarningLimit() {
             ) * 100
           )
         )
-
       : 0;
 
 
@@ -1734,10 +1780,8 @@ async function loadDailyEarningLimit() {
     `${planName} plan • Normal earning activities`;
 
 
-
   amountElement.textContent =
     `${formatNaira(earnedToday)} / ${formatNaira(dailyLimit)}`;
-
 
 
   progressBar.style.width =
@@ -1789,13 +1833,7 @@ async function loadDailyEarningLimit() {
 
 async function loadDashboard() {
 
-
   try {
-
-
-    /* -----------------------------------------------
-       GET LOGGED-IN USER
-    ----------------------------------------------- */
 
     const {
       data: { user },
@@ -1807,7 +1845,10 @@ async function loadDashboard() {
 
 
 
-    if (userError || !user) {
+    if (
+      userError ||
+      !user
+    ) {
 
       window.location.href =
         "login.html";
@@ -1818,9 +1859,7 @@ async function loadDashboard() {
 
 
 
-    /* -----------------------------------------------
-       LOAD PROFILE
-    ----------------------------------------------- */
+    /* PROFILE */
 
     const {
       data: profile,
@@ -1832,7 +1871,10 @@ async function loadDashboard() {
           full_name,
           referral_code
         `)
-        .eq("id", user.id)
+        .eq(
+          "id",
+          user.id
+        )
         .maybeSingle();
 
 
@@ -1848,26 +1890,86 @@ async function loadDashboard() {
 
 
 
-    const nameElement =
-      document.getElementById(
-        "user-name"
+    document.getElementById(
+      "user-name"
+    ).textContent =
+      profile?.full_name ||
+      "Member";
+
+
+
+    /* MEMBERSHIP */
+
+    const {
+      data: membership,
+      error: membershipError
+    } =
+      await supabaseClient
+        .from("memberships")
+        .select(`
+          plan_code,
+          status,
+          current_period_end
+        `)
+        .eq(
+          "user_id",
+          user.id
+        )
+        .maybeSingle();
+
+
+
+    if (membershipError) {
+
+      console.error(
+        "Unable to load dashboard membership:",
+        membershipError
       );
-
-
-
-    if (nameElement) {
-
-      nameElement.textContent =
-        profile?.full_name ||
-        "Member";
 
     }
 
 
 
-    /* -----------------------------------------------
-       LOAD WALLET
-    ----------------------------------------------- */
+    const planCode =
+      String(
+        membership?.plan_code || ""
+      )
+        .trim()
+        .toLowerCase();
+
+
+
+    const withdrawalMinimum =
+      WITHDRAWAL_MINIMUMS[
+        planCode
+      ];
+
+
+
+    const withdrawalText =
+      document.getElementById(
+        "withdrawal-minimum-text"
+      );
+
+
+
+    if (
+      withdrawalMinimum
+    ) {
+
+      withdrawalText.textContent =
+        `Minimum withdrawal: ${formatNaira(withdrawalMinimum)}`;
+
+    } else {
+
+      withdrawalText.textContent =
+        "Minimum withdrawal: Check your membership plan.";
+
+    }
+
+
+
+    /* WALLET */
 
     const {
       data: wallet,
@@ -1880,7 +1982,10 @@ async function loadDashboard() {
           total_earned,
           referral_earned
         `)
-        .eq("user_id", user.id)
+        .eq(
+          "user_id",
+          user.id
+        )
         .maybeSingle();
 
 
@@ -1898,9 +2003,7 @@ async function loadDashboard() {
       ).textContent =
         "₦0.00";
 
-
     } else {
-
 
       const balance =
         Number(
@@ -1917,12 +2020,10 @@ async function loadDashboard() {
         );
 
 
-
       const referralEarned =
         Number(
           wallet?.referral_earned || 0
         );
-
 
 
       document.getElementById(
@@ -1933,14 +2034,12 @@ async function loadDashboard() {
         );
 
 
-
       document.getElementById(
         "dashboard-referral-earnings"
       ).textContent =
         formatNaira(
           referralEarned
         );
-
 
 
       const totalEarned =
@@ -1960,17 +2059,13 @@ async function loadDashboard() {
 
 
 
-    /* -----------------------------------------------
-       LOAD DAILY EARNING LIMIT
-    ----------------------------------------------- */
+    /* DAILY LIMIT */
 
     await loadDailyEarningLimit();
 
 
 
-    /* -----------------------------------------------
-       LOAD REFERRAL CODE
-    ----------------------------------------------- */
+    /* REFERRAL CODE */
 
     const referralCodeElement =
       document.getElementById(
@@ -1978,26 +2073,13 @@ async function loadDashboard() {
       );
 
 
-
-    if (
-      profile?.referral_code
-    ) {
-
-      referralCodeElement.textContent =
-        profile.referral_code;
-
-    } else {
-
-      referralCodeElement.textContent =
-        "Not available";
-
-    }
+    referralCodeElement.textContent =
+      profile?.referral_code ||
+      "Not available";
 
 
 
-    /* -----------------------------------------------
-       LOAD REFERRAL COUNTERS
-    ----------------------------------------------- */
+    /* REFERRAL COUNT */
 
     const {
       data: referredMembers,
@@ -2013,34 +2095,29 @@ async function loadDashboard() {
 
 
 
-    if (referredMembersError) {
+    if (
+      referredMembersError
+    ) {
 
       console.error(
         "Unable to load referral counters:",
         referredMembersError
       );
 
-
     } else {
-
-
-      const members =
-        referredMembers || [];
-
-
 
       document.getElementById(
         "successful-referrals"
       ).textContent =
-        members.length;
+        (
+          referredMembers || []
+        ).length;
 
     }
 
 
 
-    /* -----------------------------------------------
-       LOAD ACTIVE REFERRALS
-    ----------------------------------------------- */
+    /* ACTIVE REFERRALS */
 
     const {
       data: activeReferralCount,
@@ -2053,7 +2130,9 @@ async function loadDashboard() {
 
 
 
-    if (activeReferralError) {
+    if (
+      activeReferralError
+    ) {
 
       console.error(
         "Unable to load active referral count:",
@@ -2066,9 +2145,7 @@ async function loadDashboard() {
       ).textContent =
         "0";
 
-
     } else {
-
 
       document.getElementById(
         "active-referrals"
@@ -2081,9 +2158,7 @@ async function loadDashboard() {
 
 
 
-    /* -----------------------------------------------
-       LOAD TASK ATTEMPTS
-    ----------------------------------------------- */
+    /* TASK ATTEMPTS */
 
     const {
       data: attempts,
@@ -2104,7 +2179,9 @@ async function loadDashboard() {
 
 
 
-    if (attemptsError) {
+    if (
+      attemptsError
+    ) {
 
       console.error(
         "Unable to load task attempts:",
@@ -2113,28 +2190,19 @@ async function loadDashboard() {
 
     } else {
 
-
       const completedCount =
-        (attempts || [])
-          .filter(
-            function(attempt) {
+        (
+          attempts || []
+        ).filter(
+          function(attempt) {
 
-              return (
+            return (
+              attempt.status === "completed" ||
+              attempt.status === "approved"
+            );
 
-                attempt.status ===
-                  "completed"
-
-                ||
-
-                attempt.status ===
-                  "approved"
-
-              );
-
-            }
-          )
-          .length;
-
+          }
+        ).length;
 
 
       document.getElementById(
@@ -2146,9 +2214,7 @@ async function loadDashboard() {
 
 
 
-    /* -----------------------------------------------
-       LOAD COMPLETED TRANSACTIONS
-    ----------------------------------------------- */
+    /* TRANSACTIONS */
 
     const {
       data: completedTransactions,
@@ -2175,7 +2241,9 @@ async function loadDashboard() {
 
 
 
-    if (transactionsError) {
+    if (
+      transactionsError
+    ) {
 
       console.error(
         "Unable to load earnings:",
@@ -2199,11 +2267,6 @@ async function loadDashboard() {
       completedTransactions || [];
 
 
-
-    /* -----------------------------------------------
-       FILTER REAL EARNINGS
-    ----------------------------------------------- */
-
     const realEarningTransactions =
       transactions.filter(
         function(transaction) {
@@ -2217,33 +2280,33 @@ async function loadDashboard() {
 
 
 
-    /* -----------------------------------------------
-       CALCULATE TODAY'S EARNINGS
-    ----------------------------------------------- */
+    /* =================================================
+       TODAY IN NIGERIA
+    ================================================= */
 
-    const startOfToday =
-      new Date();
+    const lagosFormatter =
+      new Intl.DateTimeFormat(
+        "en-CA",
+        {
+          timeZone: "Africa/Lagos",
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit"
+        }
+      );
 
 
-    startOfToday.setHours(
-      0,
-      0,
-      0,
-      0
-    );
-
-
-    const startOfTodayTime =
-      startOfToday.getTime();
+    const lagosToday =
+      lagosFormatter.format(
+        new Date()
+      );
 
 
 
     const todayEarnings =
       realEarningTransactions
-
         .filter(
           function(transaction) {
-
 
             if (
               !transaction.created_at
@@ -2254,34 +2317,29 @@ async function loadDashboard() {
             }
 
 
-
             const transactionDate =
-              new Date(
-                transaction.created_at
+              lagosFormatter.format(
+                new Date(
+                  transaction.created_at
+                )
               );
 
 
-
             return (
-              transactionDate.getTime() >=
-              startOfTodayTime
+              transactionDate ===
+              lagosToday
             );
 
           }
         )
-
-
         .reduce(
           function(total, transaction) {
 
             return (
-
               total +
-
               Number(
                 transaction.amount || 0
               )
-
             );
 
           },
@@ -2297,10 +2355,9 @@ async function loadDashboard() {
         todayEarnings
       );
 
+  }
 
-
-  } catch (error) {
-
+  catch (error) {
 
     console.error(
       "Dashboard loading error:",
@@ -2313,9 +2370,7 @@ async function loadDashboard() {
     ).textContent =
       "₦0";
 
-
   }
-
 
 }
 
@@ -2329,18 +2384,14 @@ async function loadDashboard() {
 
 async function loadTransactions() {
 
-
   const transactionList =
     document.getElementById(
       "transaction-list"
     );
 
 
-
   if (!transactionList) {
-
     return;
-
   }
 
 
@@ -2355,7 +2406,10 @@ async function loadTransactions() {
 
 
 
-  if (userError || !user) {
+  if (
+    userError ||
+    !user
+  ) {
 
     window.location.href =
       "login.html";
@@ -2397,7 +2451,6 @@ async function loadTransactions() {
 
   if (error) {
 
-
     console.error(
       "Unable to load transactions:",
       error
@@ -2420,7 +2473,6 @@ async function loadTransactions() {
 
     `;
 
-
     return;
 
   }
@@ -2431,7 +2483,6 @@ async function loadTransactions() {
     !transactions ||
     transactions.length === 0
   ) {
-
 
     transactionList.innerHTML = `
 
@@ -2453,7 +2504,6 @@ async function loadTransactions() {
 
     `;
 
-
     return;
 
   }
@@ -2465,7 +2515,6 @@ async function loadTransactions() {
       .map(
         function(transaction) {
 
-
           const amount =
             Number(
               transaction.amount || 0
@@ -2473,62 +2522,16 @@ async function loadTransactions() {
 
 
           const type =
-            String(
-              transaction.type || ""
-            )
-              .toLowerCase()
-              .trim();
-
+            getTransactionType(
+              transaction
+            );
 
 
           const isDebit =
-
-            amount < 0
-
-            ||
-
-            type === "debit"
-
-            ||
-
-            type === "withdrawal"
-
-            ||
-
-            type === "withdraw"
-
-            ||
-
-            type === "advert_payment"
-
-            ||
-
-            type === "advert_payment_with_wallet"
-
-            ||
-
-            type === "ad_payment"
-
-            ||
-
-            type === "task_payment"
-
-            ||
-
-            type === "membership_payment"
-
-            ||
-
-            type === "membership_fee"
-
-            ||
-
-            type === "listing_fee"
-
-            ||
-
-            type === "novel_listing_fee";
-
+            amount < 0 ||
+            isPaymentOrDebit(
+              transaction
+            );
 
 
           const displayAmount =
@@ -2537,12 +2540,10 @@ async function loadTransactions() {
             );
 
 
-
           const sign =
             isDebit
               ? "−"
               : "+";
-
 
 
           const amountClass =
@@ -2551,18 +2552,18 @@ async function loadTransactions() {
               : "transaction-credit";
 
 
-
           const date =
             transaction.created_at
-
               ? new Date(
                   transaction.created_at
                 ).toLocaleString(
-                  "en-NG"
+                  "en-NG",
+                  {
+                    timeZone:
+                      "Africa/Lagos"
+                  }
                 )
-
               : "";
-
 
 
           return `
@@ -2572,43 +2573,29 @@ async function loadTransactions() {
               <div class="transaction-info">
 
                 <strong>
-
                   ${
-                    transaction.description
-                    ||
-                    transaction.type
-                    ||
+                    transaction.description ||
+                    transaction.type ||
                     "Wallet transaction"
                   }
-
                 </strong>
 
 
                 <small>
-
                   ${date}
-
                 </small>
 
 
                 ${
                   transaction.status
-
                     ? `
-
                       <small>
-
                         Status:
                         ${transaction.status}
-
                       </small>
-
                     `
-
                     : ""
-
                 }
-
 
               </div>
 
@@ -2641,18 +2628,14 @@ async function loadTransactions() {
 
 async function loadReferralHistory() {
 
-
   const list =
     document.getElementById(
       "referral-history-list"
     );
 
 
-
   if (!list) {
-
     return;
-
   }
 
 
@@ -2667,17 +2650,14 @@ async function loadReferralHistory() {
 
 
 
-  if (userError || !user) {
-
+  if (
+    userError ||
+    !user
+  ) {
     return;
-
   }
 
 
-
-  /* -----------------------------------------------
-     GET REFERRED USERS
-  ----------------------------------------------- */
 
   const {
     data: referredUsers,
@@ -2705,7 +2685,6 @@ async function loadReferralHistory() {
 
   if (profileError) {
 
-
     console.error(
       "Unable to load referral history:",
       profileError
@@ -2728,7 +2707,6 @@ async function loadReferralHistory() {
 
     `;
 
-
     return;
 
   }
@@ -2739,7 +2717,6 @@ async function loadReferralHistory() {
     !referredUsers ||
     referredUsers.length === 0
   ) {
-
 
     list.innerHTML = `
 
@@ -2762,7 +2739,6 @@ async function loadReferralHistory() {
 
     `;
 
-
     return;
 
   }
@@ -2779,10 +2755,6 @@ async function loadReferralHistory() {
     );
 
 
-
-  /* -----------------------------------------------
-     LOAD REFERRAL BONUSES
-  ----------------------------------------------- */
 
   const {
     data: bonuses,
@@ -2817,12 +2789,10 @@ async function loadReferralHistory() {
     bonuses || [];
 
 
-
   list.innerHTML =
     referredUsers
       .map(
         function(referral) {
-
 
           const userBonuses =
             bonusRows.filter(
@@ -2837,19 +2807,15 @@ async function loadReferralHistory() {
             );
 
 
-
           const totalBonus =
             userBonuses.reduce(
               function(total, bonus) {
 
                 return (
-
                   total +
-
                   Number(
                     bonus.bonus_amount || 0
                   )
-
                 );
 
               },
@@ -2857,74 +2823,62 @@ async function loadReferralHistory() {
             );
 
 
-
           const bonusCount =
             userBonuses.length;
 
 
-
           const date =
             referral.created_at
-
               ? new Date(
                   referral.created_at
                 ).toLocaleDateString(
-                  "en-NG"
+                  "en-NG",
+                  {
+                    timeZone:
+                      "Africa/Lagos"
+                  }
                 )
-
               : "";
-
 
 
           return `
 
             <div class="referral-history-row">
 
-
               <div>
 
                 <strong>
-
                   ${
                     referral.full_name ||
                     "EarnGig Member"
                   }
-
                 </strong>
 
 
                 <small>
-
                   Joined ${date}
-
                 </small>
 
               </div>
 
 
-
               <div>
 
                 <strong>
-
                   ${formatNaira(totalBonus)}
-
                 </strong>
 
 
                 <small>
-
                   ${bonusCount}
                   bonus payment${
                     bonusCount === 1
                       ? ""
                       : "s"
                   }
-
                 </small>
 
               </div>
-
 
             </div>
 
@@ -2952,7 +2906,6 @@ document
     "click",
     async function() {
 
-
       const code =
         document
           .getElementById(
@@ -2962,28 +2915,15 @@ document
           .trim();
 
 
-
       if (
-
-        !code
-
-        ||
-
-        code ===
-          "Loading..."
-
-        ||
-
-        code ===
-          "Not available"
-
+        !code ||
+        code === "Loading..." ||
+        code === "Not available"
       ) {
-
 
         alert(
           "Your referral code is not available yet."
         );
-
 
         return;
 
@@ -2992,11 +2932,8 @@ document
 
 
       const referralLink =
-
         window.location.origin +
-
         "/earngig-website/register.html?ref=" +
-
         encodeURIComponent(
           code
         );
@@ -3004,7 +2941,6 @@ document
 
 
       try {
-
 
         await navigator.clipboard.writeText(
           referralLink
@@ -3016,9 +2952,9 @@ document
           referralLink
         );
 
+      }
 
-      } catch (error) {
-
+      catch (error) {
 
         prompt(
           "Copy your referral link:",
@@ -3026,7 +2962,6 @@ document
         );
 
       }
-
 
     }
   );
@@ -3047,7 +2982,6 @@ document
     "click",
     async function() {
 
-
       const {
         error
       } =
@@ -3056,9 +2990,7 @@ document
           .signOut();
 
 
-
       if (error) {
-
 
         console.error(
           "Logout error:",
@@ -3070,16 +3002,13 @@ document
           "Unable to log out right now."
         );
 
-
         return;
 
       }
 
 
-
       window.location.href =
         "login.html";
-
 
     }
   );
@@ -3094,28 +3023,20 @@ document
 
 (async function() {
 
-
   const hasAccess =
     await checkMembershipAccess();
 
 
-
   if (!hasAccess) {
-
     return;
-
   }
-
 
 
   await loadDashboard();
 
-
   await loadTransactions();
 
-
   await loadReferralHistory();
-
 
 })();
 
