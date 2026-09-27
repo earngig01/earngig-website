@@ -17,6 +17,41 @@
     href="styles.css"
   >
 
+  <style>
+
+    .wallet-withdrawal-info {
+      margin-top: 10px;
+      color: #475569;
+      line-height: 1.6;
+    }
+
+    .wallet-withdrawal-status {
+      margin-top: 16px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .wallet-withdrawal-status.open {
+      background: #ecfdf5;
+      border: 1px solid #a7f3d0;
+      color: #047857;
+    }
+
+    .wallet-withdrawal-status.closed {
+      background: #fff7ed;
+      border: 1px solid #fed7aa;
+      color: #9a3412;
+    }
+
+    .wallet-withdrawal-status strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+  </style>
+
 </head>
 
 
@@ -160,9 +195,22 @@
         </strong>
 
 
-        <p>
+        <p
+          id="minimumWithdrawalText"
+          class="wallet-withdrawal-info"
+        >
 
-          Minimum withdrawal: ₦15,000
+          Minimum withdrawal: Checking...
+
+        </p>
+
+
+        <p
+          id="withdrawalWindowText"
+          class="wallet-withdrawal-info"
+        >
+
+          Withdrawal window: Checking...
 
         </p>
 
@@ -177,6 +225,7 @@
         <a
           class="btn primary"
           href="withdraw.html"
+          id="withdrawButton"
         >
 
           Withdraw Funds
@@ -188,6 +237,27 @@
 
 
     </section>
+
+
+
+    <!-- =====================================
+         WITHDRAWAL STATUS
+    ====================================== -->
+
+    <div
+      id="walletWithdrawalStatus"
+      class="wallet-withdrawal-status"
+    >
+
+      <strong>
+        Checking withdrawal status...
+      </strong>
+
+      <span>
+        Please wait while we check your withdrawal window.
+      </span>
+
+    </div>
 
 
 
@@ -434,18 +504,19 @@
       </strong>
 
 
-      <p>
+      <p id="withdrawalRequirementText">
 
-        You must have at least ₦15,000 available in your
-        wallet before you can submit a withdrawal request.
+        Your withdrawal requirement will be shown here.
 
       </p>
 
 
       <p>
 
-        Withdrawal requests are reviewed and processed
-        according to EarnGig's payment procedures.
+        Withdrawals are available on the
+        <strong>15th and 28th</strong> of each month.
+        Requests are reviewed and processed according
+        to EarnGig's payment procedures.
 
       </p>
 
@@ -649,6 +720,23 @@
 
 
 /* =========================================
+   PLAN WITHDRAWAL MINIMUMS
+========================================= */
+
+const WITHDRAWAL_MINIMUMS = {
+
+  starter: 3000,
+
+  standard: 6000,
+
+  premium: 12000,
+
+  elite: 24000
+
+};
+
+
+/* =========================================
    DOM ELEMENTS
 ========================================= */
 
@@ -718,6 +806,35 @@ const withdrawalsContainer =
   );
 
 
+const minimumWithdrawalText =
+  document.getElementById(
+    "minimumWithdrawalText"
+  );
+
+
+const withdrawalWindowText =
+  document.getElementById(
+    "withdrawalWindowText"
+  );
+
+
+const withdrawalRequirementText =
+  document.getElementById(
+    "withdrawalRequirementText"
+  );
+
+
+const walletWithdrawalStatus =
+  document.getElementById(
+    "walletWithdrawalStatus"
+  );
+
+
+const withdrawButton =
+  document.getElementById(
+    "withdrawButton"
+  );
+
 
 /* =========================================
    FORMAT NAIRA
@@ -727,31 +844,23 @@ function formatNaira(
   amount
 ) {
 
-
   const value =
-    Number(amount ?? 0);
-
+    Number(
+      amount ?? 0
+    );
 
   return (
-
     "₦" +
-
     value.toLocaleString(
       "en-NG",
       {
-
         minimumFractionDigits: 0,
-
         maximumFractionDigits: 2
-
       }
     )
-
   );
 
-
 }
-
 
 
 /* =========================================
@@ -762,45 +871,34 @@ function formatDate(
   date
 ) {
 
-
   if (!date) {
 
     return "";
 
   }
 
-
   try {
-
 
     return new Date(
       date
     ).toLocaleDateString(
       "en-NG",
       {
-
         day: "numeric",
-
         month: "short",
-
         year: "numeric"
-
       }
     );
-
 
   }
 
   catch (error) {
 
-
     return "";
 
   }
 
-
 }
-
 
 
 /* =========================================
@@ -811,22 +909,412 @@ function escapeHtml(
   value
 ) {
 
-
   const div =
     document.createElement(
       "div"
     );
 
-
   div.textContent =
     value ?? "";
 
-
   return div.innerHTML;
-
 
 }
 
+
+/* =========================================
+   PLAN NAME
+========================================= */
+
+function formatPlanName(
+  planCode
+) {
+
+  if (!planCode) {
+
+    return "Unknown";
+
+  }
+
+  return (
+    planCode.charAt(0).toUpperCase() +
+    planCode.slice(1)
+  );
+
+}
+
+
+/* =========================================
+   GET NIGERIA DATE
+========================================= */
+
+function getNigeriaDateParts() {
+
+  const formatter =
+    new Intl.DateTimeFormat(
+      "en-GB",
+      {
+        timeZone: "Africa/Lagos",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit"
+      }
+    );
+
+
+  const parts =
+    formatter.formatToParts(
+      new Date()
+    );
+
+
+  const result = {};
+
+
+  for (
+    const part of parts
+  ) {
+
+    if (
+      part.type !== "literal"
+    ) {
+
+      result[
+        part.type
+      ] =
+        Number(
+          part.value
+        );
+
+    }
+
+  }
+
+
+  return result;
+
+}
+
+
+/* =========================================
+   GET NEXT WITHDRAWAL DATE
+========================================= */
+
+function getNextWithdrawalDateText() {
+
+  const nigeriaDate =
+    getNigeriaDateParts();
+
+
+  const year =
+    nigeriaDate.year;
+
+
+  const month =
+    nigeriaDate.month;
+
+
+  const day =
+    nigeriaDate.day;
+
+
+  if (
+    day < 15
+  ) {
+
+    return (
+      `15th of this month`
+    );
+
+  }
+
+
+  if (
+    day < 28
+  ) {
+
+    return (
+      `28th of this month`
+    );
+
+  }
+
+
+  let nextMonth =
+    month + 1;
+
+
+  let nextYear =
+    year;
+
+
+  if (
+    nextMonth > 12
+  ) {
+
+    nextMonth = 1;
+
+    nextYear++;
+
+  }
+
+
+  const monthName =
+    new Date(
+      nextYear,
+      nextMonth - 1,
+      1
+    ).toLocaleString(
+      "en-US",
+      {
+        month: "long"
+      }
+    );
+
+
+  return (
+    `15th of ${monthName} ${nextYear}`
+  );
+
+}
+
+
+/* =========================================
+   GET WITHDRAWAL WINDOW STATUS
+========================================= */
+
+function updateWithdrawalWindow() {
+
+  const nigeriaDate =
+    getNigeriaDateParts();
+
+
+  const day =
+    nigeriaDate.day;
+
+
+  const isOpen =
+    day === 15 ||
+    day === 28;
+
+
+  if (
+    isOpen
+  ) {
+
+    walletWithdrawalStatus.className =
+      "wallet-withdrawal-status open";
+
+
+    walletWithdrawalStatus.innerHTML =
+
+      `
+
+      <strong>
+        Withdrawal is OPEN today
+      </strong>
+
+      <span>
+        You can submit a withdrawal request today
+        if you meet your plan's minimum withdrawal amount.
+      </span>
+
+      `;
+
+
+    withdrawalWindowText.textContent =
+      "Withdrawal window: OPEN today";
+
+
+    if (
+      withdrawButton
+    ) {
+
+      withdrawButton.textContent =
+        "Withdraw Funds";
+
+    }
+
+  } else {
+
+    const nextDate =
+      getNextWithdrawalDateText();
+
+
+    walletWithdrawalStatus.className =
+      "wallet-withdrawal-status closed";
+
+
+    walletWithdrawalStatus.innerHTML =
+
+      `
+
+      <strong>
+        Withdrawal is currently CLOSED
+      </strong>
+
+      <span>
+        Withdrawals are available on the 15th and 28th
+        of each month. Next window: ${escapeHtml(
+          nextDate
+        )}.
+      </span>
+
+      `;
+
+
+    withdrawalWindowText.textContent =
+      "Withdrawal window: CLOSED";
+
+
+    if (
+      withdrawButton
+    ) {
+
+      withdrawButton.textContent =
+        "View Withdrawal";
+
+    }
+
+  }
+
+}
+
+
+/* =========================================
+   LOAD MEMBERSHIP
+========================================= */
+
+async function loadMembership(
+  user
+) {
+
+  try {
+
+    const {
+      data: membership,
+      error
+    } =
+      await supabaseClient
+        .from("memberships")
+        .select(
+          "plan_code,status,current_period_end"
+        )
+        .eq(
+          "user_id",
+          user.id
+        )
+        .eq(
+          "status",
+          "active"
+        )
+        .not(
+          "plan_code",
+          "is",
+          null
+        )
+        .order(
+          "current_period_end",
+          {
+            ascending: false
+          }
+        )
+        .limit(1)
+        .maybeSingle();
+
+
+    if (
+      error
+    ) {
+
+      console.error(
+        "Membership error:",
+        error
+      );
+
+      minimumWithdrawalText.textContent =
+        "Minimum withdrawal: Unable to load";
+
+      withdrawalRequirementText.textContent =
+        "Unable to load your membership withdrawal requirement.";
+
+      return;
+
+    }
+
+
+    if (
+      !membership
+    ) {
+
+      minimumWithdrawalText.textContent =
+        "Minimum withdrawal: Active membership required";
+
+      withdrawalRequirementText.textContent =
+        "You must have an active membership plan before you can submit a withdrawal request.";
+
+      return;
+
+    }
+
+
+    const planCode =
+      String(
+        membership.plan_code
+      ).toLowerCase();
+
+
+    const minimum =
+      WITHDRAWAL_MINIMUMS[
+        planCode
+      ];
+
+
+    if (
+      !minimum
+    ) {
+
+      minimumWithdrawalText.textContent =
+        "Minimum withdrawal: Plan not configured";
+
+      withdrawalRequirementText.textContent =
+        "Your membership plan does not have a configured withdrawal minimum.";
+
+      return;
+
+    }
+
+
+    minimumWithdrawalText.textContent =
+      "Minimum withdrawal: " +
+      formatNaira(
+        minimum
+      );
+
+
+    withdrawalRequirementText.textContent =
+      "Your " +
+      formatPlanName(
+        planCode
+      ) +
+      " plan has a minimum withdrawal amount of " +
+      formatNaira(
+        minimum
+      ) +
+      ". Withdrawals are available on the 15th and 28th of each month.";
+
+  }
+
+  catch (error) {
+
+    console.error(
+      "Unable to load membership:",
+      error
+    );
+
+  }
+
+}
 
 
 /* =========================================
@@ -834,7 +1322,6 @@ function escapeHtml(
 ========================================= */
 
 async function getCurrentUser() {
-
 
   const {
 
@@ -856,10 +1343,8 @@ async function getCurrentUser() {
     !user
   ) {
 
-
     window.location.href =
       "login.html";
-
 
     return null;
 
@@ -868,9 +1353,7 @@ async function getCurrentUser() {
 
   return user;
 
-
 }
-
 
 
 /* =========================================
@@ -881,22 +1364,14 @@ async function loadWallet(
   user
 ) {
 
-
   try {
 
-
     const {
-
       data: wallet,
-
       error
-
     } =
-
       await supabaseClient
-
         .from("wallets")
-
         .select(
           `
           balance,
@@ -904,29 +1379,25 @@ async function loadWallet(
           referral_earned
           `
         )
-
         .eq(
           "user_id",
           user.id
         )
-
         .maybeSingle();
 
 
-
-    if (error) {
-
+    if (
+      error
+    ) {
 
       console.error(
         "Wallet error:",
         error
       );
 
-
       return;
 
     }
-
 
 
     const balance =
@@ -947,39 +1418,32 @@ async function loadWallet(
       );
 
 
-
     availableBalanceElement.textContent =
-
       formatNaira(
         balance
       );
 
 
     totalEarnedElement.textContent =
-
       formatNaira(
         totalEarned
       );
 
 
     referralEarnedElement.textContent =
-
       formatNaira(
         referralEarned
       );
 
 
     referralEarningsElement.textContent =
-
       formatNaira(
         referralEarned
       );
 
-
   }
 
   catch (error) {
-
 
     console.error(
       "Unable to load wallet:",
@@ -988,9 +1452,7 @@ async function loadWallet(
 
   }
 
-
 }
-
 
 
 /* =========================================
@@ -1001,22 +1463,14 @@ async function loadWithdrawals(
   user
 ) {
 
-
   try {
 
-
     const {
-
       data: withdrawals,
-
       error
-
     } =
-
       await supabaseClient
-
         .from("withdrawals")
-
         .select(
           `
           id,
@@ -1030,41 +1484,35 @@ async function loadWithdrawals(
           processed_at
           `
         )
-
         .eq(
           "user_id",
           user.id
         )
-
         .order(
           "requested_at",
           {
-
             ascending:
               false
-
           }
         );
 
 
-    if (error) {
-
+    if (
+      error
+    ) {
 
       console.error(
         "Withdrawal loading error:",
         error
       );
 
-
       return;
 
     }
 
 
-
     const withdrawalList =
       withdrawals || [];
-
 
 
     /* ===============================
@@ -1074,36 +1522,24 @@ async function loadWithdrawals(
     const totalWithdrawn =
 
       withdrawalList
-
         .filter(
-
           withdrawal =>
-
             withdrawal.status ===
               "completed" ||
-
             withdrawal.status ===
               "processed"
-
         )
-
         .reduce(
-
           (
             total,
             withdrawal
           ) =>
-
             total +
-
             Number(
               withdrawal.amount ?? 0
             ),
-
           0
-
         );
-
 
 
     /* ===============================
@@ -1113,48 +1549,34 @@ async function loadWithdrawals(
     const pendingAmount =
 
       withdrawalList
-
         .filter(
-
           withdrawal =>
-
             withdrawal.status ===
-              "pending"
-
+            "pending"
         )
-
         .reduce(
-
           (
             total,
             withdrawal
           ) =>
-
             total +
-
             Number(
               withdrawal.amount ?? 0
             ),
-
           0
-
         );
 
 
-
     totalWithdrawnElement.textContent =
-
       formatNaira(
         totalWithdrawn
       );
 
 
     pendingWithdrawalsElement.textContent =
-
       formatNaira(
         pendingAmount
       );
-
 
 
     /* ===============================
@@ -1164,7 +1586,6 @@ async function loadWithdrawals(
     if (
       withdrawalList.length === 0
     ) {
-
 
       withdrawalsContainer.innerHTML =
 
@@ -1195,26 +1616,21 @@ async function loadWithdrawals(
     }
 
 
-
     /* ===============================
        SHOW RECENT WITHDRAWALS
     =============================== */
 
     const recentWithdrawals =
-
       withdrawalList.slice(
         0,
         5
       );
 
 
-
     withdrawalsContainer.innerHTML =
 
       recentWithdrawals
-
         .map(
-
           withdrawal => {
 
             const status =
@@ -1276,16 +1692,12 @@ async function loadWithdrawals(
             `;
 
           }
-
         )
-
         .join("");
-
 
   }
 
   catch (error) {
-
 
     console.error(
       "Unable to load withdrawals:",
@@ -1294,9 +1706,7 @@ async function loadWithdrawals(
 
   }
 
-
 }
-
 
 
 /* =========================================
@@ -1307,22 +1717,14 @@ async function loadTransactions(
   user
 ) {
 
-
   try {
 
-
     const {
-
       data: transactions,
-
       error
-
     } =
-
       await supabaseClient
-
         .from("transactions")
-
         .select(
           `
           id,
@@ -1337,41 +1739,35 @@ async function loadTransactions(
           created_at
           `
         )
-
         .eq(
           "user_id",
           user.id
         )
-
         .order(
           "created_at",
           {
-
             ascending:
               false
-
           }
         );
 
 
-    if (error) {
-
+    if (
+      error
+    ) {
 
       console.error(
         "Transaction loading error:",
         error
       );
 
-
       return;
 
     }
 
 
-
     const transactionList =
       transactions || [];
-
 
 
     /* ===============================
@@ -1385,10 +1781,8 @@ async function loadTransactions(
     let watchEarnings = 0;
 
 
-
     transactionList.forEach(
       transaction => {
-
 
         const amount =
           Number(
@@ -1408,7 +1802,6 @@ async function loadTransactions(
           ).toLowerCase();
 
 
-
         /* ===========================
            TASK EARNINGS
         ============================ */
@@ -1421,13 +1814,10 @@ async function loadTransactions(
 
         ) {
 
-
           taskEarnings +=
             amount;
 
-
         }
-
 
 
         /* ===========================
@@ -1442,13 +1832,10 @@ async function loadTransactions(
 
         ) {
 
-
           readEarnings +=
             amount;
 
-
         }
-
 
 
         /* ===========================
@@ -1463,40 +1850,31 @@ async function loadTransactions(
 
         ) {
 
-
           watchEarnings +=
             amount;
 
-
         }
 
-
       }
-
     );
 
 
-
     taskEarningsElement.textContent =
-
       formatNaira(
         taskEarnings
       );
 
 
     readEarningsElement.textContent =
-
       formatNaira(
         readEarnings
       );
 
 
     watchEarningsElement.textContent =
-
       formatNaira(
         watchEarnings
       );
-
 
 
     /* ===============================
@@ -1506,7 +1884,6 @@ async function loadTransactions(
     if (
       transactionList.length === 0
     ) {
-
 
       transactionsContainer.innerHTML =
 
@@ -1537,45 +1914,32 @@ async function loadTransactions(
     }
 
 
-
     /* ===============================
        SHOW RECENT TRANSACTIONS
     =============================== */
 
     const recentTransactions =
-
       transactionList.slice(
         0,
         5
       );
 
 
-
     transactionsContainer.innerHTML =
 
       recentTransactions
-
         .map(
-
           transaction => {
 
-
             const description =
-
               transaction.description ||
-
               transaction.type ||
-
               "Wallet transaction";
 
 
-
             const date =
-
               transaction.created_at ||
-
               transaction.processed_at;
-
 
 
             return `
@@ -1604,7 +1968,6 @@ async function loadTransactions(
                 </div>
 
 
-
                 <div>
 
                   <strong>
@@ -1627,23 +1990,17 @@ async function loadTransactions(
 
                 </div>
 
-
               </div>
 
             `;
 
-
           }
-
         )
-
         .join("");
-
 
   }
 
   catch (error) {
-
 
     console.error(
       "Unable to load transactions:",
@@ -1652,9 +2009,7 @@ async function loadTransactions(
 
   }
 
-
 }
-
 
 
 /* =========================================
@@ -1662,7 +2017,6 @@ async function loadTransactions(
 ========================================= */
 
 async function initializeWallet() {
-
 
   const user =
     await getCurrentUser();
@@ -1675,12 +2029,13 @@ async function initializeWallet() {
   }
 
 
-
   await Promise.all(
-
     [
-
       loadWallet(
+        user
+      ),
+
+      loadMembership(
         user
       ),
 
@@ -1691,14 +2046,13 @@ async function initializeWallet() {
       loadWithdrawals(
         user
       )
-
     ]
-
   );
 
 
-}
+  updateWithdrawalWindow();
 
+}
 
 
 /* =========================================
