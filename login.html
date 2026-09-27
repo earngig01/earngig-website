@@ -215,102 +215,6 @@ const loginButton =
   );
 
 
-/*
- * =====================================================
- * DAILY LOGIN REWARD
- * =====================================================
- *
- * The database function controls the reward.
- *
- * The client does not choose the amount.
- *
- * If the reward has already been claimed today,
- * nothing is credited.
- * =====================================================
- */
-
-async function claimDailyLoginReward() {
-
-  try {
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .rpc(
-          "claim_daily_login_reward"
-        );
-
-
-    console.log(
-      "Daily login reward:",
-      data,
-      error
-    );
-
-
-    if (error) {
-
-      console.error(
-        "Daily login reward error:",
-        error
-      );
-
-      return;
-
-    }
-
-
-    if (!data) {
-
-      return;
-
-    }
-
-
-    if (data.already_claimed) {
-
-      return;
-
-    }
-
-
-    if (
-      data.success &&
-      Number(data.amount || 0) > 0
-    ) {
-
-      alert(
-        "🎉 Daily Login Reward!\n\n" +
-        "₦" +
-        Number(
-          data.amount
-        ).toLocaleString(
-          "en-NG"
-        ) +
-        " has been credited to your wallet."
-      );
-
-    }
-
-  } catch (error) {
-
-    /*
-     * A reward failure must never prevent
-     * the user from logging in.
-     */
-
-    console.error(
-      "Daily login reward exception:",
-      error
-    );
-
-  }
-
-}
-
-
 
 /*
  * =====================================================
@@ -358,16 +262,8 @@ async function checkExistingSession() {
     }
 
 
-    /*
-     * User is already authenticated.
-     *
-     * Check membership so we know whether to
-     * send them to the dashboard or membership page.
-     */
-
     await routeAuthenticatedUser(
-      user,
-      false
+      user
     );
 
   } catch (error) {
@@ -390,8 +286,7 @@ async function checkExistingSession() {
  */
 
 async function routeAuthenticatedUser(
-  user,
-  claimReward
+  user
 ) {
 
   /*
@@ -453,10 +348,7 @@ async function routeAuthenticatedUser(
    * NO MEMBERSHIP
    * ---------------------------------------------------
    *
-   * This is a new user who has not started
-   * membership yet.
-   *
-   * Send them to membership selection.
+   * Send the user to membership selection.
    */
 
   if (!membership) {
@@ -472,7 +364,7 @@ async function routeAuthenticatedUser(
 
   /*
    * ---------------------------------------------------
-   * DETERMINE ACTIVE MEMBERSHIP
+   * CHECK CURRENT MEMBERSHIP PERIOD
    * ---------------------------------------------------
    */
 
@@ -495,24 +387,16 @@ async function routeAuthenticatedUser(
    * ---------------------------------------------------
    * ACTIVE MEMBERSHIP
    * ---------------------------------------------------
+   *
+   * No daily login reward.
+   *
+   * Simply enter the dashboard.
    */
 
   if (membershipIsActive) {
 
-    if (claimReward) {
-
-      loginButton.textContent =
-        "Claiming daily reward...";
-
-
-      await claimDailyLoginReward();
-
-    }
-
-
     window.location.href =
       "dashboard.html";
-
 
     return;
 
@@ -522,17 +406,15 @@ async function routeAuthenticatedUser(
 
   /*
    * ---------------------------------------------------
-   * INACTIVE / EXPIRED MEMBERSHIP
+   * EXPIRED / INACTIVE MEMBERSHIP
    * ---------------------------------------------------
    *
-   * Do not attempt payment here.
+   * Membership page controls:
    *
-   * membership.html now controls:
-   *
-   * - renewal
-   * - upgrade
-   * - plan selection
-   * - Flutterwave
+   * - Renewal
+   * - Upgrade
+   * - Plan selection
+   * - Flutterwave payment
    */
 
   window.location.href =
@@ -665,17 +547,8 @@ loginForm.addEventListener(
 
     /*
      * ---------------------------------------------------
-     * ROUTE USER
+     * CHECK MEMBERSHIP
      * ---------------------------------------------------
-     *
-     * If active:
-     *     daily reward → dashboard
-     *
-     * If expired:
-     *     membership.html
-     *
-     * If no membership:
-     *     membership.html
      */
 
     loginButton.textContent =
@@ -683,8 +556,7 @@ loginForm.addEventListener(
 
 
     await routeAuthenticatedUser(
-      user,
-      true
+      user
     );
 
   }
