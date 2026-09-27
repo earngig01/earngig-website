@@ -10,7 +10,7 @@
     content="width=device-width, initial-scale=1.0"
   >
 
-  <title>Payment Result | EarnGig</title>
+  <title>Payment | EarnGig</title>
 
   <link
     rel="stylesheet"
@@ -24,15 +24,15 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 40px 20px;
+      padding: 50px 20px;
     }
 
     .payment-result-card {
       width: 100%;
       max-width: 520px;
-      padding: 40px 28px;
-      border-radius: 22px;
       text-align: center;
+      padding: 42px 28px;
+      border-radius: 22px;
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(139, 92, 246, 0.25);
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
@@ -46,15 +46,18 @@
       align-items: center;
       justify-content: center;
       border-radius: 50%;
-      font-size: 42px;
+      font-size: 40px;
       font-weight: 800;
-      background: rgba(34, 197, 94, 0.12);
+    }
+
+    .payment-result-icon.success {
       color: #4ade80;
+      background: rgba(34, 197, 94, 0.12);
     }
 
     .payment-result-icon.failed {
-      background: rgba(239, 68, 68, 0.12);
       color: #fca5a5;
+      background: rgba(239, 68, 68, 0.12);
     }
 
     .payment-result-card h1 {
@@ -62,33 +65,24 @@
       font-size: 30px;
     }
 
-    .payment-result-card p {
-      margin: 0 auto 24px;
+    .payment-result-message {
+      margin: 0 auto 26px;
       max-width: 430px;
       line-height: 1.7;
-      opacity: 0.82;
+      opacity: 0.85;
     }
 
     .payment-result-plan {
-      margin: 18px 0 28px;
-      padding: 14px 16px;
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.04);
-      font-size: 14px;
+      margin-bottom: 26px;
+      font-weight: 700;
+      text-transform: capitalize;
     }
 
     .payment-result-actions {
       display: flex;
-      flex-direction: column;
       gap: 12px;
-    }
-
-    .payment-result-actions a {
-      width: 100%;
-    }
-
-    .payment-result-loading {
-      opacity: 0.75;
+      justify-content: center;
+      flex-wrap: wrap;
     }
 
   </style>
@@ -149,41 +143,40 @@
 
 <main class="payment-result-page">
 
-  <div
-    id="payment-result-card"
-    class="payment-result-card"
-  >
+  <div class="payment-result-card">
 
     <div
-      id="payment-result-icon"
+      id="result-icon"
       class="payment-result-icon"
     >
       ✓
     </div>
 
 
-    <h1 id="payment-result-title">
+    <h1 id="result-title">
       Payment Successful
     </h1>
 
 
-    <p id="payment-result-message">
+    <p
+      id="result-message"
+      class="payment-result-message"
+    >
       Your membership payment has been confirmed.
     </p>
 
 
     <div
-      id="payment-result-plan"
+      id="result-plan"
       class="payment-result-plan"
-    >
-      Your membership is now active.
-    </div>
+      style="display:none;"
+    ></div>
 
 
     <div class="payment-result-actions">
 
       <a
-        id="dashboard-button"
+        id="primary-button"
         class="btn primary"
         href="dashboard.html"
       >
@@ -192,10 +185,11 @@
 
 
       <a
+        id="secondary-button"
         class="btn outline"
         href="membership.html"
       >
-        View Membership
+        Membership
       </a>
 
     </div>
@@ -221,107 +215,143 @@
 
 <script>
 
+(function () {
+
   const params =
     new URLSearchParams(
       window.location.search
     );
 
 
-  const result =
+  const status =
     params.get("status");
-
-
-  const plan =
-    params.get("plan");
 
 
   const message =
     params.get("message");
 
 
-  const card =
-    document.getElementById(
-      "payment-result-card"
-    );
+  const plan =
+    params.get("plan");
 
 
   const icon =
     document.getElementById(
-      "payment-result-icon"
+      "result-icon"
     );
 
 
   const title =
     document.getElementById(
-      "payment-result-title"
+      "result-title"
     );
 
 
-  const resultMessage =
+  const messageElement =
     document.getElementById(
-      "payment-result-message"
+      "result-message"
     );
 
 
-  const planBox =
+  const planElement =
     document.getElementById(
-      "payment-result-plan"
+      "result-plan"
     );
 
 
-  if (
-    result ===
-    "failed"
-  ) {
-
-    icon.textContent =
-      "!";
-
-    icon.classList.add(
-      "failed"
+  const primaryButton =
+    document.getElementById(
+      "primary-button"
     );
 
-    title.textContent =
-      "Payment Failed";
 
-    resultMessage.textContent =
-      message ||
-      "We could not confirm your membership payment.";
-
-    planBox.textContent =
-      "Please return to the membership page and try again.";
-
-  }
+  const secondaryButton =
+    document.getElementById(
+      "secondary-button"
+    );
 
 
-  else {
+  const successful =
+    status === "success";
+
+
+  if (successful) {
+
+    icon.className =
+      "payment-result-icon success";
 
     icon.textContent =
       "✓";
 
+
     title.textContent =
       "Payment Successful";
 
-    resultMessage.textContent =
-      "Your payment has been confirmed successfully.";
+
+    messageElement.textContent =
+      message ||
+      "Your membership payment has been confirmed and your membership is now active.";
+
+
+    primaryButton.textContent =
+      "Go to Dashboard";
+
+    primaryButton.href =
+      "dashboard.html";
+
+
+    secondaryButton.textContent =
+      "View Membership";
+
+    secondaryButton.href =
+      "membership.html";
+
 
     if (plan) {
 
-      const planName =
-        plan.charAt(0).toUpperCase() +
-        plan.slice(1);
+      planElement.textContent =
+        "Membership plan: " +
+        plan;
 
-      planBox.textContent =
-        `Your ${planName} membership is now active.`;
-
-    } else {
-
-      planBox.textContent =
-        "Your membership is now active.";
+      planElement.style.display =
+        "block";
 
     }
 
+  } else {
+
+    icon.className =
+      "payment-result-icon failed";
+
+    icon.textContent =
+      "!";
+
+
+    title.textContent =
+      "Payment Not Completed";
+
+
+    messageElement.textContent =
+      message ||
+      "Your membership payment could not be confirmed. Please try again.";
+
+
+    primaryButton.textContent =
+      "Try Again";
+
+    primaryButton.href =
+      "membership.html";
+
+
+    secondaryButton.textContent =
+      "Go to Dashboard";
+
+    secondaryButton.href =
+      "dashboard.html";
+
   }
+
+})();
 
 </script>
 
