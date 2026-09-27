@@ -41,6 +41,14 @@
       border-color: rgba(74, 222, 128, 0.55);
     }
 
+    .membership-plan.upgrade {
+      border-color: rgba(139, 92, 246, 0.55);
+    }
+
+    .membership-plan.unavailable {
+      opacity: 0.55;
+    }
+
     .membership-plan h3 {
       margin: 0 0 8px;
       font-size: 21px;
@@ -78,9 +86,18 @@
       color: #4ade80;
     }
 
+    .plan-status.upgrade {
+      background: rgba(139, 92, 246, 0.16);
+    }
+
     .plan-button {
       width: 100%;
       margin-top: 18px;
+    }
+
+    .plan-button:disabled {
+      cursor: not-allowed;
+      opacity: 0.6;
     }
 
     .membership-message {
@@ -106,6 +123,12 @@
       text-align: center;
       padding: 30px 10px;
       opacity: 0.75;
+    }
+
+    .upgrade-note {
+      margin-top: 8px;
+      font-size: 12px;
+      opacity: 0.7;
     }
 
   </style>
@@ -415,6 +438,52 @@ function formatNaira(
     Number(amount).toLocaleString(
       "en-NG"
     );
+
+}
+
+
+
+/* =====================================================
+   GET PLAN PRICE
+===================================================== */
+
+function getPlanPrice(
+  planCode
+) {
+
+  const plan =
+    membershipPlans.find(
+      item =>
+        item.plan_code ===
+        planCode
+    );
+
+  return plan
+    ? Number(plan.price)
+    : null;
+
+}
+
+
+
+/* =====================================================
+   PLAN RANK
+===================================================== */
+
+function getPlanRank(
+  planCode
+) {
+
+  const ranks = {
+    starter: 1,
+    standard: 2,
+    premium: 3,
+    elite: 4
+  };
+
+  return ranks[
+    planCode
+  ] || 0;
 
 }
 
@@ -735,27 +804,57 @@ function renderPlans() {
       Date.now();
 
 
+  const currentPlanCode =
+    currentMembership?.plan_code ||
+    null;
+
+
+  const currentPlanRank =
+    getPlanRank(
+      currentPlanCode
+    );
+
+
+  const legacyActive =
+    active &&
+    !currentPlanCode;
+
+
   plansContainer.innerHTML =
     membershipPlans
       .map(
         plan => {
 
+          const planRank =
+            getPlanRank(
+              plan.plan_code
+            );
+
+
           const isCurrent =
             active &&
-            currentMembership?.plan_code ===
+            currentPlanCode ===
               plan.plan_code;
 
 
           /*
-            A legacy active membership has
-            plan_code = NULL.
-
-            We allow the user to choose a
-            new plan in that situation.
+            A higher-priced plan is an upgrade.
           */
-          const legacyActive =
+          const isUpgrade =
             active &&
-            !currentMembership?.plan_code;
+            currentPlanCode &&
+            planRank >
+              currentPlanRank;
+
+
+          /*
+            A lower-priced plan is a downgrade.
+          */
+          const isDowngrade =
+            active &&
+            currentPlanCode &&
+            planRank <
+              currentPlanRank;
 
 
           let buttonText =
@@ -767,7 +866,25 @@ function renderPlans() {
             false;
 
 
-          if (isCurrent) {
+          let cardClass =
+            "membership-plan";
+
+
+          let statusText =
+            plan.plan_name;
+
+
+          let statusClass =
+            "plan-status";
+
+
+          /*
+            CURRENT PLAN
+          */
+
+          if (
+            isCurrent
+          ) {
 
             buttonText =
               "Current Plan";
@@ -775,20 +892,118 @@ function renderPlans() {
             disabled =
               true;
 
+            cardClass +=
+              " current";
+
+            statusText =
+              "CURRENT PLAN";
+
+            statusClass +=
+              " active";
+
           }
 
 
-          if (
-            active &&
-            !legacyActive &&
-            !isCurrent
+          /*
+            UPGRADE
+          */
+
+          else if (
+            isUpgrade
           ) {
 
             buttonText =
-              "Membership Active";
+              "Upgrade to " +
+              plan.plan_name;
+
+            disabled =
+              false;
+
+            cardClass +=
+              " upgrade";
+
+            statusText =
+              "UPGRADE";
+
+            statusClass +=
+              " upgrade";
+
+          }
+
+
+          /*
+            DOWNGRADE
+          */
+
+          else if (
+            isDowngrade
+          ) {
+
+            buttonText =
+              "Downgrade unavailable";
 
             disabled =
               true;
+
+            cardClass +=
+              " unavailable";
+
+            statusText =
+              "NOT AVAILABLE";
+
+          }
+
+
+          /*
+            LEGACY ACTIVE MEMBERSHIP
+            WITH NO PLAN CODE
+          */
+
+          else if (
+            legacyActive
+          ) {
+
+            buttonText =
+              "Choose " +
+              plan.plan_name;
+
+            disabled =
+              false;
+
+          }
+
+
+          /*
+            EXPIRED MEMBERSHIP
+          */
+
+          else if (
+            !active &&
+            currentPlanCode
+          ) {
+
+            buttonText =
+              "Renew with " +
+              plan.plan_name;
+
+            disabled =
+              false;
+
+          }
+
+
+          /*
+            NEW USER
+          */
+
+          else {
+
+            buttonText =
+              "Choose " +
+              plan.plan_name;
+
+            disabled =
+              false;
 
           }
 
@@ -796,27 +1011,13 @@ function renderPlans() {
           return `
 
             <div
-              class="membership-plan ${
-                isCurrent
-                  ? "current"
-                  : ""
-              }"
+              class="${cardClass}"
             >
 
               <span
-                class="plan-status ${
-                  isCurrent
-                    ? "active"
-                    : ""
-                }"
+                class="${statusClass}"
               >
-
-                ${
-                  isCurrent
-                    ? "CURRENT PLAN"
-                    : plan.plan_name
-                }
-
+                ${statusText}
               </span>
 
 
@@ -833,8 +1034,21 @@ function renderPlans() {
 
 
               <div class="membership-period">
-                Membership period: 1 month
+                Membership period: 30 days
               </div>
+
+
+              ${
+                isUpgrade
+                  ? `
+                    <div class="upgrade-note">
+                      Full plan price.
+                      Your new 30-day membership
+                      starts after successful payment.
+                    </div>
+                  `
+                  : ""
+              }
 
 
               ${
@@ -900,6 +1114,12 @@ function renderPlans() {
       )
       .join("");
 
+
+  /*
+   * =======================================================
+   * BUTTON EVENTS
+   * =======================================================
+   */
 
   document
     .querySelectorAll(
@@ -977,55 +1197,127 @@ async function startPayment(
 
 
   /*
-    Check current membership again
-    before opening Flutterwave.
-  */
+   * =====================================================
+   * DETERMINE WHETHER THIS IS AN UPGRADE
+   * =====================================================
+   */
+
+  const currentPlanCode =
+    currentMembership?.plan_code ||
+    null;
+
+
+  const periodEnd =
+    currentMembership?.current_period_end
+      ? new Date(
+          currentMembership.current_period_end
+        )
+      : null;
+
+
+  const active =
+    currentMembership?.status ===
+      "active" &&
+    periodEnd &&
+    periodEnd.getTime() >
+      Date.now();
+
+
+  const currentRank =
+    getPlanRank(
+      currentPlanCode
+    );
+
+
+  const targetRank =
+    getPlanRank(
+      planCode
+    );
+
+
+  const isUpgrade =
+    active &&
+    currentPlanCode &&
+    targetRank >
+      currentRank;
+
+
+  /*
+   * Same plan cannot be purchased
+   * while active.
+   */
+
   if (
-    currentMembership
+    active &&
+    currentPlanCode ===
+      planCode
   ) {
 
-    const periodEnd =
-      currentMembership.current_period_end
-        ? new Date(
-            currentMembership.current_period_end
-          )
-        : null;
+    showMessage(
+      "This is already your current membership plan.",
+      "error"
+    );
+
+    return;
+
+  }
 
 
-    const active =
-      currentMembership.status ===
-        "active" &&
-      periodEnd &&
-      periodEnd.getTime() >
-        Date.now();
+  /*
+   * Lower plans cannot be selected
+   * while active.
+   */
+
+  if (
+    active &&
+    currentPlanCode &&
+    targetRank <
+      currentRank
+  ) {
+
+    showMessage(
+      "Downgrades are not available while your membership is active.",
+      "error"
+    );
+
+    return;
+
+  }
 
 
-    if (
-      active &&
-      currentMembership.plan_code
-    ) {
+  /*
+   * =====================================================
+   * PAYMENT MESSAGE
+   * =====================================================
+   */
 
-      showMessage(
-        "Your membership is already active. Payment is not required right now.",
-        "error"
-      );
+  if (
+    isUpgrade
+  ) {
 
-      return;
+    showMessage(
+      "Preparing your upgrade to " +
+      plan.plan_name +
+      " for " +
+      formatNaira(
+        plan.price
+      ) +
+      ". Your new 30-day membership will start after successful payment."
+    );
 
-    }
+  } else {
+
+    showMessage(
+      "Preparing your " +
+      plan.plan_name +
+      " membership payment..."
+    );
 
   }
 
 
   paymentInProgress =
     true;
-
-
-  showMessage(
-    "Preparing your " +
-    plan.plan_name +
-    " membership payment..."
-  );
 
 
   document
@@ -1043,10 +1335,19 @@ async function startPayment(
   try {
 
     /*
-      Supabase Edge Function invocation
-      automatically uses the signed-in
-      user's session.
-    */
+     * ===================================================
+     * CALL EDGE FUNCTION
+     * ===================================================
+     *
+     * The backend determines whether this is:
+     *
+     * first_payment
+     * renewal
+     * upgrade
+     *
+     * based on the actual membership and plan prices.
+     */
+
     const {
       data: result,
       error
@@ -1112,8 +1413,11 @@ async function startPayment(
 
 
     /*
-      Send the customer to Flutterwave.
-    */
+     * ===================================================
+     * GO TO FLUTTERWAVE
+     * ===================================================
+     */
+
     window.location.href =
       result.payment_link;
 
@@ -1137,22 +1441,11 @@ async function startPayment(
       false;
 
 
-    document
-      .querySelectorAll(
-        ".plan-button"
-      )
-      .forEach(
-        button => {
+    /*
+     * Restore correct button states.
+     */
 
-          /*
-            Re-rendering also recalculates
-            which buttons should be enabled.
-          */
-          button.disabled =
-            false;
-
-        }
-      );
+    renderPlans();
 
   }
 
