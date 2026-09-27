@@ -3,6 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
+
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0"
@@ -14,6 +15,81 @@
     rel="stylesheet"
     href="styles.css"
   >
+
+  <style>
+
+    .withdraw-status {
+      margin: 0 0 24px;
+      padding: 18px 20px;
+      border-radius: 16px;
+      border: 1px solid #e5e7eb;
+      background: #f8fafc;
+    }
+
+    .withdraw-status.open {
+      background: #ecfdf5;
+      border-color: #a7f3d0;
+    }
+
+    .withdraw-status.closed {
+      background: #fff7ed;
+      border-color: #fed7aa;
+    }
+
+    .withdraw-status-title {
+      font-size: 18px;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .withdraw-status.open .withdraw-status-title {
+      color: #047857;
+    }
+
+    .withdraw-status.closed .withdraw-status-title {
+      color: #c2410c;
+    }
+
+    .withdraw-status-text {
+      margin: 0;
+      color: #475569;
+      line-height: 1.6;
+    }
+
+    .withdraw-plan {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 10px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #eef2ff;
+      color: #3730a3;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .withdraw-balance span {
+      display: block;
+      margin-top: 6px;
+    }
+
+    .withdraw-form-disabled {
+      opacity: 0.65;
+    }
+
+    .withdraw-closed-note {
+      margin-top: 14px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: #fff7ed;
+      color: #9a3412;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+  </style>
+
 </head>
 
 <body>
@@ -68,6 +144,43 @@
     </div>
 
 
+    <!-- ==========================================
+         WITHDRAWAL STATUS
+    =========================================== -->
+
+    <section
+      id="withdraw-status"
+      class="withdraw-status"
+    >
+
+      <div
+        id="withdraw-status-title"
+        class="withdraw-status-title"
+      >
+        Checking withdrawal status...
+      </div>
+
+      <p
+        id="withdraw-status-text"
+        class="withdraw-status-text"
+      >
+        Please wait while we check the current withdrawal window.
+      </p>
+
+      <div
+        id="withdraw-plan"
+        class="withdraw-plan"
+        style="display: none;"
+      >
+        Plan:
+        <span id="withdraw-plan-name">
+          -
+        </span>
+      </div>
+
+    </section>
+
+
     <section class="withdraw-card">
 
 
@@ -81,8 +194,8 @@
           ₦0.00
         </strong>
 
-        <span>
-          Minimum withdrawal: ₦15,000
+        <span id="minimum-withdrawal-text">
+          Minimum withdrawal: Checking...
         </span>
 
       </div>
@@ -103,9 +216,9 @@
           <input
             type="number"
             id="amount"
-            min="15000"
+            min="3000"
             step="1"
-            placeholder="Minimum ₦15,000"
+            placeholder="Enter amount"
             required
           >
 
@@ -274,6 +387,14 @@
         </div>
 
 
+        <div
+          id="withdraw-closed-note"
+          class="withdraw-closed-note"
+          style="display: none;"
+        >
+        </div>
+
+
         <div class="form-actions">
 
           <a
@@ -321,10 +442,25 @@
 <script>
 
 /* ==========================================
-   CONSTANTS
+   PLAN WITHDRAWAL SETTINGS
 ========================================== */
 
-const MINIMUM_WITHDRAWAL = 15000;
+const WITHDRAWAL_MINIMUMS = {
+
+  starter: 3000,
+
+  standard: 6000,
+
+  premium: 12000,
+
+  elite: 24000
+
+};
+
+
+/* ==========================================
+   ELEMENTS
+========================================== */
 
 const withdrawalForm =
   document.getElementById(
@@ -334,6 +470,11 @@ const withdrawalForm =
 const balanceElement =
   document.getElementById(
     "available-balance"
+  );
+
+const minimumWithdrawalText =
+  document.getElementById(
+    "minimum-withdrawal-text"
   );
 
 const amountInput =
@@ -361,8 +502,44 @@ const submitButton =
     "submitButton"
   );
 
+const withdrawStatus =
+  document.getElementById(
+    "withdraw-status"
+  );
+
+const withdrawStatusTitle =
+  document.getElementById(
+    "withdraw-status-title"
+  );
+
+const withdrawStatusText =
+  document.getElementById(
+    "withdraw-status-text"
+  );
+
+const withdrawPlan =
+  document.getElementById(
+    "withdraw-plan"
+  );
+
+const withdrawPlanName =
+  document.getElementById(
+    "withdraw-plan-name"
+  );
+
+const withdrawClosedNote =
+  document.getElementById(
+    "withdraw-closed-note"
+  );
+
 
 let currentBalance = 0;
+
+let currentPlanCode = null;
+
+let minimumWithdrawal = 0;
+
+let withdrawalIsOpen = false;
 
 
 /* ==========================================
@@ -382,7 +559,6 @@ function formatNaira(amount) {
 
   }
 
-
   return (
     "₦" +
     value.toLocaleString(
@@ -393,6 +569,419 @@ function formatNaira(amount) {
       }
     )
   );
+
+}
+
+
+/* ==========================================
+   PLAN NAME
+========================================== */
+
+function formatPlanName(planCode) {
+
+  if (!planCode) {
+    return "Unknown";
+  }
+
+  return (
+    planCode.charAt(0).toUpperCase() +
+    planCode.slice(1)
+  );
+
+}
+
+
+/* ==========================================
+   GET NIGERIA DATE
+========================================== */
+
+function getNigeriaDateParts() {
+
+  const formatter =
+    new Intl.DateTimeFormat(
+      "en-GB",
+      {
+        timeZone: "Africa/Lagos",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit"
+      }
+    );
+
+  const parts =
+    formatter.formatToParts(
+      new Date()
+    );
+
+  const result = {};
+
+  for (
+    const part of parts
+  ) {
+
+    if (
+      part.type !== "literal"
+    ) {
+
+      result[
+        part.type
+      ] =
+        Number(
+          part.value
+        );
+
+    }
+
+  }
+
+  return result;
+
+}
+
+
+/* ==========================================
+   GET NEXT WITHDRAWAL DATE
+========================================== */
+
+function getNextWithdrawalDateText() {
+
+  const nigeriaDate =
+    getNigeriaDateParts();
+
+  const year =
+    nigeriaDate.year;
+
+  const month =
+    nigeriaDate.month;
+
+  const day =
+    nigeriaDate.day;
+
+
+  if (
+    day < 15
+  ) {
+
+    return (
+      `the 15th of this month`
+    );
+
+  }
+
+
+  if (
+    day < 28
+  ) {
+
+    return (
+      `the 28th of this month`
+    );
+
+  }
+
+
+  /*
+   * If today is after the 28th,
+   * next window is the 15th
+   * of the following month.
+   */
+
+  let nextMonth =
+    month + 1;
+
+  let nextYear =
+    year;
+
+
+  if (
+    nextMonth > 12
+  ) {
+
+    nextMonth = 1;
+
+    nextYear++;
+
+  }
+
+
+  return (
+    `the 15th of ${new Date(
+      nextYear,
+      nextMonth - 1,
+      1
+    ).toLocaleString(
+      "en-US",
+      {
+        month: "long"
+      }
+    )} ${nextYear}`
+  );
+
+}
+
+
+/* ==========================================
+   CHECK WITHDRAWAL WINDOW
+========================================== */
+
+function updateWithdrawalWindow() {
+
+  const nigeriaDate =
+    getNigeriaDateParts();
+
+  const day =
+    nigeriaDate.day;
+
+
+  withdrawalIsOpen =
+    day === 15 ||
+    day === 28;
+
+
+  if (
+    withdrawalIsOpen
+  ) {
+
+    withdrawStatus.classList.remove(
+      "closed"
+    );
+
+    withdrawStatus.classList.add(
+      "open"
+    );
+
+    withdrawStatusTitle.textContent =
+      "Withdrawal Open";
+
+    withdrawStatusText.textContent =
+      "Withdrawal submissions are open today. You can submit your request if you meet your plan's minimum withdrawal amount.";
+
+    withdrawClosedNote.style.display =
+      "none";
+
+    submitButton.disabled =
+      false;
+
+    submitButton.textContent =
+      "Submit Withdrawal";
+
+  } else {
+
+    withdrawStatus.classList.remove(
+      "open"
+    );
+
+    withdrawStatus.classList.add(
+      "closed"
+    );
+
+    withdrawStatusTitle.textContent =
+      "Withdrawal Closed";
+
+    withdrawStatusText.textContent =
+      "Withdrawals are available only on the 15th and 28th of each month.";
+
+    withdrawClosedNote.textContent =
+      "Withdrawal is currently closed. The next withdrawal window opens on " +
+      getNextWithdrawalDateText() +
+      ".";
+
+    withdrawClosedNote.style.display =
+      "block";
+
+    submitButton.disabled =
+      true;
+
+    submitButton.textContent =
+      "Withdrawal Closed";
+
+  }
+
+}
+
+
+/* ==========================================
+   LOAD MEMBERSHIP PLAN
+========================================== */
+
+async function loadMembershipPlan() {
+
+  try {
+
+    const {
+      data: {
+        user
+      },
+      error: userError
+    } =
+      await supabaseClient
+        .auth
+        .getUser();
+
+
+    if (
+      userError ||
+      !user
+    ) {
+
+      window.location.href =
+        "login.html";
+
+      return false;
+
+    }
+
+
+    const {
+      data: membership,
+      error: membershipError
+    } =
+      await supabaseClient
+        .from("memberships")
+        .select(
+          "plan_code,status,current_period_end"
+        )
+        .eq(
+          "user_id",
+          user.id
+        )
+        .eq(
+          "status",
+          "active"
+        )
+        .not(
+          "plan_code",
+          "is",
+          null
+        )
+        .order(
+          "current_period_end",
+          {
+            ascending: false
+          }
+        )
+        .limit(1)
+        .maybeSingle();
+
+
+    if (
+      membershipError
+    ) {
+
+      console.error(
+        "Membership loading error:",
+        membershipError
+      );
+
+      alert(
+        "Unable to load your membership plan."
+      );
+
+      return false;
+
+    }
+
+
+    if (
+      !membership
+    ) {
+
+      currentPlanCode =
+        null;
+
+      minimumWithdrawal =
+        0;
+
+      withdrawPlan.style.display =
+        "none";
+
+      minimumWithdrawalText.textContent =
+        "Minimum withdrawal: Active membership required";
+
+      submitButton.disabled =
+        true;
+
+      submitButton.textContent =
+        "Membership Required";
+
+      return false;
+
+    }
+
+
+    currentPlanCode =
+      membership.plan_code;
+
+
+    minimumWithdrawal =
+      WITHDRAWAL_MINIMUMS[
+        currentPlanCode
+      ] || 0;
+
+
+    if (
+      minimumWithdrawal <= 0
+    ) {
+
+      alert(
+        "Your membership plan does not have a valid withdrawal minimum."
+      );
+
+      submitButton.disabled =
+        true;
+
+      return false;
+
+    }
+
+
+    withdrawPlanName.textContent =
+      formatPlanName(
+        currentPlanCode
+      );
+
+    withdrawPlan.style.display =
+      "inline-flex";
+
+
+    minimumWithdrawalText.textContent =
+      "Minimum withdrawal: " +
+      formatNaira(
+        minimumWithdrawal
+      );
+
+
+    amountInput.min =
+      String(
+        minimumWithdrawal
+      );
+
+
+    amountInput.placeholder =
+      "Minimum " +
+      formatNaira(
+        minimumWithdrawal
+      );
+
+
+    return true;
+
+  }
+
+  catch (error) {
+
+    console.error(
+      "Membership error:",
+      error
+    );
+
+    alert(
+      "Unable to load your membership information."
+    );
+
+    return false;
+
+  }
 
 }
 
@@ -443,18 +1032,18 @@ async function loadWalletBalance() {
         .maybeSingle();
 
 
-    if (walletError) {
+    if (
+      walletError
+    ) {
 
       console.error(
         "Unable to load wallet:",
         walletError
       );
 
-
       alert(
         "Unable to load your wallet balance."
       );
-
 
       return;
 
@@ -478,15 +1067,10 @@ async function loadWalletBalance() {
     }
 
 
-    if (balanceElement) {
-
-      balanceElement.textContent =
-        formatNaira(
-          currentBalance
-        );
-
-    }
-
+    balanceElement.textContent =
+      formatNaira(
+        currentBalance
+      );
 
   }
 
@@ -503,10 +1087,34 @@ async function loadWalletBalance() {
 
 
 /* ==========================================
-   LOAD BALANCE
+   INITIALIZE PAGE
 ========================================== */
 
-loadWalletBalance();
+async function initializePage() {
+
+  const membershipLoaded =
+    await loadMembershipPlan();
+
+
+  if (
+    !membershipLoaded
+  ) {
+
+    updateWithdrawalWindow();
+
+    return;
+
+  }
+
+
+  await loadWalletBalance();
+
+  updateWithdrawalWindow();
+
+}
+
+
+initializePage();
 
 
 /* ==========================================
@@ -537,6 +1145,44 @@ withdrawalForm.addEventListener(
   async function (event) {
 
     event.preventDefault();
+
+
+    /* ==========================
+       CHECK WITHDRAWAL WINDOW
+    ========================== */
+
+    updateWithdrawalWindow();
+
+
+    if (
+      !withdrawalIsOpen
+    ) {
+
+      alert(
+        "Withdrawal is currently closed. Withdrawals are available only on the 15th and 28th of each month."
+      );
+
+      return;
+
+    }
+
+
+    /* ==========================
+       CHECK PLAN
+    ========================== */
+
+    if (
+      !currentPlanCode ||
+      minimumWithdrawal <= 0
+    ) {
+
+      alert(
+        "You must have an active membership plan before you can withdraw."
+      );
+
+      return;
+
+    }
 
 
     /* ==========================
@@ -583,7 +1229,9 @@ withdrawalForm.addEventListener(
 
 
     if (
-      !Number.isFinite(amount)
+      !Number.isFinite(
+        amount
+      )
     ) {
 
       alert(
@@ -596,11 +1244,19 @@ withdrawalForm.addEventListener(
 
 
     if (
-      amount < MINIMUM_WITHDRAWAL
+      amount < minimumWithdrawal
     ) {
 
       alert(
-        "Minimum withdrawal amount is ₦15,000."
+        "Minimum withdrawal for your " +
+        formatPlanName(
+          currentPlanCode
+        ) +
+        " plan is " +
+        formatNaira(
+          minimumWithdrawal
+        ) +
+        "."
       );
 
       return;
@@ -625,7 +1281,9 @@ withdrawalForm.addEventListener(
        VALIDATE BANK
     ========================== */
 
-    if (!bankName) {
+    if (
+      !bankName
+    ) {
 
       alert(
         "Please select your bank."
@@ -640,7 +1298,9 @@ withdrawalForm.addEventListener(
        VALIDATE ACCOUNT NAME
     ========================== */
 
-    if (!accountName) {
+    if (
+      !accountName
+    ) {
 
       alert(
         "Please enter the account name."
@@ -695,15 +1355,12 @@ withdrawalForm.addEventListener(
         userError
       );
 
-
       alert(
         "Your session has expired. Please log in again."
       );
 
-
       window.location.href =
         "login.html";
-
 
       return;
 
@@ -728,30 +1385,31 @@ withdrawalForm.addEventListener(
         .maybeSingle();
 
 
-    if (walletError) {
+    if (
+      walletError
+    ) {
 
       console.error(
         "Wallet error:",
         walletError
       );
 
-
       alert(
         "Unable to load your wallet balance."
       );
-
 
       return;
 
     }
 
 
-    if (!wallet) {
+    if (
+      !wallet
+    ) {
 
       alert(
         "Wallet not found."
       );
-
 
       return;
 
@@ -765,13 +1423,14 @@ withdrawalForm.addEventListener(
 
 
     if (
-      !Number.isFinite(balance)
+      !Number.isFinite(
+        balance
+      )
     ) {
 
       alert(
         "Your wallet balance is invalid."
       );
-
 
       return;
 
@@ -789,7 +1448,6 @@ withdrawalForm.addEventListener(
       alert(
         "You do not have enough available balance for this withdrawal."
       );
-
 
       return;
 
@@ -815,7 +1473,9 @@ withdrawalForm.addEventListener(
       );
 
 
-    if (!confirmed) {
+    if (
+      !confirmed
+    ) {
 
       return;
 
@@ -829,13 +1489,11 @@ withdrawalForm.addEventListener(
     submitButton.disabled =
       true;
 
-
     submitButton.textContent =
       "Submitting...";
 
 
     try {
-
 
       /* ==========================
          CREATE WITHDRAWAL
@@ -868,18 +1526,15 @@ withdrawalForm.addEventListener(
         );
 
 
-      if (withdrawalError) {
+      if (
+        withdrawalError
+      ) {
 
         console.error(
           "Withdrawal RPC error:",
           withdrawalError
         );
 
-
-        /*
-         * Show the actual database error.
-         * This is important for debugging.
-         */
 
         alert(
           "Unable to submit withdrawal:\n\n" +
@@ -890,10 +1545,7 @@ withdrawalForm.addEventListener(
         submitButton.disabled =
           false;
 
-
-        submitButton.textContent =
-          "Submit Withdrawal";
-
+        updateWithdrawalWindow();
 
         return;
 
@@ -914,11 +1566,9 @@ withdrawalForm.addEventListener(
       window.location.href =
         "wallet.html";
 
-
     }
 
     catch (error) {
-
 
       console.error(
         "Withdrawal error:",
@@ -938,9 +1588,7 @@ withdrawalForm.addEventListener(
       submitButton.disabled =
         false;
 
-
-      submitButton.textContent =
-        "Submit Withdrawal";
+      updateWithdrawalWindow();
 
     }
 
