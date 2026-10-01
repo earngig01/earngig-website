@@ -49,6 +49,10 @@
       opacity: 0.55;
     }
 
+    .membership-plan.renewal {
+      border-color: rgba(59, 130, 246, 0.45);
+    }
+
     .membership-plan h3 {
       margin: 0 0 8px;
       font-size: 21px;
@@ -90,12 +94,23 @@
       background: rgba(139, 92, 246, 0.16);
     }
 
+    .plan-status.renewal {
+      background: rgba(59, 130, 246, 0.14);
+      color: #93c5fd;
+    }
+
     .plan-button {
       width: 100%;
       margin-top: 18px;
     }
 
-    .plan-button:disabled {
+    .wallet-button {
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .plan-button:disabled,
+    .wallet-button:disabled {
       cursor: not-allowed;
       opacity: 0.6;
     }
@@ -119,16 +134,43 @@
       background: rgba(34, 197, 94, 0.08);
     }
 
+    .membership-message.info {
+      color: #bfdbfe;
+      background: rgba(59, 130, 246, 0.08);
+    }
+
     .loading-plans {
       text-align: center;
       padding: 30px 10px;
       opacity: 0.75;
     }
 
-    .upgrade-note {
+    .upgrade-note,
+    .renewal-note {
       margin-top: 8px;
       font-size: 12px;
       opacity: 0.7;
+      line-height: 1.5;
+    }
+
+    .wallet-renewal-box {
+      margin-top: 14px;
+      padding: 12px;
+      border-radius: 12px;
+      background: rgba(59, 130, 246, 0.07);
+      border: 1px solid rgba(59, 130, 246, 0.16);
+    }
+
+    .wallet-renewal-title {
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .wallet-renewal-text {
+      font-size: 12px;
+      opacity: 0.75;
+      line-height: 1.5;
     }
 
   </style>
@@ -291,7 +333,9 @@
 
         <p>
           Membership payments are processed securely
-          through Flutterwave.
+          through Flutterwave. When your membership is
+          due for renewal, you can also pay directly
+          from your EarnGig wallet.
         </p>
 
       </div>
@@ -332,13 +376,18 @@
         </div>
 
         <h3>
-          Membership payment information
+          Membership payment options
         </h3>
 
         <p>
-          Choose a membership plan above.
-          Your payment will be securely processed
-          by Flutterwave.
+          New memberships and upgrades are securely
+          processed through Flutterwave.
+        </p>
+
+        <p>
+          When your current membership is due for renewal,
+          you can either pay through Flutterwave or use
+          your available EarnGig wallet balance.
         </p>
 
         <p>
@@ -795,6 +844,16 @@ function renderPlans() {
     !currentPlanCode;
 
 
+  /*
+   * Wallet renewal is only available when
+   * the existing configured membership is
+   * no longer active.
+   */
+  const walletRenewalAvailable =
+    !active &&
+    !!currentPlanCode;
+
+
   plansContainer.innerHTML =
     membershipPlans
       .map(
@@ -832,6 +891,12 @@ function renderPlans() {
             currentPlanCode &&
             planRank <
               currentPlanRank;
+
+
+          const isRenewalPlan =
+            walletRenewalAvailable &&
+            currentPlanCode ===
+              plan.plan_code;
 
 
           let buttonText =
@@ -966,6 +1031,22 @@ function renderPlans() {
             disabled =
               false;
 
+            if (
+              plan.plan_code ===
+              currentPlanCode
+            ) {
+
+              cardClass +=
+                " renewal";
+
+              statusText =
+                "RENEWAL";
+
+              statusClass +=
+                " renewal";
+
+            }
+
           }
 
 
@@ -1029,6 +1110,20 @@ function renderPlans() {
 
 
               ${
+                isRenewalPlan
+                  ? `
+                    <div class="renewal-note">
+                      Your ${plan.plan_name}
+                      membership is due for renewal.
+                      You can pay through Flutterwave
+                      or use your EarnGig wallet.
+                    </div>
+                  `
+                  : ""
+              }
+
+
+              ${
                 plan.daily_earning_limit != null
                   ? `
                     <div class="membership-benefit">
@@ -1055,6 +1150,38 @@ function renderPlans() {
                 ${buttonText}
               </button>
 
+
+              ${
+                isRenewalPlan
+                  ? `
+                    <div class="wallet-renewal-box">
+
+                      <div class="wallet-renewal-title">
+                        Pay from Wallet
+                      </div>
+
+                      <div class="wallet-renewal-text">
+                        Use your EarnGig wallet balance
+                        to pay ${formatNaira(plan.price)}
+                        for another 30 days.
+                      </div>
+
+                      <button
+                        class="btn outline wallet-button"
+                        type="button"
+                        data-wallet-plan-code="${plan.plan_code}"
+                        data-wallet-plan-name="${plan.plan_name}"
+                        data-wallet-price="${plan.price}"
+                      >
+                        Pay ${formatNaira(plan.price)}
+                        from Wallet
+                      </button>
+
+                    </div>
+                  `
+                  : ""
+              }
+
             </div>
 
           `;
@@ -1066,7 +1193,7 @@ function renderPlans() {
 
   /*
    * =======================================================
-   * BUTTON EVENTS
+   * FLUTTERWAVE BUTTON EVENTS
    * =======================================================
    */
 
@@ -1094,12 +1221,233 @@ function renderPlans() {
       }
     );
 
+
+  /*
+   * =======================================================
+   * WALLET RENEWAL BUTTON EVENTS
+   * =======================================================
+   */
+
+  document
+    .querySelectorAll(
+      ".wallet-button"
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            const planCode =
+              button.dataset.walletPlanCode;
+
+            const planName =
+              button.dataset.walletPlanName;
+
+            const price =
+              Number(
+                button.dataset.walletPrice
+              );
+
+            renewFromWallet(
+              planCode,
+              planName,
+              price
+            );
+
+          }
+        );
+
+      }
+    );
+
 }
 
 
 
 /* =====================================================
-   START PAYMENT
+   WALLET RENEWAL
+===================================================== */
+
+async function renewFromWallet(
+  planCode,
+  planName,
+  price
+) {
+
+  if (
+    paymentInProgress
+  ) {
+
+    return;
+
+  }
+
+
+  if (!currentUser) {
+
+    window.location.href =
+      "login.html";
+
+    return;
+
+  }
+
+
+  /*
+   * The frontend only confirms the user's
+   * intention. The Supabase function is
+   * authoritative and performs the actual
+   * membership, wallet, and payment checks.
+   */
+
+  const confirmed =
+    window.confirm(
+      "Renew your " +
+      planName +
+      " membership for " +
+      formatNaira(price) +
+      " from your EarnGig wallet?\n\n" +
+      "This will deduct the full membership price " +
+      "from your wallet and give you another 30 days."
+    );
+
+
+  if (!confirmed) {
+
+    return;
+
+  }
+
+
+  paymentInProgress =
+    true;
+
+
+  showMessage(
+    "Processing your wallet renewal...",
+    "info"
+  );
+
+
+  document
+    .querySelectorAll(
+      ".plan-button, .wallet-button"
+    )
+    .forEach(
+      button => {
+
+        button.disabled =
+          true;
+
+      }
+    );
+
+
+  try {
+
+    const {
+      data: result,
+      error
+    } =
+      await supabaseClient
+        .rpc(
+          "renew_membership_from_wallet"
+        );
+
+
+    console.log(
+      "Wallet renewal result:",
+      result
+    );
+
+
+    if (error) {
+
+      console.error(
+        "Wallet renewal error:",
+        error
+      );
+
+      throw new Error(
+        error.message ||
+        "Unable to renew your membership from your wallet."
+      );
+
+    }
+
+
+    if (
+      !result?.success
+    ) {
+
+      throw new Error(
+        result?.error ||
+        "Wallet renewal was not completed."
+      );
+
+    }
+
+
+    showMessage(
+      "Membership renewed successfully. " +
+      planName +
+      " is now active for another 30 days. " +
+      "₦" +
+      Number(price).toLocaleString("en-NG") +
+      " was deducted from your wallet.",
+      "success"
+    );
+
+
+    /*
+     * Reload membership information so
+     * the page immediately reflects the
+     * new active period.
+     */
+
+    await loadMembership();
+
+
+    renderPlans();
+
+
+  } catch (error) {
+
+    console.error(
+      "Wallet renewal failed:",
+      error
+    );
+
+
+    showMessage(
+      error?.message ||
+      "Unable to renew your membership from your wallet. Please try again.",
+      "error"
+    );
+
+
+  } finally {
+
+    paymentInProgress =
+      false;
+
+    /*
+     * Re-render restores the correct
+     * active/renewal/upgrade buttons.
+     */
+
+    renderPlans();
+
+  }
+
+}
+
+
+
+/* =====================================================
+   START FLUTTERWAVE PAYMENT
 ===================================================== */
 
 async function startPayment(
@@ -1254,6 +1602,18 @@ async function startPayment(
       ". Your new 30-day membership will start after successful payment."
     );
 
+  } else if (
+    currentPlanCode ===
+    planCode &&
+    !active
+  ) {
+
+    showMessage(
+      "Preparing your " +
+      plan.plan_name +
+      " renewal through Flutterwave..."
+    );
+
   } else {
 
     showMessage(
@@ -1271,12 +1631,14 @@ async function startPayment(
 
   document
     .querySelectorAll(
-      ".plan-button"
+      ".plan-button, .wallet-button"
     )
     .forEach(
       button => {
+
         button.disabled =
           true;
+
       }
     );
 
