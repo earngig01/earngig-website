@@ -45,12 +45,12 @@
       border-color: rgba(139, 92, 246, 0.55);
     }
 
-    .membership-plan.unavailable {
-      opacity: 0.55;
+    .membership-plan.renewal {
+      border-color: rgba(59, 130, 246, 0.5);
     }
 
-    .membership-plan.renewal {
-      border-color: rgba(59, 130, 246, 0.45);
+    .membership-plan.unavailable {
+      opacity: 0.55;
     }
 
     .membership-plan h3 {
@@ -99,13 +99,13 @@
       color: #93c5fd;
     }
 
-    .plan-button {
+    .plan-button,
+    .wallet-button {
       width: 100%;
       margin-top: 18px;
     }
 
     .wallet-button {
-      width: 100%;
       margin-top: 10px;
     }
 
@@ -149,7 +149,7 @@
     .renewal-note {
       margin-top: 8px;
       font-size: 12px;
-      opacity: 0.7;
+      opacity: 0.72;
       line-height: 1.5;
     }
 
@@ -171,6 +171,16 @@
       font-size: 12px;
       opacity: 0.75;
       line-height: 1.5;
+    }
+
+    .renewal-method-note {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      background: rgba(59, 130, 246, 0.07);
+      border: 1px solid rgba(59, 130, 246, 0.14);
+      font-size: 13px;
+      line-height: 1.6;
     }
 
   </style>
@@ -332,10 +342,10 @@
         </h2>
 
         <p>
-          Membership payments are processed securely
-          through Flutterwave. When your membership is
-          due for renewal, you can also pay directly
-          from your EarnGig wallet.
+          New memberships and upgrades are securely
+          processed through Flutterwave.
+          When your membership is due for renewal,
+          you can also pay from your EarnGig wallet.
         </p>
 
       </div>
@@ -385,9 +395,14 @@
         </p>
 
         <p>
-          When your current membership is due for renewal,
-          you can either pay through Flutterwave or use
-          your available EarnGig wallet balance.
+          When your membership is due for renewal,
+          you can choose either Flutterwave or your
+          available EarnGig wallet balance.
+        </p>
+
+        <p>
+          Wallet membership payments do not count
+          against your daily earning limit.
         </p>
 
         <p>
@@ -433,6 +448,8 @@
 let currentUser = null;
 
 let currentMembership = null;
+
+let previousPlanCode = null;
 
 let membershipPlans = [];
 
@@ -487,6 +504,29 @@ function formatNaira(
     Number(amount).toLocaleString(
       "en-NG"
     );
+
+}
+
+
+
+/* =====================================================
+   FORMAT PLAN NAME
+===================================================== */
+
+function formatPlanName(
+  planCode
+) {
+
+  if (!planCode) {
+
+    return "";
+
+  }
+
+  return planCode
+    .charAt(0)
+    .toUpperCase() +
+    planCode.slice(1);
 
 }
 
@@ -599,7 +639,104 @@ async function loadMembership() {
     membership;
 
 
+  /*
+   * If this is an old membership with
+   * plan_code = NULL, find the most recent
+   * confirmed paid plan.
+   */
+  previousPlanCode =
+    currentMembership?.plan_code ||
+    null;
+
+
+  if (
+    !previousPlanCode
+  ) {
+
+    await loadPreviousPaidPlan();
+
+  }
+
+
   updateMembershipSummary();
+
+}
+
+
+
+/* =====================================================
+   LOAD PREVIOUS PAID PLAN
+===================================================== */
+
+async function loadPreviousPaidPlan() {
+
+  previousPlanCode =
+    null;
+
+
+  const {
+    data: payment,
+    error
+  } =
+    await supabaseClient
+      .from("membership_payments")
+      .select(`
+        id,
+        amount,
+        payment_type,
+        status,
+        paid_at,
+        created_at,
+        plan_code,
+        from_plan_code,
+        to_plan_code
+      `)
+      .eq(
+        "user_id",
+        currentUser.id
+      )
+      .eq(
+        "status",
+        "confirmed"
+      )
+      .order(
+        "paid_at",
+        {
+          ascending: false
+        }
+      )
+      .limit(1)
+      .maybeSingle();
+
+
+  if (error) {
+
+    console.error(
+      "Previous membership payment load error:",
+      error
+    );
+
+    /*
+     * Do not block the membership page
+     * if historical payment lookup fails.
+     */
+    return;
+
+  }
+
+
+  if (!payment) {
+
+    return;
+
+  }
+
+
+  previousPlanCode =
+    payment.to_plan_code ||
+    payment.plan_code ||
+    payment.from_plan_code ||
+    null;
 
 }
 
@@ -675,17 +812,17 @@ function updateMembershipSummary() {
     descriptionElement.textContent =
       currentMembership.plan_code
         ? "Your " +
-          currentMembership.plan_code +
+          formatPlanName(
+            currentMembership.plan_code
+          ) +
           " membership is active."
         : "Your membership is active.";
 
     priceElement.textContent =
       currentMembership.plan_code
-        ? currentMembership.plan_code
-            .charAt(0)
-            .toUpperCase() +
-          currentMembership.plan_code
-            .slice(1)
+        ? formatPlanName(
+            currentMembership.plan_code
+          )
         : "Active membership";
 
 
@@ -709,18 +846,60 @@ function updateMembershipSummary() {
   }
 
 
+  /*
+   * EXPIRED / INACTIVE
+   */
+
   statusElement.textContent =
     "Expired / Inactive";
 
-  descriptionElement.textContent =
-    currentMembership.plan_code
-      ? "Your previous membership period has ended."
-      : "Choose a plan below to activate your membership.";
 
-  priceElement.textContent =
+  if (
     currentMembership.plan_code
-      ? currentMembership.plan_code
-      : "Select a plan";
+  ) {
+
+    descriptionElement.textContent =
+      "Your previous " +
+      formatPlanName(
+        currentMembership.plan_code
+      ) +
+      " membership period has ended.";
+
+    priceElement.textContent =
+      formatPlanName(
+        currentMembership.plan_code
+      );
+
+  }
+
+  else if (
+    previousPlanCode
+  ) {
+
+    descriptionElement.textContent =
+      "Your previous " +
+      formatPlanName(
+        previousPlanCode
+      ) +
+      " membership period has ended.";
+
+    priceElement.textContent =
+      formatPlanName(
+        previousPlanCode
+      );
+
+  }
+
+  else {
+
+    descriptionElement.textContent =
+      "Your previous membership period has ended.";
+
+    priceElement.textContent =
+      "Select a plan";
+
+  }
+
 
   if (periodEnd) {
 
@@ -833,6 +1012,12 @@ function renderPlans() {
     null;
 
 
+  const effectivePreviousPlan =
+    currentPlanCode ||
+    previousPlanCode ||
+    null;
+
+
   const currentPlanRank =
     getPlanRank(
       currentPlanCode
@@ -845,13 +1030,14 @@ function renderPlans() {
 
 
   /*
-   * Wallet renewal is only available when
-   * the existing configured membership is
-   * no longer active.
+   * Renewal is available for an expired
+   * configured membership OR an expired
+   * legacy membership where we successfully
+   * detected its previous paid plan.
    */
-  const walletRenewalAvailable =
+  const renewalAvailable =
     !active &&
-    !!currentPlanCode;
+    !!effectivePreviousPlan;
 
 
   plansContainer.innerHTML =
@@ -871,20 +1057,12 @@ function renderPlans() {
               plan.plan_code;
 
 
-          /*
-            A higher-priced plan is an upgrade.
-          */
-
           const isUpgrade =
             active &&
             currentPlanCode &&
             planRank >
               currentPlanRank;
 
-
-          /*
-            A lower-priced plan is a downgrade.
-          */
 
           const isDowngrade =
             active &&
@@ -893,9 +1071,9 @@ function renderPlans() {
               currentPlanRank;
 
 
-          const isRenewalPlan =
-            walletRenewalAvailable &&
-            currentPlanCode ===
+          const isPreviousPlan =
+            renewalAvailable &&
+            effectivePreviousPlan ===
               plan.plan_code;
 
 
@@ -921,8 +1099,8 @@ function renderPlans() {
 
 
           /*
-            CURRENT PLAN
-          */
+           * CURRENT PLAN
+           */
 
           if (
             isCurrent
@@ -947,8 +1125,8 @@ function renderPlans() {
 
 
           /*
-            UPGRADE
-          */
+           * UPGRADE
+           */
 
           else if (
             isUpgrade
@@ -957,9 +1135,6 @@ function renderPlans() {
             buttonText =
               "Upgrade to " +
               plan.plan_name;
-
-            disabled =
-              false;
 
             cardClass +=
               " upgrade";
@@ -974,8 +1149,8 @@ function renderPlans() {
 
 
           /*
-            DOWNGRADE
-          */
+           * DOWNGRADE
+           */
 
           else if (
             isDowngrade
@@ -997,9 +1172,8 @@ function renderPlans() {
 
 
           /*
-            LEGACY ACTIVE MEMBERSHIP
-            WITH NO PLAN CODE
-          */
+           * LEGACY ACTIVE
+           */
 
           else if (
             legacyActive
@@ -1016,12 +1190,12 @@ function renderPlans() {
 
 
           /*
-            EXPIRED MEMBERSHIP
-          */
+           * EXPIRED / RENEWAL
+           */
 
           else if (
             !active &&
-            currentPlanCode
+            effectivePreviousPlan
           ) {
 
             buttonText =
@@ -1031,9 +1205,9 @@ function renderPlans() {
             disabled =
               false;
 
+
             if (
-              plan.plan_code ===
-              currentPlanCode
+              isPreviousPlan
             ) {
 
               cardClass +=
@@ -1051,8 +1225,8 @@ function renderPlans() {
 
 
           /*
-            NEW USER
-          */
+           * NEW USER
+           */
 
           else {
 
@@ -1110,13 +1284,14 @@ function renderPlans() {
 
 
               ${
-                isRenewalPlan
+                isPreviousPlan
                   ? `
                     <div class="renewal-note">
-                      Your ${plan.plan_name}
-                      membership is due for renewal.
-                      You can pay through Flutterwave
-                      or use your EarnGig wallet.
+                      This is your previous
+                      ${plan.plan_name}
+                      membership plan.
+                      You can renew through
+                      Flutterwave or your wallet.
                     </div>
                   `
                   : ""
@@ -1152,7 +1327,7 @@ function renderPlans() {
 
 
               ${
-                isRenewalPlan
+                isPreviousPlan
                   ? `
                     <div class="wallet-renewal-box">
 
@@ -1161,8 +1336,9 @@ function renderPlans() {
                       </div>
 
                       <div class="wallet-renewal-text">
-                        Use your EarnGig wallet balance
-                        to pay ${formatNaira(plan.price)}
+                        Use your EarnGig wallet
+                        balance to pay
+                        ${formatNaira(plan.price)}
                         for another 30 days.
                       </div>
 
@@ -1193,7 +1369,7 @@ function renderPlans() {
 
   /*
    * =======================================================
-   * FLUTTERWAVE BUTTON EVENTS
+   * FLUTTERWAVE BUTTONS
    * =======================================================
    */
 
@@ -1224,7 +1400,7 @@ function renderPlans() {
 
   /*
    * =======================================================
-   * WALLET RENEWAL BUTTON EVENTS
+   * WALLET BUTTONS
    * =======================================================
    */
 
@@ -1294,13 +1470,6 @@ async function renewFromWallet(
 
   }
 
-
-  /*
-   * The frontend only confirms the user's
-   * intention. The Supabase function is
-   * authoritative and performs the actual
-   * membership, wallet, and payment checks.
-   */
 
   const confirmed =
     window.confirm(
@@ -1394,21 +1563,13 @@ async function renewFromWallet(
       "Membership renewed successfully. " +
       planName +
       " is now active for another 30 days. " +
-      "₦" +
-      Number(price).toLocaleString("en-NG") +
+      formatNaira(price) +
       " was deducted from your wallet.",
       "success"
     );
 
 
-    /*
-     * Reload membership information so
-     * the page immediately reflects the
-     * new active period.
-     */
-
     await loadMembership();
-
 
     renderPlans();
 
@@ -1433,11 +1594,6 @@ async function renewFromWallet(
     paymentInProgress =
       false;
 
-    /*
-     * Re-render restores the correct
-     * active/renewal/upgrade buttons.
-     */
-
     renderPlans();
 
   }
@@ -1447,7 +1603,7 @@ async function renewFromWallet(
 
 
 /* =====================================================
-   START FLUTTERWAVE PAYMENT
+   FLUTTERWAVE PAYMENT
 ===================================================== */
 
 async function startPayment(
@@ -1493,12 +1649,6 @@ async function startPayment(
   }
 
 
-  /*
-   * =====================================================
-   * DETERMINE WHETHER THIS IS AN UPGRADE
-   * =====================================================
-   */
-
   const currentPlanCode =
     currentMembership?.plan_code ||
     null;
@@ -1540,8 +1690,7 @@ async function startPayment(
 
 
   /*
-   * Same plan cannot be purchased
-   * while active.
+   * Same plan while active.
    */
 
   if (
@@ -1561,8 +1710,7 @@ async function startPayment(
 
 
   /*
-   * Lower plans cannot be selected
-   * while active.
+   * Downgrade while active.
    */
 
   if (
@@ -1596,30 +1744,37 @@ async function startPayment(
       "Preparing your upgrade to " +
       plan.plan_name +
       " for " +
-      formatNaira(
-        plan.price
-      ) +
-      ". Your new 30-day membership will start after successful payment."
+      formatNaira(plan.price) +
+      ". Your new 30-day membership will start after successful payment.",
+      "info"
     );
 
-  } else if (
-    currentPlanCode ===
-    planCode &&
-    !active
+  }
+
+  else if (
+    !active &&
+    (
+      currentPlanCode === planCode ||
+      previousPlanCode === planCode
+    )
   ) {
 
     showMessage(
       "Preparing your " +
       plan.plan_name +
-      " renewal through Flutterwave..."
+      " renewal through Flutterwave...",
+      "info"
     );
 
-  } else {
+  }
+
+  else {
 
     showMessage(
       "Preparing your " +
       plan.plan_name +
-      " membership payment..."
+      " membership payment...",
+      "info"
     );
 
   }
@@ -1644,20 +1799,6 @@ async function startPayment(
 
 
   try {
-
-    /*
-     * ===================================================
-     * CALL EDGE FUNCTION
-     * ===================================================
-     *
-     * The backend determines whether this is:
-     *
-     * first_payment
-     * renewal
-     * upgrade
-     *
-     * based on the actual membership and plan prices.
-     */
 
     const {
       data: result,
@@ -1723,12 +1864,6 @@ async function startPayment(
     }
 
 
-    /*
-     * ===================================================
-     * GO TO FLUTTERWAVE
-     * ===================================================
-     */
-
     window.location.href =
       result.payment_link;
 
@@ -1751,10 +1886,6 @@ async function startPayment(
     paymentInProgress =
       false;
 
-
-    /*
-     * Restore correct button states.
-     */
 
     renderPlans();
 
