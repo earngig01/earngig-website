@@ -20,7 +20,7 @@
   <style>
 
 /* =========================================================
-   EARNGIG MEMBER DASHBOARD — SELF CONTAINED LAYOUT
+   EARNGIG MEMBER DASHBOARD
 ========================================================= */
 
 :root {
@@ -68,8 +68,6 @@
   color: #fff;
 }
 
-
-/* Keep dashboard content above background */
 
 .dashboard-page .container {
   position: relative;
@@ -144,6 +142,355 @@ body > header .nav {
 
 .menu-toggle:hover {
   transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   NOTIFICATION BUTTON
+========================================================= */
+
+.notification-wrapper {
+  position: relative;
+  z-index: 1200;
+}
+
+
+.notification-button {
+  position: relative;
+
+  width: 48px;
+  height: 48px;
+
+  border: 1px solid
+    rgba(255,255,255,.13);
+
+  border-radius: 15px;
+
+  background:
+    rgba(255,255,255,.065);
+
+  color: #fff;
+
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 21px;
+
+  transition:
+    background .2s ease,
+    transform .2s ease;
+}
+
+
+.notification-button:hover {
+  background:
+    rgba(255,255,255,.11);
+
+  transform: translateY(-1px);
+}
+
+
+.notification-badge {
+  position: absolute;
+
+  top: -5px;
+  right: -5px;
+
+  min-width: 20px;
+  height: 20px;
+
+  padding: 0 5px;
+
+  border-radius: 999px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ef4444,
+      #db2777
+    );
+
+  border:
+    2px solid #090d35;
+
+  color: #fff;
+
+  font-size: 10px;
+  font-weight: 900;
+
+  display: none;
+  align-items: center;
+  justify-content: center;
+
+  line-height: 1;
+}
+
+
+.notification-badge.visible {
+  display: flex;
+}
+
+
+/* =========================================================
+   NOTIFICATION DROPDOWN
+========================================================= */
+
+.notification-dropdown {
+  position: absolute;
+
+  top: calc(100% + 12px);
+  right: 0;
+
+  width: 350px;
+  max-width: calc(100vw - 30px);
+
+  border-radius: 18px;
+
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      180deg,
+      #11174b,
+      #0b103c
+    );
+
+  border:
+    1px solid rgba(139,92,246,.28);
+
+  box-shadow:
+    0 20px 55px rgba(0,0,0,.38);
+
+  opacity: 0;
+  visibility: hidden;
+
+  transform:
+    translateY(-7px);
+
+  transition:
+    opacity .18s ease,
+    visibility .18s ease,
+    transform .18s ease;
+}
+
+
+.notification-dropdown.open {
+  opacity: 1;
+  visibility: visible;
+
+  transform:
+    translateY(0);
+}
+
+
+.notification-dropdown-header {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 12px;
+
+  padding: 16px 17px;
+
+  border-bottom:
+    1px solid rgba(255,255,255,.08);
+}
+
+
+.notification-dropdown-header strong {
+  font-size: 15px;
+}
+
+
+.notification-dropdown-header a {
+  color: #a5b4fc;
+
+  text-decoration: none;
+
+  font-size: 11px;
+  font-weight: 800;
+}
+
+
+.notification-dropdown-list {
+  max-height: 390px;
+
+  overflow-y: auto;
+}
+
+
+.notification-dropdown-item {
+  display: flex;
+
+  gap: 11px;
+
+  padding: 14px 16px;
+
+  color: #fff;
+
+  text-decoration: none;
+
+  border-bottom:
+    1px solid rgba(255,255,255,.06);
+
+  background:
+    transparent;
+
+  transition:
+    background .18s ease;
+}
+
+
+.notification-dropdown-item:hover {
+  background:
+    rgba(255,255,255,.06);
+}
+
+
+.notification-dropdown-item.unread {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(79,70,229,.14),
+      rgba(124,58,237,.07)
+    );
+}
+
+
+.notification-dropdown-icon {
+  width: 36px;
+  height: 36px;
+
+  flex-shrink: 0;
+
+  border-radius: 11px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background:
+    linear-gradient(
+      135deg,
+      #2563eb,
+      #7c3aed
+    );
+
+  font-size: 16px;
+}
+
+
+.notification-dropdown-content {
+  min-width: 0;
+
+  flex: 1;
+}
+
+
+.notification-dropdown-title {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 8px;
+
+  font-size: 13px;
+  font-weight: 800;
+}
+
+
+.notification-dropdown-message {
+  margin-top: 4px;
+
+  color:
+    rgba(255,255,255,.58);
+
+  font-size: 11px;
+
+  line-height: 1.45;
+
+  overflow: hidden;
+
+  display: -webkit-box;
+
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+
+.notification-dropdown-date {
+  margin-top: 5px;
+
+  color:
+    rgba(255,255,255,.38);
+
+  font-size: 9px;
+}
+
+
+.notification-unread-dot {
+  width: 7px;
+  height: 7px;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background:
+    #a78bfa;
+
+  box-shadow:
+    0 0 9px rgba(167,139,250,.8);
+}
+
+
+.notification-dropdown-empty {
+  padding: 30px 18px;
+
+  text-align: center;
+
+  color:
+    rgba(255,255,255,.55);
+
+  font-size: 12px;
+}
+
+
+.notification-dropdown-footer {
+  padding: 13px 16px;
+
+  text-align: center;
+
+  border-top:
+    1px solid rgba(255,255,255,.08);
+}
+
+
+.notification-dropdown-footer a {
+  color: #a5b4fc;
+
+  text-decoration: none;
+
+  font-size: 12px;
+
+  font-weight: 800;
+}
+
+
+.notification-loading {
+  padding: 25px;
+
+  text-align: center;
+
+  color:
+    rgba(255,255,255,.5);
+
+  font-size: 12px;
 }
 
 
@@ -623,7 +970,7 @@ body > header .nav {
 
 
 /* =========================================================
-   DAILY LIMIT — KEEP TOGETHER
+   DAILY LIMIT
 ========================================================= */
 
 .eg-daily-limit {
@@ -826,7 +1173,7 @@ body > header .nav {
 
 
 /* =========================================================
-   SECTION WRAPPER
+   SECTIONS
 ========================================================= */
 
 .eg-section {
@@ -851,13 +1198,6 @@ body > header .nav {
   font-size: 22px;
 
   letter-spacing: -.4px;
-}
-
-
-.eg-section-heading h3 {
-  margin: 3px 0 0;
-
-  font-size: 18px;
 }
 
 
@@ -1059,7 +1399,7 @@ body > header .nav {
 
 
 /* =========================================================
-   READ / CREATE CARDS
+   FEATURE CARDS
 ========================================================= */
 
 .eg-feature-card {
@@ -1128,7 +1468,7 @@ body > header .nav {
 
 
 /* =========================================================
-   REFERRAL CARD
+   REFERRAL
 ========================================================= */
 
 .eg-referral-card {
@@ -1217,10 +1557,6 @@ body > header .nav {
   font-size: 16px;
 }
 
-
-/* =========================================================
-   RECENT REFERRALS
-========================================================= */
 
 .eg-referral-list {
   margin-top: 12px;
@@ -1354,7 +1690,7 @@ body > header .nav {
 
 
 /* =========================================================
-   EMPTY STATE
+   EMPTY
 ========================================================= */
 
 .eg-empty {
@@ -1390,22 +1726,6 @@ body > header .nav {
   color: #a5b4fc;
 
   font-weight: 900;
-}
-
-
-.eg-empty h3 {
-  margin: 0 0 5px;
-
-  font-size: 15px;
-}
-
-
-.eg-empty p {
-  margin: 0;
-
-  color: rgba(255,255,255,.48);
-
-  font-size: 12px;
 }
 
 
@@ -1613,6 +1933,19 @@ body > footer {
     padding: 13px;
   }
 
+
+  .notification-dropdown {
+    position: fixed;
+
+    top: 82px;
+    right: 15px;
+    left: 15px;
+
+    width: auto;
+
+    max-width: none;
+  }
+
 }
 
   </style>
@@ -1655,6 +1988,83 @@ body > footer {
         Earn<span>Gig</span>
 
       </a>
+
+
+      <!-- ===================================================
+           NOTIFICATION BUTTON
+      ==================================================== -->
+
+      <div
+        id="notification-wrapper"
+        class="notification-wrapper"
+      >
+
+        <button
+          id="notification-button"
+          class="notification-button"
+          type="button"
+          aria-label="Notifications"
+          aria-expanded="false"
+        >
+
+          🔔
+
+          <span
+            id="notification-badge"
+            class="notification-badge"
+          >
+            0
+          </span>
+
+        </button>
+
+
+        <!-- =================================================
+             NOTIFICATION DROPDOWN
+        ================================================== -->
+
+        <div
+          id="notification-dropdown"
+          class="notification-dropdown"
+        >
+
+          <div class="notification-dropdown-header">
+
+            <strong>
+              Notifications
+            </strong>
+
+
+            <a href="notifications.html">
+              View all
+            </a>
+
+          </div>
+
+
+          <div
+            id="notification-dropdown-list"
+            class="notification-dropdown-list"
+          >
+
+            <div class="notification-loading">
+              Loading notifications...
+            </div>
+
+          </div>
+
+
+          <div class="notification-dropdown-footer">
+
+            <a href="notifications.html">
+              View all notifications →
+            </a>
+
+          </div>
+
+        </div>
+
+      </div>
 
     </div>
 
@@ -1744,6 +2154,17 @@ body > footer {
       </span>
 
       Dashboard
+
+    </a>
+
+
+    <a href="notifications.html">
+
+      <span class="dashboard-menu-icon">
+        🔔
+      </span>
+
+      Notifications
 
     </a>
 
@@ -1886,10 +2307,6 @@ body > footer {
   <div class="container">
 
 
-    <!-- =====================================================
-         WELCOME
-    ====================================================== -->
-
     <section class="eg-welcome">
 
       <span class="eg-eyebrow">
@@ -1919,10 +2336,6 @@ body > footer {
     </section>
 
 
-
-    <!-- =====================================================
-         START EARNING
-    ====================================================== -->
 
     <a
       class="start-earning-button"
@@ -2000,11 +2413,10 @@ body > footer {
 
 
     <!-- =====================================================
-         EARNINGS SUMMARY
+         SUMMARY
     ====================================================== -->
 
     <section class="eg-summary-grid">
-
 
       <div class="eg-summary-card">
 
@@ -2057,13 +2469,12 @@ body > footer {
 
       </div>
 
-
     </section>
 
 
 
     <!-- =====================================================
-         DAILY EARNING LIMIT
+         DAILY LIMIT
     ====================================================== -->
 
     <section
@@ -2073,13 +2484,11 @@ body > footer {
 
       <div class="eg-daily-limit-header">
 
-
         <div class="eg-daily-limit-title">
 
           <div class="eg-daily-limit-icon">
             🔒
           </div>
-
 
           <div>
 
@@ -2110,7 +2519,6 @@ body > footer {
           </span>
 
         </div>
-
 
       </div>
 
@@ -2531,7 +2939,6 @@ body > footer {
 
         <div class="eg-referral-stats">
 
-
           <div class="eg-referral-stat">
 
             <small>
@@ -2569,7 +2976,6 @@ body > footer {
             </strong>
 
           </div>
-
 
         </div>
 
@@ -2653,7 +3059,7 @@ body > footer {
           </h3>
 
           <p>
-            Your recent wallet transactions will appear here.
+            Your wallet activity will appear here.
           </p>
 
         </div>
@@ -2765,7 +3171,7 @@ function formatNaira(
 
 
 /* =========================================================
-   TRANSACTION TYPE
+   TRANSACTION HELPERS
 ========================================================= */
 
 function getTransactionType(
@@ -2780,11 +3186,6 @@ function getTransactionType(
 
 }
 
-
-
-/* =========================================================
-   REAL EARNING
-========================================================= */
 
 function isRealEarning(
   transaction
@@ -2813,11 +3214,6 @@ function isRealEarning(
 }
 
 
-
-/* =========================================================
-   WITHDRAWAL
-========================================================= */
-
 function isWithdrawal(
   transaction
 ) {
@@ -2836,11 +3232,6 @@ function isWithdrawal(
 
 }
 
-
-
-/* =========================================================
-   PAYMENT / DEBIT
-========================================================= */
 
 function isPaymentOrDebit(
   transaction
@@ -2879,70 +3270,250 @@ function isPaymentOrDebit(
 
 
 /* =========================================================
-   MOBILE MENU
+   NOTIFICATION HELPERS
 ========================================================= */
 
-const menuToggle =
-  document.getElementById(
-    "menu-toggle"
-  );
+function escapeHtml(
+  value
+) {
 
-const menuOverlay =
-  document.getElementById(
-    "dashboard-menu-overlay"
-  );
+  return String(
+    value ?? ""
+  )
 
-const menuClose =
-  document.getElementById(
-    "dashboard-menu-close"
-  );
-
-
-function openDashboardMenu() {
-
-  menuOverlay.classList.add(
-    "open"
-  );
-
-  document.body.style.overflow =
-    "hidden";
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
 
 }
 
 
-function closeDashboardMenu() {
+function notificationIcon(
+  type
+) {
 
-  menuOverlay.classList.remove(
-    "open"
-  );
+  const value =
+    String(
+      type || ""
+    )
+      .trim()
+      .toLowerCase();
 
-  document.body.style.overflow =
-    "";
+
+  if (
+    value === "important"
+  ) {
+
+    return "⚠️";
+
+  }
+
+
+  if (
+    value === "competition"
+  ) {
+
+    return "🏆";
+
+  }
+
+
+  if (
+    value === "novel"
+  ) {
+
+    return "📚";
+
+  }
+
+
+  if (
+    value === "membership"
+  ) {
+
+    return "💳";
+
+  }
+
+
+  if (
+    value === "referral"
+  ) {
+
+    return "🎁";
+
+  }
+
+
+  if (
+    value === "withdrawal"
+  ) {
+
+    return "💸";
+
+  }
+
+
+  if (
+    value === "update"
+  ) {
+
+    return "✨";
+
+  }
+
+
+  return "🔔";
 
 }
 
 
-menuToggle.addEventListener(
+function formatNotificationDate(
+  value
+) {
+
+  if (!value) {
+
+    return "";
+
+  }
+
+
+  const date =
+    new Date(value);
+
+
+  if (
+    Number.isNaN(
+      date.getTime()
+    )
+  ) {
+
+    return "";
+
+  }
+
+
+  return date.toLocaleString(
+    "en-NG",
+    {
+      timeZone: "Africa/Lagos",
+      month: "short",
+      day: "numeric",
+      hour: "numeric",
+      minute: "2-digit"
+    }
+  );
+
+}
+
+
+
+/* =========================================================
+   NOTIFICATION DROPDOWN
+========================================================= */
+
+const notificationButton =
+  document.getElementById(
+    "notification-button"
+  );
+
+
+const notificationDropdown =
+  document.getElementById(
+    "notification-dropdown"
+  );
+
+
+const notificationBadge =
+  document.getElementById(
+    "notification-badge"
+  );
+
+
+const notificationList =
+  document.getElementById(
+    "notification-dropdown-list"
+  );
+
+
+const notificationWrapper =
+  document.getElementById(
+    "notification-wrapper"
+  );
+
+
+function closeNotificationDropdown() {
+
+  notificationDropdown.classList.remove(
+    "open"
+  );
+
+  notificationButton.setAttribute(
+    "aria-expanded",
+    "false"
+  );
+
+}
+
+
+function toggleNotificationDropdown() {
+
+  const open =
+    notificationDropdown.classList.contains(
+      "open"
+    );
+
+
+  if (open) {
+
+    closeNotificationDropdown();
+
+  }
+
+  else {
+
+    notificationDropdown.classList.add(
+      "open"
+    );
+
+    notificationButton.setAttribute(
+      "aria-expanded",
+      "true"
+    );
+
+    loadNotificationDropdown();
+
+  }
+
+}
+
+
+notificationButton.addEventListener(
   "click",
-  openDashboardMenu
+  function(event) {
+
+    event.stopPropagation();
+
+    toggleNotificationDropdown();
+
+  }
 );
 
 
-menuClose.addEventListener(
-  "click",
-  closeDashboardMenu
-);
-
-
-menuOverlay.addEventListener(
+document.addEventListener(
   "click",
   function(event) {
 
     if (
-      event.target === menuOverlay
+      !notificationWrapper.contains(
+        event.target
+      )
     ) {
 
-      closeDashboardMenu();
+      closeNotificationDropdown();
 
     }
 
@@ -2950,20 +3521,316 @@ menuOverlay.addEventListener(
 );
 
 
-document
-  .querySelectorAll(
-    ".dashboard-menu a"
-  )
-  .forEach(
-    function(link) {
 
-      link.addEventListener(
-        "click",
-        closeDashboardMenu
+/* =========================================================
+   LOAD NOTIFICATION COUNT
+========================================================= */
+
+async function loadNotificationCount() {
+
+  try {
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .rpc(
+          "get_notification_unread_count"
+        );
+
+
+    if (error) {
+
+      console.error(
+        "Notification count error:",
+        error
+      );
+
+      return;
+
+    }
+
+
+    const count =
+      Number(data || 0);
+
+
+    if (count > 0) {
+
+      notificationBadge.textContent =
+        count > 99
+          ? "99+"
+          : String(count);
+
+      notificationBadge.classList.add(
+        "visible"
       );
 
     }
-  );
+
+    else {
+
+      notificationBadge.classList.remove(
+        "visible"
+      );
+
+    }
+
+  }
+
+  catch (error) {
+
+    console.error(
+      "Notification count error:",
+      error
+    );
+
+  }
+
+}
+
+
+
+/* =========================================================
+   LOAD NOTIFICATION DROPDOWN
+========================================================= */
+
+async function loadNotificationDropdown() {
+
+  notificationList.innerHTML = `
+    <div class="notification-loading">
+      Loading notifications...
+    </div>
+  `;
+
+
+  const {
+    data: {
+      user
+    },
+    error: userError
+  } =
+    await supabaseClient
+      .auth
+      .getUser();
+
+
+  if (
+    userError ||
+    !user
+  ) {
+
+    return;
+
+  }
+
+
+  const {
+    data: notifications,
+    error
+  } =
+    await supabaseClient
+      .from("notifications")
+      .select(`
+        id,
+        title,
+        message,
+        type,
+        action_url,
+        is_read,
+        created_at
+      `)
+      .eq(
+        "user_id",
+        user.id
+      )
+      .order(
+        "created_at",
+        {
+          ascending: false
+        }
+      )
+      .limit(5);
+
+
+  if (error) {
+
+    console.error(
+      "Notification dropdown error:",
+      error
+    );
+
+
+    notificationList.innerHTML = `
+      <div class="notification-dropdown-empty">
+        Unable to load notifications.
+      </div>
+    `;
+
+    return;
+
+  }
+
+
+  if (
+    !notifications ||
+    notifications.length === 0
+  ) {
+
+    notificationList.innerHTML = `
+      <div class="notification-dropdown-empty">
+        🔔<br><br>
+        No notifications yet.
+      </div>
+    `;
+
+    return;
+
+  }
+
+
+  notificationList.innerHTML =
+    notifications
+      .map(
+        function(notification) {
+
+          const unread =
+            notification.is_read !== true;
+
+
+          return `
+            <a
+              href="notifications.html"
+              class="notification-dropdown-item ${
+                unread
+                  ? "unread"
+                  : ""
+              }"
+              data-notification-id="${
+                escapeHtml(
+                  notification.id
+                )
+              }"
+            >
+
+              <div class="notification-dropdown-icon">
+                ${
+                  notificationIcon(
+                    notification.type
+                  )
+                }
+              </div>
+
+
+              <div class="notification-dropdown-content">
+
+                <div class="notification-dropdown-title">
+
+                  <span>
+                    ${
+                      escapeHtml(
+                        notification.title
+                      )
+                    }
+                  </span>
+
+                  ${
+                    unread
+                      ? `
+                        <span
+                          class="notification-unread-dot"
+                        ></span>
+                      `
+                      : ""
+                  }
+
+                </div>
+
+
+                <div class="notification-dropdown-message">
+
+                  ${
+                    escapeHtml(
+                      notification.message
+                    )
+                  }
+
+                </div>
+
+
+                <div class="notification-dropdown-date">
+
+                  ${
+                    escapeHtml(
+                      formatNotificationDate(
+                        notification.created_at
+                      )
+                    )
+                  }
+
+                </div>
+
+              </div>
+
+            </a>
+          `;
+
+        }
+      )
+      .join("");
+
+
+  document
+    .querySelectorAll(
+      "[data-notification-id]"
+    )
+    .forEach(
+      function(item) {
+
+        item.addEventListener(
+          "click",
+          async function() {
+
+            const id =
+              item.dataset.notificationId;
+
+
+            try {
+
+              await supabaseClient
+                .rpc(
+                  "mark_notification_read",
+                  {
+                    p_notification_id:
+                      id
+                  }
+                );
+
+            }
+
+            catch (error) {
+
+              console.error(
+                "Notification read error:",
+                error
+              );
+
+            }
+
+
+            /*
+              Keep the normal navigation to
+              notifications.html.
+            */
+
+          }
+        );
+
+      }
+    );
+
+}
 
 
 
@@ -2974,7 +3841,9 @@ document
 async function checkMembershipAccess() {
 
   const {
-    data: { user },
+    data: {
+      user
+    },
     error: userError
   } =
     await supabaseClient
@@ -3130,30 +3999,6 @@ async function loadDailyEarningLimit() {
   );
 
 
-  planElement.textContent =
-    "Loading your membership limit...";
-
-
-  amountElement.textContent =
-    "Loading...";
-
-
-  labelElement.textContent =
-    "Normal activities today";
-
-
-  progressBar.style.width =
-    "0%";
-
-
-  remainingElement.textContent =
-    "Loading...";
-
-
-  noteElement.textContent =
-    "Referral bonuses and Create & Earn are not included.";
-
-
   try {
 
     const {
@@ -3213,22 +4058,19 @@ async function loadDailyEarningLimit() {
         .toLowerCase();
 
 
-    const valid =
-      result &&
-      planCode &&
-      Number.isFinite(dailyLimit) &&
-      dailyLimit > 0 &&
-      Number.isFinite(earnedToday) &&
-      earnedToday >= 0 &&
-      Number.isFinite(remainingToday) &&
-      remainingToday >= 0;
-
-
-    if (!valid) {
+    if (
+      !result ||
+      !planCode ||
+      !Number.isFinite(dailyLimit) ||
+      dailyLimit <= 0 ||
+      !Number.isFinite(earnedToday) ||
+      earnedToday < 0 ||
+      !Number.isFinite(remainingToday) ||
+      remainingToday < 0
+    ) {
 
       throw new Error(
-        result?.message ||
-        "Your membership earning limit is unavailable."
+        "Membership earning limit unavailable."
       );
 
     }
@@ -3346,10 +4188,6 @@ async function loadDailyEarningLimit() {
       "Unavailable";
 
 
-    labelElement.textContent =
-      "Normal activities today";
-
-
     progressBar.style.width =
       "0%";
 
@@ -3376,7 +4214,9 @@ async function loadDashboard() {
   try {
 
     const {
-      data: { user },
+      data: {
+        user
+      },
       error: userError
     } =
       await supabaseClient
@@ -3533,8 +4373,6 @@ async function loadDashboard() {
       );
 
 
-    /* DAILY LIMIT */
-
     await loadDailyEarningLimit();
 
 
@@ -3595,9 +4433,7 @@ async function loadDashboard() {
     } =
       await supabaseClient
         .from("task_attempts")
-        .select(`
-          status
-        `)
+        .select("status")
         .eq(
           "user_id",
           user.id
@@ -3753,7 +4589,9 @@ async function loadTransactions() {
 
 
   const {
-    data: { user },
+    data: {
+      user
+    },
     error: userError
   } =
     await supabaseClient
@@ -3806,12 +4644,8 @@ async function loadTransactions() {
 
     list.innerHTML = `
       <div class="eg-empty">
-        <h3>
-          Unable to load transactions
-        </h3>
-        <p>
-          Please try again later.
-        </p>
+        <h3>Unable to load transactions</h3>
+        <p>Please try again later.</p>
       </div>
     `;
 
@@ -3891,21 +4725,25 @@ async function loadTransactions() {
 
                 <strong>
                   ${
-                    transaction.description ||
-                    transaction.type ||
-                    "Wallet transaction"
+                    escapeHtml(
+                      transaction.description ||
+                      transaction.type ||
+                      "Wallet transaction"
+                    )
                   }
                 </strong>
 
                 <small>
-                  ${date}
+                  ${escapeHtml(date)}
                 </small>
 
                 <small>
                   Status:
                   ${
-                    transaction.status ||
-                    "completed"
+                    escapeHtml(
+                      transaction.status ||
+                      "completed"
+                    )
                   }
                 </small>
 
@@ -3952,7 +4790,9 @@ async function loadReferralHistory() {
 
 
   const {
-    data: { user },
+    data: {
+      user
+    },
     error: userError
   } =
     await supabaseClient
@@ -4127,13 +4967,15 @@ async function loadReferralHistory() {
 
                 <strong>
                   ${
-                    referral.full_name ||
-                    "EarnGig Member"
+                    escapeHtml(
+                      referral.full_name ||
+                      "EarnGig Member"
+                    )
                   }
                 </strong>
 
                 <small>
-                  Joined ${date}
+                  Joined ${escapeHtml(date)}
                 </small>
 
               </div>
@@ -4240,6 +5082,97 @@ document
 
 
 /* =========================================================
+   MOBILE MENU
+========================================================= */
+
+const menuToggle =
+  document.getElementById(
+    "menu-toggle"
+  );
+
+
+const menuOverlay =
+  document.getElementById(
+    "dashboard-menu-overlay"
+  );
+
+
+const menuClose =
+  document.getElementById(
+    "dashboard-menu-close"
+  );
+
+
+function openDashboardMenu() {
+
+  menuOverlay.classList.add(
+    "open"
+  );
+
+  document.body.style.overflow =
+    "hidden";
+
+}
+
+
+function closeDashboardMenu() {
+
+  menuOverlay.classList.remove(
+    "open"
+  );
+
+  document.body.style.overflow =
+    "";
+
+}
+
+
+menuToggle.addEventListener(
+  "click",
+  openDashboardMenu
+);
+
+
+menuClose.addEventListener(
+  "click",
+  closeDashboardMenu
+);
+
+
+menuOverlay.addEventListener(
+  "click",
+  function(event) {
+
+    if (
+      event.target === menuOverlay
+    ) {
+
+      closeDashboardMenu();
+
+    }
+
+  }
+);
+
+
+document
+  .querySelectorAll(
+    ".dashboard-menu a"
+  )
+  .forEach(
+    function(link) {
+
+      link.addEventListener(
+        "click",
+        closeDashboardMenu
+      );
+
+    }
+  );
+
+
+
+/* =========================================================
    LOGOUT
 ========================================================= */
 
@@ -4254,9 +5187,9 @@ document
       const {
         error
       } =
-        await supabaseClient
-          .auth
-          .signOut();
+      await supabaseClient
+        .auth
+        .signOut();
 
 
       if (error) {
@@ -4301,7 +5234,24 @@ document
 
   await loadReferralHistory();
 
+  /*
+    Load notification badge after authentication.
+  */
+
+  await loadNotificationCount();
+
 })();
+
+
+/*
+  Refresh notification badge periodically.
+  This does not reload the whole dashboard.
+*/
+
+setInterval(
+  loadNotificationCount,
+  60000
+);
 
 </script>
 
