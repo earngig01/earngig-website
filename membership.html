@@ -173,14 +173,11 @@
       line-height: 1.5;
     }
 
-    .renewal-method-note {
-      margin-top: 14px;
-      padding: 14px 16px;
-      border-radius: 12px;
-      background: rgba(59, 130, 246, 0.07);
-      border: 1px solid rgba(59, 130, 246, 0.14);
-      font-size: 13px;
-      line-height: 1.6;
+    .payment-choice-note {
+      margin-top: 10px;
+      font-size: 12px;
+      opacity: 0.7;
+      line-height: 1.5;
     }
 
   </style>
@@ -449,8 +446,6 @@ let currentUser = null;
 
 let currentMembership = null;
 
-let previousPlanCode = null;
-
 let membershipPlans = [];
 
 let paymentInProgress = false;
@@ -639,104 +634,7 @@ async function loadMembership() {
     membership;
 
 
-  /*
-   * If this is an old membership with
-   * plan_code = NULL, find the most recent
-   * confirmed paid plan.
-   */
-  previousPlanCode =
-    currentMembership?.plan_code ||
-    null;
-
-
-  if (
-    !previousPlanCode
-  ) {
-
-    await loadPreviousPaidPlan();
-
-  }
-
-
   updateMembershipSummary();
-
-}
-
-
-
-/* =====================================================
-   LOAD PREVIOUS PAID PLAN
-===================================================== */
-
-async function loadPreviousPaidPlan() {
-
-  previousPlanCode =
-    null;
-
-
-  const {
-    data: payment,
-    error
-  } =
-    await supabaseClient
-      .from("membership_payments")
-      .select(`
-        id,
-        amount,
-        payment_type,
-        status,
-        paid_at,
-        created_at,
-        plan_code,
-        from_plan_code,
-        to_plan_code
-      `)
-      .eq(
-        "user_id",
-        currentUser.id
-      )
-      .eq(
-        "status",
-        "confirmed"
-      )
-      .order(
-        "paid_at",
-        {
-          ascending: false
-        }
-      )
-      .limit(1)
-      .maybeSingle();
-
-
-  if (error) {
-
-    console.error(
-      "Previous membership payment load error:",
-      error
-    );
-
-    /*
-     * Do not block the membership page
-     * if historical payment lookup fails.
-     */
-    return;
-
-  }
-
-
-  if (!payment) {
-
-    return;
-
-  }
-
-
-  previousPlanCode =
-    payment.to_plan_code ||
-    payment.plan_code ||
-    payment.from_plan_code ||
-    null;
 
 }
 
@@ -872,31 +770,18 @@ function updateMembershipSummary() {
 
   }
 
-  else if (
-    previousPlanCode
-  ) {
-
-    descriptionElement.textContent =
-      "Your previous " +
-      formatPlanName(
-        previousPlanCode
-      ) +
-      " membership period has ended.";
-
-    priceElement.textContent =
-      formatPlanName(
-        previousPlanCode
-      );
-
-  }
-
   else {
 
+    /*
+     * Legacy account with no plan_code.
+     *
+     * Do NOT guess or display a previous plan.
+     */
     descriptionElement.textContent =
-      "Your previous membership period has ended.";
+      "Your previous membership period has ended. Choose a plan below to resubscribe.";
 
     priceElement.textContent =
-      "Select a plan";
+      "Choose a plan";
 
   }
 
@@ -1012,32 +897,35 @@ function renderPlans() {
     null;
 
 
-  const effectivePreviousPlan =
-    currentPlanCode ||
-    previousPlanCode ||
-    null;
-
-
   const currentPlanRank =
     getPlanRank(
       currentPlanCode
     );
 
 
-  const legacyActive =
-    active &&
-    !currentPlanCode;
+  /*
+   * Any expired membership can select
+   * any plan for renewal.
+   */
+  const expiredMembership =
+    !active &&
+    !!currentMembership;
 
 
   /*
-   * Renewal is available for an expired
-   * configured membership OR an expired
-   * legacy membership where we successfully
-   * detected its previous paid plan.
+   * No membership can select any plan.
    */
-  const renewalAvailable =
-    !active &&
-    !!effectivePreviousPlan;
+  const newMembership =
+    !currentMembership;
+
+
+  /*
+   * Legacy expired membership with
+   * no plan_code can select any plan.
+   */
+  const legacyExpired =
+    expiredMembership &&
+    !currentPlanCode;
 
 
   plansContainer.innerHTML =
@@ -1071,10 +959,13 @@ function renderPlans() {
               currentPlanRank;
 
 
-          const isPreviousPlan =
-            renewalAvailable &&
-            effectivePreviousPlan ===
-              plan.plan_code;
+          const isRenewal =
+            expiredMembership &&
+            (
+              legacyExpired ||
+              plan.plan_code ===
+                currentPlanCode
+            );
 
 
           let buttonText =
@@ -1136,6 +1027,9 @@ function renderPlans() {
               "Upgrade to " +
               plan.plan_name;
 
+            disabled =
+              false;
+
             cardClass +=
               " upgrade";
 
@@ -1172,30 +1066,11 @@ function renderPlans() {
 
 
           /*
-           * LEGACY ACTIVE
-           */
-
-          else if (
-            legacyActive
-          ) {
-
-            buttonText =
-              "Choose " +
-              plan.plan_name;
-
-            disabled =
-              false;
-
-          }
-
-
-          /*
            * EXPIRED / RENEWAL
            */
 
           else if (
-            !active &&
-            effectivePreviousPlan
+            isRenewal
           ) {
 
             buttonText =
@@ -1205,27 +1080,20 @@ function renderPlans() {
             disabled =
               false;
 
+            cardClass +=
+              " renewal";
 
-            if (
-              isPreviousPlan
-            ) {
+            statusText =
+              "RENEW";
 
-              cardClass +=
-                " renewal";
-
-              statusText =
-                "RENEWAL";
-
-              statusClass +=
-                " renewal";
-
-            }
+            statusClass +=
+              " renewal";
 
           }
 
 
           /*
-           * NEW USER
+           * NEW MEMBERSHIP
            */
 
           else {
@@ -1284,14 +1152,13 @@ function renderPlans() {
 
 
               ${
-                isPreviousPlan
+                isRenewal
                   ? `
                     <div class="renewal-note">
-                      This is your previous
-                      ${plan.plan_name}
-                      membership plan.
-                      You can renew through
-                      Flutterwave or your wallet.
+                      Renew this membership for
+                      another 30 days.
+                      Choose Flutterwave or pay
+                      directly from your wallet.
                     </div>
                   `
                   : ""
@@ -1327,19 +1194,19 @@ function renderPlans() {
 
 
               ${
-                isPreviousPlan
+                isRenewal
                   ? `
                     <div class="wallet-renewal-box">
 
                       <div class="wallet-renewal-title">
-                        Pay from Wallet
+                        Or Pay from Wallet
                       </div>
 
                       <div class="wallet-renewal-text">
                         Use your EarnGig wallet
                         balance to pay
                         ${formatNaira(plan.price)}
-                        for another 30 days.
+                        for this 30-day renewal.
                       </div>
 
                       <button
@@ -1353,6 +1220,20 @@ function renderPlans() {
                         from Wallet
                       </button>
 
+                    </div>
+                  `
+                  : ""
+              }
+
+
+              ${
+                isRenewal
+                  ? `
+                    <div class="payment-choice-note">
+                      You can use either payment
+                      method. Your wallet balance is
+                      only deducted if you choose
+                      the wallet option.
                     </div>
                   `
                   : ""
@@ -1478,8 +1359,9 @@ async function renewFromWallet(
       " membership for " +
       formatNaira(price) +
       " from your EarnGig wallet?\n\n" +
-      "This will deduct the full membership price " +
-      "from your wallet and give you another 30 days."
+      "This will deduct " +
+      formatNaira(price) +
+      " from your wallet and give you another 30 days."
     );
 
 
@@ -1516,13 +1398,22 @@ async function renewFromWallet(
 
   try {
 
+    /*
+     * IMPORTANT:
+     * The selected plan is explicitly sent
+     * to the secure Supabase function.
+     */
     const {
       data: result,
       error
     } =
       await supabaseClient
         .rpc(
-          "renew_membership_from_wallet"
+          "renew_membership_from_wallet",
+          {
+            p_plan_code:
+              planCode
+          }
         );
 
 
@@ -1690,7 +1581,7 @@ async function startPayment(
 
 
   /*
-   * Same plan while active.
+   * Same active plan.
    */
 
   if (
@@ -1731,9 +1622,7 @@ async function startPayment(
 
 
   /*
-   * =====================================================
-   * PAYMENT MESSAGE
-   * =====================================================
+   * Payment message.
    */
 
   if (
@@ -1753,10 +1642,7 @@ async function startPayment(
 
   else if (
     !active &&
-    (
-      currentPlanCode === planCode ||
-      previousPlanCode === planCode
-    )
+    currentMembership
   ) {
 
     showMessage(
