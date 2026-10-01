@@ -1,0 +1,1653 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Notifications | EarnGig</title>
+
+  <link
+    rel="stylesheet"
+    href="styles.css"
+  >
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase.js"></script>
+
+
+  <style>
+
+    /* =====================================================
+       PAGE
+    ===================================================== */
+
+    body {
+      background:
+        linear-gradient(
+          135deg,
+          #080d35 0%,
+          #10185a 48%,
+          #21105b 100%
+        );
+
+      color: #fff;
+      min-height: 100vh;
+    }
+
+
+    main {
+      min-height: calc(100vh - 80px);
+      padding: 35px 0 70px;
+    }
+
+
+    /* =====================================================
+       HEADER
+    ===================================================== */
+
+    .notification-top {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+
+    .menu-button {
+      width: 46px;
+      height: 46px;
+
+      border: 1px solid
+        rgba(139, 92, 246, .4);
+
+      border-radius: 14px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #2563eb,
+          #7c3aed
+        );
+
+      color: #fff;
+
+      font-size: 23px;
+
+      cursor: pointer;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+
+    .notification-header-title {
+      margin-left: 4px;
+    }
+
+
+    .notification-header-title small {
+      display: block;
+
+      font-size: 11px;
+
+      color: #9da5e8;
+
+      letter-spacing: 1.4px;
+
+      text-transform: uppercase;
+    }
+
+
+    .notification-header-title strong {
+      display: block;
+
+      margin-top: 2px;
+
+      font-size: 17px;
+    }
+
+
+    .back-button {
+      margin-left: auto;
+
+      color: #fff;
+
+      text-decoration: none;
+
+      border:
+        1px solid rgba(255,255,255,.2);
+
+      padding: 10px 15px;
+
+      border-radius: 10px;
+
+      background:
+        rgba(255,255,255,.06);
+    }
+
+
+    /* =====================================================
+       HERO
+    ===================================================== */
+
+    .notification-hero {
+      margin-bottom: 24px;
+    }
+
+
+    .eyebrow {
+      display: inline-block;
+
+      color: #a78bfa;
+
+      font-size: 12px;
+
+      font-weight: 800;
+
+      letter-spacing: 1.7px;
+
+      text-transform: uppercase;
+    }
+
+
+    .notification-hero h1 {
+      margin: 8px 0 8px;
+
+      font-size: 34px;
+
+      line-height: 1.15;
+    }
+
+
+    .notification-hero p {
+      margin: 0;
+
+      color: #aeb5dc;
+
+      line-height: 1.6;
+    }
+
+
+    /* =====================================================
+       ACTION BAR
+    ===================================================== */
+
+    .notification-actions {
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      gap: 15px;
+
+      margin-bottom: 18px;
+    }
+
+
+    .unread-summary {
+      color: #b8bee1;
+
+      font-size: 13px;
+    }
+
+
+    .unread-summary strong {
+      color: #fff;
+    }
+
+
+    .mark-all-button {
+      border: 0;
+
+      border-radius: 10px;
+
+      padding: 10px 14px;
+
+      background:
+        rgba(255,255,255,.1);
+
+      color: #fff;
+
+      border:
+        1px solid rgba(255,255,255,.14);
+
+      cursor: pointer;
+
+      font-size: 12px;
+
+      font-weight: 700;
+    }
+
+
+    .mark-all-button:hover {
+      background:
+        rgba(255,255,255,.16);
+    }
+
+
+    /* =====================================================
+       NOTIFICATION LIST
+    ===================================================== */
+
+    .notification-list {
+      display: grid;
+
+      gap: 12px;
+    }
+
+
+    .notification-card {
+      position: relative;
+
+      display: flex;
+
+      gap: 15px;
+
+      padding: 19px;
+
+      border-radius: 18px;
+
+      background:
+        rgba(255,255,255,.055);
+
+      border:
+        1px solid
+        rgba(139,92,246,.22);
+
+      box-shadow:
+        0 10px 30px
+        rgba(0,0,0,.12);
+
+      transition:
+        transform .2s ease,
+        border-color .2s ease,
+        background .2s ease;
+    }
+
+
+    .notification-card:hover {
+      transform: translateY(-2px);
+
+      border-color:
+        rgba(139,92,246,.45);
+
+      background:
+        rgba(255,255,255,.075);
+    }
+
+
+    .notification-card.unread {
+      border-color:
+        rgba(124,92,255,.55);
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(79,70,229,.15),
+          rgba(147,51,234,.09)
+        );
+    }
+
+
+    .notification-card.unread::before {
+      content: "";
+
+      position: absolute;
+
+      left: 0;
+      top: 18px;
+      bottom: 18px;
+
+      width: 3px;
+
+      border-radius: 5px;
+
+      background:
+        linear-gradient(
+          180deg,
+          #2563eb,
+          #9333ea
+        );
+    }
+
+
+    /* =====================================================
+       ICON
+    ===================================================== */
+
+    .notification-icon {
+      flex-shrink: 0;
+
+      width: 48px;
+      height: 48px;
+
+      border-radius: 14px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-size: 21px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(37,99,235,.35),
+          rgba(124,58,237,.35)
+        );
+
+      border:
+        1px solid
+        rgba(167,139,250,.2);
+    }
+
+
+    .notification-icon.announcement {
+      background:
+        linear-gradient(
+          135deg,
+          #2563eb,
+          #4f46e5
+        );
+    }
+
+
+    .notification-icon.important {
+      background:
+        linear-gradient(
+          135deg,
+          #f59e0b,
+          #ef4444
+        );
+    }
+
+
+    .notification-icon.update {
+      background:
+        linear-gradient(
+          135deg,
+          #7c3aed,
+          #c026d3
+        );
+    }
+
+
+    .notification-icon.competition {
+      background:
+        linear-gradient(
+          135deg,
+          #f59e0b,
+          #f97316
+        );
+    }
+
+
+    /* =====================================================
+       CONTENT
+    ===================================================== */
+
+    .notification-content {
+      min-width: 0;
+
+      flex: 1;
+    }
+
+
+    .notification-title-row {
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      gap: 12px;
+    }
+
+
+    .notification-title {
+      margin: 0;
+
+      font-size: 16px;
+
+      line-height: 1.35;
+    }
+
+
+    .unread-dot {
+      width: 8px;
+      height: 8px;
+
+      flex-shrink: 0;
+
+      border-radius: 50%;
+
+      background: #8b5cf6;
+
+      box-shadow:
+        0 0 12px
+        rgba(139,92,246,.8);
+    }
+
+
+    .notification-message {
+      margin: 7px 0 8px;
+
+      color: #b8bee0;
+
+      font-size: 13px;
+
+      line-height: 1.6;
+
+      white-space: pre-wrap;
+
+      word-break: break-word;
+    }
+
+
+    .notification-meta {
+      display: flex;
+
+      align-items: center;
+
+      flex-wrap: wrap;
+
+      gap: 8px;
+
+      color: #8189b4;
+
+      font-size: 11px;
+    }
+
+
+    .notification-type {
+      padding: 4px 8px;
+
+      border-radius: 999px;
+
+      background:
+        rgba(255,255,255,.07);
+
+      color: #c7caf0;
+
+      text-transform: capitalize;
+    }
+
+
+    .notification-action {
+      display: inline-block;
+
+      margin-top: 11px;
+
+      padding: 8px 12px;
+
+      border-radius: 9px;
+
+      text-decoration: none;
+
+      background:
+        linear-gradient(
+          90deg,
+          #2563eb,
+          #7c3aed
+        );
+
+      color: white;
+
+      font-size: 12px;
+
+      font-weight: 700;
+    }
+
+
+    .mark-read-button {
+      margin-top: 11px;
+
+      margin-left: 7px;
+
+      padding: 8px 11px;
+
+      border-radius: 9px;
+
+      border:
+        1px solid
+        rgba(255,255,255,.13);
+
+      background:
+        rgba(255,255,255,.05);
+
+      color: #c5c9e8;
+
+      cursor: pointer;
+
+      font-size: 11px;
+
+      font-weight: 700;
+    }
+
+
+    /* =====================================================
+       EMPTY
+    ===================================================== */
+
+    .empty-notifications {
+      text-align: center;
+
+      padding: 65px 25px;
+
+      border-radius: 22px;
+
+      background:
+        rgba(255,255,255,.045);
+
+      border:
+        1px solid
+        rgba(139,92,246,.16);
+    }
+
+
+    .empty-icon {
+      width: 70px;
+      height: 70px;
+
+      margin: 0 auto 18px;
+
+      border-radius: 22px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background:
+        linear-gradient(
+          135deg,
+          #2563eb,
+          #7c3aed
+        );
+
+      font-size: 30px;
+    }
+
+
+    .empty-notifications h2 {
+      margin: 0 0 8px;
+
+      font-size: 21px;
+    }
+
+
+    .empty-notifications p {
+      margin: 0;
+
+      color: #9299c2;
+
+      font-size: 13px;
+
+      line-height: 1.6;
+    }
+
+
+    /* =====================================================
+       LOADING
+    ===================================================== */
+
+    .loading {
+      text-align: center;
+
+      padding: 55px 20px;
+
+      color: #aeb5dc;
+    }
+
+
+    .spinner {
+      width: 34px;
+      height: 34px;
+
+      margin: 0 auto 15px;
+
+      border:
+        3px solid
+        rgba(255,255,255,.12);
+
+      border-top-color:
+        #8b5cf6;
+
+      border-radius: 50%;
+
+      animation:
+        spin .8s linear infinite;
+    }
+
+
+    @keyframes spin {
+
+      to {
+        transform: rotate(360deg);
+      }
+
+    }
+
+
+    /* =====================================================
+       MOBILE
+    ===================================================== */
+
+    @media (max-width: 650px) {
+
+      main {
+        padding-top: 25px;
+      }
+
+
+      .notification-hero h1 {
+        font-size: 29px;
+      }
+
+
+      .back-button {
+        padding: 9px 11px;
+        font-size: 12px;
+      }
+
+
+      .notification-card {
+        padding: 15px;
+        gap: 12px;
+      }
+
+
+      .notification-icon {
+        width: 42px;
+        height: 42px;
+
+        border-radius: 12px;
+
+        font-size: 18px;
+      }
+
+
+      .notification-title {
+        font-size: 15px;
+      }
+
+
+      .notification-message {
+        font-size: 12px;
+      }
+
+
+      .notification-actions {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header>
+
+  <div class="container nav">
+
+    <div class="notification-top">
+
+      <button
+        type="button"
+        class="menu-button"
+        onclick="goDashboard()"
+        aria-label="Open dashboard"
+      >
+        ☰
+      </button>
+
+
+      <div class="notification-header-title">
+
+        <small>
+          EarnGig
+        </small>
+
+        <strong>
+          Notifications
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <a
+      href="dashboard.html"
+      class="back-button"
+    >
+      Dashboard
+    </a>
+
+  </div>
+
+</header>
+
+
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<main>
+
+  <div class="container">
+
+
+    <section class="notification-hero">
+
+      <span class="eyebrow">
+        NOTIFICATION CENTER
+      </span>
+
+      <h1>
+        Your Notifications
+      </h1>
+
+      <p>
+        Stay updated with EarnGig announcements,
+        rewards, competitions and important account
+        information.
+      </p>
+
+    </section>
+
+
+
+    <!-- =================================================
+         ACTIONS
+    ================================================== -->
+
+    <div class="notification-actions">
+
+      <div
+        id="unread-summary"
+        class="unread-summary"
+      >
+        Loading notifications...
+      </div>
+
+
+      <button
+        id="mark-all-button"
+        class="mark-all-button"
+        type="button"
+      >
+        ✓ Mark all as read
+      </button>
+
+    </div>
+
+
+
+    <!-- =================================================
+         LIST
+    ================================================== -->
+
+    <section
+      id="notification-list"
+      class="notification-list"
+    >
+
+      <div class="loading">
+
+        <div class="spinner"></div>
+
+        Loading your notifications...
+
+      </div>
+
+    </section>
+
+
+  </div>
+
+</main>
+
+
+
+<script>
+
+
+/* =====================================================
+   HELPERS
+===================================================== */
+
+function goDashboard() {
+
+  window.location.href =
+    "dashboard.html";
+
+}
+
+
+function escapeHtml(value) {
+
+  return String(value ?? "")
+
+    .replaceAll("&", "&amp;")
+
+    .replaceAll("<", "&lt;")
+
+    .replaceAll(">", "&gt;")
+
+    .replaceAll('"', "&quot;")
+
+    .replaceAll("'", "&#039;");
+
+}
+
+
+function formatNotificationDate(
+  value
+) {
+
+  if (!value) {
+    return "";
+  }
+
+
+  const date =
+    new Date(value);
+
+
+  if (
+    Number.isNaN(
+      date.getTime()
+    )
+  ) {
+
+    return "";
+
+  }
+
+
+  return date.toLocaleString(
+    "en-NG",
+    {
+      timeZone: "Africa/Lagos",
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "numeric",
+      minute: "2-digit"
+    }
+  );
+
+}
+
+
+function getNotificationIcon(
+  type
+) {
+
+  const normalized =
+    String(type || "")
+      .trim()
+      .toLowerCase();
+
+
+  if (
+    normalized === "important"
+  ) {
+
+    return "⚠️";
+
+  }
+
+
+  if (
+    normalized === "competition"
+  ) {
+
+    return "🏆";
+
+  }
+
+
+  if (
+    normalized === "update"
+  ) {
+
+    return "✨";
+
+  }
+
+
+  if (
+    normalized === "membership"
+  ) {
+
+    return "💳";
+
+  }
+
+
+  if (
+    normalized === "referral"
+  ) {
+
+    return "🎁";
+
+  }
+
+
+  if (
+    normalized === "withdrawal"
+  ) {
+
+    return "💸";
+
+  }
+
+
+  if (
+    normalized === "novel"
+  ) {
+
+    return "📚";
+
+  }
+
+
+  return "🔔";
+
+}
+
+
+function getActionUrl(
+  url
+) {
+
+  if (!url) {
+    return "";
+  }
+
+
+  const value =
+    String(url).trim();
+
+
+  if (!value) {
+    return "";
+  }
+
+
+  /*
+    Only allow normal internal page links.
+    This prevents a notification from becoming
+    an unexpected external redirect.
+  */
+
+  if (
+    value.startsWith("https://earngig01.github.io/") ||
+    value.startsWith("/") ||
+    value.endsWith(".html") ||
+    value.startsWith("#")
+  ) {
+
+    return value;
+
+  }
+
+
+  return "";
+
+}
+
+
+
+/* =====================================================
+   AUTH
+===================================================== */
+
+async function getCurrentUser() {
+
+  const {
+    data: {
+      user
+    },
+    error
+  } =
+    await supabaseClient
+      .auth
+      .getUser();
+
+
+  if (
+    error ||
+    !user
+  ) {
+
+    window.location.href =
+      "login.html";
+
+    return null;
+
+  }
+
+
+  return user;
+
+}
+
+
+
+/* =====================================================
+   LOAD UNREAD COUNT
+===================================================== */
+
+async function loadUnreadCount() {
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .rpc(
+        "get_notification_unread_count"
+      );
+
+
+  if (error) {
+
+    console.error(
+      "Unread notification count error:",
+      error
+    );
+
+    return 0;
+
+  }
+
+
+  return Number(
+    data || 0
+  );
+
+}
+
+
+
+/* =====================================================
+   UPDATE SUMMARY
+===================================================== */
+
+async function updateUnreadSummary(
+  total
+) {
+
+  const summary =
+    document.getElementById(
+      "unread-summary"
+    );
+
+
+  if (
+    total <= 0
+  ) {
+
+    summary.innerHTML =
+      "You have <strong>no unread notifications</strong>.";
+
+    return;
+
+  }
+
+
+  summary.innerHTML =
+    `You have <strong>${total}</strong> unread notification${
+      total === 1
+        ? ""
+        : "s"
+    }.`;
+
+}
+
+
+
+/* =====================================================
+   LOAD NOTIFICATIONS
+===================================================== */
+
+async function loadNotifications() {
+
+  const list =
+    document.getElementById(
+      "notification-list"
+    );
+
+
+  const user =
+    await getCurrentUser();
+
+
+  if (!user) {
+    return;
+  }
+
+
+  const {
+    data: notifications,
+    error
+  } =
+    await supabaseClient
+      .from("notifications")
+      .select(`
+        id,
+        title,
+        message,
+        type,
+        action_url,
+        is_read,
+        created_at
+      `)
+      .eq(
+        "user_id",
+        user.id
+      )
+      .order(
+        "created_at",
+        {
+          ascending: false
+        }
+      )
+      .limit(100);
+
+
+  if (error) {
+
+    console.error(
+      "Notification loading error:",
+      error
+    );
+
+
+    list.innerHTML = `
+
+      <div class="empty-notifications">
+
+        <div class="empty-icon">
+          ⚠️
+        </div>
+
+        <h2>
+          Unable to load notifications
+        </h2>
+
+        <p>
+          Please refresh the page and try again.
+        </p>
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  const unread =
+    (
+      notifications || []
+    ).filter(
+      function(notification) {
+
+        return notification.is_read !== true;
+
+      }
+    ).length;
+
+
+  await updateUnreadSummary(
+    unread
+  );
+
+
+  if (
+    !notifications ||
+    notifications.length === 0
+  ) {
+
+    list.innerHTML = `
+
+      <div class="empty-notifications">
+
+        <div class="empty-icon">
+          🔔
+        </div>
+
+        <h2>
+          You're all caught up
+        </h2>
+
+        <p>
+          New EarnGig announcements and account
+          notifications will appear here.
+        </p>
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  list.innerHTML =
+    notifications
+      .map(
+        function(notification) {
+
+          const type =
+            String(
+              notification.type || "general"
+            )
+              .trim()
+              .toLowerCase();
+
+
+          const unreadClass =
+            notification.is_read
+              ? ""
+              : " unread";
+
+
+          const iconClass =
+            [
+              "announcement",
+              "important",
+              "update",
+              "competition"
+            ].includes(type)
+              ? type
+              : "";
+
+
+          const actionUrl =
+            getActionUrl(
+              notification.action_url
+            );
+
+
+          const actionButton =
+            actionUrl
+              ? `
+                <a
+                  class="notification-action"
+                  href="${escapeHtml(actionUrl)}"
+                  data-notification-action="${escapeHtml(notification.id)}"
+                >
+                  Open →
+                </a>
+              `
+              : "";
+
+
+          const markButton =
+            notification.is_read
+              ? ""
+              : `
+                <button
+                  type="button"
+                  class="mark-read-button"
+                  data-mark-read="${escapeHtml(notification.id)}"
+                >
+                  Mark as read
+                </button>
+              `;
+
+
+          return `
+
+            <article
+              class="notification-card${unreadClass}"
+            >
+
+              <div
+                class="notification-icon ${iconClass}"
+              >
+                ${getNotificationIcon(type)}
+              </div>
+
+
+              <div class="notification-content">
+
+                <div class="notification-title-row">
+
+                  <h2 class="notification-title">
+                    ${escapeHtml(
+                      notification.title
+                    )}
+                  </h2>
+
+                  ${
+                    notification.is_read
+                      ? ""
+                      : `
+                        <span
+                          class="unread-dot"
+                          title="Unread"
+                        ></span>
+                      `
+                  }
+
+                </div>
+
+
+                <p class="notification-message">
+                  ${escapeHtml(
+                    notification.message
+                  )}
+                </p>
+
+
+                <div class="notification-meta">
+
+                  <span class="notification-type">
+                    ${escapeHtml(type)}
+                  </span>
+
+                  <span>
+                    ${escapeHtml(
+                      formatNotificationDate(
+                        notification.created_at
+                      )
+                    )}
+                  </span>
+
+                </div>
+
+
+                ${actionButton}
+
+                ${markButton}
+
+              </div>
+
+            </article>
+
+          `;
+
+        }
+      )
+      .join("");
+
+
+  attachNotificationEvents();
+
+}
+
+
+
+/* =====================================================
+   MARK ONE AS READ
+===================================================== */
+
+async function markNotificationRead(
+  id
+) {
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .rpc(
+        "mark_notification_read",
+        {
+          p_notification_id:
+            id
+        }
+      );
+
+
+  if (error) {
+
+    console.error(
+      "Mark notification read error:",
+      error
+    );
+
+    alert(
+      "Unable to mark this notification as read."
+    );
+
+    return false;
+
+  }
+
+
+  return Boolean(data);
+
+}
+
+
+
+/* =====================================================
+   MARK ALL AS READ
+===================================================== */
+
+async function markAllNotificationsRead() {
+
+  const button =
+    document.getElementById(
+      "mark-all-button"
+    );
+
+
+  button.disabled =
+    true;
+
+
+  button.textContent =
+    "Marking as read...";
+
+
+  try {
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .rpc(
+          "mark_all_notifications_read"
+        );
+
+
+    if (error) {
+
+      throw error;
+
+    }
+
+
+    await loadNotifications();
+
+
+  }
+
+  catch (error) {
+
+    console.error(
+      "Mark all notifications error:",
+      error
+    );
+
+
+    alert(
+      "Unable to mark notifications as read."
+    );
+
+  }
+
+  finally {
+
+    button.disabled =
+      false;
+
+    button.textContent =
+      "✓ Mark all as read";
+
+  }
+
+}
+
+
+
+/* =====================================================
+   ATTACH EVENTS
+===================================================== */
+
+function attachNotificationEvents() {
+
+  document
+    .querySelectorAll(
+      "[data-mark-read]"
+    )
+    .forEach(
+      function(button) {
+
+        button.addEventListener(
+          "click",
+          async function() {
+
+            const id =
+              button.dataset.markRead;
+
+
+            button.disabled =
+              true;
+
+            button.textContent =
+              "Saving...";
+
+
+            const success =
+              await markNotificationRead(
+                id
+              );
+
+
+            if (success) {
+
+              await loadNotifications();
+
+            }
+
+            else {
+
+              button.disabled =
+                false;
+
+              button.textContent =
+                "Mark as read";
+
+            }
+
+          }
+        );
+
+      }
+    );
+
+
+  /*
+    If the member opens the action link,
+    mark the notification as read first.
+  */
+
+  document
+    .querySelectorAll(
+      "[data-notification-action]"
+    )
+    .forEach(
+      function(link) {
+
+        link.addEventListener(
+          "click",
+          async function() {
+
+            const id =
+              link.dataset
+                .notificationAction;
+
+
+            await markNotificationRead(
+              id
+            );
+
+          }
+        );
+
+      }
+    );
+
+}
+
+
+
+/* =====================================================
+   MARK ALL BUTTON
+===================================================== */
+
+document
+  .getElementById(
+    "mark-all-button"
+  )
+  .addEventListener(
+    "click",
+    markAllNotificationsRead
+  );
+
+
+
+/* =====================================================
+   START
+===================================================== */
+
+(async function() {
+
+  const user =
+    await getCurrentUser();
+
+
+  if (!user) {
+    return;
+  }
+
+
+  await loadNotifications();
+
+})();
+
+</script>
+
+
+</body>
+
+</html>
