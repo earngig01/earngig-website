@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>My Referrals | EarnGig</title>
+
+  <link
+    rel="stylesheet"
+    href="styles.css"
+  >
+
+  <style>
+
+    .page-back {
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+
+    .referral-summary-grid {
+      display: grid;
+      grid-template-columns:
+        repeat(
+          auto-fit,
+          minmax(180px, 1fr)
+        );
+      gap: 14px;
+      margin-top: 22px;
+    }
+
+    .referral-summary-card {
+      padding: 20px;
+      border-radius: 16px;
+      border: 1px solid
+        rgba(139, 92, 246, 0.18);
+      background:
+        rgba(255,255,255,0.035);
+    }
+
+    .referral-summary-card small {
+      display: block;
+      opacity: 0.65;
+      font-size: 12px;
+    }
+
+    .referral-summary-card strong {
+      display: block;
+      margin-top: 8px;
+      font-size: 24px;
+    }
+
+    .referral-list {
+      margin-top: 24px;
+    }
+
+    .referral-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 18px;
+      margin-bottom: 10px;
+      border-radius: 15px;
+      border: 1px solid
+        rgba(139, 92, 246, 0.15);
+      background:
+        rgba(255,255,255,0.025);
+    }
+
+    .referral-person {
+      min-width: 0;
+    }
+
+    .referral-person strong {
+      display: block;
+      font-size: 15px;
+    }
+
+    .referral-person small {
+      display: block;
+      margin-top: 5px;
+      opacity: 0.6;
+      font-size: 12px;
+    }
+
+    .referral-bonus {
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .referral-bonus strong {
+      display: block;
+      font-size: 16px;
+    }
+
+    .referral-bonus small {
+      display: block;
+      margin-top: 5px;
+      opacity: 0.6;
+      font-size: 11px;
+    }
+
+    .loading-state {
+      padding: 30px;
+      text-align: center;
+      opacity: 0.7;
+    }
+
+    @media (max-width: 600px) {
+
+      .referral-row {
+        padding: 15px;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+<header>
+
+  <div class="container nav">
+
+    <a
+      class="logo"
+      href="index.html"
+    >
+
+      <span class="logo-mark">
+        E
+      </span>
+
+      Earn<span>Gig</span>
+
+    </a>
+
+
+    <nav>
+
+      <a href="dashboard.html">
+        Dashboard
+      </a>
+
+      <a href="membership.html">
+        Membership
+      </a>
+
+    </nav>
+
+
+    <a
+      class="btn outline"
+      href="profile.html"
+    >
+      My Profile
+    </a>
+
+  </div>
+
+</header>
+
+
+
+<main class="dashboard-page">
+
+  <div class="container">
+
+
+    <a
+      href="dashboard.html"
+      class="text-link page-back"
+    >
+      ← Back to Dashboard
+    </a>
+
+
+    <div class="dashboard-heading">
+
+      <div>
+
+        <span class="eyebrow">
+          REFERRALS
+        </span>
+
+        <h1>
+          Your referrals
+        </h1>
+
+        <p>
+          View your complete referral history and referral earnings.
+        </p>
+
+      </div>
+
+    </div>
+
+
+
+    <section class="dashboard-section">
+
+      <div class="referral-box">
+
+        <div>
+
+          <small>
+            Your referral code
+          </small>
+
+          <strong id="referral-code">
+            Loading...
+          </strong>
+
+          <p>
+            Share your code with eligible new members.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <button
+        id="copy-button"
+        class="btn primary"
+        type="button"
+      >
+        Copy Referral Link
+      </button>
+
+
+      <div class="referral-summary-grid">
+
+        <div class="referral-summary-card">
+
+          <small>
+            Successful referrals
+          </small>
+
+          <strong id="successful">
+            0
+          </strong>
+
+        </div>
+
+
+        <div class="referral-summary-card">
+
+          <small>
+            Referral earnings
+          </small>
+
+          <strong id="earnings">
+            ₦0
+          </strong>
+
+        </div>
+
+
+        <div class="referral-summary-card">
+
+          <small>
+            Active referrals
+          </small>
+
+          <strong id="active">
+            0
+          </strong>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <section class="dashboard-section">
+
+      <div class="section-title">
+
+        <div>
+
+          <span class="eyebrow">
+            COMPLETE HISTORY
+          </span>
+
+          <h2>
+            All referrals
+          </h2>
+
+        </div>
+
+      </div>
+
+
+      <div
+        id="referral-list"
+        class="referral-list"
+      >
+
+        <div class="loading-state">
+          Loading your referrals...
+        </div>
+
+      </div>
+
+    </section>
+
+
+  </div>
+
+</main>
+
+
+
+<footer>
+
+  <div class="container copy">
+
+    © 2026 EarnGig.
+    All rights reserved.
+
+  </div>
+
+</footer>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="supabase.js"></script>
+
+
+<script>
+
+function formatNaira(
+  amount
+) {
+
+  return "₦" +
+    Number(
+      amount || 0
+    ).toLocaleString(
+      "en-NG"
+    );
+
+}
+
+
+async function loadReferrals() {
+
+  const list =
+    document.getElementById(
+      "referral-list"
+    );
+
+
+  const {
+    data: {
+      user
+    },
+    error: userError
+  } =
+    await supabaseClient
+      .auth
+      .getUser();
+
+
+  if (
+    userError ||
+    !user
+  ) {
+
+    window.location.href =
+      "login.html";
+
+    return;
+
+  }
+
+
+  const {
+    data: profile
+  } =
+    await supabaseClient
+      .from("profiles")
+      .select(`
+        referral_code
+      `)
+      .eq(
+        "id",
+        user.id
+      )
+      .maybeSingle();
+
+
+  document.getElementById(
+    "referral-code"
+  ).textContent =
+    profile?.referral_code ||
+    "Not available";
+
+
+  const {
+    data: referrals,
+    error
+  } =
+    await supabaseClient
+      .from("profiles")
+      .select(`
+        id,
+        full_name,
+        created_at
+      `)
+      .eq(
+        "referred_by",
+        user.id
+      )
+      .order(
+        "created_at",
+        {
+          ascending: false
+        }
+      );
+
+
+  if (error) {
+
+    console.error(
+      error
+    );
+
+    list.innerHTML = `
+      <div class="loading-state">
+        Unable to load your referrals.
+      </div>
+    `;
+
+    return;
+
+  }
+
+
+  const referralIds =
+    (
+      referrals || []
+    ).map(
+      referral =>
+        referral.id
+    );
+
+
+  let bonuses = [];
+
+
+  if (
+    referralIds.length
+  ) {
+
+    const {
+      data
+    } =
+      await supabaseClient
+        .from("referral_bonus_ledger")
+        .select(`
+          referred_user_id,
+          bonus_amount
+        `)
+        .in(
+          "referred_user_id",
+          referralIds
+        );
+
+
+    bonuses =
+      data || [];
+
+  }
+
+
+  let totalReferralEarnings =
+    0;
+
+
+  bonuses.forEach(
+    bonus => {
+
+      totalReferralEarnings +=
+        Number(
+          bonus.bonus_amount || 0
+        );
+
+    }
+  );
+
+
+  document.getElementById(
+    "successful"
+  ).textContent =
+    (
+      referrals || []
+    ).length;
+
+
+  document.getElementById(
+    "earnings"
+  ).textContent =
+    formatNaira(
+      totalReferralEarnings
+    );
+
+
+  const {
+    data: activeCount
+  } =
+    await supabaseClient
+      .rpc(
+        "get_active_referral_count"
+      );
+
+
+  document.getElementById(
+    "active"
+  ).textContent =
+    Number(
+      activeCount || 0
+    );
+
+
+  if (
+    !referrals ||
+    referrals.length === 0
+  ) {
+
+    list.innerHTML = `
+      <div class="loading-state">
+        <h3>
+          No referrals yet
+        </h3>
+
+        <p>
+          Share your referral code to start earning.
+        </p>
+      </div>
+    `;
+
+    return;
+
+  }
+
+
+  list.innerHTML =
+    referrals
+      .map(
+        referral => {
+
+          const referralBonuses =
+            bonuses.filter(
+              bonus =>
+                bonus.referred_user_id ===
+                referral.id
+            );
+
+
+          const total =
+            referralBonuses.reduce(
+              (
+                sum,
+                bonus
+              ) =>
+                sum +
+                Number(
+                  bonus.bonus_amount || 0
+                ),
+              0
+            );
+
+
+          const date =
+            referral.created_at
+              ? new Date(
+                  referral.created_at
+                ).toLocaleDateString(
+                  "en-NG",
+                  {
+                    timeZone:
+                      "Africa/Lagos",
+                    year:
+                      "numeric",
+                    month:
+                      "long",
+                    day:
+                      "numeric"
+                  }
+                )
+              : "";
+
+
+          return `
+            <div class="referral-row">
+
+              <div class="referral-person">
+
+                <strong>
+                  ${
+                    referral.full_name ||
+                    "EarnGig Member"
+                  }
+                </strong>
+
+                <small>
+                  Joined ${date}
+                </small>
+
+              </div>
+
+
+              <div class="referral-bonus">
+
+                <strong>
+                  ${formatNaira(total)}
+                </strong>
+
+                <small>
+                  ${
+                    referralBonuses.length
+                  }
+                  bonus payment${
+                    referralBonuses.length === 1
+                      ? ""
+                      : "s"
+                  }
+                </small>
+
+              </div>
+
+            </div>
+          `;
+
+        }
+      )
+      .join("");
+
+}
+
+
+
+document
+  .getElementById(
+    "copy-button"
+  )
+  .addEventListener(
+    "click",
+    async function() {
+
+      const code =
+        document
+          .getElementById(
+            "referral-code"
+          )
+          .textContent
+          .trim();
+
+
+      if (
+        !code ||
+        code === "Loading..." ||
+        code === "Not available"
+      ) {
+
+        alert(
+          "Your referral code is not available yet."
+        );
+
+        return;
+
+      }
+
+
+      const link =
+        window.location.origin +
+        "/earngig-website/register.html?ref=" +
+        encodeURIComponent(
+          code
+        );
+
+
+      try {
+
+        await navigator.clipboard.writeText(
+          link
+        );
+
+        alert(
+          "Referral link copied!\n\n" +
+          link
+        );
+
+      }
+
+      catch (error) {
+
+        prompt(
+          "Copy your referral link:",
+          link
+        );
+
+      }
+
+    }
+  );
+
+
+
+loadReferrals();
+
+</script>
+
+
+</body>
+</html>
