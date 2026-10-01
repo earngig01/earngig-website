@@ -1249,23 +1249,42 @@ const WITHDRAWAL_MINIMUMS = {
 };
 
 
-const EARNING_TYPES = new Set([
+/*
+ * Normal/other earning transaction types.
+ *
+ * Referral bonuses are deliberately handled
+ * separately from transactions so they cannot
+ * accidentally be counted twice.
+ */
+
+const NORMAL_EARNING_TYPES = new Set([
 
   "task_reward",
 
   "watch_earn",
-
-  "referral_bonus",
-
-  "referral_earning",
-
-  "referral_commission",
 
   "novel_writer_earnings",
 
   "novel_earnings",
 
   "competition_prize"
+
+]);
+
+
+/*
+ * Referral transaction types are recognized so
+ * they can be excluded from the transaction-based
+ * calculation when referral_bonus_ledger is used.
+ */
+
+const REFERRAL_EARNING_TYPES = new Set([
+
+  "referral_bonus",
+
+  "referral_earning",
+
+  "referral_commission"
 
 ]);
 
@@ -1354,10 +1373,10 @@ function getTransactionType(
 
 
 /* =====================================================
-   REAL EARNING
+   NORMAL EARNING
 ===================================================== */
 
-function isRealEarning(
+function isNormalEarning(
   transaction
 ) {
 
@@ -1377,8 +1396,63 @@ function isRealEarning(
   }
 
 
-  return EARNING_TYPES.has(
+  return NORMAL_EARNING_TYPES.has(
     getTransactionType(
+      transaction
+    )
+  );
+
+}
+
+
+
+/* =====================================================
+   REFERRAL EARNING TRANSACTION
+===================================================== */
+
+function isReferralTransaction(
+  transaction
+) {
+
+  const amount =
+    Number(
+      transaction?.amount || 0
+    );
+
+
+  if (
+    !Number.isFinite(amount) ||
+    amount <= 0
+  ) {
+
+    return false;
+
+  }
+
+
+  return REFERRAL_EARNING_TYPES.has(
+    getTransactionType(
+      transaction
+    )
+  );
+
+}
+
+
+
+/* =====================================================
+   REAL EARNING
+===================================================== */
+
+function isRealEarning(
+  transaction
+) {
+
+  return (
+    isNormalEarning(
+      transaction
+    ) ||
+    isReferralTransaction(
       transaction
     )
   );
@@ -1625,10 +1699,6 @@ async function loadDailyEarningLimit() {
 
 
 
-  /*
-   * Reset the entire card before every request.
-   */
-
   card.classList.remove(
     "daily-limit-error",
     "daily-limit-reached"
@@ -1672,13 +1742,11 @@ async function loadDailyEarningLimit() {
         );
 
 
-
     if (error) {
 
       throw error;
 
     }
-
 
 
     let result =
@@ -1693,7 +1761,6 @@ async function loadDailyEarningLimit() {
         data[0] || null;
 
     }
-
 
 
     const dailyLimit =
@@ -1807,11 +1874,6 @@ async function loadDailyEarningLimit() {
 
 
 
-    /*
-     * Display only after all values
-     * have passed validation.
-     */
-
     planElement.textContent =
       `${planName} plan • Normal earning activities`;
 
@@ -1868,11 +1930,6 @@ async function loadDailyEarningLimit() {
     );
 
 
-    /*
-     * On failure, do not show stale
-     * earning numbers.
-     */
-
     card.classList.add(
       "daily-limit-error"
     );
@@ -1902,6 +1959,87 @@ async function loadDailyEarningLimit() {
       "Your earning limit could not be verified.";
 
   }
+
+}
+
+
+
+/* =====================================================
+   GET TODAY IN NIGERIA
+===================================================== */
+
+function getTodayLagosKey() {
+
+  const lagosFormatter =
+    new Intl.DateTimeFormat(
+      "en-CA",
+      {
+        timeZone: "Africa/Lagos",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit"
+      }
+    );
+
+
+  return lagosFormatter.format(
+    new Date()
+  );
+
+}
+
+
+
+/* =====================================================
+   IS TODAY IN LAGOS
+===================================================== */
+
+function isTodayInLagos(
+  dateValue,
+  todayKey
+) {
+
+  if (!dateValue) {
+
+    return false;
+
+  }
+
+
+  const date =
+    new Date(
+      dateValue
+    );
+
+
+  if (
+    Number.isNaN(
+      date.getTime()
+    )
+  ) {
+
+    return false;
+
+  }
+
+
+  const lagosFormatter =
+    new Intl.DateTimeFormat(
+      "en-CA",
+      {
+        timeZone: "Africa/Lagos",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit"
+      }
+    );
+
+
+  return (
+    lagosFormatter.format(
+      date
+    ) === todayKey
+  );
 
 }
 
@@ -2182,10 +2320,40 @@ async function loadDashboard() {
 
 
 
-    /* TODAY'S EARNINGS */
+    /* =================================================
+       TODAY'S EARNINGS
+       
+       IMPORTANT:
+       
+       Today's Earnings includes:
+       - task rewards
+       - watch earnings
+       - Create & Earn
+       - competition prizes
+       - referral bonuses
+
+       Referral bonuses are read from the
+       referral_bonus_ledger separately.
+
+       This does NOT change the daily earning
+       limit. The daily limit RPC still counts
+       only task_reward + watch_earn.
+    ================================================== */
+
+    const today =
+      getTodayLagosKey();
+
+
+
+    /*
+     * ---------------------------------------------------
+     * NORMAL EARNINGS FROM TRANSACTIONS
+     * ---------------------------------------------------
+     */
 
     const {
-      data: transactions
+      data: transactions,
+      error: transactionsError
     } =
       await supabaseClient
         .from("transactions")
@@ -2205,35 +2373,32 @@ async function loadDashboard() {
         );
 
 
+    if (transactionsError) {
 
-    const lagosFormatter =
-      new Intl.DateTimeFormat(
-        "en-CA",
-        {
-          timeZone: "Africa/Lagos",
-          year: "numeric",
-          month: "2-digit",
-          day: "2-digit"
-        }
-      );
+      throw transactionsError;
 
-
-    const today =
-      lagosFormatter.format(
-        new Date()
-      );
+    }
 
 
 
-    const todayEarnings =
+    const normalTodayEarnings =
       (
         transactions || []
       )
       .filter(
         function(transaction) {
 
+          /*
+           * Only normal earning transaction
+           * types are included here.
+           *
+           * Referral transactions are deliberately
+           * excluded because referral bonuses are
+           * calculated from referral_bonus_ledger.
+           */
+
           if (
-            !isRealEarning(
+            !isNormalEarning(
               transaction
             )
           ) {
@@ -2243,21 +2408,9 @@ async function loadDashboard() {
           }
 
 
-          if (
-            !transaction.created_at
-          ) {
-
-            return false;
-
-          }
-
-
-          return (
-            lagosFormatter.format(
-              new Date(
-                transaction.created_at
-              )
-            ) === today
+          return isTodayInLagos(
+            transaction.created_at,
+            today
           );
 
         }
@@ -2278,12 +2431,109 @@ async function loadDashboard() {
 
 
 
+    /*
+     * ---------------------------------------------------
+     * REFERRAL BONUSES FROM LEDGER
+     * ---------------------------------------------------
+     *
+     * This is the important addition.
+     *
+     * Referral bonuses are already recorded in
+     * referral_bonus_ledger, so today's referral
+     * bonuses are added to Today's Earnings here.
+     */
+
+    const {
+      data: referralBonuses,
+      error: referralBonusError
+    } =
+      await supabaseClient
+        .from("referral_bonus_ledger")
+        .select(`
+          bonus_amount,
+          created_at,
+          bonus_type
+        `)
+        .eq(
+          "referrer_user_id",
+          user.id
+        );
+
+
+    if (referralBonusError) {
+
+      console.error(
+        "Referral bonus ledger load error:",
+        referralBonusError
+      );
+
+    }
+
+
+
+    const todayReferralEarnings =
+      (
+        referralBonuses || []
+      )
+      .filter(
+        function(bonus) {
+
+          return isTodayInLagos(
+            bonus.created_at,
+            today
+          );
+
+        }
+      )
+      .reduce(
+        function(total, bonus) {
+
+          return (
+            total +
+            Number(
+              bonus.bonus_amount || 0
+            )
+          );
+
+        },
+        0
+      );
+
+
+
+    /*
+     * ---------------------------------------------------
+     * FINAL TODAY'S EARNINGS
+     * ---------------------------------------------------
+     */
+
+    const todayEarnings =
+      normalTodayEarnings +
+      todayReferralEarnings;
+
+
+
     document.getElementById(
       "today-earnings"
     ).textContent =
       formatNaira(
         todayEarnings
       );
+
+
+
+    /*
+     * Console information makes testing easier.
+     */
+
+    console.log(
+      "Today's earnings:",
+      {
+        normalTodayEarnings,
+        todayReferralEarnings,
+        todayEarnings
+      }
+    );
 
   }
 
