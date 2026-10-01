@@ -2,29 +2,382 @@
 <html lang="en">
 
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>My Profile | EarnGig</title>
 
-  <link rel="stylesheet" href="styles.css">
+  <link
+    rel="stylesheet"
+    href="styles.css"
+  >
+
+  <style>
+
+    /* =====================================================
+       PROFILE LAYOUT
+    ====================================================== */
+
+    .profile-hero {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .profile-avatar {
+      width: 58px;
+      height: 58px;
+      min-width: 58px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 800;
+      background: rgba(139, 92, 246, 0.16);
+      border: 1px solid rgba(139, 92, 246, 0.35);
+    }
+
+    .profile-hero h1 {
+      margin: 4px 0 3px;
+      font-size: 28px;
+      overflow-wrap: anywhere;
+    }
+
+    .profile-hero p {
+      margin: 0;
+      font-size: 14px;
+      opacity: 0.75;
+    }
+
+
+    /* =====================================================
+       VERTICAL INFORMATION LIST
+    ====================================================== */
+
+    .profile-info-list {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid rgba(139, 92, 246, 0.16);
+      background: rgba(255, 255, 255, 0.025);
+    }
+
+    .profile-info-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      width: 100%;
+      padding: 14px 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    }
+
+    .profile-info-row:last-child {
+      border-bottom: none;
+    }
+
+    .profile-info-label {
+      flex: 0 0 145px;
+      font-size: 12px;
+      font-weight: 600;
+      opacity: 0.65;
+    }
+
+    .profile-info-value {
+      flex: 1;
+      min-width: 0;
+      text-align: right;
+      font-size: 14px;
+      font-weight: 600;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+
+
+    /* =====================================================
+       REFERRAL ROW
+    ====================================================== */
+
+    .referral-value {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .referral-value strong {
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+
+    .share-referral-button {
+      flex-shrink: 0;
+      padding: 7px 11px !important;
+      font-size: 12px;
+    }
+
+
+    /* =====================================================
+       WALLET
+    ====================================================== */
+
+    .member-wallet {
+      margin-bottom: 14px;
+      padding: 18px;
+      border-radius: 14px;
+      border: 1px solid rgba(139, 92, 246, 0.18);
+      background: rgba(255, 255, 255, 0.035);
+    }
+
+    .member-wallet small {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 12px;
+      opacity: 0.65;
+    }
+
+    .member-wallet strong {
+      display: block;
+      font-size: 26px;
+      line-height: 1.2;
+    }
+
+    .member-wallet p {
+      margin: 6px 0 0;
+      font-size: 13px;
+      opacity: 0.65;
+    }
+
+
+    /* =====================================================
+       ACCOUNT SETTINGS
+    ====================================================== */
+
+    .profile-settings-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .profile-setting-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 1px solid rgba(139, 92, 246, 0.16);
+      background: rgba(255, 255, 255, 0.025);
+      text-decoration: none;
+      color: inherit;
+      transition:
+        border-color 0.2s ease,
+        background 0.2s ease,
+        transform 0.2s ease;
+    }
+
+    .profile-setting-row:hover {
+      border-color: rgba(139, 92, 246, 0.38);
+      background: rgba(139, 92, 246, 0.06);
+      transform: translateY(-1px);
+    }
+
+    .profile-setting-icon {
+      width: 38px;
+      height: 38px;
+      min-width: 38px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      background: rgba(59, 130, 246, 0.12);
+    }
+
+    .profile-setting-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .profile-setting-content h3 {
+      margin: 0 0 3px;
+      font-size: 15px;
+    }
+
+    .profile-setting-content p {
+      margin: 0;
+      font-size: 12px;
+      line-height: 1.4;
+      opacity: 0.65;
+    }
+
+    .profile-setting-action {
+      flex-shrink: 0;
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+
+    /* =====================================================
+       EDIT PROFILE
+    ====================================================== */
+
+    #edit-profile-form {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    #edit-profile-form label {
+      margin-top: 8px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    #edit-profile-form input {
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    #profile-message {
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+
+    /* =====================================================
+       MOBILE
+    ====================================================== */
+
+    @media (max-width: 700px) {
+
+      .profile-hero {
+        gap: 12px;
+        margin-bottom: 22px;
+      }
+
+      .profile-avatar {
+        width: 48px;
+        height: 48px;
+        min-width: 48px;
+        font-size: 17px;
+      }
+
+      .profile-hero h1 {
+        font-size: 22px;
+      }
+
+      .profile-hero p {
+        font-size: 12px;
+      }
+
+      .profile-info-row {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 4px;
+        padding: 12px 14px;
+      }
+
+      .profile-info-label {
+        flex: none;
+        font-size: 11px;
+      }
+
+      .profile-info-value {
+        width: 100%;
+        text-align: left;
+        font-size: 14px;
+      }
+
+      .referral-value {
+        justify-content: flex-start;
+        width: 100%;
+      }
+
+      .member-wallet {
+        padding: 16px;
+      }
+
+      .member-wallet strong {
+        font-size: 23px;
+      }
+
+      .profile-setting-row {
+        padding: 13px 14px;
+      }
+
+      .profile-setting-icon {
+        width: 34px;
+        height: 34px;
+        min-width: 34px;
+        font-size: 15px;
+      }
+
+      .profile-setting-content h3 {
+        font-size: 14px;
+      }
+
+      .profile-setting-content p {
+        font-size: 11px;
+      }
+
+      .profile-setting-action {
+        font-size: 12px;
+      }
+
+    }
+
+  </style>
+
 </head>
+
 
 <body>
 
+
 <header>
+
   <div class="container nav">
 
-    <a class="logo" href="index.html">
+    <a
+      class="logo"
+      href="index.html"
+    >
+
       <span class="logo-mark">E</span>
+
       Earn<span>Gig</span>
+
     </a>
 
+
     <nav>
-      <a href="dashboard.html">Dashboard</a>
-      <a href="tasks.html">Tasks</a>
-      <a href="withdraw.html">Withdraw</a>
+
+      <a href="dashboard.html">
+        Dashboard
+      </a>
+
+      <a href="tasks.html">
+        Tasks
+      </a>
+
+      <a href="withdraw.html">
+        Withdraw
+      </a>
+
     </nav>
+
 
     <button
       id="logout-button"
@@ -35,7 +388,9 @@
     </button>
 
   </div>
+
 </header>
+
 
 
 <main class="dashboard-page">
@@ -43,11 +398,16 @@
   <div class="container">
 
 
-    <!-- PROFILE HEADER -->
+    <!-- =================================================
+         PROFILE HEADER
+    ================================================== -->
 
     <section class="profile-hero">
 
-      <div class="profile-avatar" id="profile-avatar">
+      <div
+        class="profile-avatar"
+        id="profile-avatar"
+      >
         E
       </div>
 
@@ -70,7 +430,10 @@
     </section>
 
 
-    <!-- PERSONAL INFORMATION -->
+
+    <!-- =================================================
+         PERSONAL INFORMATION
+    ================================================== -->
 
     <section class="dashboard-section">
 
@@ -82,7 +445,9 @@
             PERSONAL INFORMATION
           </span>
 
-          <h2>Account details</h2>
+          <h2>
+            Account details
+          </h2>
 
         </div>
 
@@ -97,51 +462,68 @@
       </div>
 
 
-      <div class="dashboard-stats">
+      <div class="profile-info-list">
 
-        <div class="dashboard-stat">
+        <div class="profile-info-row">
 
-          <small>Full Name</small>
+          <div class="profile-info-label">
+            Full Name
+          </div>
 
-          <strong id="full-name">
-            Loading...
-          </strong>
-
-        </div>
-
-
-        <div class="dashboard-stat">
-
-          <small>Email Address</small>
-
-          <strong
-            id="email-address"
-            style="font-size: 15px;"
+          <div
+            id="full-name"
+            class="profile-info-value"
           >
             Loading...
-          </strong>
+          </div>
 
         </div>
 
 
-        <div class="dashboard-stat">
+        <div class="profile-info-row">
 
-          <small>Phone Number</small>
+          <div class="profile-info-label">
+            Email Address
+          </div>
 
-          <strong id="phone-number">
+          <div
+            id="email-address"
+            class="profile-info-value"
+          >
             Loading...
-          </strong>
+          </div>
 
         </div>
 
 
-        <div class="dashboard-stat">
+        <div class="profile-info-row">
 
-          <small>Account Status</small>
+          <div class="profile-info-label">
+            Phone Number
+          </div>
 
-          <strong id="account-status">
+          <div
+            id="phone-number"
+            class="profile-info-value"
+          >
             Loading...
-          </strong>
+          </div>
+
+        </div>
+
+
+        <div class="profile-info-row">
+
+          <div class="profile-info-label">
+            Account Status
+          </div>
+
+          <div
+            id="account-status"
+            class="profile-info-value"
+          >
+            Loading...
+          </div>
 
         </div>
 
@@ -150,7 +532,10 @@
     </section>
 
 
-    <!-- EARNGIG ACCOUNT -->
+
+    <!-- =================================================
+         EARNGIG ACCOUNT
+    ================================================== -->
 
     <section class="dashboard-section">
 
@@ -162,70 +547,88 @@
             EARNGIG ACCOUNT
           </span>
 
-          <h2>Membership information</h2>
+          <h2>
+            Membership information
+          </h2>
 
         </div>
 
       </div>
 
 
-      <div class="dashboard-stats">
+      <div class="profile-info-list">
 
-        <div class="dashboard-stat">
+        <div class="profile-info-row">
 
-          <small>Member ID</small>
+          <div class="profile-info-label">
+            Member ID
+          </div>
 
-          <strong
+          <div
             id="member-id"
-            style="font-size: 13px;"
+            class="profile-info-value"
           >
             Loading...
-          </strong>
+          </div>
 
         </div>
 
 
-      <div class="dashboard-stat">
+        <div class="profile-info-row">
 
-  <small>Referral Code</small>
+          <div class="profile-info-label">
+            Referral Code
+          </div>
 
-  <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+          <div
+            class="profile-info-value referral-value"
+          >
 
-    <strong id="referral-code">
-      Loading...
-    </strong>
+            <strong id="referral-code">
+              Loading...
+            </strong>
 
-    <button
-      id="share-referral-button"
-      class="btn outline"
-      type="button"
-      style="padding:8px 12px;"
-    >
-      🔗 Share
-    </button>
+            <button
+              id="share-referral-button"
+              class="btn outline share-referral-button"
+              type="button"
+            >
+              🔗 Share
+            </button>
 
-  </div>
-
-</div>
-
-        <div class="dashboard-stat">
-
-          <small>Date Joined</small>
-
-          <strong id="date-joined">
-            Loading...
-          </strong>
+          </div>
 
         </div>
 
 
-        <div class="dashboard-stat">
+        <div class="profile-info-row">
 
-          <small>Email Verification</small>
+          <div class="profile-info-label">
+            Date Joined
+          </div>
 
-          <strong id="email-verification">
+          <div
+            id="date-joined"
+            class="profile-info-value"
+          >
             Loading...
-          </strong>
+          </div>
+
+        </div>
+
+
+        <div class="profile-info-row">
+
+          <div class="profile-info-label">
+            Email Verification
+          </div>
+
+          <div
+            id="email-verification"
+            class="profile-info-value"
+          >
+            Loading...
+          </div>
 
         </div>
 
@@ -234,7 +637,10 @@
     </section>
 
 
-    <!-- WALLET -->
+
+    <!-- =================================================
+         WALLET
+    ================================================== -->
 
     <section class="dashboard-section">
 
@@ -246,7 +652,9 @@
             WALLET
           </span>
 
-          <h2>Your earnings</h2>
+          <h2>
+            Your earnings
+          </h2>
 
         </div>
 
@@ -281,48 +689,68 @@
       </div>
 
 
-      <div class="dashboard-stats">
+      <div class="profile-info-list">
 
-        <div class="dashboard-stat">
+        <div class="profile-info-row">
 
-          <small>Total Earned</small>
+          <div class="profile-info-label">
+            Total Earned
+          </div>
 
-          <strong id="total-earned">
+          <div
+            id="total-earned"
+            class="profile-info-value"
+          >
             ₦0
-          </strong>
+          </div>
 
         </div>
 
 
-        <div class="dashboard-stat">
+        <div class="profile-info-row">
 
-          <small>Referral Earnings</small>
+          <div class="profile-info-label">
+            Referral Earnings
+          </div>
 
-          <strong id="referral-earnings">
+          <div
+            id="referral-earnings"
+            class="profile-info-value"
+          >
             ₦0
-          </strong>
+          </div>
 
         </div>
 
 
-        <div class="dashboard-stat">
+        <div class="profile-info-row">
 
-          <small>Completed Tasks</small>
+          <div class="profile-info-label">
+            Completed Tasks
+          </div>
 
-          <strong id="completed-tasks">
+          <div
+            id="completed-tasks"
+            class="profile-info-value"
+          >
             0
-          </strong>
+          </div>
 
         </div>
 
 
-        <div class="dashboard-stat">
+        <div class="profile-info-row">
 
-          <small>Total Withdrawn</small>
+          <div class="profile-info-label">
+            Total Withdrawn
+          </div>
 
-          <strong id="total-withdrawn">
+          <div
+            id="total-withdrawn"
+            class="profile-info-value"
+          >
             ₦0
-          </strong>
+          </div>
 
         </div>
 
@@ -331,7 +759,10 @@
     </section>
 
 
-    <!-- ACCOUNT SETTINGS -->
+
+    <!-- =================================================
+         ACCOUNT SETTINGS
+    ================================================== -->
 
     <section class="dashboard-section">
 
@@ -343,85 +774,111 @@
             ACCOUNT SETTINGS
           </span>
 
-          <h2>Manage your account</h2>
+          <h2>
+            Manage your account
+          </h2>
 
         </div>
 
       </div>
 
 
-      <div class="member-earning-grid">
+      <div class="profile-settings-list">
+
+
+        <!-- CHANGE PASSWORD -->
 
         <a
           href="#"
           id="change-password-link"
-          class="member-earning-card"
+          class="profile-setting-row"
         >
 
-          <div class="member-card-icon blue">
+          <div class="profile-setting-icon">
             🔒
           </div>
 
-          <h3>
-            Change Password
-          </h3>
+          <div class="profile-setting-content">
 
-          <p>
-            Update your account password and keep your
-            account secure.
-          </p>
+            <h3>
+              Change Password
+            </h3>
 
-          <strong>
-            Change password →
-          </strong>
+            <p>
+              Update your account password and keep
+              your account secure.
+            </p>
+
+          </div>
+
+          <div class="profile-setting-action">
+            Change →
+          </div>
 
         </a>
 
+
+
+        <!-- EMAIL VERIFICATION -->
 
         <a
           href="#"
-          class="member-earning-card"
+          class="profile-setting-row"
         >
 
-          <div class="member-card-icon purple">
+          <div class="profile-setting-icon">
             ✉
           </div>
 
-          <h3>
-            Email Verification
-          </h3>
+          <div class="profile-setting-content">
 
-          <p id="verification-message">
-            Checking your email verification status.
-          </p>
+            <h3>
+              Email Verification
+            </h3>
 
-          <strong id="verification-action">
+            <p id="verification-message">
+              Checking your email verification status.
+            </p>
+
+          </div>
+
+          <div
+            id="verification-action"
+            class="profile-setting-action"
+          >
             Checking →
-          </strong>
+          </div>
 
         </a>
 
 
+
+        <!-- BACK TO DASHBOARD -->
+
         <a
           href="dashboard.html"
-          class="member-earning-card"
+          class="profile-setting-row"
         >
 
-          <div class="member-card-icon green">
+          <div class="profile-setting-icon">
             ←
           </div>
 
-          <h3>
-            Back to Dashboard
-          </h3>
+          <div class="profile-setting-content">
 
-          <p>
-            Return to your EarnGig member dashboard.
-          </p>
+            <h3>
+              Back to Dashboard
+            </h3>
 
-          <strong>
+            <p>
+              Return to your EarnGig member dashboard.
+            </p>
+
+          </div>
+
+          <div class="profile-setting-action">
             Dashboard →
-          </strong>
+          </div>
 
         </a>
 
@@ -430,7 +887,10 @@
     </section>
 
 
-    <!-- EDIT PROFILE -->
+
+    <!-- =================================================
+         EDIT PROFILE
+    ================================================== -->
 
     <section
       id="edit-profile-section"
@@ -446,7 +906,9 @@
             EDIT PROFILE
           </span>
 
-          <h2>Update your information</h2>
+          <h2>
+            Update your information
+          </h2>
 
         </div>
 
@@ -499,350 +961,709 @@
 </main>
 
 
+
 <footer>
 
   <div class="container copy">
-    © 2026 EarnGig. All rights reserved.
+
+    © 2026 EarnGig.
+    All rights reserved.
+
   </div>
 
 </footer>
 
 
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script src="supabase.js"></script>
+
 
 
 <script>
 
-  let currentUser = null;
-  let currentProfile = null;
+let currentUser = null;
+
+let currentProfile = null;
 
 
-  async function loadProfile() {
 
-    const {
-      data: { user },
-      error: userError
-    } = await supabaseClient.auth.getUser();
+/* =====================================================
+   LOAD PROFILE
+===================================================== */
 
+async function loadProfile() {
 
-    if (userError || !user) {
-
-      window.location.href = "login.html";
-
-      return;
-
-    }
-
-
-    currentUser = user;
+  const {
+    data: {
+      user
+    },
+    error: userError
+  } =
+    await supabaseClient
+      .auth
+      .getUser();
 
 
-    const { data: profile, error } =
-      await supabaseClient
-        .from("profiles")
-        .select("*")
-        .eq("id", user.id)
-        .single();
+  if (
+    userError ||
+    !user
+  ) {
+
+    window.location.href =
+      "login.html";
+
+    return;
+
+  }
 
 
-    if (error) {
-
-      console.error(
-        "Profile loading error:",
-        error
-      );
-
-      document.getElementById("profile-name").textContent =
-        user.user_metadata?.full_name || "Member";
-
-      document.getElementById("profile-status").textContent =
-        "Profile information unavailable.";
-
-      return;
-
-    }
+  currentUser =
+    user;
 
 
-    currentProfile = profile;
+  const {
+    data: profile,
+    error
+  } =
+    await supabaseClient
+      .from("profiles")
+      .select("*")
+      .eq(
+        "id",
+        user.id
+      )
+      .single();
 
-    
-const { data: wallet, error: walletError } =
-  await supabaseClient
-    .from("wallets")
-    .select("balance")
-    .eq("user_id", user.id)
-    .single();
 
-if (walletError) {
-  console.error("Wallet loading error:", walletError);
-  document.getElementById("wallet-balance").textContent = "₦0.00";
-} else {
-  const balance = Number(wallet?.balance || 0);
+  if (error) {
 
-  document.getElementById("wallet-balance").textContent =
-    "₦" + balance.toLocaleString("en-NG", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    });
-}
-    const fullName =
-      profile.full_name ||
+    console.error(
+      "Profile loading error:",
+      error
+    );
+
+
+    document.getElementById(
+      "profile-name"
+    ).textContent =
       user.user_metadata?.full_name ||
       "Member";
 
 
-    const initials =
-      fullName
-        .split(" ")
-        .filter(Boolean)
-        .map(name => name.charAt(0))
-        .slice(0, 2)
-        .join("")
-        .toUpperCase();
+    document.getElementById(
+      "profile-status"
+    ).textContent =
+      "Profile information unavailable.";
+
+    return;
+
+  }
 
 
-    document.getElementById("profile-avatar").textContent =
-      initials || "E";
-
-
-    document.getElementById("profile-name").textContent =
-      fullName;
-
-
-    document.getElementById("full-name").textContent =
-      fullName;
-
-
-    document.getElementById("email-address").textContent =
-      user.email || "Not available";
-
-
-    document.getElementById("phone-number").textContent =
-      profile.phone || "Not provided";
-
-
-    document.getElementById("member-id").textContent =
-      user.id;
-
-
-    document.getElementById("referral-code").textContent =
-      profile.referral_code || "None";
-
-
-    document.getElementById("date-joined").textContent =
-      new Date(user.created_at).toLocaleDateString();
-
-
-    const verified =
-  Boolean(user.email_confirmed_at);
-
-document.getElementById("account-status").textContent =
-  profile.account_status || "Unknown";
-
-document.getElementById("email-verification").textContent =
-  verified ? "Verified" : "Not verified";
+  currentProfile =
+    profile;
 
 
 
-    document.getElementById("profile-status").textContent =
-      verified
-        ? "Verified EarnGig account"
-        : "Please verify your email address";
+  /* ===================================================
+     BASIC WALLET BALANCE
+  ================================================== */
 
-
-    document.getElementById("verification-message").textContent =
-      verified
-        ? "Your email address has been verified."
-        : "Your email address still needs to be verified.";
-
-
-    document.getElementById("verification-action").textContent =
-      verified
-        ? "Email verified ✓"
-        : "Verification required →";
-
-
-    document.getElementById("edit-fullname").value =
-      profile.full_name || "";
-
-
-    document.getElementById("edit-phone").value =
-      profile.phone || "";
-   // Load profile statistics
-
-try {
-
-  const { data: wallet, error: walletError } =
+  const {
+    data: wallet,
+    error: walletError
+  } =
     await supabaseClient
       .from("wallets")
-      .select("balance, total_earned, referral_earned")
-      .eq("user_id", currentUser.id)
-      .maybeSingle();
+      .select("balance")
+      .eq(
+        "user_id",
+        user.id
+      )
+      .single();
+
 
   if (walletError) {
-    console.error("Wallet statistics error:", walletError);
+
+    console.error(
+      "Wallet loading error:",
+      walletError
+    );
+
+
+    document.getElementById(
+      "wallet-balance"
+    ).textContent =
+      "₦0.00";
+
   }
 
-  if (wallet) {
+  else {
 
-    document.getElementById("wallet-balance").textContent =
-      `₦${Number(wallet.balance || 0).toLocaleString("en-NG", {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      })}`;
-
-    document.getElementById("total-earned").textContent =
-      `₦${Number(wallet.total_earned || 0).toLocaleString("en-NG")}`;
-
-    document.getElementById("referral-earnings").textContent =
-      `₦${Number(wallet.referral_earned || 0).toLocaleString("en-NG")}`;
-  }
-
-
-  const { count: completedTasks, error: tasksError } =
-    await supabaseClient
-      .from("task_attempts")
-      .select("id", {
-        count: "exact",
-        head: true
-      })
-      .eq("user_id", currentUser.id)
-      .eq("status", "approved")
-      .eq("reward_status", "credited");
-
-  if (tasksError) {
-    console.error("Completed tasks error:", tasksError);
-  } else {
-    document.getElementById("completed-tasks").textContent =
-      completedTasks || 0;
-  }
-
-
-  const { data: withdrawals, error: withdrawalsError } =
-    await supabaseClient
-      .from("withdrawals")
-      .select("amount, status")
-      .eq("user_id", currentUser.id);
-
-  if (withdrawalsError) {
-    console.error("Withdrawals statistics error:", withdrawalsError);
-  } else {
-
-    const totalWithdrawn =
-      (withdrawals || [])
-        .filter(item => item.status === "approved")
-        .reduce(
-          (sum, item) =>
-            sum + Number(item.amount || 0),
-          0
-        );
-
-    document.getElementById("total-withdrawn").textContent =
-      `₦${totalWithdrawn.toLocaleString("en-NG")}`;
-  }
-
-} catch (statisticsError) {
-
-  console.error(
-    "Profile statistics error:",
-    statisticsError
-  );
-
-                 } 
-  }
-document
-  .getElementById("share-referral-button")
-  .addEventListener("click", async function () {
-
-    if (!currentProfile?.referral_code) {
-      alert("Your referral code is not available yet.");
-      return;
-    }
-
-    const referralLink =
-  window.location.origin +
-  "/earngig-website/register.html?ref=" +
-  encodeURIComponent(currentProfile.referral_code);
-
-    try {
-
-      await navigator.clipboard.writeText(referralLink);
-
-      alert(
-        "Referral link copied!\n\n" +
-        referralLink
+    const balance =
+      Number(
+        wallet?.balance ||
+        0
       );
 
-    } catch (error) {
+
+    document.getElementById(
+      "wallet-balance"
+    ).textContent =
+      "₦" +
+      balance.toLocaleString(
+        "en-NG",
+        {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        }
+      );
+
+  }
+
+
+
+  /* ===================================================
+     FULL NAME
+  ================================================== */
+
+  const fullName =
+    profile.full_name ||
+    user.user_metadata?.full_name ||
+    "Member";
+
+
+  const initials =
+    fullName
+      .split(" ")
+      .filter(Boolean)
+      .map(
+        name =>
+          name.charAt(0)
+      )
+      .slice(0, 2)
+      .join("")
+      .toUpperCase();
+
+
+  document.getElementById(
+    "profile-avatar"
+  ).textContent =
+    initials ||
+    "E";
+
+
+  document.getElementById(
+    "profile-name"
+  ).textContent =
+    fullName;
+
+
+  document.getElementById(
+    "full-name"
+  ).textContent =
+    fullName;
+
+
+
+  /* ===================================================
+     EMAIL
+  ================================================== */
+
+  document.getElementById(
+    "email-address"
+  ).textContent =
+    user.email ||
+    "Not available";
+
+
+
+  /* ===================================================
+     PHONE
+  ================================================== */
+
+  document.getElementById(
+    "phone-number"
+  ).textContent =
+    profile.phone ||
+    "Not provided";
+
+
+
+  /* ===================================================
+     MEMBER ID
+  ================================================== */
+
+  document.getElementById(
+    "member-id"
+  ).textContent =
+    user.id;
+
+
+
+  /* ===================================================
+     REFERRAL CODE
+  ================================================== */
+
+  document.getElementById(
+    "referral-code"
+  ).textContent =
+    profile.referral_code ||
+    "None";
+
+
+
+  /* ===================================================
+     DATE JOINED
+  ================================================== */
+
+  document.getElementById(
+    "date-joined"
+  ).textContent =
+    new Date(
+      user.created_at
+    ).toLocaleDateString(
+      "en-NG"
+    );
+
+
+
+  /* ===================================================
+     EMAIL VERIFICATION
+  ================================================== */
+
+  const verified =
+    Boolean(
+      user.email_confirmed_at
+    );
+
+
+  document.getElementById(
+    "account-status"
+  ).textContent =
+    profile.account_status ||
+    "Unknown";
+
+
+  document.getElementById(
+    "email-verification"
+  ).textContent =
+    verified
+      ? "Verified"
+      : "Not verified";
+
+
+  document.getElementById(
+    "profile-status"
+  ).textContent =
+    verified
+      ? "Verified EarnGig account"
+      : "Please verify your email address";
+
+
+  document.getElementById(
+    "verification-message"
+  ).textContent =
+    verified
+      ? "Your email address has been verified."
+      : "Your email address still needs to be verified.";
+
+
+  document.getElementById(
+    "verification-action"
+  ).textContent =
+    verified
+      ? "Verified ✓"
+      : "Required →";
+
+
+
+  /* ===================================================
+     EDIT PROFILE FIELDS
+  ================================================== */
+
+  document.getElementById(
+    "edit-fullname"
+  ).value =
+    profile.full_name ||
+    "";
+
+
+  document.getElementById(
+    "edit-phone"
+  ).value =
+    profile.phone ||
+    "";
+
+
+
+  /* ===================================================
+     PROFILE STATISTICS
+  ================================================== */
+
+  try {
+
+    const {
+      data: walletStats,
+      error: walletStatsError
+    } =
+      await supabaseClient
+        .from("wallets")
+        .select(
+          "balance, total_earned, referral_earned"
+        )
+        .eq(
+          "user_id",
+          currentUser.id
+        )
+        .maybeSingle();
+
+
+    if (walletStatsError) {
 
       console.error(
-        "Referral link copy error:",
-        error
-      );
-
-      prompt(
-        "Copy your referral link:",
-        referralLink
+        "Wallet statistics error:",
+        walletStatsError
       );
 
     }
 
-  });
+
+    if (walletStats) {
+
+      document.getElementById(
+        "wallet-balance"
+      ).textContent =
+        `₦${Number(
+          walletStats.balance ||
+          0
+        ).toLocaleString(
+          "en-NG",
+          {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+          }
+        )}`;
 
 
-  document
-    .getElementById("edit-profile-button")
-    .addEventListener("click", function() {
+      document.getElementById(
+        "total-earned"
+      ).textContent =
+        `₦${Number(
+          walletStats.total_earned ||
+          0
+        ).toLocaleString(
+          "en-NG"
+        )}`;
+
+
+      document.getElementById(
+        "referral-earnings"
+      ).textContent =
+        `₦${Number(
+          walletStats.referral_earned ||
+          0
+        ).toLocaleString(
+          "en-NG"
+        )}`;
+
+    }
+
+
+
+    /* =================================================
+       COMPLETED TASKS
+    ================================================== */
+
+    const {
+      count: completedTasks,
+      error: tasksError
+    } =
+      await supabaseClient
+        .from("task_attempts")
+        .select(
+          "id",
+          {
+            count: "exact",
+            head: true
+          }
+        )
+        .eq(
+          "user_id",
+          currentUser.id
+        )
+        .eq(
+          "status",
+          "approved"
+        )
+        .eq(
+          "reward_status",
+          "credited"
+        );
+
+
+    if (tasksError) {
+
+      console.error(
+        "Completed tasks error:",
+        tasksError
+      );
+
+    }
+
+    else {
+
+      document.getElementById(
+        "completed-tasks"
+      ).textContent =
+        completedTasks ||
+        0;
+
+    }
+
+
+
+    /* =================================================
+       TOTAL WITHDRAWN
+    ================================================== */
+
+    const {
+      data: withdrawals,
+      error: withdrawalsError
+    } =
+      await supabaseClient
+        .from("withdrawals")
+        .select(
+          "amount, status"
+        )
+        .eq(
+          "user_id",
+          currentUser.id
+        );
+
+
+    if (withdrawalsError) {
+
+      console.error(
+        "Withdrawals statistics error:",
+        withdrawalsError
+      );
+
+    }
+
+    else {
+
+      const totalWithdrawn =
+        (
+          withdrawals ||
+          []
+        )
+          .filter(
+            item =>
+              item.status ===
+              "approved"
+          )
+          .reduce(
+            (
+              sum,
+              item
+            ) =>
+              sum +
+              Number(
+                item.amount ||
+                0
+              ),
+            0
+          );
+
+
+      document.getElementById(
+        "total-withdrawn"
+      ).textContent =
+        `₦${totalWithdrawn.toLocaleString(
+          "en-NG"
+        )}`;
+
+    }
+
+  } catch (
+    statisticsError
+  ) {
+
+    console.error(
+      "Profile statistics error:",
+      statisticsError
+    );
+
+  }
+
+}
+
+
+
+/* =====================================================
+   SHARE REFERRAL
+===================================================== */
+
+document
+  .getElementById(
+    "share-referral-button"
+  )
+  .addEventListener(
+    "click",
+    async function() {
+
+      if (
+        !currentProfile?.referral_code
+      ) {
+
+        alert(
+          "Your referral code is not available yet."
+        );
+
+        return;
+
+      }
+
+
+      const referralLink =
+        window.location.origin +
+        "/earngig-website/register.html?ref=" +
+        encodeURIComponent(
+          currentProfile.referral_code
+        );
+
+
+      try {
+
+        await navigator
+          .clipboard
+          .writeText(
+            referralLink
+          );
+
+
+        alert(
+          "Referral link copied!\n\n" +
+          referralLink
+        );
+
+      } catch (
+        error
+      ) {
+
+        console.error(
+          "Referral link copy error:",
+          error
+        );
+
+
+        prompt(
+          "Copy your referral link:",
+          referralLink
+        );
+
+      }
+
+    }
+  );
+
+
+
+/* =====================================================
+   EDIT PROFILE
+===================================================== */
+
+document
+  .getElementById(
+    "edit-profile-button"
+  )
+  .addEventListener(
+    "click",
+    function() {
 
       const section =
         document.getElementById(
           "edit-profile-section"
         );
 
-      section.style.display = "block";
+
+      section.style.display =
+        "block";
+
 
       section.scrollIntoView({
-        behavior: "smooth"
+        behavior:
+          "smooth"
       });
 
-    });
+    }
+  );
 
 
-  document
-    .getElementById("edit-profile-form")
-    .addEventListener("submit", async function(event) {
+
+/* =====================================================
+   SAVE PROFILE
+===================================================== */
+
+document
+  .getElementById(
+    "edit-profile-form"
+  )
+  .addEventListener(
+    "submit",
+    async function(
+      event
+    ) {
 
       event.preventDefault();
 
 
-      if (!currentUser) {
+      if (
+        !currentUser
+      ) {
+
         return;
+
       }
 
 
       const fullName =
         document
-          .getElementById("edit-fullname")
+          .getElementById(
+            "edit-fullname"
+          )
           .value
           .trim();
 
 
       const phone =
         document
-          .getElementById("edit-phone")
+          .getElementById(
+            "edit-phone"
+          )
           .value
           .trim();
 
 
-      const { error } =
+      const {
+        error
+      } =
         await supabaseClient
           .from("profiles")
           .update({
-            full_name: fullName,
-            phone: phone
+            full_name:
+              fullName,
+
+            phone:
+              phone
           })
-          .eq("id", currentUser.id);
+          .eq(
+            "id",
+            currentUser.id
+          );
 
 
       if (error) {
@@ -851,6 +1672,7 @@ document
           "Profile update error:",
           error
         );
+
 
         document.getElementById(
           "profile-message"
@@ -870,30 +1692,50 @@ document
 
       await loadProfile();
 
-    });
+    }
+  );
 
 
-  document
-    .getElementById("change-password-link")
-    .addEventListener("click", async function(event) {
+
+/* =====================================================
+   CHANGE PASSWORD
+===================================================== */
+
+document
+  .getElementById(
+    "change-password-link"
+  )
+  .addEventListener(
+    "click",
+    async function(
+      event
+    ) {
 
       event.preventDefault();
 
 
-      if (!currentUser?.email) {
+      if (
+        !currentUser?.email
+      ) {
+
         return;
+
       }
 
 
-      const { error } =
-        await supabaseClient.auth.resetPasswordForEmail(
-          currentUser.email,
-          {
-            redirectTo:
-              window.location.origin +
-              window.location.pathname
-          }
-        );
+      const {
+        error
+      } =
+        await supabaseClient
+          .auth
+          .resetPasswordForEmail(
+            currentUser.email,
+            {
+              redirectTo:
+                window.location.origin +
+                window.location.pathname
+            }
+          );
 
 
       if (error) {
@@ -902,6 +1744,7 @@ document
           "Password reset error:",
           error
         );
+
 
         alert(
           "Unable to send the password reset email."
@@ -916,15 +1759,29 @@ document
         "A password reset email has been sent to your email address."
       );
 
-    });
+    }
+  );
 
 
-  document
-    .getElementById("logout-button")
-    .addEventListener("click", async function() {
 
-      const { error } =
-        await supabaseClient.auth.signOut();
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+document
+  .getElementById(
+    "logout-button"
+  )
+  .addEventListener(
+    "click",
+    async function() {
+
+      const {
+        error
+      } =
+        await supabaseClient
+          .auth
+          .signOut();
 
 
       if (error) {
@@ -933,6 +1790,7 @@ document
           "Logout error:",
           error
         );
+
 
         alert(
           "Unable to log out right now."
@@ -946,10 +1804,16 @@ document
       window.location.href =
         "login.html";
 
-    });
+    }
+  );
 
 
-  loadProfile();
+
+/* =====================================================
+   START
+===================================================== */
+
+loadProfile();
 
 </script>
 
