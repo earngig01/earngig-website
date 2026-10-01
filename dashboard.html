@@ -1,2089 +1,5329 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EarnGig — Dashboard</title>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Dashboard | EarnGig</title>
+
+  <link
+    rel="stylesheet"
+    href="styles.css"
+  >
 
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+
+    /* =========================================================
+       EARNGIG MEMBER DASHBOARD
+    ========================================================= */
 
     :root {
-      --bg: #f5f7fb;
-      --card: #ffffff;
-      --text: #172033;
-      --muted: #718096;
-      --primary: #5b3df5;
-      --primary2: #7c4dff;
-      --success: #16a34a;
-      --danger: #dc2626;
-      --border: #e6e9f0;
-      --shadow: 0 10px 30px rgba(35, 25, 80, 0.08);
+      --eg-blue: #2563eb;
+      --eg-indigo: #4f46e5;
+      --eg-purple: #7c3aed;
+      --eg-pink: #ec4899;
+      --eg-green: #10b981;
+      --eg-orange: #f59e0b;
+      --eg-dark: #090d35;
+      --eg-dark-2: #11174b;
+      --eg-card: rgba(255,255,255,.065);
+      --eg-border: rgba(255,255,255,.12);
+      --eg-muted: rgba(255,255,255,.68);
     }
 
-    body {
-      font-family: Inter, Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
+
+    /* =========================================================
+       PAGE
+    ========================================================= */
+
+    .dashboard-page {
       min-height: 100vh;
+
+      padding: 42px 0 70px;
+
+      background:
+        radial-gradient(
+          circle at 10% 5%,
+          rgba(79,70,229,.28),
+          transparent 30%
+        ),
+        radial-gradient(
+          circle at 90% 15%,
+          rgba(147,51,234,.22),
+          transparent 28%
+        ),
+        linear-gradient(
+          180deg,
+          #080c35 0%,
+          #10174d 48%,
+          #0a0f3b 100%
+        );
+
+      color: #fff;
     }
 
-    button,
-    a {
-      font-family: inherit;
+
+    .dashboard-page .container {
+      position: relative;
+      z-index: 2;
     }
 
-    button {
-      cursor: pointer;
-    }
 
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
+    /* =========================================================
+       HEADER
+    ========================================================= */
 
-    /* HEADER */
-
-    header {
-      height: 72px;
-      background: #fff;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 28px;
+    body > header {
       position: sticky;
       top: 0;
-      z-index: 100;
+      z-index: 1000;
+
+      background:
+        rgba(7,11,48,.94);
+
+      backdrop-filter:
+        blur(18px);
+
+      -webkit-backdrop-filter:
+        blur(18px);
+
+      border-bottom:
+        1px solid rgba(255,255,255,.10);
     }
 
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 22px;
-      font-weight: 800;
-      color: var(--primary);
+
+    body > header .nav {
+      min-height: 76px;
     }
 
-    .brand-mark {
-      width: 38px;
-      height: 38px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, var(--primary), var(--primary2));
-      color: #fff;
-      display: grid;
-      place-items: center;
-      font-weight: 900;
-    }
 
-    .desktop-nav {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      margin-left: auto;
-      margin-right: 24px;
-    }
-
-    .desktop-nav a {
-      color: #596579;
-      font-size: 14px;
-      font-weight: 600;
-    }
-
-    .desktop-nav a:hover {
-      color: var(--primary);
-    }
-
-    .header-actions {
+    .dashboard-top-nav {
       display: flex;
       align-items: center;
       gap: 12px;
     }
 
-    /* NOTIFICATION BUTTON */
 
-    .notification-btn {
+    .menu-toggle {
+      width: 48px;
+      height: 48px;
+
+      border: 0;
+      border-radius: 15px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #2563eb,
+          #7c3aed
+        );
+
+      color: #fff;
+
+      font-size: 25px;
+      font-weight: 700;
+
+      cursor: pointer;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      box-shadow:
+        0 8px 24px rgba(79,70,229,.28);
+    }
+
+
+    .menu-toggle:hover {
+      transform: translateY(-1px);
+    }
+
+
+    /* =========================================================
+       NOTIFICATION BUTTON
+    ========================================================= */
+
+    .notification-wrapper {
       position: relative;
-      width: 42px;
-      height: 42px;
-      border: 1px solid var(--border);
-      background: #fff;
-      border-radius: 12px;
-      font-size: 20px;
-      display: grid;
-      place-items: center;
-      color: #475569;
+      z-index: 1200;
     }
 
-    .notification-btn:hover {
-      border-color: #cfc7ff;
-      background: #f8f6ff;
-      color: var(--primary);
+
+    .notification-button {
+      position: relative;
+
+      width: 48px;
+      height: 48px;
+
+      border: 1px solid
+        rgba(255,255,255,.13);
+
+      border-radius: 15px;
+
+      background:
+        rgba(255,255,255,.065);
+
+      color: #fff;
+
+      cursor: pointer;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-size: 21px;
+
+      transition:
+        background .2s ease,
+        transform .2s ease;
     }
+
+
+    .notification-button:hover {
+      background:
+        rgba(255,255,255,.11);
+
+      transform: translateY(-1px);
+    }
+
 
     .notification-badge {
       position: absolute;
-      top: -4px;
-      right: -4px;
-      min-width: 19px;
-      height: 19px;
+
+      top: -5px;
+      right: -5px;
+
+      min-width: 20px;
+      height: 20px;
+
       padding: 0 5px;
-      border-radius: 20px;
-      background: #ef4444;
+
+      border-radius: 999px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #ef4444,
+          #db2777
+        );
+
+      border:
+        2px solid #090d35;
+
       color: #fff;
+
       font-size: 10px;
-      font-weight: 800;
+      font-weight: 900;
+
       display: none;
       align-items: center;
       justify-content: center;
-      border: 2px solid #fff;
+
+      line-height: 1;
     }
 
-    .profile-mini {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--primary), var(--primary2));
-      color: #fff;
-      display: grid;
-      place-items: center;
-      font-weight: 800;
-      font-size: 14px;
-    }
 
-    .menu-btn {
-      display: none;
-      border: 0;
-      background: transparent;
-      font-size: 25px;
-    }
-
-    /* NOTIFICATION PANEL */
-
-    .notification-panel {
-      position: fixed;
-      top: 78px;
-      right: 20px;
-      width: min(390px, calc(100vw - 30px));
-      max-height: calc(100vh - 100px);
-      background: #fff;
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      box-shadow: 0 20px 50px rgba(20, 20, 50, 0.18);
-      z-index: 500;
-      overflow: hidden;
-      display: none;
-    }
-
-    .notification-panel.show {
-      display: block;
-    }
-
-    .notification-header {
-      padding: 17px 18px;
-      border-bottom: 1px solid var(--border);
+    .notification-badge.visible {
       display: flex;
-      justify-content: space-between;
+    }
+
+
+    /* =========================================================
+       NOTIFICATION DROPDOWN
+    ========================================================= */
+
+    .notification-dropdown {
+      position: absolute;
+
+      top: calc(100% + 12px);
+      right: 0;
+
+      width: 350px;
+      max-width: calc(100vw - 30px);
+
+      border-radius: 18px;
+
+      overflow: hidden;
+
+      background:
+        linear-gradient(
+          180deg,
+          #11174b,
+          #0b103c
+        );
+
+      border:
+        1px solid rgba(139,92,246,.28);
+
+      box-shadow:
+        0 20px 55px rgba(0,0,0,.38);
+
+      opacity: 0;
+      visibility: hidden;
+
+      transform:
+        translateY(-7px);
+
+      transition:
+        opacity .18s ease,
+        visibility .18s ease,
+        transform .18s ease;
+    }
+
+
+    .notification-dropdown.open {
+      opacity: 1;
+      visibility: visible;
+
+      transform:
+        translateY(0);
+    }
+
+
+    .notification-dropdown-header {
+      display: flex;
+
       align-items: center;
+      justify-content: space-between;
+
+      gap: 12px;
+
+      padding: 16px 17px;
+
+      border-bottom:
+        1px solid rgba(255,255,255,.08);
     }
 
-    .notification-header h3 {
-      font-size: 16px;
+
+    .notification-dropdown-header strong {
+      font-size: 15px;
     }
 
-    .mark-read-btn {
-      border: 0;
-      background: transparent;
-      color: var(--primary);
-      font-size: 12px;
-      font-weight: 700;
+
+    .notification-dropdown-header a {
+      color: #a5b4fc;
+
+      text-decoration: none;
+
+      font-size: 11px;
+      font-weight: 800;
     }
 
-    .notification-list {
-      max-height: 430px;
+
+    .notification-dropdown-list {
+      max-height: 390px;
+
       overflow-y: auto;
     }
 
-    .notification-item {
-      display: block;
-      padding: 15px 17px;
-      border-bottom: 1px solid #f0f1f5;
-      cursor: pointer;
-      transition: background .2s;
-    }
 
-    .notification-item:hover {
-      background: #fafaff;
-    }
-
-    .notification-item.unread {
-      background: #f7f5ff;
-    }
-
-    .notification-item-title {
+    .notification-dropdown-item {
       display: flex;
-      align-items: flex-start;
-      gap: 8px;
-      font-size: 14px;
-      font-weight: 800;
-      margin-bottom: 5px;
+
+      gap: 11px;
+
+      padding: 14px 16px;
+
+      color: #fff;
+
+      text-decoration: none;
+
+      border-bottom:
+        1px solid rgba(255,255,255,.06);
+
+      background:
+        transparent;
+
+      transition:
+        background .18s ease;
     }
 
-    .notification-item-title .dot {
+
+    .notification-dropdown-item:hover {
+      background:
+        rgba(255,255,255,.06);
+    }
+
+
+    .notification-dropdown-item.unread {
+      background:
+        linear-gradient(
+          90deg,
+          rgba(79,70,229,.14),
+          rgba(124,58,237,.07)
+        );
+    }
+
+
+    .notification-dropdown-icon {
+      width: 36px;
+      height: 36px;
+
+      flex-shrink: 0;
+
+      border-radius: 11px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background:
+        linear-gradient(
+          135deg,
+          #2563eb,
+          #7c3aed
+        );
+
+      font-size: 16px;
+    }
+
+
+    .notification-dropdown-content {
+      min-width: 0;
+
+      flex: 1;
+    }
+
+
+    .notification-dropdown-title {
+      display: flex;
+
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 8px;
+
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+
+    .notification-dropdown-message {
+      margin-top: 4px;
+
+      color:
+        rgba(255,255,255,.58);
+
+      font-size: 11px;
+
+      line-height: 1.45;
+
+      overflow: hidden;
+
+      display: -webkit-box;
+
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+
+
+    .notification-dropdown-date {
+      margin-top: 5px;
+
+      color:
+        rgba(255,255,255,.38);
+
+      font-size: 9px;
+    }
+
+
+    .notification-unread-dot {
       width: 7px;
       height: 7px;
+
+      flex-shrink: 0;
+
       border-radius: 50%;
-      background: var(--primary);
-      margin-top: 5px;
-      flex: 0 0 auto;
+
+      background:
+        #a78bfa;
+
+      box-shadow:
+        0 0 9px rgba(167,139,250,.8);
     }
 
-    .notification-item.read .dot {
-      visibility: hidden;
-    }
 
-    .notification-item-message {
-      color: #667085;
-      font-size: 12px;
-      line-height: 1.55;
-      padding-left: 15px;
-    }
+    .notification-dropdown-empty {
+      padding: 30px 18px;
 
-    .notification-time {
-      color: #98a2b3;
-      font-size: 10px;
-      margin-top: 7px;
-      padding-left: 15px;
-    }
-
-    .empty-notifications {
-      padding: 35px 20px;
       text-align: center;
-      color: var(--muted);
-      font-size: 13px;
+
+      color:
+        rgba(255,255,255,.55);
+
+      font-size: 12px;
     }
 
-    /* DRAWER */
 
-    .mobile-drawer {
+    .notification-dropdown-footer {
+      padding: 13px 16px;
+
+      text-align: center;
+
+      border-top:
+        1px solid rgba(255,255,255,.08);
+    }
+
+
+    .notification-dropdown-footer a {
+      color: #a5b4fc;
+
+      text-decoration: none;
+
+      font-size: 12px;
+
+      font-weight: 800;
+    }
+
+
+    .notification-loading {
+      padding: 25px;
+
+      text-align: center;
+
+      color:
+        rgba(255,255,255,.5);
+
+      font-size: 12px;
+    }
+
+
+    /* =========================================================
+       MOBILE MENU
+    ========================================================= */
+
+    .dashboard-menu-overlay {
       position: fixed;
+      inset: 0;
+
+      background:
+        rgba(2,5,25,.62);
+
+      backdrop-filter:
+        blur(4px);
+
+      z-index: 2000;
+
+      opacity: 0;
+      visibility: hidden;
+
+      transition:
+        opacity .2s ease,
+        visibility .2s ease;
+    }
+
+
+    .dashboard-menu-overlay.open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+
+    .dashboard-menu {
+      position: absolute;
+
       top: 0;
-      left: -290px;
-      width: 280px;
-      height: 100vh;
-      background: #fff;
-      z-index: 1000;
-      box-shadow: 10px 0 30px rgba(0,0,0,.12);
-      transition: left .25s ease;
-      padding: 25px 18px;
-    }
-
-    .mobile-drawer.open {
       left: 0;
+
+      width: 285px;
+      max-width: 85vw;
+      height: 100%;
+
+      padding: 25px 18px;
+
+      background:
+        linear-gradient(
+          180deg,
+          #0b1040,
+          #11185b
+        );
+
+      box-shadow:
+        15px 0 45px rgba(0,0,0,.30);
+
+      transform:
+        translateX(-100%);
+
+      transition:
+        transform .25s ease;
     }
 
-    .drawer-close {
-      border: 0;
-      background: transparent;
-      font-size: 25px;
-      float: right;
+
+    .dashboard-menu-overlay.open .dashboard-menu {
+      transform: translateX(0);
     }
 
-    .drawer-brand {
+
+    .dashboard-menu-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      margin-bottom: 30px;
+
+      color: #fff;
+
       font-size: 21px;
       font-weight: 800;
-      color: var(--primary);
-      margin: 8px 0 30px;
-      clear: both;
     }
 
-    .drawer-links {
+
+    .dashboard-menu-logo-mark {
+      width: 38px;
+      height: 38px;
+
+      border-radius: 12px;
+
       display: flex;
-      flex-direction: column;
-      gap: 5px;
+      align-items: center;
+      justify-content: center;
+
+      background:
+        linear-gradient(
+          135deg,
+          #2563eb,
+          #9333ea
+        );
+
+      color: #fff;
     }
 
-    .drawer-links a {
-      padding: 13px 12px;
-      border-radius: 10px;
+
+    .dashboard-menu-label {
+      margin: 18px 10px 8px;
+
+      color: #9da7ff;
+
+      font-size: 10px;
+      font-weight: 800;
+
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+
+    .dashboard-menu a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      padding: 13px 14px;
+
+      margin-bottom: 5px;
+
+      border-radius: 12px;
+
+      color: rgba(255,255,255,.82);
+
+      text-decoration: none;
+
       font-size: 14px;
       font-weight: 600;
-      color: #475569;
+
+      transition:
+        background .2s ease,
+        color .2s ease;
     }
 
-    .drawer-links a:hover {
-      background: #f4f2ff;
-      color: var(--primary);
+
+    .dashboard-menu a:hover {
+      background:
+        rgba(255,255,255,.09);
+
+      color: #fff;
     }
 
-    /* MAIN */
 
-    main {
-      max-width: 1240px;
-      margin: auto;
-      padding: 30px 24px 60px;
-    }
+    .dashboard-menu-icon {
+      width: 30px;
+      height: 30px;
 
-    .welcome-row {
+      border-radius: 9px;
+
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-      margin-bottom: 25px;
+      justify-content: center;
+
+      background:
+        rgba(255,255,255,.09);
+
+      font-size: 15px;
     }
 
-    .welcome-text small {
-      color: var(--muted);
-      font-size: 14px;
-    }
 
-    .welcome-text h1 {
-      font-size: 30px;
-      margin-top: 4px;
-    }
+    .dashboard-menu-close {
+      position: absolute;
 
-    .gradient-name {
-      background: linear-gradient(90deg, var(--primary), #a044ff);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
+      top: 18px;
+      right: 18px;
 
-    .start-btn {
+      width: 36px;
+      height: 36px;
+
       border: 0;
+      border-radius: 10px;
+
+      background:
+        rgba(255,255,255,.08);
+
       color: #fff;
-      padding: 13px 22px;
-      border-radius: 12px;
-      font-weight: 800;
-      background: linear-gradient(135deg, var(--primary), var(--primary2));
-      box-shadow: 0 8px 20px rgba(91,61,245,.25);
+
+      font-size: 20px;
+
+      cursor: pointer;
     }
 
-    /* WALLET */
 
-    .wallet-card {
-      background: linear-gradient(135deg, #20145f, #5b3df5 60%, #8a52ff);
-      color: #fff;
-      border-radius: 22px;
-      padding: 25px;
-      box-shadow: var(--shadow);
+    /* =========================================================
+       WELCOME
+    ========================================================= */
+
+    .eg-welcome {
       margin-bottom: 22px;
     }
 
-    .wallet-top {
+
+    .eg-eyebrow {
+      display: block;
+
+      margin-bottom: 8px;
+
+      color: #a5b4fc;
+
+      font-size: 11px;
+      font-weight: 800;
+
+      letter-spacing: 1.8px;
+    }
+
+
+    .eg-welcome h1 {
+      margin: 0;
+
+      font-size: clamp(30px, 5vw, 44px);
+
+      line-height: 1.1;
+
+      letter-spacing: -1px;
+    }
+
+
+    .gradient-user-name {
+      background:
+        linear-gradient(
+          90deg,
+          #3b82f6 0%,
+          #6366f1 45%,
+          #c026d3 100%
+        );
+
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+
+      font-weight: 900;
+    }
+
+
+    .eg-welcome p {
+      margin: 12px 0 0;
+
+      color: rgba(255,255,255,.65);
+
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+
+    /* =========================================================
+       START EARNING
+    ========================================================= */
+
+    .start-earning-button {
+      width: 100%;
+      min-height: 70px;
+
+      margin: 0 0 20px;
+
+      padding: 18px 24px;
+
+      border: 0;
+      border-radius: 18px;
+
+      background:
+        linear-gradient(
+          100deg,
+          #2563eb 0%,
+          #4f46e5 48%,
+          #9333ea 100%
+        );
+
+      color: #fff;
+
+      text-decoration: none;
+
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 20px;
+
+      font-size: 18px;
+      font-weight: 800;
+
+      box-shadow:
+        0 15px 35px rgba(79,70,229,.27);
+
+      transition:
+        transform .2s ease,
+        box-shadow .2s ease;
     }
 
-    .wallet-label {
-      opacity: .82;
-      font-size: 13px;
+
+    .start-earning-button:hover {
+      transform: translateY(-2px);
+
+      box-shadow:
+        0 18px 40px rgba(79,70,229,.35);
     }
 
-    .wallet-balance {
-      font-size: 35px;
-      font-weight: 900;
-      margin: 7px 0;
-    }
 
-    .wallet-sub {
-      font-size: 12px;
-      opacity: .78;
-    }
+    .start-earning-arrow {
+      width: 42px;
+      height: 42px;
 
-    .wallet-actions {
+      border-radius: 13px;
+
+      background:
+        rgba(255,255,255,.17);
+
       display: flex;
-      gap: 10px;
+      align-items: center;
+      justify-content: center;
+
+      font-size: 22px;
     }
 
-    .wallet-actions a {
-      background: rgba(255,255,255,.14);
-      border: 1px solid rgba(255,255,255,.25);
+
+    /* =========================================================
+       WALLET CARD
+    ========================================================= */
+
+    .eg-wallet-card {
+      position: relative;
+
+      overflow: hidden;
+
+      padding: 25px;
+
+      margin-bottom: 15px;
+
+      border-radius: 22px;
+
+      border:
+        1px solid rgba(255,255,255,.14);
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(37,99,235,.32),
+          rgba(124,58,237,.27)
+        );
+
+      box-shadow:
+        0 15px 40px rgba(0,0,0,.16);
+    }
+
+
+    .eg-wallet-card::after {
+      content: "";
+
+      position: absolute;
+
+      width: 190px;
+      height: 190px;
+
+      right: -80px;
+      top: -90px;
+
+      border-radius: 50%;
+
+      background:
+        rgba(255,255,255,.08);
+    }
+
+
+    .eg-wallet-content {
+      position: relative;
+      z-index: 2;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 25px;
+    }
+
+
+    .eg-wallet-label {
+      display: block;
+
+      margin-bottom: 7px;
+
+      color: rgba(255,255,255,.65);
+
+      font-size: 12px;
+    }
+
+
+    .eg-wallet-balance {
+      display: block;
+
       color: #fff;
-      padding: 10px 15px;
-      border-radius: 10px;
-      font-size: 12px;
-      font-weight: 700;
+
+      font-size: clamp(29px, 5vw, 40px);
+
+      font-weight: 900;
+
+      letter-spacing: -1px;
     }
 
-    /* CARDS */
 
-    .grid {
+    .eg-wallet-minimum {
+      margin: 8px 0 0;
+
+      color: rgba(255,255,255,.60);
+
+      font-size: 12px;
+    }
+
+
+    .eg-wallet-actions {
+      display: flex;
+      gap: 9px;
+
+      flex-shrink: 0;
+    }
+
+
+    .eg-wallet-actions .btn {
+      min-width: 110px;
+    }
+
+
+    /* =========================================================
+       EARNINGS SUMMARY
+    ========================================================= */
+
+    .eg-summary-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 17px;
-      margin-bottom: 22px;
+
+      grid-template-columns:
+        repeat(4, minmax(0,1fr));
+
+      gap: 12px;
+
+      margin-bottom: 16px;
     }
 
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 17px;
-      padding: 20px;
-      box-shadow: 0 5px 18px rgba(30,30,60,.04);
+
+    .eg-summary-card {
+      min-width: 0;
+
+      padding: 17px;
+
+      border-radius: 16px;
+
+      border:
+        1px solid rgba(255,255,255,.10);
+
+      background:
+        rgba(255,255,255,.055);
+
+      box-shadow:
+        0 8px 25px rgba(0,0,0,.10);
     }
 
-    .stat-label {
-      color: var(--muted);
-      font-size: 12px;
+
+    .eg-summary-card small {
+      display: block;
+
+      color: rgba(255,255,255,.58);
+
+      font-size: 11px;
+
       margin-bottom: 8px;
     }
 
-    .stat-value {
-      font-size: 22px;
-      font-weight: 800;
+
+    .eg-summary-card strong {
+      display: block;
+
+      color: #fff;
+
+      font-size: 20px;
     }
 
-    /* DAILY LIMIT */
 
-    .daily-limit {
-      background: #fff;
-      border: 1px solid var(--border);
-      border-radius: 17px;
-      padding: 20px;
-      margin-bottom: 22px;
+    /* =========================================================
+       DAILY LIMIT
+    ========================================================= */
+
+    .eg-daily-limit {
+      position: relative;
+
+      overflow: hidden;
+
+      margin: 0 0 30px;
+
+      padding: 22px;
+
+      border-radius: 20px;
+
+      border:
+        1px solid rgba(139,92,246,.25);
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(79,70,229,.16),
+          rgba(124,58,237,.12)
+        );
+
+      box-shadow:
+        0 10px 30px rgba(0,0,0,.12);
     }
 
-    .daily-head {
+
+    .eg-daily-limit::before {
+      content: "";
+
+      position: absolute;
+
+      width: 160px;
+      height: 160px;
+
+      right: -70px;
+      top: -80px;
+
+      border-radius: 50%;
+
+      background:
+        rgba(124,58,237,.14);
+    }
+
+
+    .eg-daily-limit-header {
+      position: relative;
+      z-index: 2;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 20px;
+    }
+
+
+    .eg-daily-limit-title {
+      display: flex;
+      align-items: center;
+
+      gap: 13px;
+    }
+
+
+    .eg-daily-limit-icon {
+      width: 43px;
+      height: 43px;
+
+      border-radius: 13px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #2563eb,
+          #7c3aed
+        );
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-size: 20px;
+    }
+
+
+    .eg-daily-limit h3 {
+      margin: 0 0 4px;
+
+      font-size: 18px;
+    }
+
+
+    .eg-daily-limit-plan {
+      margin: 0;
+
+      color: rgba(255,255,255,.58);
+
+      font-size: 12px;
+    }
+
+
+    .eg-daily-limit-amount {
+      text-align: right;
+    }
+
+
+    .eg-daily-limit-amount strong {
+      display: block;
+
+      font-size: 18px;
+    }
+
+
+    .eg-daily-limit-amount span {
+      display: block;
+
+      margin-top: 4px;
+
+      color: rgba(255,255,255,.53);
+
+      font-size: 11px;
+    }
+
+
+    .eg-progress {
+      position: relative;
+      z-index: 2;
+
+      width: 100%;
+      height: 9px;
+
+      margin: 18px 0 13px;
+
+      overflow: hidden;
+
+      border-radius: 999px;
+
+      background:
+        rgba(255,255,255,.09);
+    }
+
+
+    .eg-progress-bar {
+      width: 0%;
+      height: 100%;
+
+      border-radius: inherit;
+
+      background:
+        linear-gradient(
+          90deg,
+          #2563eb,
+          #7c3aed,
+          #ec4899
+        );
+
+      transition:
+        width .4s ease;
+    }
+
+
+    .eg-daily-limit-footer {
+      position: relative;
+      z-index: 2;
+
       display: flex;
       justify-content: space-between;
+
       gap: 15px;
-      align-items: center;
-      margin-bottom: 13px;
     }
 
-    .daily-head strong {
-      font-size: 15px;
-    }
 
-    .daily-head span {
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    .progress {
-      height: 9px;
-      border-radius: 20px;
-      background: #ececf3;
-      overflow: hidden;
-    }
-
-    .progress-bar {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, var(--primary), #9b5cff);
-      border-radius: inherit;
-      transition: width .3s;
-    }
-
-    .daily-note {
-      margin-top: 9px;
-      font-size: 11px;
-      color: var(--muted);
-    }
-
-    /* EARNING CARDS */
-
-    .section-title {
-      font-size: 19px;
-      margin: 30px 0 15px;
-    }
-
-    .earn-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 17px;
-    }
-
-    .earn-card {
-      background: #fff;
-      border: 1px solid var(--border);
-      border-radius: 17px;
-      padding: 20px;
-      transition: transform .2s, box-shadow .2s;
-    }
-
-    .earn-card:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--shadow);
-    }
-
-    .earn-icon {
-      width: 42px;
-      height: 42px;
-      border-radius: 12px;
-      background: #f0edff;
-      display: grid;
-      place-items: center;
-      font-size: 20px;
-      margin-bottom: 12px;
-    }
-
-    .earn-card h3 {
-      font-size: 15px;
-      margin-bottom: 7px;
-    }
-
-    .earn-card p {
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.55;
-      margin-bottom: 14px;
-    }
-
-    .earn-card a {
-      color: var(--primary);
-      font-size: 12px;
-      font-weight: 800;
-    }
-
-    /* REFERRAL */
-
-    .referral-card {
-      background: #fff;
-      border: 1px solid var(--border);
-      border-radius: 17px;
-      padding: 22px;
-    }
-
-    .referral-code-box {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-top: 12px;
-    }
-
-    .referral-code {
-      background: #f7f7fb;
-      border: 1px dashed #cfd3df;
-      padding: 12px;
-      border-radius: 10px;
-      flex: 1;
-      font-weight: 800;
-      letter-spacing: 1px;
-    }
-
-    .copy-btn {
-      border: 0;
-      background: var(--primary);
-      color: #fff;
-      padding: 12px 15px;
-      border-radius: 10px;
+    .eg-daily-limit-remaining {
+      font-size: 13px;
       font-weight: 700;
     }
 
-    .ref-stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 15px;
-      margin-top: 20px;
-    }
 
-    .ref-stat {
-      background: #fafaff;
-      padding: 15px;
-      border-radius: 12px;
-    }
+    .eg-daily-limit-note {
+      color: rgba(255,255,255,.55);
 
-    .ref-stat span {
-      display: block;
-      color: var(--muted);
       font-size: 11px;
-      margin-bottom: 5px;
+
+      text-align: right;
     }
 
-    .ref-stat strong {
+
+    .eg-daily-limit.daily-limit-reached {
+      border-color:
+        rgba(239,68,68,.35);
+    }
+
+
+    .eg-daily-limit.daily-limit-error {
+      border-color:
+        rgba(245,158,11,.35);
+    }
+
+
+    /* =========================================================
+       SECTIONS
+    ========================================================= */
+
+    .eg-section {
+      margin-top: 30px;
+    }
+
+
+    .eg-section-heading {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+
+      gap: 15px;
+
+      margin-bottom: 15px;
+    }
+
+
+    .eg-section-heading h2 {
+      margin: 3px 0 0;
+
+      font-size: 22px;
+
+      letter-spacing: -.4px;
+    }
+
+
+    .eg-text-link {
+      color: #a5b4fc;
+
+      text-decoration: none;
+
+      font-size: 13px;
+      font-weight: 700;
+
+      white-space: nowrap;
+    }
+
+
+    .eg-text-link:hover {
+      color: #fff;
+    }
+
+
+    /* =========================================================
+       EARNING OPTIONS
+    ========================================================= */
+
+    .eg-earn-section {
+      margin-top: 10px;
+    }
+
+
+    .eg-earn-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(3, minmax(0,1fr));
+
+      gap: 14px;
+    }
+
+
+    .eg-earn-card {
+      position: relative;
+
+      min-height: 160px;
+
+      padding: 18px;
+
+      overflow: hidden;
+
+      border-radius: 18px;
+
+      border:
+        1px solid rgba(255,255,255,.10);
+
+      background:
+        rgba(255,255,255,.055);
+
+      color: #fff;
+
+      text-decoration: none;
+
+      transition:
+        transform .2s ease,
+        border-color .2s ease,
+        box-shadow .2s ease;
+    }
+
+
+    .eg-earn-card:hover {
+      transform: translateY(-3px);
+
+      border-color:
+        rgba(139,92,246,.45);
+
+      box-shadow:
+        0 14px 30px rgba(0,0,0,.18);
+    }
+
+
+    .eg-earn-card::after {
+      content: "";
+
+      position: absolute;
+
+      width: 100px;
+      height: 100px;
+
+      right: -45px;
+      top: -45px;
+
+      border-radius: 50%;
+
+      background:
+        rgba(255,255,255,.055);
+    }
+
+
+    .eg-icon {
+      width: 42px;
+      height: 42px;
+
+      margin-bottom: 13px;
+
+      border-radius: 13px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-size: 19px;
+
+      color: #fff;
+
+      background:
+        linear-gradient(
+          135deg,
+          #2563eb,
+          #7c3aed
+        );
+    }
+
+
+    .eg-earn-card:nth-child(2) .eg-icon {
+      background:
+        linear-gradient(
+          135deg,
+          #7c3aed,
+          #ec4899
+        );
+    }
+
+
+    .eg-earn-card:nth-child(3) .eg-icon {
+      background:
+        linear-gradient(
+          135deg,
+          #f97316,
+          #f59e0b
+        );
+    }
+
+
+    .eg-earn-card:nth-child(4) .eg-icon {
+      background:
+        linear-gradient(
+          135deg,
+          #059669,
+          #10b981
+        );
+    }
+
+
+    .eg-earn-card:nth-child(5) .eg-icon {
+      background:
+        linear-gradient(
+          135deg,
+          #db2777,
+          #ec4899
+        );
+    }
+
+
+    .eg-earn-card:nth-child(6) .eg-icon {
+      background:
+        linear-gradient(
+          135deg,
+          #0891b2,
+          #2563eb
+        );
+    }
+
+
+    .eg-earn-card h3 {
+      margin: 0 0 6px;
+
+      font-size: 16px;
+    }
+
+
+    .eg-earn-card p {
+      margin: 0;
+
+      color: rgba(255,255,255,.58);
+
+      font-size: 12px;
+
+      line-height: 1.5;
+    }
+
+
+    .eg-earn-card strong {
+      display: block;
+
+      margin-top: 13px;
+
+      color: #a5b4fc;
+
+      font-size: 12px;
+    }
+
+
+    /* =========================================================
+       FEATURE CARDS
+    ========================================================= */
+
+    .eg-feature-card {
+      display: flex;
+      align-items: center;
+
+      gap: 18px;
+
+      padding: 21px;
+
+      border-radius: 18px;
+
+      border:
+        1px solid rgba(255,255,255,.10);
+
+      background:
+        rgba(255,255,255,.055);
+    }
+
+
+    .eg-feature-icon {
+      width: 52px;
+      height: 52px;
+
+      flex-shrink: 0;
+
+      border-radius: 15px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-size: 23px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #2563eb,
+          #7c3aed
+        );
+    }
+
+
+    .eg-feature-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+
+    .eg-feature-content h3 {
+      margin: 0 0 5px;
+
       font-size: 17px;
     }
 
-    /* RECENT */
 
-    .recent-card {
-      background: #fff;
-      border: 1px solid var(--border);
-      border-radius: 17px;
-      overflow: hidden;
-    }
+    .eg-feature-content p {
+      margin: 0;
 
-    .recent-head {
-      padding: 18px 20px;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+      color: rgba(255,255,255,.58);
 
-    .recent-head h3 {
-      font-size: 15px;
-    }
-
-    .recent-head a {
       font-size: 12px;
-      color: var(--primary);
-      font-weight: 700;
+
+      line-height: 1.55;
     }
 
-    .transaction-row {
+
+    /* =========================================================
+       REFERRAL
+    ========================================================= */
+
+    .eg-referral-card {
+      padding: 21px;
+
+      border-radius: 18px;
+
+      border:
+        1px solid rgba(255,255,255,.10);
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(37,99,235,.11),
+          rgba(124,58,237,.10)
+        );
+    }
+
+
+    .eg-referral-code-row {
       display: flex;
+      align-items: center;
       justify-content: space-between;
+
       gap: 15px;
-      padding: 14px 20px;
-      border-bottom: 1px solid #f0f1f5;
     }
 
-    .transaction-row:last-child {
+
+    .eg-referral-code-label {
+      display: block;
+
+      color: rgba(255,255,255,.55);
+
+      font-size: 11px;
+
+      margin-bottom: 6px;
+    }
+
+
+    .eg-referral-code {
+      display: block;
+
+      color: #fff;
+
+      font-size: 21px;
+      font-weight: 900;
+
+      letter-spacing: 1px;
+    }
+
+
+    .eg-referral-stats {
+      display: grid;
+
+      grid-template-columns:
+        repeat(3,1fr);
+
+      gap: 10px;
+
+      margin-top: 18px;
+    }
+
+
+    .eg-referral-stat {
+      padding: 14px;
+
+      border-radius: 13px;
+
+      background:
+        rgba(255,255,255,.055);
+    }
+
+
+    .eg-referral-stat small {
+      display: block;
+
+      color: rgba(255,255,255,.55);
+
+      font-size: 10px;
+
+      margin-bottom: 6px;
+    }
+
+
+    .eg-referral-stat strong {
+      font-size: 16px;
+    }
+
+
+    .eg-referral-list {
+      margin-top: 12px;
+
+      padding: 0 17px;
+
+      border-radius: 16px;
+
+      border:
+        1px solid rgba(255,255,255,.08);
+
+      background:
+        rgba(255,255,255,.035);
+    }
+
+
+    .referral-history-row {
+      display: flex;
+
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 20px;
+
+      padding: 15px 0;
+
+      border-bottom:
+        1px solid rgba(255,255,255,.08);
+    }
+
+
+    .referral-history-row:last-child {
       border-bottom: 0;
     }
 
-    .tx-left strong {
+
+    .referral-history-row strong {
       display: block;
+
+      font-size: 14px;
+    }
+
+
+    .referral-history-row small {
+      display: block;
+
+      margin-top: 4px;
+
+      color: rgba(255,255,255,.50);
+
+      font-size: 11px;
+    }
+
+
+    /* =========================================================
+       TRANSACTIONS
+    ========================================================= */
+
+    .eg-transaction-list {
+      display: grid;
+
+      gap: 9px;
+    }
+
+
+    .transaction-item {
+      display: flex;
+
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 18px;
+
+      padding: 15px 17px;
+
+      border-radius: 15px;
+
+      border:
+        1px solid rgba(255,255,255,.08);
+
+      background:
+        rgba(255,255,255,.045);
+    }
+
+
+    .transaction-info {
+      min-width: 0;
+    }
+
+
+    .transaction-info strong {
+      display: block;
+
+      overflow: hidden;
+
+      text-overflow: ellipsis;
+
+      white-space: nowrap;
+
       font-size: 13px;
     }
 
-    .tx-left span {
+
+    .transaction-info small {
+      display: block;
+
+      margin-top: 4px;
+
+      color: rgba(255,255,255,.48);
+
       font-size: 10px;
-      color: var(--muted);
     }
 
-    .tx-amount {
-      font-size: 13px;
-      font-weight: 800;
+
+    .transaction-amount {
+      flex-shrink: 0;
+
+      font-size: 14px;
+      font-weight: 900;
     }
 
-    .positive {
-      color: var(--success);
+
+    .transaction-credit {
+      color: #6ee7b7;
     }
 
-    .negative {
-      color: var(--danger);
+
+    .transaction-debit {
+      color: #fda4af;
     }
 
-    .loading {
-      color: var(--muted);
-      font-size: 13px;
-      padding: 20px;
+
+    /* =========================================================
+       EMPTY
+    ========================================================= */
+
+    .eg-empty {
+      padding: 28px 18px;
+
       text-align: center;
+
+      border-radius: 16px;
+
+      border:
+        1px dashed rgba(255,255,255,.13);
+
+      background:
+        rgba(255,255,255,.025);
     }
 
-    /* RESPONSIVE */
 
-    @media (max-width: 1000px) {
-      .desktop-nav {
+    .eg-empty-icon {
+      width: 45px;
+      height: 45px;
+
+      margin: 0 auto 10px;
+
+      border-radius: 13px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background:
+        rgba(124,58,237,.16);
+
+      color: #a5b4fc;
+
+      font-weight: 900;
+    }
+
+
+    /* =========================================================
+       FOOTER
+    ========================================================= */
+
+    body > footer {
+      background:
+        #070a2b;
+
+      color:
+        rgba(255,255,255,.5);
+
+      border-top:
+        1px solid rgba(255,255,255,.08);
+    }
+
+
+    /* =========================================================
+       MOBILE
+    ========================================================= */
+
+    @media (max-width: 800px) {
+
+      .dashboard-page {
+        padding-top: 28px;
+      }
+
+
+      body > header nav {
         display: none;
       }
 
-      .menu-btn {
-        display: block;
+
+      body > header .btn.outline {
+        display: none;
       }
 
-      .grid {
-        grid-template-columns: repeat(2, 1fr);
+
+      .eg-summary-grid {
+        grid-template-columns:
+          repeat(2, minmax(0,1fr));
       }
 
-      .earn-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
 
-    @media (max-width: 650px) {
-      header {
-        padding: 0 15px;
+      .eg-earn-grid {
+        grid-template-columns:
+          repeat(2, minmax(0,1fr));
       }
 
-      .header-actions {
-        gap: 7px;
-      }
 
-      main {
-        padding: 22px 14px 50px;
-      }
-
-      .welcome-row {
-        align-items: stretch;
-        flex-direction: column;
-      }
-
-      .welcome-text h1 {
-        font-size: 25px;
-      }
-
-      .start-btn {
-        width: 100%;
-      }
-
-      .wallet-top {
-        flex-direction: column;
+      .eg-wallet-content {
         align-items: flex-start;
+
+        flex-direction: column;
+
+        gap: 17px;
       }
 
-      .wallet-actions {
+
+      .eg-wallet-actions {
         width: 100%;
       }
 
-      .wallet-actions a {
+
+      .eg-wallet-actions .btn {
         flex: 1;
-        text-align: center;
       }
 
-      .grid,
-      .earn-grid,
-      .ref-stats {
-        grid-template-columns: 1fr;
-      }
-
-      .wallet-balance {
-        font-size: 30px;
-      }
-
-      .profile-mini {
-        width: 36px;
-        height: 36px;
-      }
-
-      .notification-btn {
-        width: 38px;
-        height: 38px;
-      }
     }
+
+
+    @media (max-width: 600px) {
+
+      .dashboard-page {
+        padding-bottom: 45px;
+      }
+
+
+      .eg-welcome h1 {
+        font-size: 31px;
+      }
+
+
+      .start-earning-button {
+        min-height: 64px;
+
+        padding: 15px 18px;
+      }
+
+
+      .eg-wallet-card {
+        padding: 20px;
+      }
+
+
+      .eg-summary-card {
+        padding: 14px;
+      }
+
+
+      .eg-summary-card strong {
+        font-size: 17px;
+      }
+
+
+      .eg-daily-limit {
+        padding: 18px;
+      }
+
+
+      .eg-daily-limit-header {
+        align-items: flex-start;
+
+        flex-direction: column;
+      }
+
+
+      .eg-daily-limit-amount {
+        width: 100%;
+
+        text-align: left;
+      }
+
+
+      .eg-daily-limit-footer {
+        flex-direction: column;
+      }
+
+
+      .eg-daily-limit-note {
+        text-align: left;
+      }
+
+
+      .eg-earn-grid {
+        grid-template-columns:
+          repeat(2, minmax(0,1fr));
+
+        gap: 10px;
+      }
+
+
+      .eg-earn-card {
+        min-height: 150px;
+
+        padding: 15px;
+      }
+
+
+      .eg-earn-card h3 {
+        font-size: 14px;
+      }
+
+
+      .eg-earn-card p {
+        font-size: 11px;
+      }
+
+
+      .eg-feature-card {
+        align-items: flex-start;
+
+        flex-wrap: wrap;
+      }
+
+
+      .eg-feature-card .btn {
+        width: 100%;
+      }
+
+
+      .eg-referral-code-row {
+        align-items: flex-start;
+
+        flex-direction: column;
+      }
+
+
+      .eg-referral-code-row .btn {
+        width: 100%;
+      }
+
+
+      .eg-referral-stats {
+        grid-template-columns:
+          1fr;
+      }
+
+
+      .eg-section-heading {
+        align-items: flex-start;
+
+        flex-direction: column;
+      }
+
+
+      .referral-history-row {
+        gap: 10px;
+      }
+
+
+      .transaction-item {
+        padding: 13px;
+      }
+
+
+      .notification-dropdown {
+        position: fixed;
+
+        top: 82px;
+        right: 15px;
+        left: 15px;
+
+        width: auto;
+
+        max-width: none;
+      }
+
+    }
+
   </style>
+
 </head>
+
 
 <body>
 
-<header>
-  <button class="menu-btn" id="menuBtn">☰</button>
 
-  <a href="dashboard.html" class="brand">
-    <span class="brand-mark">E</span>
-    EarnGig
-  </a>
+  <!-- =========================================================
+       HEADER
+  ========================================================= -->
 
-  <nav class="desktop-nav">
-    <a href="dashboard.html">Dashboard</a>
-    <a href="tasks.html">Tasks</a>
-    <a href="watch-earn.html">Watch & Earn</a>
-    <a href="competitions.html">Competitions</a>
-    <a href="membership.html">Membership</a>
-  </nav>
+  <header>
 
-  <div class="header-actions">
-    <button
-      class="notification-btn"
-      id="notificationBtn"
-      aria-label="Notifications"
-      title="Notifications"
-    >
-      🔔
-      <span class="notification-badge" id="notificationBadge">0</span>
-    </button>
+    <div class="container nav">
 
-    <a href="profile.html" class="profile-mini" id="profileInitials">EG</a>
-  </div>
-</header>
+      <div class="dashboard-top-nav">
 
-<!-- NOTIFICATION PANEL -->
+        <button
+          id="menu-toggle"
+          class="menu-toggle"
+          type="button"
+          aria-label="Open menu"
+        >
+          ☰
+        </button>
 
-<div class="notification-panel" id="notificationPanel">
 
-  <div class="notification-header">
-    <h3>Notifications</h3>
+        <a
+          class="logo"
+          href="index.html"
+        >
 
-    <button
-      class="mark-read-btn"
-      id="markAllReadBtn"
-      type="button"
-    >
-      Mark all read
-    </button>
-  </div>
+          <span class="logo-mark">
+            E
+          </span>
 
-  <div class="notification-list" id="notificationList">
-    <div class="loading">Loading notifications...</div>
-  </div>
+          Earn<span>Gig</span>
 
-</div>
+        </a>
 
-<!-- MOBILE DRAWER -->
 
-<aside class="mobile-drawer" id="mobileDrawer">
+        <!-- ===================================================
+             NOTIFICATION BUTTON
+        ==================================================== -->
 
-  <button class="drawer-close" id="drawerClose">×</button>
+        <div
+          id="notification-wrapper"
+          class="notification-wrapper"
+        >
 
-  <div class="drawer-brand">EarnGig</div>
+          <button
+            id="notification-button"
+            class="notification-button"
+            type="button"
+            aria-label="Notifications"
+            aria-expanded="false"
+          >
 
-  <div class="drawer-links">
-    <a href="dashboard.html">🏠 Dashboard</a>
-    <a href="tasks.html">📝 Tasks</a>
-    <a href="watch-earn.html">🎬 Watch & Earn</a>
-    <a href="competitions.html">🏆 Competitions</a>
-    <a href="read-earn.html">📖 Read & Earn</a>
-    <a href="create-earn.html">✍️ Create & Earn</a>
-    <a href="membership.html">💎 Membership</a>
-    <a href="withdraw.html">💸 Withdraw</a>
-    <a href="transactions.html">💳 Transactions</a>
-    <a href="referrals.html">👥 Referrals</a>
-    <a href="profile.html">👤 My Profile</a>
-    <a href="#" id="mobileLogout">🚪 Logout</a>
-  </div>
+            🔔
 
-</aside>
+            <span
+              id="notification-badge"
+              class="notification-badge"
+            >
+              0
+            </span>
 
-<main>
+          </button>
 
-  <!-- WELCOME -->
 
-  <section class="welcome-row">
+          <!-- =================================================
+               NOTIFICATION DROPDOWN
+          ================================================== -->
 
-    <div class="welcome-text">
-      <small>Welcome back,</small>
-      <h1>
-        <span class="gradient-name" id="userName">
-          Member
-        </span>
-      </h1>
-    </div>
+          <div
+            id="notification-dropdown"
+            class="notification-dropdown"
+          >
 
-    <a href="tasks.html" class="start-btn">
-      Start Earning
-    </a>
+            <div class="notification-dropdown-header">
 
-  </section>
+              <strong>
+                Notifications
+              </strong>
 
-  <!-- WALLET -->
 
-  <section class="wallet-card">
+              <a href="notifications.html">
+                View all
+              </a>
 
-    <div class="wallet-top">
+            </div>
 
-      <div>
-        <div class="wallet-label">Available Wallet Balance</div>
 
-        <div class="wallet-balance" id="walletBalance">
-          ₦0
+            <div
+              id="notification-dropdown-list"
+              class="notification-dropdown-list"
+            >
+
+              <div class="notification-loading">
+                Loading notifications...
+              </div>
+
+            </div>
+
+
+            <div class="notification-dropdown-footer">
+
+              <a href="notifications.html">
+                View all notifications →
+              </a>
+
+            </div>
+
+          </div>
+
         </div>
 
-        <div class="wallet-sub" id="walletSub">
-          Loading wallet...
-        </div>
       </div>
 
-      <div class="wallet-actions">
-        <a href="withdraw.html">Withdraw</a>
-        <a href="transactions.html">Transactions</a>
-      </div>
 
-    </div>
+      <nav>
 
-  </section>
+        <a href="#earn">
+          Earn
+        </a>
 
-  <!-- SUMMARY -->
+        <a href="#read">
+          Read & Earn
+        </a>
 
-  <section class="grid">
+        <a href="#create">
+          Create & Earn
+        </a>
 
-    <div class="card">
-      <div class="stat-label">Total Earned</div>
-      <div class="stat-value" id="totalEarned">₦0</div>
-    </div>
+        <a href="#referrals">
+          Referrals
+        </a>
 
-    <div class="card">
-      <div class="stat-label">Referral Earnings</div>
-      <div class="stat-value" id="referralEarned">₦0</div>
-    </div>
+      </nav>
 
-    <div class="card">
-      <div class="stat-label">Active Referrals</div>
-      <div class="stat-value" id="activeReferrals">0</div>
-    </div>
 
-    <div class="card">
-      <div class="stat-label">Membership</div>
-      <div class="stat-value" id="membershipPlan">
-        —
-      </div>
-    </div>
-
-  </section>
-
-  <!-- DAILY LIMIT -->
-
-  <section class="daily-limit">
-
-    <div class="daily-head">
-
-      <strong>
-        Today's Normal Earning Limit
-      </strong>
-
-      <span id="dailyText">
-        Loading...
-      </span>
-
-    </div>
-
-    <div class="progress">
-      <div
-        class="progress-bar"
-        id="dailyProgress"
-      ></div>
-    </div>
-
-    <div class="daily-note">
-      Tasks, Watch & Earn and other normal activity earnings count toward your daily plan limit.
-      Referral bonuses and Create & Earn earnings are excluded.
-    </div>
-
-  </section>
-
-  <!-- EARNING OPTIONS -->
-
-  <h2 class="section-title">
-    Ways to Earn
-  </h2>
-
-  <section class="earn-grid">
-
-    <div class="earn-card">
-      <div class="earn-icon">📝</div>
-      <h3>Tasks</h3>
-      <p>
-        Complete available tasks and earn within your membership plan's daily normal earning limit.
-      </p>
-      <a href="tasks.html">View Tasks →</a>
-    </div>
-
-    <div class="earn-card">
-      <div class="earn-icon">🎬</div>
-      <h3>Watch & Earn</h3>
-      <p>
-        Watch available adverts and earn from eligible videos.
-      </p>
-      <a href="watch-earn.html">Watch Videos →</a>
-    </div>
-
-    <div class="earn-card">
-      <div class="earn-icon">📖</div>
-      <h3>Read & Earn</h3>
-      <p>
-        Read available articles and complete reading activities to earn.
-      </p>
-      <a href="read-earn.html">Read Articles →</a>
-    </div>
-
-    <div class="earn-card">
-      <div class="earn-icon">✍️</div>
-      <h3>Create & Earn</h3>
-      <p>
-        Create eligible content and earn from approved publishing activities.
-      </p>
-      <a href="create-earn.html">Create Content →</a>
-    </div>
-
-    <div class="earn-card">
-      <div class="earn-icon">👥</div>
-      <h3>Referrals</h3>
-      <p>
-        Invite members and receive referral bonuses according to the applicable referral matrix.
-      </p>
-      <a href="referrals.html">View Referrals →</a>
-    </div>
-
-    <div class="earn-card">
-      <div class="earn-icon">🏆</div>
-      <h3>Competitions</h3>
-      <p>
-        Join competitions available to your membership plan and compete for prizes.
-      </p>
-      <a href="competitions.html">View Competitions →</a>
-    </div>
-
-    <div class="earn-card">
-      <div class="earn-icon">💬</div>
-      <h3>Complaints</h3>
-      <p>
-        Need help? Contact EarnGig support for assistance.
-      </p>
-      <a href="mailto:support@earngig.com">Contact Support →</a>
-    </div>
-
-    <div class="earn-card">
-      <div class="earn-icon">📢</div>
-      <h3>Run an Advert</h3>
-      <p>
-        Promote your business or offer to the EarnGig audience.
-      </p>
-      <a href="run-advert.html">Run an Advert →</a>
-    </div>
-
-  </section>
-
-  <!-- REFERRAL -->
-
-  <h2 class="section-title">
-    Your Referral Program
-  </h2>
-
-  <section class="referral-card">
-
-    <div class="stat-label">
-      Your Referral Code
-    </div>
-
-    <div class="referral-code-box">
-
-      <div
-        class="referral-code"
-        id="referralCode"
+      <a
+        class="btn outline"
+        href="profile.html"
       >
-        Loading...
-      </div>
+        My Profile
+      </a>
+
 
       <button
-        class="copy-btn"
-        id="copyReferralBtn"
+        id="logout-button"
+        class="btn outline"
         type="button"
       >
-        Copy
+        Log Out
       </button>
 
     </div>
 
-    <div class="ref-stats">
+  </header>
 
-      <div class="ref-stat">
-        <span>Successful Referrals</span>
-        <strong id="successfulReferrals">0</strong>
+
+  <!-- =========================================================
+       MOBILE MENU
+  ========================================================= -->
+
+  <div
+    id="dashboard-menu-overlay"
+    class="dashboard-menu-overlay"
+  >
+
+    <aside class="dashboard-menu">
+
+      <button
+        id="dashboard-menu-close"
+        class="dashboard-menu-close"
+        type="button"
+      >
+        ×
+      </button>
+
+
+      <div class="dashboard-menu-logo">
+
+        <span class="dashboard-menu-logo-mark">
+          E
+        </span>
+
+        EarnGig
+
       </div>
 
-      <div class="ref-stat">
-        <span>Referral Earnings</span>
-        <strong id="referralTotal">₦0</strong>
+
+      <div class="dashboard-menu-label">
+        Dashboard
       </div>
 
-      <div class="ref-stat">
-        <span>Active Referrals</span>
-        <strong id="referralActive">0</strong>
+
+      <a href="dashboard.html">
+
+        <span class="dashboard-menu-icon">
+          🏠
+        </span>
+
+        Dashboard
+
+      </a>
+
+
+      <a href="notifications.html">
+
+        <span class="dashboard-menu-icon">
+          🔔
+        </span>
+
+        Notifications
+
+      </a>
+
+
+      <div class="dashboard-menu-label">
+        Earn
       </div>
 
-    </div>
 
-  </section>
+      <a href="tasks.html">
 
-  <!-- RECENT TRANSACTIONS -->
+        <span class="dashboard-menu-icon">
+          ✓
+        </span>
 
-  <h2 class="section-title">
-    Recent Transactions
-  </h2>
+        Tasks
 
-  <section class="recent-card">
+      </a>
 
-    <div class="recent-head">
-      <h3>Latest Activity</h3>
-      <a href="transactions.html">View All</a>
-    </div>
 
-    <div id="recentTransactions">
-      <div class="loading">
-        Loading transactions...
+      <a href="watch-ads.html">
+
+        <span class="dashboard-menu-icon">
+          ▶
+        </span>
+
+        Watch & Earn
+
+      </a>
+
+
+      <a href="competitions.html">
+
+        <span class="dashboard-menu-icon">
+          🏆
+        </span>
+
+        Competitions
+
+      </a>
+
+
+      <a href="read-and-earn.html">
+
+        <span class="dashboard-menu-icon">
+          📖
+        </span>
+
+        Read & Earn
+
+      </a>
+
+
+      <a href="create-and-earn.html">
+
+        <span class="dashboard-menu-icon">
+          ✍️
+        </span>
+
+        Create & Earn
+
+      </a>
+
+
+      <div class="dashboard-menu-label">
+        Wallet
       </div>
-    </div>
-
-  </section>
-
-</main>
-
-<script>
-  /* =========================================================
-     SUPABASE
-  ========================================================= */
-
-  const SUPABASE_URL = "https://YOUR-PROJECT.supabase.co";
-  const SUPABASE_ANON_KEY = "YOUR-SUPABASE-ANON-KEY";
-
-  const supabaseClient = window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_ANON_KEY
-  );
 
 
-  /* =========================================================
-     HELPERS
-  ========================================================= */
+      <a href="membership.html">
 
-  function naira(value) {
-    return "₦" + Number(value || 0).toLocaleString("en-NG", {
-      maximumFractionDigits: 2
-    });
-  }
+        <span class="dashboard-menu-icon">
+          ★
+        </span>
 
-  function escapeHtml(value) {
-    return String(value ?? "")
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
-  }
+        Membership
 
-  function formatDate(value) {
-    if (!value) return "";
-
-    return new Date(value).toLocaleString("en-NG", {
-      dateStyle: "medium",
-      timeStyle: "short"
-    });
-  }
-
-  function relativeTime(value) {
-    if (!value) return "";
-
-    const date = new Date(value);
-    const now = new Date();
-
-    const diff = Math.max(
-      0,
-      Math.floor((now.getTime() - date.getTime()) / 1000)
-    );
-
-    if (diff < 60) {
-      return "Just now";
-    }
-
-    if (diff < 3600) {
-      const mins = Math.floor(diff / 60);
-      return mins + (mins === 1 ? " minute ago" : " minutes ago");
-    }
-
-    if (diff < 86400) {
-      const hours = Math.floor(diff / 3600);
-      return hours + (hours === 1 ? " hour ago" : " hours ago");
-    }
-
-    if (diff < 604800) {
-      const days = Math.floor(diff / 86400);
-      return days + (days === 1 ? " day ago" : " days ago");
-    }
-
-    return formatDate(value);
-  }
+      </a>
 
 
-  /* =========================================================
-     MOBILE MENU
-  ========================================================= */
+      <a href="withdraw.html">
 
-  const mobileDrawer = document.getElementById("mobileDrawer");
-  const menuBtn = document.getElementById("menuBtn");
-  const drawerClose = document.getElementById("drawerClose");
+        <span class="dashboard-menu-icon">
+          💸
+        </span>
 
-  menuBtn.addEventListener("click", () => {
-    mobileDrawer.classList.add("open");
-  });
+        Withdraw
 
-  drawerClose.addEventListener("click", () => {
-    mobileDrawer.classList.remove("open");
-  });
+      </a>
 
 
-  /* =========================================================
-     NOTIFICATIONS UI
-  ========================================================= */
+      <a href="transactions.html">
 
-  const notificationBtn =
-    document.getElementById("notificationBtn");
+        <span class="dashboard-menu-icon">
+          📊
+        </span>
 
-  const notificationPanel =
-    document.getElementById("notificationPanel");
+        Transactions
 
-  const notificationBadge =
-    document.getElementById("notificationBadge");
-
-  const notificationList =
-    document.getElementById("notificationList");
-
-  const markAllReadBtn =
-    document.getElementById("markAllReadBtn");
+      </a>
 
 
-  notificationBtn.addEventListener("click", async (event) => {
+      <a href="referrals.html">
 
-    event.stopPropagation();
+        <span class="dashboard-menu-icon">
+          👥
+        </span>
 
-    notificationPanel.classList.toggle("show");
+        Referrals
 
-    if (notificationPanel.classList.contains("show")) {
-      await loadNotifications();
-    }
-
-  });
+      </a>
 
 
-  document.addEventListener("click", (event) => {
-
-    if (
-      !notificationPanel.contains(event.target) &&
-      !notificationBtn.contains(event.target)
-    ) {
-      notificationPanel.classList.remove("show");
-    }
-
-  });
+      <div class="dashboard-menu-label">
+        Account
+      </div>
 
 
-  /* =========================================================
-     LOAD NOTIFICATIONS
-  ========================================================= */
+      <a href="profile.html">
 
-  async function loadNotifications() {
+        <span class="dashboard-menu-icon">
+          👤
+        </span>
 
-    const {
-      data: { user },
-      error: userError
-    } = await supabaseClient.auth.getUser();
+        My Profile
 
-    if (userError || !user) {
-      return;
-    }
+      </a>
 
-    const {
-      data,
-      error
-    } = await supabaseClient
-      .from("notifications")
-      .select(`
-        id,
-        title,
-        message,
-        type,
-        action_url,
-        is_read,
-        created_at
-      `)
-      .eq("user_id", user.id)
-      .order("created_at", {
-        ascending: false
-      })
-      .limit(30);
+    </aside>
 
-    if (error) {
+  </div>
 
-      console.error(
-        "Notification loading error:",
-        error
-      );
 
-      notificationList.innerHTML = `
-        <div class="empty-notifications">
-          Unable to load notifications.
-        </div>
-      `;
+  <!-- =========================================================
+       MAIN DASHBOARD
+  ========================================================= -->
 
-      return;
-    }
+  <main class="dashboard-page">
 
-    const notifications = data || [];
+    <div class="container">
 
-    const unreadCount =
-      notifications.filter(
-        notification => !notification.is_read
-      ).length;
 
-    updateNotificationBadge(unreadCount);
+      <section class="eg-welcome">
 
-    if (!notifications.length) {
+        <span class="eg-eyebrow">
+          MEMBER DASHBOARD
+        </span>
 
-      notificationList.innerHTML = `
-        <div class="empty-notifications">
-          🎉 You're all caught up.<br>
-          No notifications yet.
-        </div>
-      `;
 
-      return;
-    }
+        <h1>
 
-    notificationList.innerHTML =
-      notifications
-        .map(notification => {
+          Welcome back,<br>
 
-          const unread =
-            !notification.is_read;
+          <span
+            id="user-name"
+            class="gradient-user-name"
+          >
+            Member!
+          </span>
 
-          return `
-            <div
-              class="notification-item ${unread ? "unread" : "read"}"
-              data-notification-id="${escapeHtml(notification.id)}"
-              data-action-url="${escapeHtml(notification.action_url || "")}"
+        </h1>
+
+
+        <p>
+          Explore available activities and keep track
+          of your EarnGig earnings.
+        </p>
+
+      </section>
+
+
+
+      <a
+        class="start-earning-button"
+        href="#earn"
+      >
+
+        <span>
+          Start Earning
+        </span>
+
+        <span class="start-earning-arrow">
+          →
+        </span>
+
+      </a>
+
+
+
+      <!-- =====================================================
+           WALLET
+      ====================================================== -->
+
+      <section class="eg-wallet-card">
+
+        <div class="eg-wallet-content">
+
+          <div>
+
+            <span class="eg-wallet-label">
+              AVAILABLE BALANCE
+            </span>
+
+
+            <strong
+              id="wallet-balance"
+              class="eg-wallet-balance"
             >
+              ₦0.00
+            </strong>
 
-              <div class="notification-item-title">
-                <span class="dot"></span>
-                <span>
-                  ${escapeHtml(notification.title)}
-                </span>
-              </div>
 
-              <div class="notification-item-message">
-                ${escapeHtml(notification.message)}
-              </div>
+            <p
+              id="withdrawal-minimum-text"
+              class="eg-wallet-minimum"
+            >
+              Minimum withdrawal: Loading...
+            </p>
 
-              <div class="notification-time">
-                ${escapeHtml(relativeTime(notification.created_at))}
-              </div>
+          </div>
+
+
+          <div class="eg-wallet-actions">
+
+            <a
+              class="btn primary"
+              href="withdraw.html"
+            >
+              Withdraw
+            </a>
+
+
+            <a
+              class="btn light"
+              href="transactions.html"
+            >
+              Transactions
+            </a>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- =====================================================
+           SUMMARY
+      ====================================================== -->
+
+      <section class="eg-summary-grid">
+
+        <div class="eg-summary-card">
+
+          <small>
+            Today's Earnings
+          </small>
+
+          <strong id="today-earnings">
+            ₦0
+          </strong>
+
+        </div>
+
+
+        <div class="eg-summary-card">
+
+          <small>
+            Total Earned
+          </small>
+
+          <strong id="total-earned">
+            ₦0
+          </strong>
+
+        </div>
+
+
+        <div class="eg-summary-card">
+
+          <small>
+            Referral Earnings
+          </small>
+
+          <strong id="referral-earnings">
+            ₦0
+          </strong>
+
+        </div>
+
+
+        <div class="eg-summary-card">
+
+          <small>
+            Completed Activities
+          </small>
+
+          <strong id="completed-activities">
+            0
+          </strong>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- =====================================================
+           DAILY LIMIT
+      ====================================================== -->
+
+      <section
+        id="daily-earning-limit"
+        class="eg-daily-limit"
+      >
+
+        <div class="eg-daily-limit-header">
+
+          <div class="eg-daily-limit-title">
+
+            <div class="eg-daily-limit-icon">
+              🔒
+            </div>
+
+            <div>
+
+              <h3>
+                Daily Earning Limit
+              </h3>
+
+              <p
+                id="daily-limit-plan"
+                class="eg-daily-limit-plan"
+              >
+                Loading your membership limit...
+              </p>
 
             </div>
-          `;
-        })
-        .join("");
 
-    document
-      .querySelectorAll(".notification-item")
-      .forEach(item => {
-
-        item.addEventListener("click", async () => {
-
-          const id =
-            item.dataset.notificationId;
-
-          const actionUrl =
-            item.dataset.actionUrl;
-
-          await markNotificationRead(id);
-
-          if (actionUrl) {
-            window.location.href = actionUrl;
-          } else {
-            await loadNotifications();
-          }
-
-        });
-
-      });
-
-  }
+          </div>
 
 
-  function updateNotificationBadge(count) {
+          <div class="eg-daily-limit-amount">
 
-    if (count > 0) {
+            <strong id="daily-limit-amount">
+              Loading...
+            </strong>
 
-      notificationBadge.textContent =
-        count > 99 ? "99+" : count;
+            <span id="daily-limit-label">
+              Normal activities today
+            </span>
 
-      notificationBadge.style.display =
-        "flex";
+          </div>
 
-    } else {
+        </div>
 
-      notificationBadge.style.display =
-        "none";
+
+        <div class="eg-progress">
+
+          <div
+            id="daily-limit-progress-bar"
+            class="eg-progress-bar"
+          ></div>
+
+        </div>
+
+
+        <div class="eg-daily-limit-footer">
+
+          <div
+            id="daily-limit-remaining"
+            class="eg-daily-limit-remaining"
+          >
+            Loading...
+          </div>
+
+
+          <div
+            id="daily-limit-note"
+            class="eg-daily-limit-note"
+          >
+            Referral bonuses and Create & Earn are not included.
+          </div>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- =====================================================
+           EARN
+      ====================================================== -->
+
+      <section
+        id="earn"
+        class="eg-section eg-earn-section"
+      >
+
+        <div class="eg-section-heading">
+
+          <div>
+
+            <span class="eg-eyebrow">
+              EARN
+            </span>
+
+            <h2>
+              Choose how you want to earn
+            </h2>
+
+          </div>
+
+        </div>
+
+
+        <div class="eg-earn-grid">
+
+
+          <a
+            href="tasks.html"
+            class="eg-earn-card"
+          >
+
+            <div class="eg-icon">
+              ✓
+            </div>
+
+            <h3>
+              Tasks
+            </h3>
+
+            <p>
+              Complete available tasks and earn rewards.
+            </p>
+
+            <strong>
+              View tasks →
+            </strong>
+
+          </a>
+
+
+          <a
+            href="membership.html"
+            class="eg-earn-card"
+          >
+
+            <div class="eg-icon">
+              ★
+            </div>
+
+            <h3>
+              Premium
+            </h3>
+
+            <p>
+              Manage your membership and plan.
+            </p>
+
+            <strong>
+              View Premium →
+            </strong>
+
+          </a>
+
+
+          <a
+            href="watch-ads.html"
+            class="eg-earn-card"
+          >
+
+            <div class="eg-icon">
+              ▶
+            </div>
+
+            <h3>
+              Watch Ads
+            </h3>
+
+            <p>
+              Watch available adverts and earn eligible rewards.
+            </p>
+
+            <strong>
+              Watch ads →
+            </strong>
+
+          </a>
+
+
+          <a
+            href="competitions.html"
+            class="eg-earn-card"
+          >
+
+            <div class="eg-icon">
+              🏆
+            </div>
+
+            <h3>
+              Competitions
+            </h3>
+
+            <p>
+              Discover competitions, contests and awards.
+            </p>
+
+            <strong>
+              View competitions →
+            </strong>
+
+          </a>
+
+
+          <a
+            href="mailto:ahruhenterprises@gmail.com?subject=EarnGig%20Complaint%20%2F%20Issue"
+            class="eg-earn-card"
+          >
+
+            <div class="eg-icon">
+              📩
+            </div>
+
+            <h3>
+              Complaints
+            </h3>
+
+            <p>
+              Contact support about an EarnGig issue.
+            </p>
+
+            <strong>
+              Contact Support →
+            </strong>
+
+          </a>
+
+
+          <a
+            href="run-advert.html"
+            class="eg-earn-card"
+          >
+
+            <div class="eg-icon">
+              📣
+            </div>
+
+            <h3>
+              Run an Advert
+            </h3>
+
+            <p>
+              Promote your business or opportunity.
+            </p>
+
+            <strong>
+              Run an advert →
+            </strong>
+
+          </a>
+
+
+        </div>
+
+      </section>
+
+
+
+      <!-- =====================================================
+           READ & EARN
+      ====================================================== -->
+
+      <section
+        id="read"
+        class="eg-section"
+      >
+
+        <div class="eg-section-heading">
+
+          <div>
+
+            <span class="eg-eyebrow">
+              READ & EARN
+            </span>
+
+            <h2>
+              Available novels
+            </h2>
+
+          </div>
+
+
+          <a
+            href="read-and-earn.html"
+            class="eg-text-link"
+          >
+            View all →
+          </a>
+
+        </div>
+
+
+        <div class="eg-feature-card">
+
+          <div class="eg-feature-icon">
+            📖
+          </div>
+
+
+          <div class="eg-feature-content">
+
+            <h3>
+              Discover approved novels
+            </h3>
+
+            <p>
+              Complete the required reading and quiz
+              to qualify for a verified reading reward.
+            </p>
+
+          </div>
+
+
+          <a
+            href="read-and-earn.html"
+            class="btn primary"
+          >
+            Browse Novels
+          </a>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- =====================================================
+           CREATE & EARN
+      ====================================================== -->
+
+      <section
+        id="create"
+        class="eg-section"
+      >
+
+        <div class="eg-section-heading">
+
+          <div>
+
+            <span class="eg-eyebrow">
+              CREATE & EARN
+            </span>
+
+            <h2>
+              Create and earn from your content
+            </h2>
+
+          </div>
+
+
+          <a
+            href="create-and-earn.html"
+            class="eg-text-link"
+          >
+            View all →
+          </a>
+
+        </div>
+
+
+        <div class="eg-feature-card">
+
+          <div class="eg-feature-icon">
+            ✍️
+          </div>
+
+
+          <div class="eg-feature-content">
+
+            <h3>
+              Publish your own novel
+            </h3>
+
+            <p>
+              Create and submit your novel for approval.
+              Approved creators can earn when readers
+              complete eligible reading assignments.
+            </p>
+
+          </div>
+
+
+          <a
+            href="create-and-earn.html"
+            class="btn primary"
+          >
+            Create & Earn
+          </a>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- =====================================================
+           REFERRALS
+      ====================================================== -->
+
+      <section
+        id="referrals"
+        class="eg-section"
+      >
+
+        <div class="eg-section-heading">
+
+          <div>
+
+            <span class="eg-eyebrow">
+              REFERRALS
+            </span>
+
+            <h2>
+              Your referral program
+            </h2>
+
+          </div>
+
+
+          <a
+            href="referrals.html"
+            class="eg-text-link"
+          >
+            View all →
+          </a>
+
+        </div>
+
+
+        <div class="eg-referral-card">
+
+          <div class="eg-referral-code-row">
+
+            <div>
+
+              <span class="eg-referral-code-label">
+                YOUR REFERRAL CODE
+              </span>
+
+              <strong
+                id="dashboard-referral-code"
+                class="eg-referral-code"
+              >
+                Loading...
+              </strong>
+
+            </div>
+
+
+            <button
+              id="copy-referral-button"
+              class="btn primary"
+              type="button"
+            >
+              Copy Referral Link
+            </button>
+
+          </div>
+
+
+          <div class="eg-referral-stats">
+
+            <div class="eg-referral-stat">
+
+              <small>
+                Successful referrals
+              </small>
+
+              <strong id="successful-referrals">
+                0
+              </strong>
+
+            </div>
+
+
+            <div class="eg-referral-stat">
+
+              <small>
+                Referral earnings
+              </small>
+
+              <strong id="dashboard-referral-earnings">
+                ₦0
+              </strong>
+
+            </div>
+
+
+            <div class="eg-referral-stat">
+
+              <small>
+                Active referrals
+              </small>
+
+              <strong id="active-referrals">
+                0
+              </strong>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div
+          id="referral-history-list"
+          class="eg-referral-list"
+        >
+
+          <div class="eg-empty">
+
+            <div class="eg-empty-icon">
+              👥
+            </div>
+
+            <h3>
+              Loading referrals...
+            </h3>
+
+            <p>
+              Your recent referral activity will appear here.
+            </p>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- =====================================================
+           TRANSACTIONS
+      ====================================================== -->
+
+      <section
+        id="transactions"
+        class="eg-section"
+      >
+
+        <div class="eg-section-heading">
+
+          <div>
+
+            <span class="eg-eyebrow">
+              WALLET
+            </span>
+
+            <h2>
+              Recent transactions
+            </h2>
+
+          </div>
+
+
+          <a
+            href="transactions.html"
+            class="eg-text-link"
+          >
+            View all →
+          </a>
+
+        </div>
+
+
+        <div
+          id="transaction-list"
+          class="eg-transaction-list"
+        >
+
+          <div class="eg-empty">
+
+            <div class="eg-empty-icon">
+              ₦
+            </div>
+
+            <h3>
+              Loading transactions...
+            </h3>
+
+            <p>
+              Your wallet activity will appear here.
+            </p>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+    </div>
+
+  </main>
+
+
+  <footer>
+
+    <div class="container copy">
+
+      © 2026 EarnGig.
+      All rights reserved.
+
+    </div>
+
+  </footer>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script src="supabase.js"></script>
+
+
+  <script>
+
+    /* =========================================================
+       CONSTANTS
+    ========================================================= */
+
+    const WITHDRAWAL_MINIMUMS = {
+
+      starter: 3000,
+      standard: 6000,
+      premium: 12000,
+      elite: 24000
+
+    };
+
+
+    const EARNING_TYPES = new Set([
+
+      "task_reward",
+      "watch_earn",
+      "referral_bonus",
+      "referral_earning",
+      "referral_commission",
+      "novel_writer_earnings",
+      "novel_earnings",
+      "competition_prize"
+
+    ]);
+
+
+    const NON_EARNING_TYPES = new Set([
+
+      "advert_payment",
+      "advert_payment_with_wallet",
+      "ad_payment",
+      "task_payment",
+      "task_refund",
+      "withdrawal",
+      "withdraw",
+      "withdrawal_fee",
+      "debit",
+      "payment",
+      "membership_payment",
+      "membership_fee",
+      "listing_fee",
+      "novel_listing_fee",
+      "refund",
+      "fee",
+      "charge"
+
+    ]);
+
+
+
+    /* =========================================================
+       FORMAT NAIRA
+    ========================================================= */
+
+    function formatNaira(
+      amount,
+      decimals = 0
+    ) {
+
+      const value =
+        Number(amount || 0);
+
+      return `₦${value.toLocaleString(
+        "en-NG",
+        {
+          minimumFractionDigits: decimals,
+          maximumFractionDigits: decimals
+        }
+      )}`;
 
     }
 
-  }
 
 
-  /* =========================================================
-     MARK SINGLE NOTIFICATION READ
-  ========================================================= */
+    /* =========================================================
+       TRANSACTION HELPERS
+    ========================================================= */
 
-  async function markNotificationRead(id) {
+    function getTransactionType(
+      transaction
+    ) {
 
-    if (!id) return;
+      return String(
+        transaction?.type || ""
+      )
+        .trim()
+        .toLowerCase();
 
-    const {
-      error
-    } = await supabaseClient
-      .from("notifications")
-      .update({
-        is_read: true
-      })
-      .eq("id", id);
+    }
 
-    if (error) {
-      console.error(
-        "Could not mark notification as read:",
-        error
+
+    function isRealEarning(
+      transaction
+    ) {
+
+      const amount =
+        Number(
+          transaction?.amount || 0
+        );
+
+      if (
+        !Number.isFinite(amount) ||
+        amount <= 0
+      ) {
+
+        return false;
+
+      }
+
+      return EARNING_TYPES.has(
+        getTransactionType(
+          transaction
+        )
       );
+
     }
 
-  }
+
+    function isWithdrawal(
+      transaction
+    ) {
+
+      const type =
+        getTransactionType(
+          transaction
+        );
+
+      return (
+        type === "withdrawal" ||
+        type === "withdraw" ||
+        type === "withdrawal_fee" ||
+        type.includes("withdraw")
+      );
+
+    }
 
 
-  /* =========================================================
-     MARK ALL READ
-  ========================================================= */
+    function isPaymentOrDebit(
+      transaction
+    ) {
 
-  markAllReadBtn.addEventListener(
-    "click",
-    async () => {
+      const type =
+        getTransactionType(
+          transaction
+        );
+
+      if (
+        isWithdrawal(transaction)
+      ) {
+
+        return true;
+
+      }
+
+      if (
+        NON_EARNING_TYPES.has(type)
+      ) {
+
+        return true;
+
+      }
+
+      return (
+        type.includes("payment") ||
+        type.includes("fee") ||
+        type.includes("charge") ||
+        type === "debit"
+      );
+
+    }
+
+
+
+    /* =========================================================
+       NOTIFICATION HELPERS
+    ========================================================= */
+
+    function escapeHtml(
+      value
+    ) {
+
+      return String(
+        value ?? ""
+      )
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+
+    }
+
+
+    function notificationIcon(
+      type
+    ) {
+
+      const value =
+        String(
+          type || ""
+        )
+          .trim()
+          .toLowerCase();
+
+
+      if (
+        value === "important"
+      ) {
+
+        return "⚠️";
+
+      }
+
+
+      if (
+        value === "competition"
+      ) {
+
+        return "🏆";
+
+      }
+
+
+      if (
+        value === "novel"
+      ) {
+
+        return "📚";
+
+      }
+
+
+      if (
+        value === "membership"
+      ) {
+
+        return "💳";
+
+      }
+
+
+      if (
+        value === "referral"
+      ) {
+
+        return "🎁";
+
+      }
+
+
+      if (
+        value === "withdrawal"
+      ) {
+
+        return "💸";
+
+      }
+
+
+      if (
+        value === "update"
+      ) {
+
+        return "✨";
+
+      }
+
+
+      if (
+        value === "welcome"
+      ) {
+
+        return "🎉";
+
+      }
+
+
+      if (
+        value === "announcement"
+      ) {
+
+        return "📢";
+
+      }
+
+
+      return "🔔";
+
+    }
+
+
+    function formatNotificationDate(
+      value
+    ) {
+
+      if (!value) {
+
+        return "";
+
+      }
+
+
+      const date =
+        new Date(value);
+
+
+      if (
+        Number.isNaN(
+          date.getTime()
+        )
+      ) {
+
+        return "";
+
+      }
+
+
+      return date.toLocaleString(
+        "en-NG",
+        {
+          timeZone: "Africa/Lagos",
+          month: "short",
+          day: "numeric",
+          hour: "numeric",
+          minute: "2-digit"
+        }
+      );
+
+    }
+
+
+
+    /* =========================================================
+       NOTIFICATION DROPDOWN
+    ========================================================= */
+
+    const notificationButton =
+      document.getElementById(
+        "notification-button"
+      );
+
+
+    const notificationDropdown =
+      document.getElementById(
+        "notification-dropdown"
+      );
+
+
+    const notificationBadge =
+      document.getElementById(
+        "notification-badge"
+      );
+
+
+    const notificationList =
+      document.getElementById(
+        "notification-dropdown-list"
+      );
+
+
+    const notificationWrapper =
+      document.getElementById(
+        "notification-wrapper"
+      );
+
+
+    function closeNotificationDropdown() {
+
+      notificationDropdown.classList.remove(
+        "open"
+      );
+
+      notificationButton.setAttribute(
+        "aria-expanded",
+        "false"
+      );
+
+    }
+
+
+    function toggleNotificationDropdown() {
+
+      const open =
+        notificationDropdown.classList.contains(
+          "open"
+        );
+
+
+      if (open) {
+
+        closeNotificationDropdown();
+
+      }
+
+      else {
+
+        notificationDropdown.classList.add(
+          "open"
+        );
+
+        notificationButton.setAttribute(
+          "aria-expanded",
+          "true"
+        );
+
+        loadNotificationDropdown();
+
+      }
+
+    }
+
+
+    notificationButton.addEventListener(
+      "click",
+      function(event) {
+
+        event.stopPropagation();
+
+        toggleNotificationDropdown();
+
+      }
+    );
+
+
+    document.addEventListener(
+      "click",
+      function(event) {
+
+        if (
+          !notificationWrapper.contains(
+            event.target
+          )
+        ) {
+
+          closeNotificationDropdown();
+
+        }
+
+      }
+    );
+
+
+
+    /* =========================================================
+       LOAD NOTIFICATION COUNT
+    ========================================================= */
+
+    async function loadNotificationCount() {
+
+      try {
+
+        const {
+          data,
+          error
+        } =
+          await supabaseClient
+            .rpc(
+              "get_notification_unread_count"
+            );
+
+
+        if (error) {
+
+          console.error(
+            "Notification count error:",
+            error
+          );
+
+          return;
+
+        }
+
+
+        const count =
+          Number(data || 0);
+
+
+        if (count > 0) {
+
+          notificationBadge.textContent =
+            count > 99
+              ? "99+"
+              : String(count);
+
+          notificationBadge.classList.add(
+            "visible"
+          );
+
+        }
+
+        else {
+
+          notificationBadge.classList.remove(
+            "visible"
+          );
+
+        }
+
+      }
+
+      catch (error) {
+
+        console.error(
+          "Notification count error:",
+          error
+        );
+
+      }
+
+    }
+
+
+
+    /* =========================================================
+       MARK NOTIFICATION READ
+    ========================================================= */
+
+    async function markDashboardNotificationRead(
+      notificationId
+    ) {
+
+      if (!notificationId) {
+
+        return false;
+
+      }
+
+
+      try {
+
+        const {
+          error
+        } =
+          await supabaseClient
+            .rpc(
+              "mark_notification_read",
+              {
+                p_notification_id:
+                  notificationId
+              }
+            );
+
+
+        if (error) {
+
+          console.error(
+            "Notification read error:",
+            error
+          );
+
+          return false;
+
+        }
+
+
+        return true;
+
+      }
+
+      catch (error) {
+
+        console.error(
+          "Notification read error:",
+          error
+        );
+
+        return false;
+
+      }
+
+    }
+
+
+
+    /* =========================================================
+       LOAD NOTIFICATION DROPDOWN
+    ========================================================= */
+
+    async function loadNotificationDropdown() {
+
+      notificationList.innerHTML = `
+        <div class="notification-loading">
+          Loading notifications...
+        </div>
+      `;
+
 
       const {
-        data: { user },
+        data: {
+          user
+        },
         error: userError
-      } = await supabaseClient.auth.getUser();
+      } =
+        await supabaseClient
+          .auth
+          .getUser();
 
-      if (userError || !user) return;
+
+      if (
+        userError ||
+        !user
+      ) {
+
+        notificationList.innerHTML = `
+          <div class="notification-dropdown-empty">
+            Please log in again.
+          </div>
+        `;
+
+        return;
+
+      }
+
 
       const {
+        data: notifications,
         error
-      } = await supabaseClient
-        .from("notifications")
-        .update({
-          is_read: true
-        })
-        .eq("user_id", user.id)
-        .eq("is_read", false);
+      } =
+        await supabaseClient
+          .from("notifications")
+          .select(`
+            id,
+            title,
+            message,
+            type,
+            action_url,
+            is_read,
+            created_at
+          `)
+          .eq(
+            "user_id",
+            user.id
+          )
+          .order(
+            "created_at",
+            {
+              ascending: false
+            }
+          )
+          .limit(5);
+
 
       if (error) {
 
         console.error(
-          "Could not mark notifications as read:",
+          "Notification dropdown error:",
           error
         );
 
+
+        notificationList.innerHTML = `
+          <div class="notification-dropdown-empty">
+            Unable to load notifications.
+          </div>
+        `;
+
         return;
+
       }
 
-      updateNotificationBadge(0);
 
-      await loadNotifications();
+      if (
+        !notifications ||
+        notifications.length === 0
+      ) {
 
-    }
-  );
+        notificationList.innerHTML = `
+          <div class="notification-dropdown-empty">
+            🔔<br><br>
+            No notifications yet.
+          </div>
+        `;
 
+        return;
 
-  /* =========================================================
-     LOAD PROFILE
-  ========================================================= */
-
-  async function loadProfile(user) {
-
-    const {
-      data,
-      error
-    } = await supabaseClient
-      .from("profiles")
-      .select(`
-        full_name,
-        referral_code
-      `)
-      .eq("id", user.id)
-      .maybeSingle();
-
-    if (error) {
-      console.error(
-        "Profile loading error:",
-        error
-      );
-      return;
-    }
-
-    const name =
-      data?.full_name ||
-      user.user_metadata?.full_name ||
-      user.email?.split("@")[0] ||
-      "Member";
-
-    document.getElementById(
-      "userName"
-    ).textContent = name;
-
-    const initials =
-      name
-        .trim()
-        .split(/\s+/)
-        .slice(0, 2)
-        .map(word => word[0])
-        .join("")
-        .toUpperCase();
-
-    document.getElementById(
-      "profileInitials"
-    ).textContent = initials || "EG";
-
-    document.getElementById(
-      "referralCode"
-    ).textContent =
-      data?.referral_code ||
-      user.user_metadata?.referral_code ||
-      "Not available";
-
-    window.currentReferralCode =
-      data?.referral_code ||
-      user.user_metadata?.referral_code ||
-      "";
-
-  }
+      }
 
 
-  /* =========================================================
-     LOAD WALLET
-  ========================================================= */
+      notificationList.innerHTML =
+        notifications
+          .map(
+            function(notification) {
 
-  async function loadWallet(user) {
-
-    const {
-      data,
-      error
-    } = await supabaseClient
-      .from("wallets")
-      .select(`
-        balance,
-        total_earned,
-        referral_earned
-      `)
-      .eq("user_id", user.id)
-      .maybeSingle();
-
-    if (error) {
-
-      console.error(
-        "Wallet loading error:",
-        error
-      );
-
-      return;
-    }
-
-    const balance =
-      Number(data?.balance || 0);
-
-    const totalEarned =
-      Number(data?.total_earned || 0);
-
-    const referralEarned =
-      Number(data?.referral_earned || 0);
-
-    document.getElementById(
-      "walletBalance"
-    ).textContent = naira(balance);
-
-    document.getElementById(
-      "totalEarned"
-    ).textContent = naira(totalEarned);
-
-    document.getElementById(
-      "referralEarned"
-    ).textContent = naira(referralEarned);
-
-    document.getElementById(
-      "referralTotal"
-    ).textContent = naira(referralEarned);
-
-    document.getElementById(
-      "walletSub"
-    ).textContent =
-      "Your available balance";
-  }
+              const unread =
+                notification.is_read !== true;
 
 
-  /* =========================================================
-     LOAD MEMBERSHIP
-  ========================================================= */
-
-  async function loadMembership(user) {
-
-    const {
-      data,
-      error
-    } = await supabaseClient
-      .from("memberships")
-      .select(`
-        status,
-        plan_code,
-        current_period_end
-      `)
-      .eq("user_id", user.id)
-      .maybeSingle();
-
-    if (error) {
-
-      console.error(
-        "Membership loading error:",
-        error
-      );
-
-      return;
-    }
-
-    const plan =
-      data?.plan_code || "—";
-
-    const planName =
-      plan === "starter"
-        ? "Starter"
-        : plan === "standard"
-          ? "Standard"
-          : plan === "premium"
-            ? "Premium"
-            : plan === "elite"
-              ? "Elite"
-              : "—";
-
-    document.getElementById(
-      "membershipPlan"
-    ).textContent = planName;
-
-  }
+              const actionUrl =
+                notification.action_url ||
+                "notifications.html";
 
 
-  /* =========================================================
-     DAILY NORMAL EARNING STATUS
-  ========================================================= */
+              return `
+                <a
+                  href="${escapeHtml(actionUrl)}"
+                  class="notification-dropdown-item ${
+                    unread
+                      ? "unread"
+                      : ""
+                  }"
+                  data-notification-id="${
+                    escapeHtml(
+                      notification.id
+                    )
+                  }"
+                >
 
-  async function loadDailyLimit() {
+                  <div class="notification-dropdown-icon">
+                    ${
+                      notificationIcon(
+                        notification.type
+                      )
+                    }
+                  </div>
 
-    const {
-      data,
-      error
-    } = await supabaseClient.rpc(
-      "get_daily_task_earning_status"
-    );
 
-    if (error) {
+                  <div class="notification-dropdown-content">
 
-      console.error(
-        "Daily earning status error:",
-        error
-      );
+                    <div class="notification-dropdown-title">
 
-      document.getElementById(
-        "dailyText"
-      ).textContent = "Unavailable";
+                      <span>
+                        ${
+                          escapeHtml(
+                            notification.title
+                          )
+                        }
+                      </span>
 
-      return;
-    }
+                      ${
+                        unread
+                          ? `
+                            <span
+                              class="notification-unread-dot"
+                            ></span>
+                          `
+                          : ""
+                      }
 
-    const status = data || {};
+                    </div>
 
-    const earned =
-      Number(
-        status.earned_today ??
-        status.today_earned ??
-        0
-      );
 
-    const limit =
-      Number(
-        status.daily_limit ??
-        status.limit ??
-        0
-      );
+                    <div class="notification-dropdown-message">
 
-    const remaining =
-      Math.max(
-        0,
-        Number(
-          status.remaining ??
-          (limit - earned)
-        )
-      );
+                      ${
+                        escapeHtml(
+                          notification.message
+                        )
+                      }
 
-    const percent =
-      limit > 0
-        ? Math.min(
-            100,
-            (earned / limit) * 100
+                    </div>
+
+
+                    <div class="notification-dropdown-date">
+
+                      ${
+                        escapeHtml(
+                          formatNotificationDate(
+                            notification.created_at
+                          )
+                        )
+                      }
+
+                    </div>
+
+                  </div>
+
+                </a>
+              `;
+
+            }
           )
-        : 0;
-
-    document.getElementById(
-      "dailyText"
-    ).textContent =
-      `${naira(earned)} / ${naira(limit)} • ${naira(remaining)} remaining`;
-
-    document.getElementById(
-      "dailyProgress"
-    ).style.width =
-      percent + "%";
-
-  }
+          .join("");
 
 
-  /* =========================================================
-     LOAD REFERRALS
-  ========================================================= */
+      document
+        .querySelectorAll(
+          "#notification-dropdown-list [data-notification-id]"
+        )
+        .forEach(
+          function(item) {
 
-  async function loadReferrals(user) {
+            item.addEventListener(
+              "click",
+              async function() {
 
-    const {
-      data: referrals,
-      error
-    } = await supabaseClient
-      .from("profiles")
-      .select(`
-        id,
-        full_name,
-        created_at
-      `)
-      .eq("referred_by", user.id)
-      .order("created_at", {
-        ascending: false
-      });
+                const id =
+                  item.dataset.notificationId;
 
-    if (!error) {
 
-      const count =
-        referrals?.length || 0;
+                await markDashboardNotificationRead(
+                  id
+                );
 
-      document.getElementById(
-        "successfulReferrals"
-      ).textContent = count;
 
-    }
+                await loadNotificationCount();
 
-    const {
-      data: activeCount,
-      error: activeError
-    } = await supabaseClient.rpc(
-      "get_active_referral_count"
-    );
+              }
+            );
 
-    if (!activeError) {
-
-      const count =
-        Number(
-          activeCount || 0
+          }
         );
 
-      document.getElementById(
-        "activeReferrals"
-      ).textContent = count;
-
-      document.getElementById(
-        "referralActive"
-      ).textContent = count;
-
     }
 
-    const {
-      data: bonusRows,
-      error: bonusError
-    } = await supabaseClient
-      .from("referral_bonus_ledger")
-      .select("bonus_amount")
-      .eq("referrer_user_id", user.id);
 
-    if (!bonusError) {
 
-      const total =
-        (bonusRows || []).reduce(
-          (sum, row) =>
-            sum + Number(row.bonus_amount || 0),
-          0
+    /* =========================================================
+       MEMBERSHIP ACCESS
+    ========================================================= */
+
+    async function checkMembershipAccess() {
+
+      const {
+        data: {
+          user
+        },
+        error: userError
+      } =
+        await supabaseClient
+          .auth
+          .getUser();
+
+
+      if (
+        userError ||
+        !user
+      ) {
+
+        window.location.href =
+          "login.html";
+
+        return false;
+
+      }
+
+
+      const {
+        data: membership,
+        error: membershipError
+      } =
+        await supabaseClient
+          .from("memberships")
+          .select(`
+            status,
+            plan_code,
+            current_period_end
+          `)
+          .eq(
+            "user_id",
+            user.id
+          )
+          .maybeSingle();
+
+
+      if (membershipError) {
+
+        console.error(
+          "Membership verification error:",
+          membershipError
         );
 
-      document.getElementById(
-        "referralTotal"
-      ).textContent = naira(total);
+        alert(
+          "Unable to verify your membership. Please try again."
+        );
 
-    }
+        return false;
 
-  }
+      }
 
 
-  /* =========================================================
-     LOAD RECENT TRANSACTIONS
-  ========================================================= */
+      if (!membership) {
 
-  async function loadRecentTransactions(user) {
+        window.location.href =
+          "membership.html";
 
-    const container =
-      document.getElementById(
-        "recentTransactions"
+        return false;
+
+      }
+
+
+      const periodEnd =
+        membership.current_period_end
+          ? new Date(
+              membership.current_period_end
+            )
+          : null;
+
+
+      const active =
+        membership.status === "active" &&
+        periodEnd &&
+        periodEnd.getTime() >
+          Date.now();
+
+
+      if (active) {
+
+        return true;
+
+      }
+
+
+      alert(
+        "Your membership has expired. Please renew your membership to continue."
       );
 
-    const {
-      data,
-      error
-    } = await supabaseClient
-      .from("transactions")
-      .select(`
-        type,
-        amount,
-        description,
-        created_at
-      `)
-      .eq("user_id", user.id)
-      .order("created_at", {
-        ascending: false
-      })
-      .limit(7);
 
-    if (error) {
+      window.location.href =
+        "membership.html";
 
-      console.error(
-        "Transactions loading error:",
+
+      return false;
+
+    }
+
+
+
+    /* =========================================================
+       DAILY EARNING LIMIT
+    ========================================================= */
+
+    async function loadDailyEarningLimit() {
+
+      const card =
+        document.getElementById(
+          "daily-earning-limit"
+        );
+
+
+      const planElement =
+        document.getElementById(
+          "daily-limit-plan"
+        );
+
+
+      const amountElement =
+        document.getElementById(
+          "daily-limit-amount"
+        );
+
+
+      const labelElement =
+        document.getElementById(
+          "daily-limit-label"
+        );
+
+
+      const progressBar =
+        document.getElementById(
+          "daily-limit-progress-bar"
+        );
+
+
+      const remainingElement =
+        document.getElementById(
+          "daily-limit-remaining"
+        );
+
+
+      const noteElement =
+        document.getElementById(
+          "daily-limit-note"
+        );
+
+
+      card.classList.remove(
+        "daily-limit-error",
+        "daily-limit-reached"
+      );
+
+
+      try {
+
+        const {
+          data,
+          error
+        } =
+          await supabaseClient
+            .rpc(
+              "get_daily_task_earning_status"
+            );
+
+
+        if (error) {
+
+          throw error;
+
+        }
+
+
+        let result =
+          data;
+
+
+        if (
+          Array.isArray(data)
+        ) {
+
+          result =
+            data[0] || null;
+
+        }
+
+
+        const dailyLimit =
+          Number(
+            result?.daily_limit
+          );
+
+
+        const earnedToday =
+          Number(
+            result?.earned_today
+          );
+
+
+        const remainingToday =
+          Number(
+            result?.remaining_today
+          );
+
+
+        const planCode =
+          String(
+            result?.plan_code || ""
+          )
+            .trim()
+            .toLowerCase();
+
+
+        if (
+          !result ||
+          !planCode ||
+          !Number.isFinite(dailyLimit) ||
+          dailyLimit <= 0 ||
+          !Number.isFinite(earnedToday) ||
+          earnedToday < 0 ||
+          !Number.isFinite(remainingToday) ||
+          remainingToday < 0
+        ) {
+
+          throw new Error(
+            "Membership earning limit unavailable."
+          );
+
+        }
+
+
+        const safeLimit =
+          Math.max(
+            0,
+            dailyLimit
+          );
+
+
+        const safeEarned =
+          Math.min(
+            safeLimit,
+            Math.max(
+              0,
+              earnedToday
+            )
+          );
+
+
+        const safeRemaining =
+          Math.max(
+            0,
+            Math.min(
+              safeLimit,
+              remainingToday
+            )
+          );
+
+
+        const planName =
+          planCode.charAt(0).toUpperCase() +
+          planCode.slice(1);
+
+
+        const percentage =
+          safeLimit > 0
+            ? Math.min(
+                100,
+                (
+                  safeEarned /
+                  safeLimit
+                ) * 100
+              )
+            : 0;
+
+
+        planElement.textContent =
+          `${planName} plan • Normal earning activities`;
+
+
+        amountElement.textContent =
+          `${formatNaira(safeEarned)} / ${formatNaira(safeLimit)}`;
+
+
+        labelElement.textContent =
+          "Normal activities today";
+
+
+        progressBar.style.width =
+          `${percentage}%`;
+
+
+        if (
+          safeRemaining <= 0
+        ) {
+
+          card.classList.add(
+            "daily-limit-reached"
+          );
+
+
+          remainingElement.textContent =
+            "🔒 Daily earning limit reached for today.";
+
+
+          noteElement.textContent =
+            "Normal earning activities reset tomorrow. Referral bonuses and Create & Earn are not included.";
+
+        }
+
+        else {
+
+          remainingElement.textContent =
+            `${formatNaira(safeRemaining)} remaining today`;
+
+
+          noteElement.textContent =
+            "Referral bonuses and Create & Earn are not included.";
+
+        }
+
+      }
+
+      catch (error) {
+
+        console.error(
+          "Daily earning limit error:",
+          error
+        );
+
+
+        card.classList.add(
+          "daily-limit-error"
+        );
+
+
+        planElement.textContent =
+          "Unable to load your membership limit.";
+
+
+        amountElement.textContent =
+          "Unavailable";
+
+
+        progressBar.style.width =
+          "0%";
+
+
+        remainingElement.textContent =
+          "Please refresh the page.";
+
+
+        noteElement.textContent =
+          "Your earning limit could not be verified.";
+
+      }
+
+    }
+
+
+
+    /* =========================================================
+       LOAD DASHBOARD
+    ========================================================= */
+
+    async function loadDashboard() {
+
+      try {
+
+        const {
+          data: {
+            user
+          },
+          error: userError
+        } =
+          await supabaseClient
+            .auth
+            .getUser();
+
+
+        if (
+          userError ||
+          !user
+        ) {
+
+          window.location.href =
+            "login.html";
+
+          return;
+
+        }
+
+
+        /* PROFILE */
+
+        const {
+          data: profile
+        } =
+          await supabaseClient
+            .from("profiles")
+            .select(`
+              full_name,
+              referral_code
+            `)
+            .eq(
+              "id",
+              user.id
+            )
+            .maybeSingle();
+
+
+        document.getElementById(
+          "user-name"
+        ).textContent =
+          (
+            profile?.full_name ||
+            "Member"
+          ) + "!";
+
+
+        /* MEMBERSHIP */
+
+        const {
+          data: membership
+        } =
+          await supabaseClient
+            .from("memberships")
+            .select(`
+              plan_code
+            `)
+            .eq(
+              "user_id",
+              user.id
+            )
+            .maybeSingle();
+
+
+        const planCode =
+          String(
+            membership?.plan_code || ""
+          )
+            .trim()
+            .toLowerCase();
+
+
+        const minimum =
+          WITHDRAWAL_MINIMUMS[
+            planCode
+          ];
+
+
+        document.getElementById(
+          "withdrawal-minimum-text"
+        ).textContent =
+          minimum
+            ? `Minimum withdrawal: ${formatNaira(minimum)}`
+            : "Minimum withdrawal: Check your membership plan.";
+
+
+        /* WALLET */
+
+        const {
+          data: wallet
+        } =
+          await supabaseClient
+            .from("wallets")
+            .select(`
+              balance,
+              total_earned,
+              referral_earned
+            `)
+            .eq(
+              "user_id",
+              user.id
+            )
+            .maybeSingle();
+
+
+        const balance =
+          Number(
+            wallet?.balance || 0
+          );
+
+
+        const totalEarned =
+          Number(
+            wallet?.total_earned || 0
+          );
+
+
+        const referralEarned =
+          Number(
+            wallet?.referral_earned || 0
+          );
+
+
+        document.getElementById(
+          "wallet-balance"
+        ).textContent =
+          formatNaira(
+            balance,
+            2
+          );
+
+
+        document.getElementById(
+          "total-earned"
+        ).textContent =
+          formatNaira(
+            totalEarned
+          );
+
+
+        document.getElementById(
+          "referral-earnings"
+        ).textContent =
+          formatNaira(
+            referralEarned
+          );
+
+
+        document.getElementById(
+          "dashboard-referral-earnings"
+        ).textContent =
+          formatNaira(
+            referralEarned
+          );
+
+
+        await loadDailyEarningLimit();
+
+
+        /* REFERRAL CODE */
+
+        document.getElementById(
+          "dashboard-referral-code"
+        ).textContent =
+          profile?.referral_code ||
+          "Not available";
+
+
+        /* REFERRALS */
+
+        const {
+          data: referredMembers
+        } =
+          await supabaseClient
+            .from("profiles")
+            .select("id")
+            .eq(
+              "referred_by",
+              user.id
+            );
+
+
+        document.getElementById(
+          "successful-referrals"
+        ).textContent =
+          (
+            referredMembers || []
+          ).length;
+
+
+        /* ACTIVE REFERRALS */
+
+        const {
+          data: activeReferralCount
+        } =
+          await supabaseClient
+            .rpc(
+              "get_active_referral_count"
+            );
+
+
+        document.getElementById(
+          "active-referrals"
+        ).textContent =
+          Number(
+            activeReferralCount || 0
+          );
+
+
+        /* TASKS */
+
+        const {
+          data: attempts
+        } =
+          await supabaseClient
+            .from("task_attempts")
+            .select("status")
+            .eq(
+              "user_id",
+              user.id
+            );
+
+
+        const completed =
+          (
+            attempts || []
+          ).filter(
+            function(attempt) {
+
+              return (
+                attempt.status === "completed" ||
+                attempt.status === "approved"
+              );
+
+            }
+          ).length;
+
+
+        document.getElementById(
+          "completed-activities"
+        ).textContent =
+          completed;
+
+
+        /* TODAY'S EARNINGS */
+
+        const {
+          data: transactions
+        } =
+          await supabaseClient
+            .from("transactions")
+            .select(`
+              amount,
+              type,
+              status,
+              created_at
+            `)
+            .eq(
+              "user_id",
+              user.id
+            )
+            .eq(
+              "status",
+              "completed"
+            );
+
+
+        const lagosFormatter =
+          new Intl.DateTimeFormat(
+            "en-CA",
+            {
+              timeZone: "Africa/Lagos",
+              year: "numeric",
+              month: "2-digit",
+              day: "2-digit"
+            }
+          );
+
+
+        const today =
+          lagosFormatter.format(
+            new Date()
+          );
+
+
+        const todayEarnings =
+          (
+            transactions || []
+          )
+          .filter(
+            function(transaction) {
+
+              if (
+                !isRealEarning(
+                  transaction
+                )
+              ) {
+
+                return false;
+
+              }
+
+
+              if (
+                !transaction.created_at
+              ) {
+
+                return false;
+
+              }
+
+
+              return (
+                lagosFormatter.format(
+                  new Date(
+                    transaction.created_at
+                  )
+                ) === today
+              );
+
+            }
+          )
+          .reduce(
+            function(total, transaction) {
+
+              return (
+                total +
+                Number(
+                  transaction.amount || 0
+                )
+              );
+
+            },
+            0
+          );
+
+
+        document.getElementById(
+          "today-earnings"
+        ).textContent =
+          formatNaira(
+            todayEarnings
+          );
+
+      }
+
+      catch (error) {
+
+        console.error(
+          "Dashboard loading error:",
+          error
+        );
+
+      }
+
+    }
+
+
+
+    /* =========================================================
+       RECENT TRANSACTIONS
+    ========================================================= */
+
+    async function loadTransactions() {
+
+      const list =
+        document.getElementById(
+          "transaction-list"
+        );
+
+
+      const {
+        data: {
+          user
+        },
+        error: userError
+      } =
+        await supabaseClient
+          .auth
+          .getUser();
+
+
+      if (
+        userError ||
+        !user
+      ) {
+
+        window.location.href =
+          "login.html";
+
+        return;
+
+      }
+
+
+      const {
+        data: transactions,
         error
-      );
+      } =
+        await supabaseClient
+          .from("transactions")
+          .select(`
+            id,
+            type,
+            amount,
+            status,
+            description,
+            reference,
+            created_at
+          `)
+          .eq(
+            "user_id",
+            user.id
+          )
+          .order(
+            "created_at",
+            {
+              ascending: false
+            }
+          )
+          .limit(7);
 
-      container.innerHTML = `
-        <div class="loading">
-          Unable to load transactions.
-        </div>
-      `;
 
-      return;
-    }
+      if (error) {
 
-    if (!data || !data.length) {
+        list.innerHTML = `
+          <div class="eg-empty">
+            <h3>Unable to load transactions</h3>
+            <p>Please try again later.</p>
+          </div>
+        `;
 
-      container.innerHTML = `
-        <div class="loading">
-          No transactions yet.
-        </div>
-      `;
+        return;
 
-      return;
-    }
+      }
 
-    container.innerHTML =
-      data.map(row => {
 
-        const amount =
-          Number(row.amount || 0);
+      if (
+        !transactions ||
+        transactions.length === 0
+      ) {
 
-        const positive =
-          amount >= 0;
+        list.innerHTML = `
+          <div class="eg-empty">
 
-        const label =
-          row.description ||
-          formatTransactionType(row.type);
-
-        return `
-          <div class="transaction-row">
-
-            <div class="tx-left">
-              <strong>
-                ${escapeHtml(label)}
-              </strong>
-
-              <span>
-                ${escapeHtml(relativeTime(row.created_at))}
-              </span>
+            <div class="eg-empty-icon">
+              ₦
             </div>
 
-            <div
-              class="tx-amount ${positive ? "positive" : "negative"}"
-            >
-              ${positive ? "+" : ""}
-              ${naira(amount)}
-            </div>
+            <h3>
+              No transactions yet
+            </h3>
+
+            <p>
+              Your wallet activity will appear here.
+            </p>
 
           </div>
         `;
 
-      }).join("");
+        return;
 
-  }
+      }
 
 
-  function formatTransactionType(type) {
+      list.innerHTML =
+        transactions
+          .map(
+            function(transaction) {
 
-    if (!type) {
-      return "Transaction";
+              const amount =
+                Math.abs(
+                  Number(
+                    transaction.amount || 0
+                  )
+                );
+
+
+              const debit =
+                Number(
+                  transaction.amount || 0
+                ) < 0 ||
+                isPaymentOrDebit(
+                  transaction
+                );
+
+
+              const date =
+                transaction.created_at
+                  ? new Date(
+                      transaction.created_at
+                    ).toLocaleString(
+                      "en-NG",
+                      {
+                        timeZone:
+                          "Africa/Lagos"
+                      }
+                    )
+                  : "";
+
+
+              return `
+                <article class="transaction-item">
+
+                  <div class="transaction-info">
+
+                    <strong>
+                      ${
+                        escapeHtml(
+                          transaction.description ||
+                          transaction.type ||
+                          "Wallet transaction"
+                        )
+                      }
+                    </strong>
+
+                    <small>
+                      ${escapeHtml(date)}
+                    </small>
+
+                    <small>
+                      Status:
+                      ${
+                        escapeHtml(
+                          transaction.status ||
+                          "completed"
+                        )
+                      }
+                    </small>
+
+                  </div>
+
+
+                  <div
+                    class="transaction-amount ${
+                      debit
+                        ? "transaction-debit"
+                        : "transaction-credit"
+                    }"
+                  >
+
+                    ${
+                      debit
+                        ? "−"
+                        : "+"
+                    }${formatNaira(amount)}
+
+                  </div>
+
+                </article>
+              `;
+
+            }
+          )
+          .join("");
+
     }
 
-    return String(type)
-      .replace(/_/g, " ")
-      .replace(/\b\w/g, char =>
-        char.toUpperCase()
-      );
-
-  }
 
 
-  /* =========================================================
-     COPY REFERRAL
-  ========================================================= */
+    /* =========================================================
+       RECENT REFERRALS
+    ========================================================= */
 
-  document
-    .getElementById("copyReferralBtn")
-    .addEventListener("click", async () => {
+    async function loadReferralHistory() {
 
-      const code =
-        window.currentReferralCode;
-
-      if (!code) {
-
-        alert(
-          "Your referral code is not available yet."
+      const list =
+        document.getElementById(
+          "referral-history-list"
         );
+
+
+      const {
+        data: {
+          user
+        },
+        error: userError
+      } =
+        await supabaseClient
+          .auth
+          .getUser();
+
+
+      if (
+        userError ||
+        !user
+      ) {
 
         return;
+
       }
 
-      const referralLink =
-        window.location.origin +
-        "/signup.html?ref=" +
-        encodeURIComponent(code);
 
-      try {
+      const {
+        data: referrals,
+        error
+      } =
+        await supabaseClient
+          .from("profiles")
+          .select(`
+            id,
+            full_name,
+            created_at
+          `)
+          .eq(
+            "referred_by",
+            user.id
+          )
+          .order(
+            "created_at",
+            {
+              ascending: false
+            }
+          )
+          .limit(4);
 
-        await navigator.clipboard.writeText(
-          referralLink
+
+      if (error) {
+
+        list.innerHTML = `
+          <div class="eg-empty">
+
+            <h3>
+              Unable to load referrals
+            </h3>
+
+            <p>
+              Please try again later.
+            </p>
+
+          </div>
+        `;
+
+        return;
+
+      }
+
+
+      if (
+        !referrals ||
+        referrals.length === 0
+      ) {
+
+        list.innerHTML = `
+          <div class="eg-empty">
+
+            <div class="eg-empty-icon">
+              👥
+            </div>
+
+            <h3>
+              No referrals yet
+            </h3>
+
+            <p>
+              Share your referral code to start earning.
+            </p>
+
+          </div>
+        `;
+
+        return;
+
+      }
+
+
+      const ids =
+        referrals.map(
+          function(referral) {
+
+            return referral.id;
+
+          }
         );
 
-        const button =
-          document.getElementById(
-            "copyReferralBtn"
+
+      const {
+        data: bonuses
+      } =
+        await supabaseClient
+          .from("referral_bonus_ledger")
+          .select(`
+            referred_user_id,
+            bonus_amount
+          `)
+          .in(
+            "referred_user_id",
+            ids
           );
 
-        const oldText =
-          button.textContent;
 
-        button.textContent =
-          "Copied!";
+      const rows =
+        bonuses || [];
 
-        setTimeout(() => {
-          button.textContent = oldText;
-        }, 1800);
 
-      } catch (error) {
+      list.innerHTML =
+        referrals
+          .map(
+            function(referral) {
 
-        prompt(
-          "Copy your referral link:",
-          referralLink
-        );
+              const userBonuses =
+                rows.filter(
+                  function(bonus) {
+
+                    return (
+                      bonus.referred_user_id ===
+                      referral.id
+                    );
+
+                  }
+                );
+
+
+              const total =
+                userBonuses.reduce(
+                  function(sum, bonus) {
+
+                    return (
+                      sum +
+                      Number(
+                        bonus.bonus_amount || 0
+                      )
+                    );
+
+                  },
+                  0
+                );
+
+
+              const date =
+                referral.created_at
+                  ? new Date(
+                      referral.created_at
+                    ).toLocaleDateString(
+                      "en-NG",
+                      {
+                        timeZone:
+                          "Africa/Lagos"
+                      }
+                    )
+                  : "";
+
+
+              return `
+                <div class="referral-history-row">
+
+                  <div>
+
+                    <strong>
+                      ${
+                        escapeHtml(
+                          referral.full_name ||
+                          "EarnGig Member"
+                        )
+                      }
+                    </strong>
+
+                    <small>
+                      Joined ${escapeHtml(date)}
+                    </small>
+
+                  </div>
+
+
+                  <div>
+
+                    <strong>
+                      ${formatNaira(total)}
+                    </strong>
+
+                    <small>
+                      ${userBonuses.length}
+                      bonus payment${
+                        userBonuses.length === 1
+                          ? ""
+                          : "s"
+                      }
+                    </small>
+
+                  </div>
+
+                </div>
+              `;
+
+            }
+          )
+          .join("");
+
+    }
+
+
+
+    /* =========================================================
+       COPY REFERRAL
+    ========================================================= */
+
+    document
+      .getElementById(
+        "copy-referral-button"
+      )
+      .addEventListener(
+        "click",
+        async function() {
+
+          const code =
+            document
+              .getElementById(
+                "dashboard-referral-code"
+              )
+              .textContent
+              .trim();
+
+
+          if (
+            !code ||
+            code === "Loading..." ||
+            code === "Not available"
+          ) {
+
+            alert(
+              "Your referral code is not available yet."
+            );
+
+            return;
+
+          }
+
+
+          const link =
+            window.location.origin +
+            "/earngig-website/register.html?ref=" +
+            encodeURIComponent(
+              code
+            );
+
+
+          try {
+
+            await navigator.clipboard.writeText(
+              link
+            );
+
+
+            alert(
+              "Referral link copied!\n\n" +
+              link
+            );
+
+          }
+
+          catch (error) {
+
+            prompt(
+              "Copy your referral link:",
+              link
+            );
+
+          }
+
+        }
+      );
+
+
+
+    /* =========================================================
+       MOBILE MENU
+    ========================================================= */
+
+    const menuToggle =
+      document.getElementById(
+        "menu-toggle"
+      );
+
+
+    const menuOverlay =
+      document.getElementById(
+        "dashboard-menu-overlay"
+      );
+
+
+    const menuClose =
+      document.getElementById(
+        "dashboard-menu-close"
+      );
+
+
+    function openDashboardMenu() {
+
+      menuOverlay.classList.add(
+        "open"
+      );
+
+      document.body.style.overflow =
+        "hidden";
+
+    }
+
+
+    function closeDashboardMenu() {
+
+      menuOverlay.classList.remove(
+        "open"
+      );
+
+      document.body.style.overflow =
+        "";
+
+    }
+
+
+    menuToggle.addEventListener(
+      "click",
+      openDashboardMenu
+    );
+
+
+    menuClose.addEventListener(
+      "click",
+      closeDashboardMenu
+    );
+
+
+    menuOverlay.addEventListener(
+      "click",
+      function(event) {
+
+        if (
+          event.target === menuOverlay
+        ) {
+
+          closeDashboardMenu();
+
+        }
+
+      }
+    );
+
+
+    document
+      .querySelectorAll(
+        ".dashboard-menu a"
+      )
+      .forEach(
+        function(link) {
+
+          link.addEventListener(
+            "click",
+            closeDashboardMenu
+          );
+
+        }
+      );
+
+
+
+    /* =========================================================
+       LOGOUT
+    ========================================================= */
+
+    document
+      .getElementById(
+        "logout-button"
+      )
+      .addEventListener(
+        "click",
+        async function() {
+
+          const {
+            error
+          } =
+            await supabaseClient
+              .auth
+              .signOut();
+
+
+          if (error) {
+
+            alert(
+              "Unable to log out right now."
+            );
+
+            return;
+
+          }
+
+
+          window.location.href =
+            "login.html";
+
+        }
+      );
+
+
+
+    /* =========================================================
+       START DASHBOARD
+    ========================================================= */
+
+    (async function() {
+
+      const access =
+        await checkMembershipAccess();
+
+
+      if (!access) {
+
+        return;
 
       }
 
-    });
+
+      await loadDashboard();
+
+      await loadTransactions();
+
+      await loadReferralHistory();
 
 
-  /* =========================================================
-     LOGOUT
-  ========================================================= */
+      /*
+        Load notification badge after authentication.
+      */
 
-  async function logout() {
+      await loadNotificationCount();
 
-    await supabaseClient.auth.signOut();
-
-    window.location.href =
-      "index.html";
-
-  }
-
-  document
-    .getElementById("mobileLogout")
-    .addEventListener("click", async (event) => {
-
-      event.preventDefault();
-
-      await logout();
-
-    });
+    })();
 
 
-  /* =========================================================
-     AUTH + DASHBOARD STARTUP
-  ========================================================= */
-
-  async function startDashboard() {
-
-    const {
-      data: { user },
-      error
-    } = await supabaseClient.auth.getUser();
-
-    if (error || !user) {
-
-      window.location.href =
-        "login.html";
-
-      return;
-    }
 
     /*
-      Keep the existing membership access rule:
-      users without an active membership should
-      go to the membership page.
+      Refresh notification badge periodically.
+      This does not reload the whole dashboard.
     */
 
-    const {
-      data: membership
-    } = await supabaseClient
-      .from("memberships")
-      .select(`
-        status,
-        plan_code,
-        current_period_end
-      `)
-      .eq("user_id", user.id)
-      .maybeSingle();
+    setInterval(
+      loadNotificationCount,
+      60000
+    );
 
-    if (
-      !membership ||
-      membership.status !== "active" ||
-      !membership.plan_code
-    ) {
-
-      window.location.href =
-        "membership.html";
-
-      return;
-    }
-
-    if (
-      membership.current_period_end &&
-      new Date(
-        membership.current_period_end
-      ) <= new Date()
-    ) {
-
-      window.location.href =
-        "membership.html";
-
-      return;
-    }
-
-    await Promise.all([
-      loadProfile(user),
-      loadWallet(user),
-      loadMembership(user),
-      loadDailyLimit(),
-      loadReferrals(user),
-      loadRecentTransactions(user),
-      loadNotifications()
-    ]);
-
-  }
-
-
-  /* =========================================================
-     AUTO REFRESH NOTIFICATIONS
-  ========================================================= */
-
-  setInterval(async () => {
-
-    try {
-      await loadNotifications();
-    } catch (error) {
-      console.error(
-        "Notification refresh error:",
-        error
-      );
-    }
-
-  }, 60000);
-
-
-  /* =========================================================
-     RUN
-  ========================================================= */
-
-  startDashboard();
-
-</script>
+  </script>
 
 </body>
+
 </html>
