@@ -23,15 +23,15 @@
       display: grid;
       grid-template-columns: repeat(
         auto-fit,
-        minmax(240px, 1fr)
+        minmax(220px, 1fr)
       );
-      gap: 20px;
+      gap: 18px;
       margin-top: 24px;
     }
 
     .membership-plan {
       position: relative;
-      padding: 26px;
+      padding: 22px;
       border-radius: 18px;
       border: 1px solid rgba(139, 92, 246, 0.25);
       background: rgba(255, 255, 255, 0.035);
@@ -59,13 +59,13 @@
     }
 
     .membership-price {
-      font-size: 28px;
+      font-size: 27px;
       font-weight: 800;
       margin: 10px 0 4px;
     }
 
     .membership-period {
-      margin-bottom: 18px;
+      margin-bottom: 14px;
       opacity: 0.75;
       font-size: 13px;
     }
@@ -99,18 +99,12 @@
       color: #93c5fd;
     }
 
-    .plan-button,
-    .wallet-button {
+    .plan-button {
       width: 100%;
       margin-top: 18px;
     }
 
-    .wallet-button {
-      margin-top: 10px;
-    }
-
-    .plan-button:disabled,
-    .wallet-button:disabled {
+    .plan-button:disabled {
       cursor: not-allowed;
       opacity: 0.6;
     }
@@ -153,31 +147,103 @@
       line-height: 1.5;
     }
 
-    .wallet-renewal-box {
-      margin-top: 14px;
-      padding: 12px;
-      border-radius: 12px;
-      background: rgba(59, 130, 246, 0.07);
-      border: 1px solid rgba(59, 130, 246, 0.16);
+
+    /* =====================================================
+       PAYMENT MODAL
+    ====================================================== */
+
+    .payment-modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.72);
+      backdrop-filter: blur(5px);
     }
 
-    .wallet-renewal-title {
-      font-size: 13px;
-      font-weight: 700;
+    .payment-modal-overlay.show {
+      display: flex;
+    }
+
+    .payment-modal {
+      width: 100%;
+      max-width: 430px;
+      padding: 26px;
+      border-radius: 20px;
+      background: #111827;
+      border: 1px solid rgba(139, 92, 246, 0.35);
+      box-shadow: 0 25px 70px rgba(0, 0, 0, 0.45);
+    }
+
+    .payment-modal h3 {
+      margin: 0 0 8px;
+      font-size: 22px;
+    }
+
+    .payment-modal-subtitle {
+      margin: 0 0 18px;
+      font-size: 14px;
+      line-height: 1.6;
+      opacity: 0.78;
+    }
+
+    .payment-modal-summary {
+      margin-bottom: 20px;
+      padding: 14px;
+      border-radius: 12px;
+      background: rgba(139, 92, 246, 0.10);
+      border: 1px solid rgba(139, 92, 246, 0.18);
+      text-align: center;
+    }
+
+    .payment-modal-summary-label {
+      display: block;
+      font-size: 12px;
+      opacity: 0.7;
       margin-bottom: 4px;
     }
 
-    .wallet-renewal-text {
-      font-size: 12px;
-      opacity: 0.75;
-      line-height: 1.5;
+    .payment-modal-summary-value {
+      display: block;
+      font-size: 25px;
+      font-weight: 800;
     }
 
-    .payment-choice-note {
+    .payment-modal-option {
+      width: 100%;
+      min-height: 48px;
       margin-top: 10px;
+    }
+
+    .payment-modal-option.wallet {
+      background: rgba(59, 130, 246, 0.14);
+      border: 1px solid rgba(59, 130, 246, 0.30);
+    }
+
+    .payment-modal-option.flutterwave {
+      background: rgba(139, 92, 246, 0.14);
+      border: 1px solid rgba(139, 92, 246, 0.30);
+    }
+
+    .payment-modal-cancel {
+      width: 100%;
+      min-height: 46px;
+      margin-top: 14px;
+    }
+
+    .payment-modal-note {
+      margin-top: 14px;
       font-size: 12px;
-      opacity: 0.7;
       line-height: 1.5;
+      text-align: center;
+      opacity: 0.62;
+    }
+
+    body.modal-open {
+      overflow: hidden;
     }
 
   </style>
@@ -339,10 +405,10 @@
         </h2>
 
         <p>
-          New memberships and upgrades are securely
-          processed through Flutterwave.
-          When your membership is due for renewal,
-          you can also pay from your EarnGig wallet.
+          Choose a plan to join, renew your membership,
+          or upgrade your active membership.
+          Renewal and upgrade payments let you choose
+          between your EarnGig wallet and Flutterwave.
         </p>
 
       </div>
@@ -387,14 +453,14 @@
         </h3>
 
         <p>
-          New memberships and upgrades are securely
-          processed through Flutterwave.
+          New memberships are securely processed
+          through Flutterwave.
         </p>
 
         <p>
-          When your membership is due for renewal,
-          you can choose either Flutterwave or your
-          available EarnGig wallet balance.
+          For renewals and upgrades, click the relevant
+          button on the plan card and choose either
+          EarnGig Wallet or Flutterwave.
         </p>
 
         <p>
@@ -431,6 +497,90 @@
 
 
 <!-- =====================================================
+     PAYMENT CHOICE MODAL
+====================================================== -->
+
+<div
+  id="payment-modal"
+  class="payment-modal-overlay"
+  aria-hidden="true"
+>
+
+  <div
+    class="payment-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="payment-modal-title"
+  >
+
+    <h3 id="payment-modal-title">
+      Choose payment method
+    </h3>
+
+
+    <p
+      id="payment-modal-subtitle"
+      class="payment-modal-subtitle"
+    >
+      Choose how you want to pay.
+    </p>
+
+
+    <div class="payment-modal-summary">
+
+      <span class="payment-modal-summary-label">
+        Amount
+      </span>
+
+      <span
+        id="payment-modal-price"
+        class="payment-modal-summary-value"
+      >
+        ₦0
+      </span>
+
+    </div>
+
+
+    <button
+      id="payment-wallet-button"
+      class="btn primary payment-modal-option wallet"
+      type="button"
+    >
+      Pay from Wallet
+    </button>
+
+
+    <button
+      id="payment-flutterwave-button"
+      class="btn primary payment-modal-option flutterwave"
+      type="button"
+    >
+      Pay with Flutterwave
+    </button>
+
+
+    <button
+      id="payment-cancel-button"
+      class="btn outline payment-modal-cancel"
+      type="button"
+    >
+      Cancel
+    </button>
+
+
+    <div class="payment-modal-note">
+      Your wallet is only charged if you select
+      “Pay from Wallet”.
+    </div>
+
+  </div>
+
+</div>
+
+
+
+<!-- =====================================================
      SUPABASE
 ====================================================== -->
 
@@ -451,6 +601,23 @@ let membershipPlans = [];
 let paymentInProgress = false;
 
 
+/*
+ * Payment currently selected in the modal.
+ *
+ * type:
+ * - renewal
+ * - upgrade
+ */
+
+let selectedPaymentType = null;
+
+let selectedPaymentPlanCode = null;
+
+let selectedPaymentPlanName = null;
+
+let selectedPaymentPrice = null;
+
+
 
 const plansContainer =
   document.getElementById(
@@ -460,6 +627,42 @@ const plansContainer =
 const membershipMessage =
   document.getElementById(
     "membership-message"
+  );
+
+
+const paymentModal =
+  document.getElementById(
+    "payment-modal"
+  );
+
+const paymentModalTitle =
+  document.getElementById(
+    "payment-modal-title"
+  );
+
+const paymentModalSubtitle =
+  document.getElementById(
+    "payment-modal-subtitle"
+  );
+
+const paymentModalPrice =
+  document.getElementById(
+    "payment-modal-price"
+  );
+
+const paymentWalletButton =
+  document.getElementById(
+    "payment-wallet-button"
+  );
+
+const paymentFlutterwaveButton =
+  document.getElementById(
+    "payment-flutterwave-button"
+  );
+
+const paymentCancelButton =
+  document.getElementById(
+    "payment-cancel-button"
   );
 
 
@@ -566,6 +769,7 @@ async function loadUser() {
       .auth
       .getUser();
 
+
   if (
     error ||
     !user
@@ -578,8 +782,10 @@ async function loadUser() {
 
   }
 
+
   currentUser =
     user;
+
 
   return user;
 
@@ -707,6 +913,7 @@ function updateMembershipSummary() {
     statusElement.textContent =
       "Active ✓";
 
+
     descriptionElement.textContent =
       currentMembership.plan_code
         ? "Your " +
@@ -715,6 +922,7 @@ function updateMembershipSummary() {
           ) +
           " membership is active."
         : "Your membership is active.";
+
 
     priceElement.textContent =
       currentMembership.plan_code
@@ -738,6 +946,7 @@ function updateMembershipSummary() {
         );
 
     }
+
 
     return;
 
@@ -772,11 +981,6 @@ function updateMembershipSummary() {
 
   else {
 
-    /*
-     * Legacy account with no plan_code.
-     *
-     * Do NOT guess or display a previous plan.
-     */
     descriptionElement.textContent =
       "Your previous membership period has ended. Choose a plan below to resubscribe.";
 
@@ -903,26 +1107,11 @@ function renderPlans() {
     );
 
 
-  /*
-   * Any expired membership can select
-   * any plan for renewal.
-   */
   const expiredMembership =
     !active &&
     !!currentMembership;
 
 
-  /*
-   * No membership can select any plan.
-   */
-  const newMembership =
-    !currentMembership;
-
-
-  /*
-   * Legacy expired membership with
-   * no plan_code can select any plan.
-   */
   const legacyExpired =
     expiredMembership &&
     !currentPlanCode;
@@ -958,6 +1147,17 @@ function renderPlans() {
             planRank <
               currentPlanRank;
 
+
+          /*
+           * Expired memberships can renew.
+           *
+           * For legacy expired accounts with
+           * no plan_code, every plan is available.
+           *
+           * For configured expired accounts,
+           * the same previous plan is presented
+           * as the renewal option.
+           */
 
           const isRenewal =
             expiredMembership &&
@@ -1027,9 +1227,6 @@ function renderPlans() {
               "Upgrade to " +
               plan.plan_name;
 
-            disabled =
-              false;
-
             cardClass +=
               " upgrade";
 
@@ -1066,7 +1263,7 @@ function renderPlans() {
 
 
           /*
-           * EXPIRED / RENEWAL
+           * RENEWAL
            */
 
           else if (
@@ -1076,9 +1273,6 @@ function renderPlans() {
             buttonText =
               "Renew with " +
               plan.plan_name;
-
-            disabled =
-              false;
 
             cardClass +=
               " renewal";
@@ -1142,9 +1336,9 @@ function renderPlans() {
                 isUpgrade
                   ? `
                     <div class="upgrade-note">
-                      Full plan price.
-                      Your new 30-day membership
-                      starts after successful payment.
+                      Upgrade to a higher plan.
+                      Choose your payment method
+                      after clicking the button.
                     </div>
                   `
                   : ""
@@ -1155,10 +1349,9 @@ function renderPlans() {
                 isRenewal
                   ? `
                     <div class="renewal-note">
-                      Renew this membership for
-                      another 30 days.
-                      Choose Flutterwave or pay
-                      directly from your wallet.
+                      Renew for another 30 days.
+                      Choose your payment method
+                      after clicking the button.
                     </div>
                   `
                   : ""
@@ -1183,6 +1376,13 @@ function renderPlans() {
                 class="btn primary plan-button"
                 type="button"
                 data-plan-code="${plan.plan_code}"
+                data-action-type="${
+                  isUpgrade
+                    ? "upgrade"
+                    : isRenewal
+                      ? "renewal"
+                      : "new"
+                }"
                 ${
                   disabled
                     ? "disabled"
@@ -1191,53 +1391,6 @@ function renderPlans() {
               >
                 ${buttonText}
               </button>
-
-
-              ${
-                isRenewal
-                  ? `
-                    <div class="wallet-renewal-box">
-
-                      <div class="wallet-renewal-title">
-                        Or Pay from Wallet
-                      </div>
-
-                      <div class="wallet-renewal-text">
-                        Use your EarnGig wallet
-                        balance to pay
-                        ${formatNaira(plan.price)}
-                        for this 30-day renewal.
-                      </div>
-
-                      <button
-                        class="btn outline wallet-button"
-                        type="button"
-                        data-wallet-plan-code="${plan.plan_code}"
-                        data-wallet-plan-name="${plan.plan_name}"
-                        data-wallet-price="${plan.price}"
-                      >
-                        Pay ${formatNaira(plan.price)}
-                        from Wallet
-                      </button>
-
-                    </div>
-                  `
-                  : ""
-              }
-
-
-              ${
-                isRenewal
-                  ? `
-                    <div class="payment-choice-note">
-                      You can use either payment
-                      method. Your wallet balance is
-                      only deducted if you choose
-                      the wallet option.
-                    </div>
-                  `
-                  : ""
-              }
 
             </div>
 
@@ -1250,7 +1403,7 @@ function renderPlans() {
 
   /*
    * =======================================================
-   * FLUTTERWAVE BUTTONS
+   * PLAN BUTTON EVENTS
    * =======================================================
    */
 
@@ -1268,49 +1421,97 @@ function renderPlans() {
             const planCode =
               button.dataset.planCode;
 
-            startPayment(
-              planCode
-            );
-
-          }
-        );
-
-      }
-    );
+            const actionType =
+              button.dataset.actionType;
 
 
-  /*
-   * =======================================================
-   * WALLET BUTTONS
-   * =======================================================
-   */
+            /*
+             * Renewal:
+             * open payment-choice popup.
+             */
 
-  document
-    .querySelectorAll(
-      ".wallet-button"
-    )
-    .forEach(
-      button => {
+            if (
+              actionType ===
+              "renewal"
+            ) {
 
-        button.addEventListener(
-          "click",
-          () => {
+              const plan =
+                membershipPlans.find(
+                  item =>
+                    item.plan_code ===
+                    planCode
+                );
 
-            const planCode =
-              button.dataset.walletPlanCode;
 
-            const planName =
-              button.dataset.walletPlanName;
+              if (!plan) {
 
-            const price =
-              Number(
-                button.dataset.walletPrice
+                showMessage(
+                  "The selected membership plan could not be found.",
+                  "error"
+                );
+
+                return;
+
+              }
+
+
+              openPaymentModal(
+                "renewal",
+                plan
               );
 
-            renewFromWallet(
-              planCode,
-              planName,
-              price
+              return;
+
+            }
+
+
+            /*
+             * Upgrade:
+             * open the same payment-choice popup.
+             */
+
+            if (
+              actionType ===
+              "upgrade"
+            ) {
+
+              const plan =
+                membershipPlans.find(
+                  item =>
+                    item.plan_code ===
+                    planCode
+                );
+
+
+              if (!plan) {
+
+                showMessage(
+                  "The selected membership plan could not be found.",
+                  "error"
+                );
+
+                return;
+
+              }
+
+
+              openPaymentModal(
+                "upgrade",
+                plan
+              );
+
+              return;
+
+            }
+
+
+            /*
+             * New membership:
+             * Flutterwave only.
+             */
+
+            startPayment(
+              planCode
             );
 
           }
@@ -1324,13 +1525,12 @@ function renderPlans() {
 
 
 /* =====================================================
-   WALLET RENEWAL
+   OPEN PAYMENT MODAL
 ===================================================== */
 
-async function renewFromWallet(
-  planCode,
-  planName,
-  price
+function openPaymentModal(
+  paymentType,
+  plan
 ) {
 
   if (
@@ -1342,7 +1542,155 @@ async function renewFromWallet(
   }
 
 
-  if (!currentUser) {
+  selectedPaymentType =
+    paymentType;
+
+  selectedPaymentPlanCode =
+    plan.plan_code;
+
+  selectedPaymentPlanName =
+    plan.plan_name;
+
+  selectedPaymentPrice =
+    Number(
+      plan.price
+    );
+
+
+  if (
+    paymentType ===
+    "renewal"
+  ) {
+
+    paymentModalTitle.textContent =
+      "Renew " +
+      plan.plan_name;
+
+
+    paymentModalSubtitle.textContent =
+      "Choose how you want to pay for your " +
+      plan.plan_name +
+      " membership renewal.";
+
+  }
+
+  else {
+
+    paymentModalTitle.textContent =
+      "Upgrade to " +
+      plan.plan_name;
+
+
+    paymentModalSubtitle.textContent =
+      "Choose how you want to pay for your " +
+      plan.plan_name +
+      " membership upgrade.";
+
+  }
+
+
+  paymentModalPrice.textContent =
+    formatNaira(
+      plan.price
+    );
+
+
+  paymentWalletButton.disabled =
+    false;
+
+
+  paymentFlutterwaveButton.disabled =
+    false;
+
+
+  paymentCancelButton.disabled =
+    false;
+
+
+  paymentModal.classList.add(
+    "show"
+  );
+
+
+  paymentModal.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+
+
+  document.body.classList.add(
+    "modal-open"
+  );
+
+}
+
+
+
+/* =====================================================
+   CLOSE PAYMENT MODAL
+===================================================== */
+
+function closePaymentModal() {
+
+  if (
+    paymentInProgress
+  ) {
+
+    return;
+
+  }
+
+
+  paymentModal.classList.remove(
+    "show"
+  );
+
+
+  paymentModal.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
+
+  document.body.classList.remove(
+    "modal-open"
+  );
+
+
+  selectedPaymentType =
+    null;
+
+  selectedPaymentPlanCode =
+    null;
+
+  selectedPaymentPlanName =
+    null;
+
+  selectedPaymentPrice =
+    null;
+
+}
+
+
+
+/* =====================================================
+   WALLET PAYMENT FROM MODAL
+===================================================== */
+
+async function payFromWallet() {
+
+  if (
+    paymentInProgress
+  ) {
+
+    return;
+
+  }
+
+
+  if (
+    !currentUser
+  ) {
 
     window.location.href =
       "login.html";
@@ -1352,8 +1700,38 @@ async function renewFromWallet(
   }
 
 
-  const confirmed =
-    window.confirm(
+  if (
+    !selectedPaymentType ||
+    !selectedPaymentPlanCode
+  ) {
+
+    return;
+
+  }
+
+
+  const paymentType =
+    selectedPaymentType;
+
+  const planCode =
+    selectedPaymentPlanCode;
+
+  const planName =
+    selectedPaymentPlanName;
+
+  const price =
+    selectedPaymentPrice;
+
+
+  let confirmationMessage;
+
+
+  if (
+    paymentType ===
+    "renewal"
+  ) {
+
+    confirmationMessage =
       "Renew your " +
       planName +
       " membership for " +
@@ -1361,7 +1739,30 @@ async function renewFromWallet(
       " from your EarnGig wallet?\n\n" +
       "This will deduct " +
       formatNaira(price) +
-      " from your wallet and give you another 30 days."
+      " from your wallet and give you another 30 days.";
+
+  }
+
+  else {
+
+    confirmationMessage =
+      "Upgrade to " +
+      planName +
+      " for " +
+      formatNaira(price) +
+      " from your EarnGig wallet?\n\n" +
+      "This will deduct the full " +
+      formatNaira(price) +
+      " target-plan price and start a fresh 30-day " +
+      planName +
+      " membership period.";
+
+  }
+
+
+  const confirmed =
+    window.confirm(
+      confirmationMessage
     );
 
 
@@ -1376,15 +1777,22 @@ async function renewFromWallet(
     true;
 
 
-  showMessage(
-    "Processing your wallet renewal...",
-    "info"
-  );
+  paymentWalletButton.disabled =
+    true;
+
+  paymentFlutterwaveButton.disabled =
+    true;
+
+  paymentCancelButton.disabled =
+    true;
+
+
+  closePaymentModalForProcessing();
 
 
   document
     .querySelectorAll(
-      ".plan-button, .wallet-button"
+      ".plan-button"
     )
     .forEach(
       button => {
@@ -1398,27 +1806,72 @@ async function renewFromWallet(
 
   try {
 
+    let result;
+
+    let error;
+
+
     /*
-     * IMPORTANT:
-     * The selected plan is explicitly sent
-     * to the secure Supabase function.
+     * ===================================================
+     * WALLET RENEWAL
+     * ===================================================
      */
-    const {
-      data: result,
-      error
-    } =
-      await supabaseClient
-        .rpc(
-          "renew_membership_from_wallet",
-          {
-            p_plan_code:
-              planCode
-          }
-        );
+
+    if (
+      paymentType ===
+      "renewal"
+    ) {
+
+      const response =
+        await supabaseClient
+          .rpc(
+            "renew_membership_from_wallet",
+            {
+              p_plan_code:
+                planCode
+            }
+          );
+
+
+      result =
+        response.data;
+
+      error =
+        response.error;
+
+    }
+
+
+    /*
+     * ===================================================
+     * WALLET UPGRADE
+     * ===================================================
+     */
+
+    else {
+
+      const response =
+        await supabaseClient
+          .rpc(
+            "upgrade_membership_from_wallet",
+            {
+              p_target_plan_code:
+                planCode
+            }
+          );
+
+
+      result =
+        response.data;
+
+      error =
+        response.error;
+
+    }
 
 
     console.log(
-      "Wallet renewal result:",
+      "Wallet membership payment result:",
       result
     );
 
@@ -1426,13 +1879,13 @@ async function renewFromWallet(
     if (error) {
 
       console.error(
-        "Wallet renewal error:",
+        "Wallet membership payment error:",
         error
       );
 
       throw new Error(
         error.message ||
-        "Unable to renew your membership from your wallet."
+        "Unable to complete the wallet payment."
       );
 
     }
@@ -1444,20 +1897,44 @@ async function renewFromWallet(
 
       throw new Error(
         result?.error ||
-        "Wallet renewal was not completed."
+        "Wallet payment was not completed."
       );
 
     }
 
 
-    showMessage(
-      "Membership renewed successfully. " +
-      planName +
-      " is now active for another 30 days. " +
-      formatNaira(price) +
-      " was deducted from your wallet.",
-      "success"
-    );
+    /*
+     * SUCCESS MESSAGE
+     */
+
+    if (
+      paymentType ===
+      "renewal"
+    ) {
+
+      showMessage(
+        "Membership renewed successfully. " +
+        planName +
+        " is now active for another 30 days. " +
+        formatNaira(price) +
+        " was deducted from your wallet.",
+        "success"
+      );
+
+    }
+
+    else {
+
+      showMessage(
+        "Membership upgraded successfully to " +
+        planName +
+        ". " +
+        formatNaira(price) +
+        " was deducted from your wallet and your new 30-day membership period has started.",
+        "success"
+      );
+
+    }
 
 
     await loadMembership();
@@ -1468,14 +1945,14 @@ async function renewFromWallet(
   } catch (error) {
 
     console.error(
-      "Wallet renewal failed:",
+      "Wallet membership payment failed:",
       error
     );
 
 
     showMessage(
       error?.message ||
-      "Unable to renew your membership from your wallet. Please try again.",
+      "Unable to complete the wallet payment. Please try again.",
       "error"
     );
 
@@ -1485,11 +1962,164 @@ async function renewFromWallet(
     paymentInProgress =
       false;
 
+
     renderPlans();
 
   }
 
 }
+
+
+
+/* =====================================================
+   FLUTTERWAVE PAYMENT FROM MODAL
+===================================================== */
+
+function payWithFlutterwave() {
+
+  if (
+    paymentInProgress
+  ) {
+
+    return;
+
+  }
+
+
+  if (
+    !selectedPaymentPlanCode
+  ) {
+
+    return;
+
+  }
+
+
+  const planCode =
+    selectedPaymentPlanCode;
+
+
+  closePaymentModalForProcessing();
+
+
+  /*
+   * Existing working Flutterwave flow.
+   *
+   * The backend determines whether this is:
+   * - first payment
+   * - renewal
+   * - upgrade
+   */
+
+  startPayment(
+    planCode
+  );
+
+}
+
+
+
+/* =====================================================
+   CLOSE MODAL BEFORE PAYMENT PROCESSING
+===================================================== */
+
+function closePaymentModalForProcessing() {
+
+  paymentModal.classList.remove(
+    "show"
+  );
+
+
+  paymentModal.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
+
+  document.body.classList.remove(
+    "modal-open"
+  );
+
+}
+
+
+
+/* =====================================================
+   PAYMENT MODAL EVENTS
+===================================================== */
+
+paymentWalletButton.addEventListener(
+  "click",
+  () => {
+
+    payFromWallet();
+
+  }
+);
+
+
+paymentFlutterwaveButton.addEventListener(
+  "click",
+  () => {
+
+    payWithFlutterwave();
+
+  }
+);
+
+
+paymentCancelButton.addEventListener(
+  "click",
+  () => {
+
+    closePaymentModal();
+
+  }
+);
+
+
+/*
+ * Clicking outside the modal closes it.
+ */
+
+paymentModal.addEventListener(
+  "click",
+  event => {
+
+    if (
+      event.target ===
+      paymentModal
+    ) {
+
+      closePaymentModal();
+
+    }
+
+  }
+);
+
+
+/*
+ * Escape closes the modal.
+ */
+
+document.addEventListener(
+  "keydown",
+  event => {
+
+    if (
+      event.key === "Escape" &&
+      paymentModal.classList.contains(
+        "show"
+      )
+    ) {
+
+      closePaymentModal();
+
+    }
+
+  }
+);
 
 
 
@@ -1622,7 +2252,7 @@ async function startPayment(
 
 
   /*
-   * Payment message.
+   * PAYMENT MESSAGE
    */
 
   if (
@@ -1672,7 +2302,7 @@ async function startPayment(
 
   document
     .querySelectorAll(
-      ".plan-button, .wallet-button"
+      ".plan-button"
     )
     .forEach(
       button => {
