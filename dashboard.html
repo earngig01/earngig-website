@@ -19,9 +19,91 @@
 
   <style>
 
-/* =====================================================
-   HEADER / MENU
-===================================================== */
+/* =========================================================
+   EARNGIG MEMBER DASHBOARD — SELF CONTAINED LAYOUT
+========================================================= */
+
+:root {
+  --eg-blue: #2563eb;
+  --eg-indigo: #4f46e5;
+  --eg-purple: #7c3aed;
+  --eg-pink: #ec4899;
+  --eg-green: #10b981;
+  --eg-orange: #f59e0b;
+  --eg-dark: #090d35;
+  --eg-dark-2: #11174b;
+  --eg-card: rgba(255,255,255,.065);
+  --eg-border: rgba(255,255,255,.12);
+  --eg-muted: rgba(255,255,255,.68);
+}
+
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+.dashboard-page {
+  min-height: 100vh;
+
+  padding: 42px 0 70px;
+
+  background:
+    radial-gradient(
+      circle at 10% 5%,
+      rgba(79,70,229,.28),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 90% 15%,
+      rgba(147,51,234,.22),
+      transparent 28%
+    ),
+    linear-gradient(
+      180deg,
+      #080c35 0%,
+      #10174d 48%,
+      #0a0f3b 100%
+    );
+
+  color: #fff;
+}
+
+
+/* Keep dashboard content above background */
+
+.dashboard-page .container {
+  position: relative;
+  z-index: 2;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+body > header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+
+  background:
+    rgba(7,11,48,.94);
+
+  backdrop-filter:
+    blur(18px);
+
+  -webkit-backdrop-filter:
+    blur(18px);
+
+  border-bottom:
+    1px solid rgba(255,255,255,.10);
+}
+
+
+body > header .nav {
+  min-height: 76px;
+}
+
 
 .dashboard-top-nav {
   display: flex;
@@ -29,40 +111,270 @@
   gap: 12px;
 }
 
+
 .menu-toggle {
   width: 48px;
   height: 48px;
-  border: 1px solid rgba(139, 92, 246, 0.45);
-  border-radius: 14px;
-  background: linear-gradient(
-    135deg,
-    #2563eb 0%,
-    #7c3aed 100%
-  );
+
+  border: 0;
+  border-radius: 15px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #2563eb,
+      #7c3aed
+    );
+
   color: #fff;
+
   font-size: 25px;
+  font-weight: 700;
+
   cursor: pointer;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
+  box-shadow:
+    0 8px 24px rgba(79,70,229,.28);
 }
+
 
 .menu-toggle:hover {
-  opacity: 0.92;
+  transform: translateY(-1px);
 }
 
 
-/* =====================================================
-   USER NAME GRADIENT
-===================================================== */
+/* =========================================================
+   MOBILE MENU
+========================================================= */
+
+.dashboard-menu-overlay {
+  position: fixed;
+  inset: 0;
+
+  background:
+    rgba(2,5,25,.62);
+
+  backdrop-filter:
+    blur(4px);
+
+  z-index: 2000;
+
+  opacity: 0;
+  visibility: hidden;
+
+  transition:
+    opacity .2s ease,
+    visibility .2s ease;
+}
+
+
+.dashboard-menu-overlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+
+.dashboard-menu {
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 285px;
+  max-width: 85vw;
+  height: 100%;
+
+  padding: 25px 18px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #0b1040,
+      #11185b
+    );
+
+  box-shadow:
+    15px 0 45px rgba(0,0,0,.30);
+
+  transform:
+    translateX(-100%);
+
+  transition:
+    transform .25s ease;
+}
+
+
+.dashboard-menu-overlay.open .dashboard-menu {
+  transform: translateX(0);
+}
+
+
+.dashboard-menu-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  margin-bottom: 30px;
+
+  color: #fff;
+
+  font-size: 21px;
+  font-weight: 800;
+}
+
+
+.dashboard-menu-logo-mark {
+  width: 38px;
+  height: 38px;
+
+  border-radius: 12px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background:
+    linear-gradient(
+      135deg,
+      #2563eb,
+      #9333ea
+    );
+
+  color: #fff;
+}
+
+
+.dashboard-menu-label {
+  margin: 18px 10px 8px;
+
+  color: #9da7ff;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+
+.dashboard-menu a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 13px 14px;
+
+  margin-bottom: 5px;
+
+  border-radius: 12px;
+
+  color: rgba(255,255,255,.82);
+
+  text-decoration: none;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  transition:
+    background .2s ease,
+    color .2s ease;
+}
+
+
+.dashboard-menu a:hover {
+  background:
+    rgba(255,255,255,.09);
+
+  color: #fff;
+}
+
+
+.dashboard-menu-icon {
+  width: 30px;
+  height: 30px;
+
+  border-radius: 9px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background:
+    rgba(255,255,255,.09);
+
+  font-size: 15px;
+}
+
+
+.dashboard-menu-close {
+  position: absolute;
+
+  top: 18px;
+  right: 18px;
+
+  width: 36px;
+  height: 36px;
+
+  border: 0;
+  border-radius: 10px;
+
+  background:
+    rgba(255,255,255,.08);
+
+  color: #fff;
+
+  font-size: 20px;
+
+  cursor: pointer;
+}
+
+
+/* =========================================================
+   WELCOME
+========================================================= */
+
+.eg-welcome {
+  margin-bottom: 22px;
+}
+
+
+.eg-eyebrow {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: #a5b4fc;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  letter-spacing: 1.8px;
+}
+
+
+.eg-welcome h1 {
+  margin: 0;
+
+  font-size: clamp(30px, 5vw, 44px);
+
+  line-height: 1.1;
+
+  letter-spacing: -1px;
+}
+
 
 .gradient-user-name {
-  background: linear-gradient(
-    90deg,
-    #2563eb 0%,
-    #6366f1 48%,
-    #9333ea 100%
-  );
+  background:
+    linear-gradient(
+      90deg,
+      #3b82f6 0%,
+      #6366f1 45%,
+      #c026d3 100%
+    );
 
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -72,171 +384,878 @@
 }
 
 
-/* =====================================================
-   START EARNING BUTTON
-===================================================== */
+.eg-welcome p {
+  margin: 12px 0 0;
+
+  color: rgba(255,255,255,.65);
+
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+
+/* =========================================================
+   START EARNING
+========================================================= */
 
 .start-earning-button {
   width: 100%;
-  min-height: 76px;
+  min-height: 70px;
 
-  margin-top: 26px;
+  margin: 0 0 20px;
 
-  border: none;
+  padding: 18px 24px;
+
+  border: 0;
   border-radius: 18px;
 
-  background: linear-gradient(
-    90deg,
-    #2563eb 0%,
-    #4f46e5 50%,
-    #9333ea 100%
-  );
+  background:
+    linear-gradient(
+      100deg,
+      #2563eb 0%,
+      #4f46e5 48%,
+      #9333ea 100%
+    );
 
   color: #fff;
+
+  text-decoration: none;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
   font-size: 18px;
   font-weight: 800;
 
+  box-shadow:
+    0 15px 35px rgba(79,70,229,.27);
+
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease;
+}
+
+
+.start-earning-button:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 18px 40px rgba(79,70,229,.35);
+}
+
+
+.start-earning-arrow {
+  width: 42px;
+  height: 42px;
+
+  border-radius: 13px;
+
+  background:
+    rgba(255,255,255,.17);
+
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 18px;
 
-  text-decoration: none;
+  font-size: 22px;
+}
+
+
+/* =========================================================
+   WALLET CARD
+========================================================= */
+
+.eg-wallet-card {
+  position: relative;
+
+  overflow: hidden;
+
+  padding: 25px;
+
+  margin-bottom: 15px;
+
+  border-radius: 22px;
+
+  border:
+    1px solid rgba(255,255,255,.14);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(37,99,235,.32),
+      rgba(124,58,237,.27)
+    );
 
   box-shadow:
-    0 12px 30px rgba(79, 70, 229, 0.25);
-}
-
-.start-earning-button:hover {
-  opacity: 0.94;
-  transform: translateY(-1px);
-}
-
-.start-earning-arrow {
-  font-size: 25px;
+    0 15px 40px rgba(0,0,0,.16);
 }
 
 
-/* =====================================================
-   COMPACT EARNING CARDS
-===================================================== */
+.eg-wallet-card::after {
+  content: "";
 
-.compact-card-grid {
+  position: absolute;
+
+  width: 190px;
+  height: 190px;
+
+  right: -80px;
+  top: -90px;
+
+  border-radius: 50%;
+
+  background:
+    rgba(255,255,255,.08);
+}
+
+
+.eg-wallet-content {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 25px;
+}
+
+
+.eg-wallet-label {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: rgba(255,255,255,.65);
+
+  font-size: 12px;
+}
+
+
+.eg-wallet-balance {
+  display: block;
+
+  color: #fff;
+
+  font-size: clamp(29px, 5vw, 40px);
+
+  font-weight: 900;
+
+  letter-spacing: -1px;
+}
+
+
+.eg-wallet-minimum {
+  margin: 8px 0 0;
+
+  color: rgba(255,255,255,.60);
+
+  font-size: 12px;
+}
+
+
+.eg-wallet-actions {
+  display: flex;
+  gap: 9px;
+
+  flex-shrink: 0;
+}
+
+
+.eg-wallet-actions .btn {
+  min-width: 110px;
+}
+
+
+/* =========================================================
+   EARNINGS SUMMARY
+========================================================= */
+
+.eg-summary-grid {
   display: grid;
 
   grid-template-columns:
-    repeat(
-      auto-fit,
-      minmax(180px, 1fr)
-    );
+    repeat(4, minmax(0,1fr));
 
-  gap: 14px;
+  gap: 12px;
 
-  margin-top: 20px;
+  margin-bottom: 16px;
 }
 
-.compact-card {
-  min-height: 155px;
 
-  padding: 18px;
+.eg-summary-card {
+  min-width: 0;
+
+  padding: 17px;
 
   border-radius: 16px;
 
-  text-decoration: none;
-
-  border: 1px solid
-    rgba(139, 92, 246, 0.18);
+  border:
+    1px solid rgba(255,255,255,.10);
 
   background:
-    rgba(255, 255, 255, 0.035);
+    rgba(255,255,255,.055);
 
-  transition:
-    transform 0.2s ease,
-    border-color 0.2s ease;
+  box-shadow:
+    0 8px 25px rgba(0,0,0,.10);
 }
 
-.compact-card:hover {
-  transform: translateY(-2px);
 
-  border-color:
-    rgba(139, 92, 246, 0.45);
-}
-
-.compact-card .member-card-icon {
-  margin-bottom: 10px;
-}
-
-.compact-card h3 {
-  margin: 0 0 7px;
-
-  font-size: 16px;
-}
-
-.compact-card p {
-  margin: 0;
-
-  font-size: 12px;
-
-  line-height: 1.5;
-
-  opacity: 0.72;
-}
-
-.compact-card strong {
+.eg-summary-card small {
   display: block;
 
-  margin-top: 12px;
+  color: rgba(255,255,255,.58);
+
+  font-size: 11px;
+
+  margin-bottom: 8px;
+}
+
+
+.eg-summary-card strong {
+  display: block;
+
+  color: #fff;
+
+  font-size: 20px;
+}
+
+
+/* =========================================================
+   DAILY LIMIT — KEEP TOGETHER
+========================================================= */
+
+.eg-daily-limit {
+  position: relative;
+
+  overflow: hidden;
+
+  margin: 0 0 30px;
+
+  padding: 22px;
+
+  border-radius: 20px;
+
+  border:
+    1px solid rgba(139,92,246,.25);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(79,70,229,.16),
+      rgba(124,58,237,.12)
+    );
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,.12);
+}
+
+
+.eg-daily-limit::before {
+  content: "";
+
+  position: absolute;
+
+  width: 160px;
+  height: 160px;
+
+  right: -70px;
+  top: -80px;
+
+  border-radius: 50%;
+
+  background:
+    rgba(124,58,237,.14);
+}
+
+
+.eg-daily-limit-header {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+}
+
+
+.eg-daily-limit-title {
+  display: flex;
+  align-items: center;
+
+  gap: 13px;
+}
+
+
+.eg-daily-limit-icon {
+  width: 43px;
+  height: 43px;
+
+  border-radius: 13px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #2563eb,
+      #7c3aed
+    );
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 20px;
+}
+
+
+.eg-daily-limit h3 {
+  margin: 0 0 4px;
+
+  font-size: 18px;
+}
+
+
+.eg-daily-limit-plan {
+  margin: 0;
+
+  color: rgba(255,255,255,.58);
 
   font-size: 12px;
 }
 
 
-/* =====================================================
-   REFERRAL / TRANSACTION SECTION HEADERS
-===================================================== */
-
-.dashboard-section-heading {
-  display: flex;
-
-  align-items: center;
-
-  justify-content: space-between;
-
-  gap: 16px;
+.eg-daily-limit-amount {
+  text-align: right;
 }
 
-.dashboard-section-heading .text-link {
+
+.eg-daily-limit-amount strong {
+  display: block;
+
+  font-size: 18px;
+}
+
+
+.eg-daily-limit-amount span {
+  display: block;
+
+  margin-top: 4px;
+
+  color: rgba(255,255,255,.53);
+
+  font-size: 11px;
+}
+
+
+.eg-progress {
+  position: relative;
+  z-index: 2;
+
+  width: 100%;
+  height: 9px;
+
+  margin: 18px 0 13px;
+
+  overflow: hidden;
+
+  border-radius: 999px;
+
+  background:
+    rgba(255,255,255,.09);
+}
+
+
+.eg-progress-bar {
+  width: 0%;
+  height: 100%;
+
+  border-radius: inherit;
+
+  background:
+    linear-gradient(
+      90deg,
+      #2563eb,
+      #7c3aed,
+      #ec4899
+    );
+
+  transition:
+    width .4s ease;
+}
+
+
+.eg-daily-limit-footer {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  justify-content: space-between;
+
+  gap: 15px;
+}
+
+
+.eg-daily-limit-remaining {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+
+.eg-daily-limit-note {
+  color: rgba(255,255,255,.55);
+
+  font-size: 11px;
+
+  text-align: right;
+}
+
+
+.eg-daily-limit.daily-limit-reached {
+  border-color:
+    rgba(239,68,68,.35);
+}
+
+
+.eg-daily-limit.daily-limit-error {
+  border-color:
+    rgba(245,158,11,.35);
+}
+
+
+/* =========================================================
+   SECTION WRAPPER
+========================================================= */
+
+.eg-section {
+  margin-top: 30px;
+}
+
+
+.eg-section-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+
+  gap: 15px;
+
+  margin-bottom: 15px;
+}
+
+
+.eg-section-heading h2 {
+  margin: 3px 0 0;
+
+  font-size: 22px;
+
+  letter-spacing: -.4px;
+}
+
+
+.eg-section-heading h3 {
+  margin: 3px 0 0;
+
+  font-size: 18px;
+}
+
+
+.eg-text-link {
+  color: #a5b4fc;
+
+  text-decoration: none;
+
+  font-size: 13px;
+  font-weight: 700;
+
   white-space: nowrap;
 }
 
 
-/* =====================================================
-   REFERRAL HISTORY
-===================================================== */
+.eg-text-link:hover {
+  color: #fff;
+}
+
+
+/* =========================================================
+   EARNING OPTIONS
+========================================================= */
+
+.eg-earn-section {
+  margin-top: 10px;
+}
+
+
+.eg-earn-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0,1fr));
+
+  gap: 14px;
+}
+
+
+.eg-earn-card {
+  position: relative;
+
+  min-height: 160px;
+
+  padding: 18px;
+
+  overflow: hidden;
+
+  border-radius: 18px;
+
+  border:
+    1px solid rgba(255,255,255,.10);
+
+  background:
+    rgba(255,255,255,.055);
+
+  color: #fff;
+
+  text-decoration: none;
+
+  transition:
+    transform .2s ease,
+    border-color .2s ease,
+    box-shadow .2s ease;
+}
+
+
+.eg-earn-card:hover {
+  transform: translateY(-3px);
+
+  border-color:
+    rgba(139,92,246,.45);
+
+  box-shadow:
+    0 14px 30px rgba(0,0,0,.18);
+}
+
+
+.eg-earn-card::after {
+  content: "";
+
+  position: absolute;
+
+  width: 100px;
+  height: 100px;
+
+  right: -45px;
+  top: -45px;
+
+  border-radius: 50%;
+
+  background:
+    rgba(255,255,255,.055);
+}
+
+
+.eg-icon {
+  width: 42px;
+  height: 42px;
+
+  margin-bottom: 13px;
+
+  border-radius: 13px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 19px;
+
+  color: #fff;
+
+  background:
+    linear-gradient(
+      135deg,
+      #2563eb,
+      #7c3aed
+    );
+}
+
+
+.eg-earn-card:nth-child(2) .eg-icon {
+  background:
+    linear-gradient(
+      135deg,
+      #7c3aed,
+      #ec4899
+    );
+}
+
+
+.eg-earn-card:nth-child(3) .eg-icon {
+  background:
+    linear-gradient(
+      135deg,
+      #f97316,
+      #f59e0b
+    );
+}
+
+
+.eg-earn-card:nth-child(4) .eg-icon {
+  background:
+    linear-gradient(
+      135deg,
+      #059669,
+      #10b981
+    );
+}
+
+
+.eg-earn-card:nth-child(5) .eg-icon {
+  background:
+    linear-gradient(
+      135deg,
+      #db2777,
+      #ec4899
+    );
+}
+
+
+.eg-earn-card:nth-child(6) .eg-icon {
+  background:
+    linear-gradient(
+      135deg,
+      #0891b2,
+      #2563eb
+    );
+}
+
+
+.eg-earn-card h3 {
+  margin: 0 0 6px;
+
+  font-size: 16px;
+}
+
+
+.eg-earn-card p {
+  margin: 0;
+
+  color: rgba(255,255,255,.58);
+
+  font-size: 12px;
+
+  line-height: 1.5;
+}
+
+
+.eg-earn-card strong {
+  display: block;
+
+  margin-top: 13px;
+
+  color: #a5b4fc;
+
+  font-size: 12px;
+}
+
+
+/* =========================================================
+   READ / CREATE CARDS
+========================================================= */
+
+.eg-feature-card {
+  display: flex;
+  align-items: center;
+
+  gap: 18px;
+
+  padding: 21px;
+
+  border-radius: 18px;
+
+  border:
+    1px solid rgba(255,255,255,.10);
+
+  background:
+    rgba(255,255,255,.055);
+}
+
+
+.eg-feature-icon {
+  width: 52px;
+  height: 52px;
+
+  flex-shrink: 0;
+
+  border-radius: 15px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 23px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #2563eb,
+      #7c3aed
+    );
+}
+
+
+.eg-feature-content {
+  flex: 1;
+  min-width: 0;
+}
+
+
+.eg-feature-content h3 {
+  margin: 0 0 5px;
+
+  font-size: 17px;
+}
+
+
+.eg-feature-content p {
+  margin: 0;
+
+  color: rgba(255,255,255,.58);
+
+  font-size: 12px;
+
+  line-height: 1.55;
+}
+
+
+/* =========================================================
+   REFERRAL CARD
+========================================================= */
+
+.eg-referral-card {
+  padding: 21px;
+
+  border-radius: 18px;
+
+  border:
+    1px solid rgba(255,255,255,.10);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(37,99,235,.11),
+      rgba(124,58,237,.10)
+    );
+}
+
+
+.eg-referral-code-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 15px;
+}
+
+
+.eg-referral-code-label {
+  display: block;
+
+  color: rgba(255,255,255,.55);
+
+  font-size: 11px;
+
+  margin-bottom: 6px;
+}
+
+
+.eg-referral-code {
+  display: block;
+
+  color: #fff;
+
+  font-size: 21px;
+  font-weight: 900;
+
+  letter-spacing: 1px;
+}
+
+
+.eg-referral-stats {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3,1fr);
+
+  gap: 10px;
+
+  margin-top: 18px;
+}
+
+
+.eg-referral-stat {
+  padding: 14px;
+
+  border-radius: 13px;
+
+  background:
+    rgba(255,255,255,.055);
+}
+
+
+.eg-referral-stat small {
+  display: block;
+
+  color: rgba(255,255,255,.55);
+
+  font-size: 10px;
+
+  margin-bottom: 6px;
+}
+
+
+.eg-referral-stat strong {
+  font-size: 16px;
+}
+
+
+/* =========================================================
+   RECENT REFERRALS
+========================================================= */
+
+.eg-referral-list {
+  margin-top: 12px;
+
+  padding: 0 17px;
+
+  border-radius: 16px;
+
+  border:
+    1px solid rgba(255,255,255,.08);
+
+  background:
+    rgba(255,255,255,.035);
+}
+
 
 .referral-history-row {
   display: flex;
 
   align-items: center;
-
   justify-content: space-between;
 
   gap: 20px;
 
-  padding: 14px 0;
+  padding: 15px 0;
 
   border-bottom:
-    1px solid rgba(255,255,255,0.08);
+    1px solid rgba(255,255,255,.08);
 }
+
 
 .referral-history-row:last-child {
-  border-bottom: none;
+  border-bottom: 0;
 }
 
-.referral-history-row > div:first-child {
-  min-width: 0;
-}
 
 .referral-history-row strong {
   display: block;
@@ -244,123 +1263,354 @@
   font-size: 14px;
 }
 
+
 .referral-history-row small {
   display: block;
 
   margin-top: 4px;
 
-  font-size: 12px;
+  color: rgba(255,255,255,.50);
 
-  opacity: 0.65;
-}
-
-.referral-history-row > div:last-child {
-  text-align: right;
-  flex-shrink: 0;
+  font-size: 11px;
 }
 
 
-/* =====================================================
+/* =========================================================
    TRANSACTIONS
-===================================================== */
+========================================================= */
+
+.eg-transaction-list {
+  display: grid;
+
+  gap: 9px;
+}
+
 
 .transaction-item {
   display: flex;
 
   align-items: center;
-
   justify-content: space-between;
 
-  gap: 20px;
+  gap: 18px;
 
-  padding: 16px;
+  padding: 15px 17px;
 
-  margin-bottom: 10px;
+  border-radius: 15px;
 
   border:
-    1px solid rgba(139, 92, 246, 0.15);
-
-  border-radius: 14px;
+    1px solid rgba(255,255,255,.08);
 
   background:
-    rgba(255, 255, 255, 0.025);
+    rgba(255,255,255,.045);
 }
+
 
 .transaction-info {
   min-width: 0;
 }
 
+
 .transaction-info strong {
   display: block;
-
-  font-size: 14px;
 
   overflow: hidden;
 
   text-overflow: ellipsis;
 
   white-space: nowrap;
+
+  font-size: 13px;
 }
+
 
 .transaction-info small {
   display: block;
 
-  margin-top: 5px;
+  margin-top: 4px;
 
-  font-size: 11px;
+  color: rgba(255,255,255,.48);
 
-  opacity: 0.6;
+  font-size: 10px;
 }
+
 
 .transaction-amount {
   flex-shrink: 0;
 
-  font-size: 15px;
-
-  font-weight: 800;
+  font-size: 14px;
+  font-weight: 900;
 }
+
 
 .transaction-credit {
-  color: #86efac;
+  color: #6ee7b7;
 }
+
 
 .transaction-debit {
-  color: #fca5a5;
+  color: #fda4af;
 }
 
 
-/* =====================================================
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.eg-empty {
+  padding: 28px 18px;
+
+  text-align: center;
+
+  border-radius: 16px;
+
+  border:
+    1px dashed rgba(255,255,255,.13);
+
+  background:
+    rgba(255,255,255,.025);
+}
+
+
+.eg-empty-icon {
+  width: 45px;
+  height: 45px;
+
+  margin: 0 auto 10px;
+
+  border-radius: 13px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background:
+    rgba(124,58,237,.16);
+
+  color: #a5b4fc;
+
+  font-weight: 900;
+}
+
+
+.eg-empty h3 {
+  margin: 0 0 5px;
+
+  font-size: 15px;
+}
+
+
+.eg-empty p {
+  margin: 0;
+
+  color: rgba(255,255,255,.48);
+
+  font-size: 12px;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+body > footer {
+  background:
+    #070a2b;
+
+  color:
+    rgba(255,255,255,.5);
+
+  border-top:
+    1px solid rgba(255,255,255,.08);
+}
+
+
+/* =========================================================
    MOBILE
-===================================================== */
+========================================================= */
+
+@media (max-width: 800px) {
+
+  .dashboard-page {
+    padding-top: 28px;
+  }
+
+
+  body > header nav {
+    display: none;
+  }
+
+
+  body > header .btn.outline {
+    display: none;
+  }
+
+
+  .eg-summary-grid {
+    grid-template-columns:
+      repeat(2, minmax(0,1fr));
+  }
+
+
+  .eg-earn-grid {
+    grid-template-columns:
+      repeat(2, minmax(0,1fr));
+  }
+
+
+  .eg-wallet-content {
+    align-items: flex-start;
+
+    flex-direction: column;
+
+    gap: 17px;
+  }
+
+
+  .eg-wallet-actions {
+    width: 100%;
+  }
+
+
+  .eg-wallet-actions .btn {
+    flex: 1;
+  }
+
+}
+
 
 @media (max-width: 600px) {
 
-  .compact-card-grid {
+  .dashboard-page {
+    padding-bottom: 45px;
+  }
+
+
+  .eg-welcome h1 {
+    font-size: 31px;
+  }
+
+
+  .start-earning-button {
+    min-height: 64px;
+
+    padding: 15px 18px;
+  }
+
+
+  .eg-wallet-card {
+    padding: 20px;
+  }
+
+
+  .eg-summary-card {
+    padding: 14px;
+  }
+
+
+  .eg-summary-card strong {
+    font-size: 17px;
+  }
+
+
+  .eg-daily-limit {
+    padding: 18px;
+  }
+
+
+  .eg-daily-limit-header {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+
+  .eg-daily-limit-amount {
+    width: 100%;
+
+    text-align: left;
+  }
+
+
+  .eg-daily-limit-footer {
+    flex-direction: column;
+  }
+
+
+  .eg-daily-limit-note {
+    text-align: left;
+  }
+
+
+  .eg-earn-grid {
     grid-template-columns:
-      repeat(2, minmax(0, 1fr));
+      repeat(2, minmax(0,1fr));
 
     gap: 10px;
   }
 
-  .compact-card {
-    min-height: 145px;
+
+  .eg-earn-card {
+    min-height: 150px;
+
     padding: 15px;
   }
 
-  .dashboard-section-heading {
-    align-items: flex-end;
+
+  .eg-earn-card h3 {
+    font-size: 14px;
   }
+
+
+  .eg-earn-card p {
+    font-size: 11px;
+  }
+
+
+  .eg-feature-card {
+    align-items: flex-start;
+
+    flex-wrap: wrap;
+  }
+
+
+  .eg-feature-card .btn {
+    width: 100%;
+  }
+
+
+  .eg-referral-code-row {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+
+  .eg-referral-code-row .btn {
+    width: 100%;
+  }
+
+
+  .eg-referral-stats {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .eg-section-heading {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
 
   .referral-history-row {
     gap: 10px;
   }
 
+
   .transaction-item {
     padding: 13px;
-  }
-
-  .transaction-info strong {
-    max-width: 190px;
   }
 
 }
@@ -372,6 +1622,10 @@
 
 <body>
 
+
+<!-- =========================================================
+     HEADER
+========================================================= -->
 
 <header>
 
@@ -447,44 +1701,228 @@
 </header>
 
 
+<!-- =========================================================
+     MOBILE MENU
+========================================================= -->
+
+<div
+  id="dashboard-menu-overlay"
+  class="dashboard-menu-overlay"
+>
+
+  <aside class="dashboard-menu">
+
+    <button
+      id="dashboard-menu-close"
+      class="dashboard-menu-close"
+      type="button"
+    >
+      ×
+    </button>
+
+
+    <div class="dashboard-menu-logo">
+
+      <span class="dashboard-menu-logo-mark">
+        E
+      </span>
+
+      EarnGig
+
+    </div>
+
+
+    <div class="dashboard-menu-label">
+      Dashboard
+    </div>
+
+
+    <a href="dashboard.html">
+
+      <span class="dashboard-menu-icon">
+        🏠
+      </span>
+
+      Dashboard
+
+    </a>
+
+
+    <div class="dashboard-menu-label">
+      Earn
+    </div>
+
+
+    <a href="tasks.html">
+
+      <span class="dashboard-menu-icon">
+        ✓
+      </span>
+
+      Tasks
+
+    </a>
+
+
+    <a href="watch-ads.html">
+
+      <span class="dashboard-menu-icon">
+        ▶
+      </span>
+
+      Watch & Earn
+
+    </a>
+
+
+    <a href="competitions.html">
+
+      <span class="dashboard-menu-icon">
+        🏆
+      </span>
+
+      Competitions
+
+    </a>
+
+
+    <a href="read-and-earn.html">
+
+      <span class="dashboard-menu-icon">
+        📖
+      </span>
+
+      Read & Earn
+
+    </a>
+
+
+    <a href="create-and-earn.html">
+
+      <span class="dashboard-menu-icon">
+        ✍️
+      </span>
+
+      Create & Earn
+
+    </a>
+
+
+    <div class="dashboard-menu-label">
+      Wallet
+    </div>
+
+
+    <a href="membership.html">
+
+      <span class="dashboard-menu-icon">
+        ★
+      </span>
+
+      Membership
+
+    </a>
+
+
+    <a href="withdraw.html">
+
+      <span class="dashboard-menu-icon">
+        💸
+      </span>
+
+      Withdraw
+
+    </a>
+
+
+    <a href="transactions.html">
+
+      <span class="dashboard-menu-icon">
+        📊
+      </span>
+
+      Transactions
+
+    </a>
+
+
+    <a href="referrals.html">
+
+      <span class="dashboard-menu-icon">
+        👥
+      </span>
+
+      Referrals
+
+    </a>
+
+
+    <div class="dashboard-menu-label">
+      Account
+    </div>
+
+
+    <a href="profile.html">
+
+      <span class="dashboard-menu-icon">
+        👤
+      </span>
+
+      My Profile
+
+    </a>
+
+  </aside>
+
+</div>
+
+
+<!-- =========================================================
+     MAIN DASHBOARD
+========================================================= -->
 
 <main class="dashboard-page">
 
   <div class="container">
 
 
-    <!-- =================================================
+    <!-- =====================================================
          WELCOME
-    ================================================== -->
+    ====================================================== -->
 
-    <div class="dashboard-heading">
+    <section class="eg-welcome">
 
-      <div>
+      <span class="eg-eyebrow">
+        MEMBER DASHBOARD
+      </span>
 
-        <span class="eyebrow">
-          MEMBER DASHBOARD
+
+      <h1>
+
+        Welcome back,<br>
+
+        <span
+          id="user-name"
+          class="gradient-user-name"
+        >
+          Member!
         </span>
 
-        <h1>
-          Welcome back,<br>
+      </h1>
 
-          <span
-            id="user-name"
-            class="gradient-user-name"
-          >
-            Member!
-          </span>
-        </h1>
 
-        <p>
-          Explore available activities and keep track
-          of your EarnGig earnings.
-        </p>
+      <p>
+        Explore available activities and keep track
+        of your EarnGig earnings.
+      </p>
 
-      </div>
+    </section>
 
-    </div>
 
+
+    <!-- =====================================================
+         START EARNING
+    ====================================================== -->
 
     <a
       class="start-earning-button"
@@ -503,45 +1941,57 @@
 
 
 
-    <!-- =================================================
+    <!-- =====================================================
          WALLET
-    ================================================== -->
+    ====================================================== -->
 
-    <section class="member-wallet">
+    <section class="eg-wallet-card">
 
-      <div>
+      <div class="eg-wallet-content">
 
-        <small>
-          Available Balance
-        </small>
+        <div>
 
-        <strong id="wallet-balance">
-          ₦0.00
-        </strong>
-
-        <p id="withdrawal-minimum-text">
-          Minimum withdrawal: Loading...
-        </p>
-
-      </div>
+          <span class="eg-wallet-label">
+            AVAILABLE BALANCE
+          </span>
 
 
-      <div class="wallet-actions">
-
-        <a
-          class="btn primary"
-          href="withdraw.html"
-        >
-          Withdraw
-        </a>
+          <strong
+            id="wallet-balance"
+            class="eg-wallet-balance"
+          >
+            ₦0.00
+          </strong>
 
 
-        <a
-          class="btn light"
-          href="transactions.html"
-        >
-          Transactions
-        </a>
+          <p
+            id="withdrawal-minimum-text"
+            class="eg-wallet-minimum"
+          >
+            Minimum withdrawal: Loading...
+          </p>
+
+        </div>
+
+
+        <div class="eg-wallet-actions">
+
+          <a
+            class="btn primary"
+            href="withdraw.html"
+          >
+            Withdraw
+          </a>
+
+
+          <a
+            class="btn light"
+            href="transactions.html"
+          >
+            Transactions
+          </a>
+
+        </div>
 
       </div>
 
@@ -549,13 +1999,14 @@
 
 
 
-    <!-- =================================================
-         STATS
-    ================================================== -->
+    <!-- =====================================================
+         EARNINGS SUMMARY
+    ====================================================== -->
 
-    <div class="dashboard-stats">
+    <section class="eg-summary-grid">
 
-      <div class="dashboard-stat">
+
+      <div class="eg-summary-card">
 
         <small>
           Today's Earnings
@@ -568,7 +2019,7 @@
       </div>
 
 
-      <div class="dashboard-stat">
+      <div class="eg-summary-card">
 
         <small>
           Total Earned
@@ -581,7 +2032,7 @@
       </div>
 
 
-      <div class="dashboard-stat">
+      <div class="eg-summary-card">
 
         <small>
           Referral Earnings
@@ -594,7 +2045,7 @@
       </div>
 
 
-      <div class="dashboard-stat">
+      <div class="eg-summary-card">
 
         <small>
           Completed Activities
@@ -606,26 +2057,29 @@
 
       </div>
 
-    </div>
+
+    </section>
 
 
 
-    <!-- =================================================
+    <!-- =====================================================
          DAILY EARNING LIMIT
-    ================================================== -->
+    ====================================================== -->
 
     <section
       id="daily-earning-limit"
-      class="daily-limit-card"
+      class="eg-daily-limit"
     >
 
-      <div class="daily-limit-header">
+      <div class="eg-daily-limit-header">
 
-        <div class="daily-limit-title">
 
-          <div class="daily-limit-icon">
+        <div class="eg-daily-limit-title">
+
+          <div class="eg-daily-limit-icon">
             🔒
           </div>
+
 
           <div>
 
@@ -633,7 +2087,10 @@
               Daily Earning Limit
             </h3>
 
-            <p id="daily-limit-plan">
+            <p
+              id="daily-limit-plan"
+              class="eg-daily-limit-plan"
+            >
               Loading your membership limit...
             </p>
 
@@ -642,7 +2099,7 @@
         </div>
 
 
-        <div class="daily-limit-amount">
+        <div class="eg-daily-limit-amount">
 
           <strong id="daily-limit-amount">
             Loading...
@@ -654,24 +2111,25 @@
 
         </div>
 
+
       </div>
 
 
-      <div class="daily-limit-progress">
+      <div class="eg-progress">
 
         <div
           id="daily-limit-progress-bar"
-          class="daily-limit-progress-bar"
+          class="eg-progress-bar"
         ></div>
 
       </div>
 
 
-      <div class="daily-limit-footer">
+      <div class="eg-daily-limit-footer">
 
         <div
           id="daily-limit-remaining"
-          class="daily-limit-remaining"
+          class="eg-daily-limit-remaining"
         >
           Loading...
         </div>
@@ -679,7 +2137,7 @@
 
         <div
           id="daily-limit-note"
-          class="daily-limit-note"
+          class="eg-daily-limit-note"
         >
           Referral bonuses and Create & Earn are not included.
         </div>
@@ -690,20 +2148,20 @@
 
 
 
-    <!-- =================================================
+    <!-- =====================================================
          EARN
-    ================================================== -->
+    ====================================================== -->
 
     <section
       id="earn"
-      class="dashboard-section"
+      class="eg-section eg-earn-section"
     >
 
-      <div class="section-title">
+      <div class="eg-section-heading">
 
         <div>
 
-          <span class="eyebrow">
+          <span class="eg-eyebrow">
             EARN
           </span>
 
@@ -716,15 +2174,15 @@
       </div>
 
 
-      <div class="compact-card-grid">
+      <div class="eg-earn-grid">
 
 
         <a
           href="tasks.html"
-          class="compact-card"
+          class="eg-earn-card"
         >
 
-          <div class="member-card-icon blue">
+          <div class="eg-icon">
             ✓
           </div>
 
@@ -745,10 +2203,10 @@
 
         <a
           href="membership.html"
-          class="compact-card"
+          class="eg-earn-card"
         >
 
-          <div class="member-card-icon blue">
+          <div class="eg-icon">
             ★
           </div>
 
@@ -769,11 +2227,11 @@
 
         <a
           href="watch-ads.html"
-          class="compact-card"
+          class="eg-earn-card"
         >
 
-          <div class="member-card-icon blue">
-            ▶️
+          <div class="eg-icon">
+            ▶
           </div>
 
           <h3>
@@ -793,10 +2251,10 @@
 
         <a
           href="competitions.html"
-          class="compact-card"
+          class="eg-earn-card"
         >
 
-          <div class="member-card-icon blue">
+          <div class="eg-icon">
             🏆
           </div>
 
@@ -817,10 +2275,10 @@
 
         <a
           href="mailto:ahruhenterprises@gmail.com?subject=EarnGig%20Complaint%20%2F%20Issue"
-          class="compact-card"
+          class="eg-earn-card"
         >
 
-          <div class="member-card-icon blue">
+          <div class="eg-icon">
             📩
           </div>
 
@@ -841,10 +2299,10 @@
 
         <a
           href="run-advert.html"
-          class="compact-card"
+          class="eg-earn-card"
         >
 
-          <div class="member-card-icon blue">
+          <div class="eg-icon">
             📣
           </div>
 
@@ -862,26 +2320,27 @@
 
         </a>
 
+
       </div>
 
     </section>
 
 
 
-    <!-- =================================================
+    <!-- =====================================================
          READ & EARN
-    ================================================== -->
+    ====================================================== -->
 
     <section
       id="read"
-      class="dashboard-section"
+      class="eg-section"
     >
 
-      <div class="section-title">
+      <div class="eg-section-heading">
 
         <div>
 
-          <span class="eyebrow">
+          <span class="eg-eyebrow">
             READ & EARN
           </span>
 
@@ -894,7 +2353,7 @@
 
         <a
           href="read-and-earn.html"
-          class="text-link"
+          class="eg-text-link"
         >
           View all →
         </a>
@@ -902,14 +2361,14 @@
       </div>
 
 
-      <div class="novel-preview">
+      <div class="eg-feature-card">
 
-        <div class="novel-preview-icon">
+        <div class="eg-feature-icon">
           📖
         </div>
 
 
-        <div>
+        <div class="eg-feature-content">
 
           <h3>
             Discover approved novels
@@ -936,20 +2395,20 @@
 
 
 
-    <!-- =================================================
+    <!-- =====================================================
          CREATE & EARN
-    ================================================== -->
+    ====================================================== -->
 
     <section
       id="create"
-      class="dashboard-section"
+      class="eg-section"
     >
 
-      <div class="section-title">
+      <div class="eg-section-heading">
 
         <div>
 
-          <span class="eyebrow">
+          <span class="eg-eyebrow">
             CREATE & EARN
           </span>
 
@@ -962,7 +2421,7 @@
 
         <a
           href="create-and-earn.html"
-          class="text-link"
+          class="eg-text-link"
         >
           View all →
         </a>
@@ -970,14 +2429,14 @@
       </div>
 
 
-      <div class="novel-preview">
+      <div class="eg-feature-card">
 
-        <div class="novel-preview-icon">
+        <div class="eg-feature-icon">
           ✍️
         </div>
 
 
-        <div>
+        <div class="eg-feature-content">
 
           <h3>
             Publish your own novel
@@ -1005,20 +2464,20 @@
 
 
 
-    <!-- =================================================
+    <!-- =====================================================
          REFERRALS
-    ================================================== -->
+    ====================================================== -->
 
     <section
       id="referrals"
-      class="dashboard-section"
+      class="eg-section"
     >
 
-      <div class="dashboard-section-heading">
+      <div class="eg-section-heading">
 
         <div>
 
-          <span class="eyebrow">
+          <span class="eg-eyebrow">
             REFERRALS
           </span>
 
@@ -1031,7 +2490,7 @@
 
         <a
           href="referrals.html"
-          class="text-link"
+          class="eg-text-link"
         >
           View all →
         </a>
@@ -1039,119 +2498,102 @@
       </div>
 
 
-      <div class="referral-box">
+      <div class="eg-referral-card">
 
-        <div>
-
-          <small>
-            Your referral code
-          </small>
-
-          <strong id="dashboard-referral-code">
-            Loading...
-          </strong>
-
-          <p>
-            Share your code with eligible new members.
-          </p>
-
-        </div>
-
-      </div>
-
-
-      <button
-        id="copy-referral-button"
-        class="btn primary"
-        type="button"
-      >
-        Copy Code
-      </button>
-
-
-      <div class="earning-box">
-
-        <div>
-
-          <small>
-            Successful referrals
-          </small>
-
-          <strong id="successful-referrals">
-            0
-          </strong>
-
-        </div>
-
-
-        <div>
-
-          <small>
-            Referral earnings
-          </small>
-
-          <strong id="dashboard-referral-earnings">
-            ₦0
-          </strong>
-
-        </div>
-
-
-        <div>
-
-          <small>
-            Active referrals
-          </small>
-
-          <strong id="active-referrals">
-            0
-          </strong>
-
-        </div>
-
-      </div>
-
-
-      <div class="referral-history">
-
-        <div class="section-title">
+        <div class="eg-referral-code-row">
 
           <div>
 
-            <span class="eyebrow">
-              RECENT REFERRALS
+            <span class="eg-referral-code-label">
+              YOUR REFERRAL CODE
             </span>
 
-            <h3>
-              Your referrals
-            </h3>
+            <strong
+              id="dashboard-referral-code"
+              class="eg-referral-code"
+            >
+              Loading...
+            </strong>
 
           </div>
 
 
-          <a
-            href="referrals.html"
-            class="text-link"
+          <button
+            id="copy-referral-button"
+            class="btn primary"
+            type="button"
           >
-            View all →
-          </a>
+            Copy Referral Link
+          </button>
 
         </div>
 
 
-        <div id="referral-history-list">
+        <div class="eg-referral-stats">
 
-          <div class="empty-state">
 
-            <h3>
-              Loading referrals...
-            </h3>
+          <div class="eg-referral-stat">
 
-            <p>
-              Your recent referral activity will appear here.
-            </p>
+            <small>
+              Successful referrals
+            </small>
+
+            <strong id="successful-referrals">
+              0
+            </strong>
 
           </div>
+
+
+          <div class="eg-referral-stat">
+
+            <small>
+              Referral earnings
+            </small>
+
+            <strong id="dashboard-referral-earnings">
+              ₦0
+            </strong>
+
+          </div>
+
+
+          <div class="eg-referral-stat">
+
+            <small>
+              Active referrals
+            </small>
+
+            <strong id="active-referrals">
+              0
+            </strong>
+
+          </div>
+
+
+        </div>
+
+      </div>
+
+
+      <div
+        id="referral-history-list"
+        class="eg-referral-list"
+      >
+
+        <div class="eg-empty">
+
+          <div class="eg-empty-icon">
+            👥
+          </div>
+
+          <h3>
+            Loading referrals...
+          </h3>
+
+          <p>
+            Your recent referral activity will appear here.
+          </p>
 
         </div>
 
@@ -1161,20 +2603,20 @@
 
 
 
-    <!-- =================================================
+    <!-- =====================================================
          TRANSACTIONS
-    ================================================== -->
+    ====================================================== -->
 
     <section
       id="transactions"
-      class="dashboard-section"
+      class="eg-section"
     >
 
-      <div class="dashboard-section-heading">
+      <div class="eg-section-heading">
 
         <div>
 
-          <span class="eyebrow">
+          <span class="eg-eyebrow">
             WALLET
           </span>
 
@@ -1187,7 +2629,7 @@
 
         <a
           href="transactions.html"
-          class="text-link"
+          class="eg-text-link"
         >
           View all →
         </a>
@@ -1197,12 +2639,12 @@
 
       <div
         id="transaction-list"
-        class="transaction-list"
+        class="eg-transaction-list"
       >
 
-        <div class="empty-state">
+        <div class="eg-empty">
 
-          <div class="empty-icon">
+          <div class="eg-empty-icon">
             ₦
           </div>
 
@@ -1226,7 +2668,6 @@
 </main>
 
 
-
 <footer>
 
   <div class="container copy">
@@ -1247,9 +2688,9 @@
 
 <script>
 
-/* =====================================================
+/* =========================================================
    CONSTANTS
-===================================================== */
+========================================================= */
 
 const WITHDRAWAL_MINIMUMS = {
 
@@ -1299,9 +2740,9 @@ const NON_EARNING_TYPES = new Set([
 
 
 
-/* =====================================================
+/* =========================================================
    FORMAT NAIRA
-===================================================== */
+========================================================= */
 
 function formatNaira(
   amount,
@@ -1323,9 +2764,9 @@ function formatNaira(
 
 
 
-/* =====================================================
+/* =========================================================
    TRANSACTION TYPE
-===================================================== */
+========================================================= */
 
 function getTransactionType(
   transaction
@@ -1341,9 +2782,9 @@ function getTransactionType(
 
 
 
-/* =====================================================
+/* =========================================================
    REAL EARNING
-===================================================== */
+========================================================= */
 
 function isRealEarning(
   transaction
@@ -1373,9 +2814,9 @@ function isRealEarning(
 
 
 
-/* =====================================================
+/* =========================================================
    WITHDRAWAL
-===================================================== */
+========================================================= */
 
 function isWithdrawal(
   transaction
@@ -1397,9 +2838,9 @@ function isWithdrawal(
 
 
 
-/* =====================================================
+/* =========================================================
    PAYMENT / DEBIT
-===================================================== */
+========================================================= */
 
 function isPaymentOrDebit(
   transaction
@@ -1437,9 +2878,98 @@ function isPaymentOrDebit(
 
 
 
-/* =====================================================
+/* =========================================================
+   MOBILE MENU
+========================================================= */
+
+const menuToggle =
+  document.getElementById(
+    "menu-toggle"
+  );
+
+const menuOverlay =
+  document.getElementById(
+    "dashboard-menu-overlay"
+  );
+
+const menuClose =
+  document.getElementById(
+    "dashboard-menu-close"
+  );
+
+
+function openDashboardMenu() {
+
+  menuOverlay.classList.add(
+    "open"
+  );
+
+  document.body.style.overflow =
+    "hidden";
+
+}
+
+
+function closeDashboardMenu() {
+
+  menuOverlay.classList.remove(
+    "open"
+  );
+
+  document.body.style.overflow =
+    "";
+
+}
+
+
+menuToggle.addEventListener(
+  "click",
+  openDashboardMenu
+);
+
+
+menuClose.addEventListener(
+  "click",
+  closeDashboardMenu
+);
+
+
+menuOverlay.addEventListener(
+  "click",
+  function(event) {
+
+    if (
+      event.target === menuOverlay
+    ) {
+
+      closeDashboardMenu();
+
+    }
+
+  }
+);
+
+
+document
+  .querySelectorAll(
+    ".dashboard-menu a"
+  )
+  .forEach(
+    function(link) {
+
+      link.addEventListener(
+        "click",
+        closeDashboardMenu
+      );
+
+    }
+  );
+
+
+
+/* =========================================================
    MEMBERSHIP ACCESS
-===================================================== */
+========================================================= */
 
 async function checkMembershipAccess() {
 
@@ -1450,6 +2980,7 @@ async function checkMembershipAccess() {
     await supabaseClient
       .auth
       .getUser();
+
 
   if (
     userError ||
@@ -1534,8 +3065,10 @@ async function checkMembershipAccess() {
     "Your membership has expired. Please renew your membership to continue."
   );
 
+
   window.location.href =
     "membership.html";
+
 
   return false;
 
@@ -1543,9 +3076,9 @@ async function checkMembershipAccess() {
 
 
 
-/* =====================================================
+/* =========================================================
    DAILY EARNING LIMIT
-===================================================== */
+========================================================= */
 
 async function loadDailyEarningLimit() {
 
@@ -1554,30 +3087,36 @@ async function loadDailyEarningLimit() {
       "daily-earning-limit"
     );
 
+
   const planElement =
     document.getElementById(
       "daily-limit-plan"
     );
+
 
   const amountElement =
     document.getElementById(
       "daily-limit-amount"
     );
 
+
   const labelElement =
     document.getElementById(
       "daily-limit-label"
     );
+
 
   const progressBar =
     document.getElementById(
       "daily-limit-progress-bar"
     );
 
+
   const remainingElement =
     document.getElementById(
       "daily-limit-remaining"
     );
+
 
   const noteElement =
     document.getElementById(
@@ -1594,17 +3133,22 @@ async function loadDailyEarningLimit() {
   planElement.textContent =
     "Loading your membership limit...";
 
+
   amountElement.textContent =
     "Loading...";
+
 
   labelElement.textContent =
     "Normal activities today";
 
+
   progressBar.style.width =
     "0%";
 
+
   remainingElement.textContent =
     "Loading...";
+
 
   noteElement.textContent =
     "Referral bonuses and Create & Earn are not included.";
@@ -1648,15 +3192,18 @@ async function loadDailyEarningLimit() {
         result?.daily_limit
       );
 
+
     const earnedToday =
       Number(
         result?.earned_today
       );
 
+
     const remainingToday =
       Number(
         result?.remaining_today
       );
+
 
     const planCode =
       String(
@@ -1693,6 +3240,7 @@ async function loadDailyEarningLimit() {
         dailyLimit
       );
 
+
     const safeEarned =
       Math.min(
         safeLimit,
@@ -1701,6 +3249,7 @@ async function loadDailyEarningLimit() {
           earnedToday
         )
       );
+
 
     const safeRemaining =
       Math.max(
@@ -1732,11 +3281,14 @@ async function loadDailyEarningLimit() {
     planElement.textContent =
       `${planName} plan • Normal earning activities`;
 
+
     amountElement.textContent =
       `${formatNaira(safeEarned)} / ${formatNaira(safeLimit)}`;
 
+
     labelElement.textContent =
       "Normal activities today";
+
 
     progressBar.style.width =
       `${percentage}%`;
@@ -1750,8 +3302,10 @@ async function loadDailyEarningLimit() {
         "daily-limit-reached"
       );
 
+
       remainingElement.textContent =
         "🔒 Daily earning limit reached for today.";
+
 
       noteElement.textContent =
         "Normal earning activities reset tomorrow. Referral bonuses and Create & Earn are not included.";
@@ -1762,6 +3316,7 @@ async function loadDailyEarningLimit() {
 
       remainingElement.textContent =
         `${formatNaira(safeRemaining)} remaining today`;
+
 
       noteElement.textContent =
         "Referral bonuses and Create & Earn are not included.";
@@ -1777,24 +3332,31 @@ async function loadDailyEarningLimit() {
       error
     );
 
+
     card.classList.add(
       "daily-limit-error"
     );
 
+
     planElement.textContent =
       "Unable to load your membership limit.";
+
 
     amountElement.textContent =
       "Unavailable";
 
+
     labelElement.textContent =
       "Normal activities today";
+
 
     progressBar.style.width =
       "0%";
 
+
     remainingElement.textContent =
       "Please refresh the page.";
+
 
     noteElement.textContent =
       "Your earning limit could not be verified.";
@@ -1805,9 +3367,9 @@ async function loadDailyEarningLimit() {
 
 
 
-/* =====================================================
+/* =========================================================
    LOAD DASHBOARD
-===================================================== */
+========================================================= */
 
 async function loadDashboard() {
 
@@ -1925,10 +3487,12 @@ async function loadDashboard() {
         wallet?.balance || 0
       );
 
+
     const totalEarned =
       Number(
         wallet?.total_earned || 0
       );
+
 
     const referralEarned =
       Number(
@@ -2176,9 +3740,9 @@ async function loadDashboard() {
 
 
 
-/* =====================================================
-   RECENT TRANSACTIONS — MAX 7
-===================================================== */
+/* =========================================================
+   RECENT TRANSACTIONS
+========================================================= */
 
 async function loadTransactions() {
 
@@ -2241,7 +3805,7 @@ async function loadTransactions() {
   if (error) {
 
     list.innerHTML = `
-      <div class="empty-state">
+      <div class="eg-empty">
         <h3>
           Unable to load transactions
         </h3>
@@ -2262,16 +3826,20 @@ async function loadTransactions() {
   ) {
 
     list.innerHTML = `
-      <div class="empty-state">
-        <div class="empty-icon">
+      <div class="eg-empty">
+
+        <div class="eg-empty-icon">
           ₦
         </div>
+
         <h3>
           No transactions yet
         </h3>
+
         <p>
           Your wallet activity will appear here.
         </p>
+
       </div>
     `;
 
@@ -2371,9 +3939,9 @@ async function loadTransactions() {
 
 
 
-/* =====================================================
-   RECENT REFERRALS — MAX 4
-===================================================== */
+/* =========================================================
+   RECENT REFERRALS
+========================================================= */
 
 async function loadReferralHistory() {
 
@@ -2429,7 +3997,7 @@ async function loadReferralHistory() {
   if (error) {
 
     list.innerHTML = `
-      <div class="empty-state">
+      <div class="eg-empty">
 
         <h3>
           Unable to load referrals
@@ -2453,9 +4021,9 @@ async function loadReferralHistory() {
   ) {
 
     list.innerHTML = `
-      <div class="empty-state">
+      <div class="eg-empty">
 
-        <div class="empty-icon">
+        <div class="eg-empty-icon">
           👥
         </div>
 
@@ -2599,9 +4167,9 @@ async function loadReferralHistory() {
 
 
 
-/* =====================================================
+/* =========================================================
    COPY REFERRAL
-===================================================== */
+========================================================= */
 
 document
   .getElementById(
@@ -2671,9 +4239,9 @@ document
 
 
 
-/* =====================================================
+/* =========================================================
    LOGOUT
-===================================================== */
+========================================================= */
 
 document
   .getElementById(
@@ -2710,9 +4278,9 @@ document
 
 
 
-/* =====================================================
+/* =========================================================
    START DASHBOARD
-===================================================== */
+========================================================= */
 
 (async function() {
 
@@ -2739,4 +4307,5 @@ document
 
 
 </body>
+
 </html>
