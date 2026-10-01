@@ -19,6 +19,57 @@
 
   <style>
 
+    /* =====================================================
+       COMPACT MEMBERSHIP STATUS CARDS
+    ====================================================== */
+
+    .dashboard-section .member-earning-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .dashboard-section .member-earning-card {
+      min-height: 0;
+      padding: 14px 16px;
+      border-radius: 14px;
+    }
+
+    .dashboard-section .member-earning-card .member-card-icon {
+      width: 34px;
+      height: 34px;
+      min-width: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 8px;
+      font-size: 15px;
+      border-radius: 10px;
+    }
+
+    .dashboard-section .member-earning-card h3 {
+      margin: 0 0 4px;
+      font-size: 15px;
+    }
+
+    .dashboard-section .member-earning-card p {
+      margin: 3px 0;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .dashboard-section .member-earning-card strong {
+      display: block;
+      margin-top: 5px;
+      font-size: 17px;
+      line-height: 1.25;
+    }
+
+
+    /* =====================================================
+       MEMBERSHIP PLANS
+    ====================================================== */
+
     .membership-grid {
       display: grid;
       grid-template-columns: repeat(
@@ -244,6 +295,44 @@
 
     body.modal-open {
       overflow: hidden;
+    }
+
+
+    /* =====================================================
+       MOBILE
+    ====================================================== */
+
+    @media (max-width: 700px) {
+
+      .dashboard-section .member-earning-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      .dashboard-section .member-earning-card {
+        padding: 12px;
+      }
+
+      .dashboard-section .member-earning-card h3 {
+        font-size: 14px;
+      }
+
+      .dashboard-section .member-earning-card p {
+        font-size: 12px;
+      }
+
+      .dashboard-section .member-earning-card strong {
+        font-size: 15px;
+      }
+
+      .dashboard-section .member-earning-card .member-card-icon {
+        width: 30px;
+        height: 30px;
+        min-width: 30px;
+        margin-bottom: 6px;
+        font-size: 13px;
+      }
+
     }
 
   </style>
@@ -1148,17 +1237,6 @@ function renderPlans() {
               currentPlanRank;
 
 
-          /*
-           * Expired memberships can renew.
-           *
-           * For legacy expired accounts with
-           * no plan_code, every plan is available.
-           *
-           * For configured expired accounts,
-           * the same previous plan is presented
-           * as the renewal option.
-           */
-
           const isRenewal =
             expiredMembership &&
             (
@@ -1189,10 +1267,6 @@ function renderPlans() {
             "plan-status";
 
 
-          /*
-           * CURRENT PLAN
-           */
-
           if (
             isCurrent
           ) {
@@ -1215,10 +1289,6 @@ function renderPlans() {
           }
 
 
-          /*
-           * UPGRADE
-           */
-
           else if (
             isUpgrade
           ) {
@@ -1239,10 +1309,6 @@ function renderPlans() {
           }
 
 
-          /*
-           * DOWNGRADE
-           */
-
           else if (
             isDowngrade
           ) {
@@ -1261,10 +1327,6 @@ function renderPlans() {
 
           }
 
-
-          /*
-           * RENEWAL
-           */
 
           else if (
             isRenewal
@@ -1285,10 +1347,6 @@ function renderPlans() {
 
           }
 
-
-          /*
-           * NEW MEMBERSHIP
-           */
 
           else {
 
@@ -1401,12 +1459,6 @@ function renderPlans() {
       .join("");
 
 
-  /*
-   * =======================================================
-   * PLAN BUTTON EVENTS
-   * =======================================================
-   */
-
   document
     .querySelectorAll(
       ".plan-button"
@@ -1424,11 +1476,6 @@ function renderPlans() {
             const actionType =
               button.dataset.actionType;
 
-
-            /*
-             * Renewal:
-             * open payment-choice popup.
-             */
 
             if (
               actionType ===
@@ -1465,11 +1512,6 @@ function renderPlans() {
             }
 
 
-            /*
-             * Upgrade:
-             * open the same payment-choice popup.
-             */
-
             if (
               actionType ===
               "upgrade"
@@ -1504,11 +1546,6 @@ function renderPlans() {
 
             }
 
-
-            /*
-             * New membership:
-             * Flutterwave only.
-             */
 
             startPayment(
               planCode
@@ -1598,10 +1635,8 @@ function openPaymentModal(
   paymentWalletButton.disabled =
     false;
 
-
   paymentFlutterwaveButton.disabled =
     false;
-
 
   paymentCancelButton.disabled =
     false;
@@ -1811,12 +1846,6 @@ async function payFromWallet() {
     let error;
 
 
-    /*
-     * ===================================================
-     * WALLET RENEWAL
-     * ===================================================
-     */
-
     if (
       paymentType ===
       "renewal"
@@ -1841,12 +1870,6 @@ async function payFromWallet() {
 
     }
 
-
-    /*
-     * ===================================================
-     * WALLET UPGRADE
-     * ===================================================
-     */
 
     else {
 
@@ -1902,10 +1925,6 @@ async function payFromWallet() {
 
     }
 
-
-    /*
-     * SUCCESS MESSAGE
-     */
 
     if (
       paymentType ===
@@ -2002,15 +2021,6 @@ function payWithFlutterwave() {
   closePaymentModalForProcessing();
 
 
-  /*
-   * Existing working Flutterwave flow.
-   *
-   * The backend determines whether this is:
-   * - first payment
-   * - renewal
-   * - upgrade
-   */
-
   startPayment(
     planCode
   );
@@ -2078,10 +2088,6 @@ paymentCancelButton.addEventListener(
 );
 
 
-/*
- * Clicking outside the modal closes it.
- */
-
 paymentModal.addEventListener(
   "click",
   event => {
@@ -2098,10 +2104,6 @@ paymentModal.addEventListener(
   }
 );
 
-
-/*
- * Escape closes the modal.
- */
 
 document.addEventListener(
   "keydown",
@@ -2210,10 +2212,6 @@ async function startPayment(
       currentRank;
 
 
-  /*
-   * Same active plan.
-   */
-
   if (
     active &&
     currentPlanCode ===
@@ -2229,10 +2227,6 @@ async function startPayment(
 
   }
 
-
-  /*
-   * Downgrade while active.
-   */
 
   if (
     active &&
@@ -2250,10 +2244,6 @@ async function startPayment(
 
   }
 
-
-  /*
-   * PAYMENT MESSAGE
-   */
 
   if (
     isUpgrade
